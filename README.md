@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CapMatch
 
-## Getting Started
+## 📘 Project Overview
 
-First, run the development server:
+**CapMatch** is an interactive matching platform designed to guide users through a form-based flow using a chatbot interface. The system will evaluate inputs through scoring and connect results to a backend for further processing. The primary interface uses `react-chatbotify` to simulate a conversational form experience.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚀 Getting Started
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+**Clone the Repo** `git clone https://github.com/theodor961/capmatch-i25.git` `cd capmatch-i25`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+**Install Dependencies** `pnpm install`
 
-## Learn More
+Make sure you have _pnpm_ installed globally. If not: `npm install -g pnpm`
 
-To learn more about Next.js, take a look at the following resources:
+**Run the Project** `pnpm dev`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 👆 Pushing Changes
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+**Format Code** `pnpm format`
 
-## Deploy on Vercel
+**Add All Changes** `git add .`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**Commit Changes** `git commit -m "your message here"`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Push to Remote** `git push`
+
+## 👇 Pulling Changes
+
+**Pull Latest Changes** `git pull`
+
+---
+
+## ✅ General To-Dos
+
+- [ ] **Intro about the project**
+- [ ] **Data Structure (converting flow to data struct)**
+- [ ] **Converting Data Structure to be ingested by the form**
+- [ ] **Form input chatbot logic (react-chatbotify)**
+- [ ] **UI Designing**
+- [ ] **Connecting Chatbot to LLMs**
+- [ ] **Scoring system + backend submission integration**
+
+---
+
+## 🗓️ Weekly Plan
+
+### Week 1
+
+- [ ] Create a chatbot using `react-chatbotify`
+      👉 Reference: https://react-chatbotify.com/docs/examples/basic_form
+
+---
+
+## 📆 Daily Tasks
+
+### 6/5/2025 (Theodor)
+
+- [x] Project introduction & setup
+- [x] Invite team to GitHub repo
