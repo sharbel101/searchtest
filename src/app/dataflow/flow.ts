@@ -1,8 +1,19 @@
 'use client';
 
+// Define enums for better scalability
+enum FieldType {
+  Text = 'text',
+  File = 'file',
+  Signature = 'signature',
+  Dropdown = 'dropdown',
+  Video = 'video',
+  Url = 'url',
+  Array = 'array',
+}
+
 // Define interfaces for the data flow schema
 interface FormField {
-  type: 'text' | 'file' | 'signature' | 'dropdown' | 'video' | 'url' | 'array';
+  type: FieldType; // Use enum for field types
   id: string; // Unique ID for each field/answer
   label: string;
   placeholder?: string;
@@ -35,7 +46,7 @@ const chatFlow: ChatFlow = {
       {
         companiesNDAForm: {
           id: 'nda-form',
-          type: 'file',
+          type: FieldType.File,
           label: 'Companies NDAs Form',
           description: 'Upload the signed NDA form (PDF format).',
           required: true,
@@ -52,7 +63,7 @@ const chatFlow: ChatFlow = {
       {
         companyName: {
           id: 'company-name',
-          type: 'text',
+          type: FieldType.Text,
           label: 'Company Name',
           placeholder: 'Enter company name',
           required: true,
@@ -62,7 +73,7 @@ const chatFlow: ChatFlow = {
       {
         logo: {
           id: 'company-logo',
-          type: 'file',
+          type: FieldType.File,
           label: 'Logo',
           description: 'Upload the company logo (image file).',
           required: true,
@@ -71,7 +82,7 @@ const chatFlow: ChatFlow = {
       {
         industry: {
           id: 'industry-type',
-          type: 'dropdown',
+          type: FieldType.Dropdown,
           label: 'Industry',
           options: [
             { id: 'general', value: 'General' },
@@ -85,7 +96,7 @@ const chatFlow: ChatFlow = {
       {
         description: {
           id: 'company-description',
-          type: 'text',
+          type: FieldType.Text,
           label: 'Description',
           placeholder: 'Enter a brief description',
           required: true,
@@ -95,7 +106,7 @@ const chatFlow: ChatFlow = {
       {
         countryOfOperation: {
           id: 'country-operation',
-          type: 'dropdown',
+          type: FieldType.Dropdown,
           label: 'Country of Operation',
           options: [{ id: 'usa', value: 'USA' }], // Example based on the IP of the user etc...
           required: true,
@@ -105,38 +116,38 @@ const chatFlow: ChatFlow = {
       {
         socialMediaAccounts: {
           id: 'social-media-accounts',
-          type: 'array',
+          type: FieldType.Array,
           label: 'Social Media Accounts',
           description: 'Provide URLs for social media profiles (all optional).',
           subFields: {
             tiktok: {
               id: 'tiktok-url',
-              type: 'url',
+              type: FieldType.Url,
               label: 'TikTok URL',
               required: false,
             },
             linkedin: {
               id: 'linkedin-url',
-              type: 'url',
+              type: FieldType.Url,
               label: 'LinkedIn URL',
               required: false,
             },
             facebook: {
               id: 'facebook-url',
-              type: 'url',
+              type: FieldType.Url,
               label: 'Facebook URL',
               required: false,
             },
             instagram: {
               id: 'instagram-url',
-              type: 'url',
+              type: FieldType.Url,
               label: 'Instagram URL',
               required: false,
             },
-            x: { id: 'x-url', type: 'url', label: 'X URL', required: false },
+            x: { id: 'x-url', type: FieldType.Url, label: 'X URL', required: false },
             others: {
               id: 'other-url',
-              type: 'url',
+              type: FieldType.Url,
               label: 'Other URL',
               required: false,
             },
@@ -146,7 +157,7 @@ const chatFlow: ChatFlow = {
       {
         mainWebsiteUrl: {
           id: 'main-website',
-          type: 'url',
+          type: FieldType.Url,
           label: 'Main Website URL',
           placeholder: 'https://example.com',
           required: false,
@@ -165,31 +176,31 @@ const chatFlow: ChatFlow = {
       {
         teamMembersProfile: {
           id: 'team-members',
-          type: 'array',
+          type: FieldType.Array,
           label: 'Team Members Profile',
           description: 'List team members with details.',
           subFields: {
             fullName: {
               id: 'team-full-name',
-              type: 'text',
+              type: FieldType.Text,
               label: 'Full Name',
               required: true,
             },
             roleTitle: {
               id: 'team-role',
-              type: 'text',
+              type: FieldType.Text,
               label: 'Role Title',
               required: true,
             },
             background: {
               id: 'team-background',
-              type: 'text',
+              type: FieldType.Text,
               label: 'Background',
               required: false,
             },
             expertise: {
               id: 'team-expertise',
-              type: 'text',
+              type: FieldType.Text,
               label: 'Expertise',
               required: false,
             },
@@ -199,7 +210,7 @@ const chatFlow: ChatFlow = {
       {
         teamVideo: {
           id: 'team-video',
-          type: 'video',
+          type: FieldType.Video,
           label: 'Team Video',
           description: 'Upload a team video (max 2 minutes).',
           required: false,
@@ -208,7 +219,7 @@ const chatFlow: ChatFlow = {
       {
         teamStandards: {
           id: 'team-standards',
-          type: 'text',
+          type: FieldType.Text,
           label: 'Team Standards',
           placeholder: 'your motto, yourculture etc...',
           required: false,
@@ -226,13 +237,13 @@ const chatFlow: ChatFlow = {
       {
         products: {
           id: 'products-services',
-          type: 'array',
+          type: FieldType.Array,
           label: 'Products & Services',
           description: 'List products or services with details.',
           subFields: {
             type: {
               id: 'product-type',
-              type: 'dropdown',
+              type: FieldType.Dropdown,
               label: 'Type',
               options: [
                 { id: 'product', value: 'product' },
@@ -242,37 +253,37 @@ const chatFlow: ChatFlow = {
             },
             name: {
               id: 'product-name',
-              type: 'text',
+              type: FieldType.Text,
               label: 'Name',
               required: true,
             },
             desc: {
               id: 'product-desc',
-              type: 'text',
+              type: FieldType.Text,
               label: 'Description',
               required: true,
             },
             photos: {
               id: 'product-photos',
-              type: 'file',
+              type: FieldType.File,
               label: 'Photos',
               required: false,
             },
             ios_app_url: {
               id: 'ios-app-url',
-              type: 'url',
+              type: FieldType.Url,
               label: 'iOS App URL',
               required: false,
             },
             android_app_url: {
               id: 'android-app-url',
-              type: 'url',
+              type: FieldType.Url,
               label: 'Android App URL',
               required: false,
             },
             general_customer_feedback: {
               id: 'customer-feedback',
-              type: 'text',
+              type: FieldType.Text,
               label: 'General Customer Feedback',
               placeholder: 'example: Loved by more than 500 happy customers',
               required: false,
@@ -291,25 +302,25 @@ const chatFlow: ChatFlow = {
       {
         patents: {
           id: 'patents-list',
-          type: 'array',
+          type: FieldType.Array,
           label: 'Patents',
           description: 'List patents with details.',
           subFields: {
             title: {
               id: 'patent-title',
-              type: 'text',
+              type: FieldType.Text,
               label: 'Title',
               required: true,
             },
             desc: {
               id: 'patent-desc',
-              type: 'text',
+              type: FieldType.Text,
               label: 'Description',
               required: true,
             },
             file: {
               id: 'patent-file',
-              type: 'file',
+              type: FieldType.File,
               label: 'File (PDF)',
               required: true,
             },
@@ -327,31 +338,31 @@ const chatFlow: ChatFlow = {
       {
         awards: {
           id: 'awards-list',
-          type: 'array',
+          type: FieldType.Array,
           label: 'Awards',
           description: 'List awards with details.',
           subFields: {
             name: {
               id: 'award-name',
-              type: 'text',
+              type: FieldType.Text,
               label: 'Name',
               required: true,
             },
             des: {
               id: 'award-desc',
-              type: 'text',
+              type: FieldType.Text,
               label: 'Description',
               required: true,
             },
             url: {
               id: 'award-url',
-              type: 'url',
+              type: FieldType.Url,
               label: 'URL',
               required: false,
             },
             image: {
               id: 'award-image',
-              type: 'file',
+              type: FieldType.File,
               label: 'Image',
               required: false,
             },
@@ -369,7 +380,7 @@ const chatFlow: ChatFlow = {
       {
         IS: {
           id: 'investment-stage-chart',
-          type: 'text', // Placeholder for chart_form(chart_form_investment_stage); replace with UI component
+          type: FieldType.Text, // Placeholder for chart_form(chart_form_investment_stage); replace with UI component
           label: 'Investment Stage Chart',
           description: 'Provide investment stage details (chart form).',
           required: true,
@@ -386,7 +397,7 @@ const chatFlow: ChatFlow = {
       {
         organizationChart: {
           id: 'org-chart',
-          type: 'file',
+          type: FieldType.File,
           label: 'Organization Chart',
           description: 'Upload organization chart (PDF, Excel, CSV).',
           required: true,
@@ -395,7 +406,7 @@ const chatFlow: ChatFlow = {
       {
         fs_department: {
           id: 'dept-details',
-          type: 'file', // Placeholder for fs_deparment(IS); replace with logic based on excel sheet
+          type: FieldType.File, // Placeholder for fs_deparment(IS); replace with logic based on excel sheet
           label: 'Department Details',
           description:
             'Upload department details (check fs_department excel sheet).',
@@ -413,7 +424,7 @@ const chatFlow: ChatFlow = {
       {
         valuation: {
           id: 'company-valuation',
-          type: 'text',
+          type: FieldType.Text,
           label: 'Valuation',
           placeholder: 'Enter valuation amount',
           required: true,
@@ -423,7 +434,7 @@ const chatFlow: ChatFlow = {
       {
         previousBalanceSheets: {
           id: 'balance-sheets',
-          type: 'file',
+          type: FieldType.File,
           label: 'Previous Balance Sheets',
           description: 'Upload previous balance sheets (PDF, Excel, CSV).',
           required: true,
@@ -432,7 +443,7 @@ const chatFlow: ChatFlow = {
       {
         previousPLStatements: {
           id: 'pl-statements',
-          type: 'file',
+          type: FieldType.File,
           label: 'Previous P&L Statements',
           description: 'Upload previous P&L statements (PDF, Excel, CSV).',
           required: true,
@@ -441,7 +452,7 @@ const chatFlow: ChatFlow = {
       {
         annualAuditReports: {
           id: 'audit-reports',
-          type: 'file',
+          type: FieldType.File,
           label: 'Annual Audit Reports',
           description: 'Upload annual audit reports (PDF, Excel, CSV).',
           required: true,
@@ -450,7 +461,7 @@ const chatFlow: ChatFlow = {
       {
         fs_financials: {
           id: 'financial-details',
-          type: 'file', // Placeholder for fs_financials(IS); replace with logic based on excel sheet
+          type: FieldType.File, // Placeholder for fs_financials(IS); replace with logic based on excel sheet
           label: 'Financial Details',
           description:
             'Upload financial details (check fs_financials excel sheet).',
@@ -468,7 +479,7 @@ const chatFlow: ChatFlow = {
       {
         customerSatisfactionRate: {
           id: 'satisfaction-rate',
-          type: 'text',
+          type: FieldType.Text,
           label: 'Customer Satisfaction Rate',
           placeholder: 'e.g., 95%',
           required: false,
@@ -478,7 +489,7 @@ const chatFlow: ChatFlow = {
       {
         customerRetentionRate: {
           id: 'retention-rate',
-          type: 'text',
+          type: FieldType.Text,
           label: 'Customer Retention Rate',
           placeholder: 'e.g., 90%',
           required: false,
@@ -488,7 +499,7 @@ const chatFlow: ChatFlow = {
       {
         customerLifetimeValue: {
           id: 'clv',
-          type: 'text',
+          type: FieldType.Text,
           label: 'Customer Lifetime Value (CLV)',
           placeholder: 'e.g., $500',
           required: false,
@@ -498,7 +509,7 @@ const chatFlow: ChatFlow = {
       {
         fs_marketing: {
           id: 'marketing-details',
-          type: 'file', // Placeholder for fs_marketing(IS); replace with logic based on excel sheet
+          type: FieldType.File, // Placeholder for fs_marketing(IS); replace with logic based on excel sheet
           label: 'Marketing Details',
           description:
             'Upload marketing details (check fs_marketing excel sheet).',
@@ -516,7 +527,7 @@ const chatFlow: ChatFlow = {
       {
         SWOT: {
           id: 'swot-analysis',
-          type: 'file',
+          type: FieldType.File,
           label: 'SWOT Analysis',
           description: 'Upload SWOT analysis (PDF) or chat with GPT.',
           required: false,
@@ -525,7 +536,7 @@ const chatFlow: ChatFlow = {
       {
         STR: {
           id: 'strategy-chart',
-          type: 'text', // Placeholder for chart_form(chart_form_strategy); replace with UI component
+          type: FieldType.Text, // Placeholder for chart_form(chart_form_strategy); replace with UI component
           label: 'Strategy Chart',
           description: 'Provide strategy details (chart form).',
           required: true,
@@ -542,25 +553,25 @@ const chatFlow: ChatFlow = {
       {
         competitors: {
           id: 'competitors-list',
-          type: 'array',
+          type: FieldType.Array,
           label: 'Competitors',
           description: 'List competitors with details.',
           subFields: {
             name: {
               id: 'competitor-name',
-              type: 'text',
+              type: FieldType.Text,
               label: 'Name',
               required: true,
             },
             url: {
               id: 'competitor-url',
-              type: 'url',
+              type: FieldType.Url,
               label: 'URL',
               required: false,
             },
             whatDoTheyDoDifferently: {
               id: 'competitor-diff',
-              type: 'text',
+              type: FieldType.Text,
               label: 'What Do They Do Differently',
               required: true,
             },
@@ -578,7 +589,7 @@ const chatFlow: ChatFlow = {
       {
         registrationDocuments: {
           id: 'reg-docs',
-          type: 'file',
+          type: FieldType.File,
           label: 'Registration Documents',
           description: 'Upload multiple registration documents (PDF).',
           required: true,
@@ -595,7 +606,7 @@ const chatFlow: ChatFlow = {
       {
         askVsValuation: {
           id: 'ask-valuation',
-          type: 'text',
+          type: FieldType.Text,
           label: 'Ask vs Valuation',
           placeholder: 'e.g., 10%',
           required: true,
@@ -605,7 +616,7 @@ const chatFlow: ChatFlow = {
       {
         typeOfInvestor: {
           id: 'investor-type',
-          type: 'text',
+          type: FieldType.Text,
           label: 'Type of Investor',
           placeholder: 'e.g., Angel, VC',
           required: false,
@@ -668,7 +679,7 @@ export const processFlow = (
     if (onCompleteSection) {
       // Use the predefined field id with the user input value
       const processedValue =
-        field.type === 'dropdown' && field.options
+        field.type === FieldType.Dropdown && field.options
           ? field.options.find((opt) => opt.value === value) || {
               id: field.id,
               value,
