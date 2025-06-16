@@ -1,6 +1,8 @@
 'use client';
 
-// Define enums for better scalability
+import NdaComponent from './NdaComponent';
+
+// Defining enums for field types to ensure scalability and type safety
 enum FieldType {
   Text = 'text',
   File = 'file',
@@ -9,39 +11,41 @@ enum FieldType {
   Video = 'video',
   Url = 'url',
   Array = 'array',
+  Component = 'component',
 }
 
-// Define interfaces for the data flow schema
-interface FormField {
-  type: FieldType; // Use enum for field types
-  id: string; // Unique ID for each field/answer
-  label: string;
-  placeholder?: string;
-  description?: string;
-  required?: boolean;
-  options?: { id: string; value: string }[]; // For dropdowns
+// Type for form fields, defining structure and validation
+type FormField = {
+  type: FieldType; // Enum-based field type for consistency
+  id: string; // Unique identifier for the field
+  label: string; // Display label for the field
+  placeholder?: string; // Optional placeholder text
+  description?: string; // Optional field description
+  required?: boolean; // Indicates if the field is mandatory
+  options?: { id: string; value: string }[]; // Dropdown options
   validation?: RegExp | ((value: any) => boolean); // Optional validation rule
-  subFields?: { [key: string]: FormField }; // For array fields with nested objects
-}
+  subFields?: { [key: string]: FormField }; // For array fields
+  component?: string; // Optional component name for custom fields
+};
 
-interface FlowSection {
-  sectionTitle: string;
-  sectionId: string;
-  order: number;
-  children: Array<{ [key: string]: FormField }>;
-  dependsOn?: string[];
-}
+// Type for flow sections, representing a group of fields
+type FlowSection = {
+  sectionTitle: string; // Title of the section
+  sectionId: string; // Unique identifier for the section
+  children: Array<{ [key: string]: FormField }>; // Array of fields in the section
+  nextNode?: string | null; // ID of the next section in the flow, allowing null
+};
 
-interface ChatFlow {
+// Type for the entire chat flow, mapping section IDs to sections
+type ChatFlow = {
   [key: string]: FlowSection;
-}
+};
 
-// Define the comprehensive chat flow structure
+// Defining the chat flow structure with sections and their fields
 const chatFlow: ChatFlow = {
   nda: {
     sectionTitle: 'NDA',
     sectionId: 'nda',
-    order: 1,
     children: [
       {
         companiesNDAForm: {
@@ -52,16 +56,25 @@ const chatFlow: ChatFlow = {
           required: true,
         },
       },
+      {
+        ndaSignature: {
+          id: 'nda-signature',
+          type: FieldType.Component,
+          label: 'NDA Signature',
+          component: 'NdaComponent',
+          description: 'Sign the NDA electronically.',
+          required: true,
+        },
+      },
     ],
-    dependsOn: [],
+    nextNode: 'portfolio',
   },
   portfolio: {
     sectionTitle: 'Portfolio',
     sectionId: 'portfolio',
-    order: 2,
     children: [
       {
-        companyName: {
+        companyType: {
           id: 'company-name',
           type: FieldType.Text,
           label: 'Company Name',
@@ -108,7 +121,7 @@ const chatFlow: ChatFlow = {
           id: 'country-operation',
           type: FieldType.Dropdown,
           label: 'Country of Operation',
-          options: [{ id: 'usa', value: 'USA' }], // Example based on the IP of the user etc...
+          options: [{ id: 'usa', value: 'USA' }],
           required: true,
           description: 'Select the primary country of operation.',
         },
@@ -144,7 +157,12 @@ const chatFlow: ChatFlow = {
               label: 'Instagram URL',
               required: false,
             },
-            x: { id: 'x-url', type: FieldType.Url, label: 'X URL', required: false },
+            teams: {
+              id: 'x-url',
+              type: FieldType.Url,
+              label: 'X URL',
+              required: false,
+            },
             others: {
               id: 'other-url',
               type: FieldType.Url,
@@ -155,23 +173,22 @@ const chatFlow: ChatFlow = {
         },
       },
       {
-        mainWebsiteUrl: {
-          id: 'main-website',
+        mainWebsite: {
+          id: 'main-url',
           type: FieldType.Url,
           label: 'Main Website URL',
           placeholder: 'https://example.com',
           required: false,
-          description: 'Provide the company’s main website URL.',
+          description: 'Provide the company\'s main website URL.',
           validation: /^(https?:\/\/)?([\w\-]+\.)+[\w\-]+(\/[\w\-]*)*\/?$/,
         },
       },
     ],
-    dependsOn: ['nda'],
+    nextNode: 'foundingTeam',
   },
   foundingTeam: {
     sectionTitle: 'Founding Team',
     sectionId: 'foundingTeam',
-    order: 3,
     children: [
       {
         teamMembersProfile: {
@@ -221,18 +238,17 @@ const chatFlow: ChatFlow = {
           id: 'team-standards',
           type: FieldType.Text,
           label: 'Team Standards',
-          placeholder: 'your motto, yourculture etc...',
+          placeholder: 'your motto, your culture etc...',
           required: false,
-          description: 'Describe the team’s motto, culture...',
+          description: 'Describe the team\'s motto, culture...',
         },
       },
     ],
-    dependsOn: ['portfolio'],
+    nextNode: 'productsAndServices',
   },
   productsAndServices: {
     sectionTitle: 'Products & Services + Description',
     sectionId: 'productsAndServices',
-    order: 5,
     children: [
       {
         products: {
@@ -292,12 +308,11 @@ const chatFlow: ChatFlow = {
         },
       },
     ],
-    dependsOn: ['foundingTeam'],
+    nextNode: 'patents',
   },
   patents: {
     sectionTitle: 'Patents',
     sectionId: 'patents',
-    order: 6,
     children: [
       {
         patents: {
@@ -328,12 +343,11 @@ const chatFlow: ChatFlow = {
         },
       },
     ],
-    dependsOn: ['productsAndServices'],
+    nextNode: 'achievements',
   },
   achievements: {
     sectionTitle: 'Achievements',
     sectionId: 'achievements',
-    order: 7,
     children: [
       {
         awards: {
@@ -342,7 +356,7 @@ const chatFlow: ChatFlow = {
           label: 'Awards',
           description: 'List awards with details.',
           subFields: {
-            name: {
+            type: {
               id: 'award-name',
               type: FieldType.Text,
               label: 'Name',
@@ -370,29 +384,27 @@ const chatFlow: ChatFlow = {
         },
       },
     ],
-    dependsOn: ['patents'],
+    nextNode: 'investmentStage',
   },
   investmentStage: {
     sectionTitle: 'Investment Stage',
     sectionId: 'investmentStage',
-    order: 8,
     children: [
       {
         IS: {
           id: 'investment-stage-chart',
-          type: FieldType.Text, // Placeholder for chart_form(chart_form_investment_stage); replace with UI component
+          type: FieldType.Text,
           label: 'Investment Stage Chart',
           description: 'Provide investment stage details (chart form).',
           required: true,
         },
       },
     ],
-    dependsOn: ['achievements'],
+    nextNode: 'departments',
   },
   departments: {
     sectionTitle: 'Departments',
     sectionId: 'departments',
-    order: 9,
     children: [
       {
         organizationChart: {
@@ -406,20 +418,18 @@ const chatFlow: ChatFlow = {
       {
         fs_department: {
           id: 'dept-details',
-          type: FieldType.File, // Placeholder for fs_deparment(IS); replace with logic based on excel sheet
+          type: FieldType.File,
           label: 'Department Details',
-          description:
-            'Upload department details (check fs_department excel sheet).',
+          description: 'Upload department details (check fs_department excel sheet).',
           required: false,
         },
       },
     ],
-    dependsOn: ['investmentStage'],
+    nextNode: 'financials',
   },
   financials: {
     sectionTitle: 'Financials',
     sectionId: 'financials',
-    order: 10,
     children: [
       {
         valuation: {
@@ -461,20 +471,18 @@ const chatFlow: ChatFlow = {
       {
         fs_financials: {
           id: 'financial-details',
-          type: FieldType.File, // Placeholder for fs_financials(IS); replace with logic based on excel sheet
+          type: FieldType.File,
           label: 'Financial Details',
-          description:
-            'Upload financial details (check fs_financials excel sheet).',
+          description: 'Upload financial details (check fs_financials excel sheet).',
           required: false,
         },
       },
     ],
-    dependsOn: ['departments'],
+    nextNode: 'marketing',
   },
   marketing: {
     sectionTitle: 'Marketing',
     sectionId: 'marketing',
-    order: 11,
     children: [
       {
         customerSatisfactionRate: {
@@ -509,20 +517,18 @@ const chatFlow: ChatFlow = {
       {
         fs_marketing: {
           id: 'marketing-details',
-          type: FieldType.File, // Placeholder for fs_marketing(IS); replace with logic based on excel sheet
+          type: FieldType.File,
           label: 'Marketing Details',
-          description:
-            'Upload marketing details (check fs_marketing excel sheet).',
+          description: 'Upload marketing details (check fs_marketing excel sheet).',
           required: false,
         },
       },
     ],
-    dependsOn: ['financials'],
+    nextNode: 'strategy',
   },
   strategy: {
     sectionTitle: 'Strategy',
     sectionId: 'strategy',
-    order: 12,
     children: [
       {
         SWOT: {
@@ -536,19 +542,18 @@ const chatFlow: ChatFlow = {
       {
         STR: {
           id: 'strategy-chart',
-          type: FieldType.Text, // Placeholder for chart_form(chart_form_strategy); replace with UI component
+          type: FieldType.Text,
           label: 'Strategy Chart',
           description: 'Provide strategy details (chart form).',
           required: true,
         },
       },
     ],
-    dependsOn: ['marketing'],
+    nextNode: 'competition',
   },
   competition: {
     sectionTitle: 'Competition',
     sectionId: 'competition',
-    order: 13,
     children: [
       {
         competitors: {
@@ -579,12 +584,11 @@ const chatFlow: ChatFlow = {
         },
       },
     ],
-    dependsOn: ['strategy'],
+    nextNode: 'documents',
   },
   documents: {
     sectionTitle: 'Documents',
     sectionId: 'documents',
-    order: 14,
     children: [
       {
         registrationDocuments: {
@@ -596,12 +600,11 @@ const chatFlow: ChatFlow = {
         },
       },
     ],
-    dependsOn: ['competition'],
+    nextNode: 'theAsk',
   },
   theAsk: {
     sectionTitle: 'The Ask',
     sectionId: 'theAsk',
-    order: 15,
     children: [
       {
         askVsValuation: {
@@ -624,28 +627,29 @@ const chatFlow: ChatFlow = {
         },
       },
     ],
-    dependsOn: ['documents'],
+    nextNode: null,
   },
 };
 
-// Utility function to process the flow
+// Processing function to validate and handle field input
 export const processFlow = (
   sectionKey: string,
   fieldKey: string,
   value: any,
   onCompleteSection?: (sectionId: string, data: any) => void,
 ): { isValid: boolean; error?: string } => {
+  // Retrieve the specified section from the chat flow
   const section = chatFlow[sectionKey];
   if (!section) {
     return { isValid: false, error: `Section ${sectionKey} not found` };
   }
 
-  if (section.dependsOn && section.dependsOn.length > 0) {
-    console.log(
-      `Dependencies for ${sectionKey}: ${section.dependsOn.join(', ')}`,
-    );
+  // Log the next section for debugging purposes
+  if (section.nextNode) {
+    console.log(`Next section for ${sectionKey}: ${section.nextNode}`);
   }
 
+  // Find the field within the section
   const fieldEntry = section.children.find((child) => child[fieldKey]);
   if (!fieldEntry) {
     return {
@@ -658,13 +662,15 @@ export const processFlow = (
   let isValid = true;
   let error: string | undefined;
 
+  // Validate required fields
   if (
     field.required &&
-    (value === null || value === undefined || value === '')
+    (value === null || value === undefined || value === '' || (field.type === FieldType.Array && !value?.length))
   ) {
     isValid = false;
     error = `${field.label} is required`;
   } else if (field.validation) {
+    // Apply validation rules if defined
     if (field.validation instanceof RegExp) {
       isValid = field.validation.test(value);
       if (!isValid) error = `Invalid ${field.label} format`;
@@ -674,19 +680,29 @@ export const processFlow = (
     }
   }
 
-  if (isValid) {
-    console.log(`Processed ${sectionKey}.${fieldKey}:`, value);
-    if (onCompleteSection) {
-      // Use the predefined field id with the user input value
-      const processedValue =
-        field.type === FieldType.Dropdown && field.options
-          ? field.options.find((opt) => opt.value === value) || {
-              id: field.id,
-              value,
+  // Process valid input and trigger callback if provided
+  if (isValid && onCompleteSection) {
+    let processedValue;
+    if (field.type === FieldType.Array && field.subFields && Array.isArray(value)) {
+      // Transform array entries to use subfield IDs
+      const transformedValue = value.map((entry: any) => {
+        const transformedEntry: { [key: string]: any } = {};
+        if (field.subFields) { // Ensure subFields is defined
+          for (const [subFieldKey, subField] of Object.entries(field.subFields)) {
+            if (entry[subFieldKey] !== undefined) {
+              transformedEntry[subField.id] = entry[subFieldKey];
             }
-          : { id: field.id, value };
-      onCompleteSection(section.sectionId, { fieldKey, ...processedValue });
+          }
+        }
+        return transformedEntry;
+      });
+      processedValue = { id: field.id, value: transformedValue };
+    } else if (field.type === FieldType.Dropdown && field.options) {
+      processedValue = field.options.find((opt) => opt.value === value) || { id: field.id, value };
+    } else {
+      processedValue = { id: field.id, value };
     }
+    onCompleteSection(section.sectionId, processedValue);
   }
 
   return { isValid, error };
@@ -695,19 +711,8 @@ export const processFlow = (
 // Utility to get the next section in the flow
 export const getNextSection = (currentSectionKey: string): string | null => {
   const currentSection = chatFlow[currentSectionKey];
-  if (!currentSection) return null;
-
-  const sortedSections = Object.values(chatFlow).sort(
-    (a, b) => a.order - b.order,
-  );
-  const currentIndex = sortedSections.findIndex(
-    (s) => s.sectionId === currentSectionKey,
-  );
-  if (currentIndex < sortedSections.length - 1) {
-    return sortedSections[currentIndex + 1].sectionId;
-  }
-  return null;
+  return currentSection ? currentSection.nextNode || null : null;
 };
 
-// Export the flow for use in any UI or processor
+// Export the chat flow for use in UI or other processors
 export { chatFlow };
