@@ -1,4 +1,4 @@
-import React from 'react'; 
+import React from 'react';
 // Import React library to use JSX and React functionalities
 
 // Define a functional component called NdaComponent using React.FC (React Functional Component) type

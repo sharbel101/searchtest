@@ -179,7 +179,7 @@ const chatFlow: ChatFlow = {
           label: 'Main Website URL',
           placeholder: 'https://example.com',
           required: false,
-          description: 'Provide the company\'s main website URL.',
+          description: "Provide the company's main website URL.",
           validation: /^(https?:\/\/)?([\w\-]+\.)+[\w\-]+(\/[\w\-]*)*\/?$/,
         },
       },
@@ -240,7 +240,7 @@ const chatFlow: ChatFlow = {
           label: 'Team Standards',
           placeholder: 'your motto, your culture etc...',
           required: false,
-          description: 'Describe the team\'s motto, culture...',
+          description: "Describe the team's motto, culture...",
         },
       },
     ],
@@ -420,7 +420,8 @@ const chatFlow: ChatFlow = {
           id: 'dept-details',
           type: FieldType.File,
           label: 'Department Details',
-          description: 'Upload department details (check fs_department excel sheet).',
+          description:
+            'Upload department details (check fs_department excel sheet).',
           required: false,
         },
       },
@@ -473,7 +474,8 @@ const chatFlow: ChatFlow = {
           id: 'financial-details',
           type: FieldType.File,
           label: 'Financial Details',
-          description: 'Upload financial details (check fs_financials excel sheet).',
+          description:
+            'Upload financial details (check fs_financials excel sheet).',
           required: false,
         },
       },
@@ -519,7 +521,8 @@ const chatFlow: ChatFlow = {
           id: 'marketing-details',
           type: FieldType.File,
           label: 'Marketing Details',
-          description: 'Upload marketing details (check fs_marketing excel sheet).',
+          description:
+            'Upload marketing details (check fs_marketing excel sheet).',
           required: false,
         },
       },
@@ -665,7 +668,10 @@ export const processFlow = (
   // Validate required fields
   if (
     field.required &&
-    (value === null || value === undefined || value === '' || (field.type === FieldType.Array && !value?.length))
+    (value === null ||
+      value === undefined ||
+      value === '' ||
+      (field.type === FieldType.Array && !value?.length))
   ) {
     isValid = false;
     error = `${field.label} is required`;
@@ -683,12 +689,19 @@ export const processFlow = (
   // Process valid input and trigger callback if provided
   if (isValid && onCompleteSection) {
     let processedValue;
-    if (field.type === FieldType.Array && field.subFields && Array.isArray(value)) {
+    if (
+      field.type === FieldType.Array &&
+      field.subFields &&
+      Array.isArray(value)
+    ) {
       // Transform array entries to use subfield IDs
       const transformedValue = value.map((entry: any) => {
         const transformedEntry: { [key: string]: any } = {};
-        if (field.subFields) { // Ensure subFields is defined
-          for (const [subFieldKey, subField] of Object.entries(field.subFields)) {
+        if (field.subFields) {
+          // Ensure subFields is defined
+          for (const [subFieldKey, subField] of Object.entries(
+            field.subFields,
+          )) {
             if (entry[subFieldKey] !== undefined) {
               transformedEntry[subField.id] = entry[subFieldKey];
             }
@@ -698,7 +711,10 @@ export const processFlow = (
       });
       processedValue = { id: field.id, value: transformedValue };
     } else if (field.type === FieldType.Dropdown && field.options) {
-      processedValue = field.options.find((opt) => opt.value === value) || { id: field.id, value };
+      processedValue = field.options.find((opt) => opt.value === value) || {
+        id: field.id,
+        value,
+      };
     } else {
       processedValue = { id: field.id, value };
     }
