@@ -1,41 +1,44 @@
 // flowInjection.ts
 
-// Defines the structure of a single question node in the flow
+// Defines the structure of a single question node in the flow.
+// Each node has an ID, a question string, and possible answers.
+// Each answer maps to either a next question or a final investment stage.
 type QuestionNode = {
-  id: string; // Unique identifier for the question
-  question: string; // The actual question text
+  id: string;
+  question: string;
   answers: Record<string, { next?: string; setStage?: string }>;
-  // Maps answer text to what should happen next:
-  // - 'next' points to the ID of the next question
-  // - 'setStage' ends the flow and triggers a stage
 };
 
-// Defines the interface for the flow controller (what external code can use)
-type FlowController = {
-  getCurrentQuestion: () => string; // Returns the current question's text
+// Defines the public interface for the flow controller that external code can use.
+// - getCurrentQuestion: returns the current question string
+// - getCurrentAnswers: returns all possible answers for the current question
+// - answerQuestion: takes a user's answer and updates the flow state accordingly
+// - OnSuccess: returns the final stage if determined
+export type FlowController = {
+  getCurrentQuestion: () => string;
   getCurrentAnswers: () => {
     [key: string]: { next?: string; setStage?: string };
   };
-  // Returns all possible answers for the current question
   answerQuestion: (answer: string) => void;
-  // Accepts an answer string and updates the state accordingly
+  OnSuccess: () => string;
 };
 
-// The full decision flow, where each key is a question ID and each value is a QuestionNode
+// Defines the full flow structure as a lookup table.
+// Each key is a question ID, and each value is a question node with its text and answer options.
 const investmentStageFlow: { [key: string]: QuestionNode } = {
   q1: {
     id: 'q1',
     question: 'Have you ever closed an investment round?',
     answers: {
-      No: { next: 'q2' }, // If "No", go to question q2
-      Yes: { next: 'q3' }, // If "Yes", go to question q3
+      No: { next: 'q2' }, // Go to question 2 if user says No
+      Yes: { next: 'q3' }, // Go to question 3 if user says Yes
     },
   },
   q2: {
     id: 'q2',
     question: 'Do you have sales going for more than a year?',
     answers: {
-      No: { setStage: 'Ideation Phase' }, // End and set stage
+      No: { setStage: 'Ideation Phase' }, // Set stage directly
       Yes: { setStage: 'Angel Phase' },
     },
   },
@@ -67,40 +70,56 @@ const investmentStageFlow: { [key: string]: QuestionNode } = {
   },
 };
 
-// Creates and returns the flow controller, initialized at q1
-export const flowInjection = (
-  onSuccess: (stage: string) => void,
-): FlowController => {
-  let currentNodeId = 'q1'; // Start from the first question
+// Creates and returns a new instance of the flow controller, initialized at the first question (q1)
+export const flowInjection = (): FlowController => {
+  // The ID of the current question node in the flow
+  let currentNodeId = 'q1';
 
-  // Returns the question text for the current node
-  const getCurrentQuestion = () => investmentStageFlow[currentNodeId].question;
+  // The final determined stage (null until it's set)
+  let stage: string | null = null;
 
-  // Returns all answer options for the current question
-  const getCurrentAnswers = () => investmentStageFlow[currentNodeId].answers;
+  // Returns the question string of the current node
+  const getCurrentQuestion = () => {
+    return investmentStageFlow[currentNodeId].question;
+  };
 
-  // Handles the user's answer and updates flow state
+  // Returns all answer choices for the current node (as an object)
+  const getCurrentAnswers = () => {
+    return investmentStageFlow[currentNodeId].answers;
+  };
+
+  // Accepts an answer, checks if it's valid, and updates the flow state.
+  // If the answer leads to a final stage, it sets the stage.
+  // Otherwise, it moves to the next question.
   const answerQuestion = (answer: string) => {
     const answerConfig = investmentStageFlow[currentNodeId].answers[answer];
+
     if (!answerConfig) {
+      // If the answer is not valid for the current question, throw an error
       throw new Error(
         `Invalid answer: "${answer}" for question "${currentNodeId}"`,
       );
     }
-    // If this answer sets a final stage, trigger onSuccess and end flow
+
     if (answerConfig.setStage) {
-      onSuccess(answerConfig.setStage);
-    }
-    // Otherwise, move to the next question
-    else if (answerConfig.next) {
+      // Final stage has been reached
+      stage = answerConfig.setStage;
+    } else if (answerConfig.next) {
+      // Move to the next question
       currentNodeId = answerConfig.next;
     }
   };
 
-  // Expose public methods of the flow controller
+  // Returns the final investment stage if it was set, or a default message
+  const OnSuccess = () => {
+    return stage ? stage : 'Stage not available yet';
+  };
+
+  // Expose the controller API to external consumers
   return {
     getCurrentQuestion,
     getCurrentAnswers,
     answerQuestion,
+    OnSuccess,
   };
 };

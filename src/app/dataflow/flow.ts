@@ -353,29 +353,68 @@ const chatFlow: ChatFlow = {
     },
     nextNode: 'investmentStage',
   },
+  // Import the flowInjection function
   investmentStage: {
+    // Title of this section in the flow
     sectionTitle: 'Investment Stage',
+
+    // Unique identifier for this section
     sectionId: 'investmentStage',
+
+    // Fields defined in this section
     fields: {
       IS: {
+        // Unique field ID
         id: 'investment-stage-chart',
+
+        // The field type is a functional flow interaction
         type: FieldType.FlowFunc,
+
+        // Label shown in UI
         label: 'Investment Stage',
+
+        // Description shown to the user
         description: 'Answer questions to determine your investment stage',
+
+        // This field must be filled before progressing
         required: true,
+
+        // flowInjection is a function that takes a callback (onSuccess) to be called when a stage is determined
         flowInjection: (onSuccess: (result: string) => void) => {
-          const controller = flowInjection(onSuccess);
+          // Instantiate the controller returned from the external flowInjection file
+          const controller = flowInjection();
+
+          // Return an interface that the form engine will use to drive the dynamic question flow
           return {
+            // Function to get the current question text
             getCurrentQuestion: controller.getCurrentQuestion,
+
+            // Function to get current answer choices as a list of strings (keys)
             getCurrentAnswers: () =>
               Object.keys(controller.getCurrentAnswers()),
-            answerQuestion: controller.answerQuestion,
+
+            // Function to handle an answer selected by the user
+            answerQuestion: (answer: string) => {
+              // Pass the answer to the flow logic
+              controller.answerQuestion(answer);
+
+              // Get the result (stage) from the controller after processing the answer
+              const result = controller.OnSuccess();
+
+              // If a stage has been determined, invoke the onSuccess callback with it
+              if (result !== 'Stage not available yet') {
+                onSuccess(result);
+              }
+            },
           };
         },
       },
     },
+
+    // Next node to navigate to in the flow after this section
     nextNode: 'departments',
   },
+
   departments: {
     sectionTitle: 'Departments',
     sectionId: 'departments',
