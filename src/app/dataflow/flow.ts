@@ -1,7 +1,7 @@
 'use client';
 
 import { flowInjection } from './flowInjection';
-import NdaComponent from './NdaComponent';
+import NdaComponent from '../UIcomponents/NdaComponent';
 // Defining enums for field types to ensure scalability and type safety
 export enum FieldType {
   Text = 'text',
