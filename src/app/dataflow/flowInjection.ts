@@ -1,121 +1,91 @@
-// flowInjection.ts
+'use client';
 
-// Defines the structure of a single question node in the flow.
-// Each node has an ID, a question string, and possible answers.
-// Each answer maps to either a next question or a final investment stage.
+// Defines a single question in the flow
 type QuestionNode = {
-  id: string;
-  question: string;
-  answers: Record<string, { next?: string; setStage?: string }>;
+  id: string; // Unique identifier for the question
+  question: string; // The question text to display
+  answers: Record<string, { next?: string; setStage?: string }>; // Maps answers to next question ID or final stage
 };
 
-// Defines the public interface for the flow controller that external code can use.
-// - getCurrentQuestion: returns the current question string
-// - getCurrentAnswers: returns all possible answers for the current question
-// - answerQuestion: takes a user's answer and updates the flow state accordingly
-// - OnSuccess: returns the final stage if determined
+// Public interface for controlling the flow
 export type FlowController = {
-  getCurrentQuestion: () => string;
-  getCurrentAnswers: () => {
-    [key: string]: { next?: string; setStage?: string };
-  };
-  answerQuestion: (answer: string) => void;
-  OnSuccess: () => string;
+  getCurrentQuestion: () => string; // Returns the current question text
+  getCurrentAnswers: () => Record<string, { next?: string; setStage?: string }>; // Returns available answers
+  answerQuestion: (answer: string) => void; // Processes user's answer
+  OnSuccess: () => string; // Returns the final stage or default message
 };
 
-// Defines the full flow structure as a lookup table.
-// Each key is a question ID, and each value is a question node with its text and answer options.
+// The flow structure with all questions and their answers
 const investmentStageFlow: { [key: string]: QuestionNode } = {
   q1: {
     id: 'q1',
-    question: 'Have you ever closed an investment round?',
+    question: 'Have you ever closed an investment round?', // First question
     answers: {
-      No: { next: 'q2' }, // Go to question 2 if user says No
-      Yes: { next: 'q3' }, // Go to question 3 if user says Yes
+      No: { next: 'q2' }, // Moves to q2 if "No"
+      Yes: { next: 'q3' }, // Moves to q3 if "Yes"
     },
   },
   q2: {
     id: 'q2',
     question: 'Do you have sales going for more than a year?',
     answers: {
-      No: { setStage: 'Ideation Phase' }, // Set stage directly
-      Yes: { setStage: 'Angel Phase' },
+      No: { setStage: 'Ideation Phase' }, // Sets final stage
+      Yes: { setStage: 'Angel Phase' }, // Sets final stage
     },
   },
   q3: {
     id: 'q3',
     question: 'How many investment rounds did you close?',
     answers: {
-      '1': { setStage: 'Angel Phase' },
-      'More than 1': { next: 'q4' },
+      '1': { setStage: 'Angel Phase' }, // Sets final stage
+      'More than 1': { next: 'q4' }, // Moves to q4
     },
   },
   q4: {
     id: 'q4',
     question: 'Involve any VC investment series?',
     answers: {
-      No: { setStage: 'Angel Phase' },
-      Yes: { next: 'q5' },
+      No: { setStage: 'Angel Phase' }, // Sets final stage
+      Yes: { next: 'q5' }, // Moves to q5
     },
   },
   q5: {
     id: 'q5',
     question: 'Which series have you completed?',
     answers: {
-      'Series A Only': { setStage: 'Early VC' },
-      'Series A & B': { setStage: 'Advanced VC' },
-      'Series A B C': { setStage: 'Advanced VC' },
-      'More than 4 series': { setStage: 'PE Stages' },
+      'Series A Only': { setStage: 'Early VC' }, // Sets final stage
+      'Series A & B': { setStage: 'Advanced VC' }, // Sets final stage
+      'Series A B C': { setStage: 'Advanced VC' }, // Sets final stage
+      'More than 4 series': { setStage: 'PE Stages' }, // Sets final stage
     },
   },
 };
 
-// Creates and returns a new instance of the flow controller, initialized at the first question (q1)
+// Creates a new flow controller starting at q1
 export const flowInjection = (): FlowController => {
-  // The ID of the current question node in the flow
-  let currentNodeId = 'q1';
+  let currentNodeId = 'q1'; // Tracks the current question
+  let stage: string | null = null; // Stores the final stage when set
 
-  // The final determined stage (null until it's set)
-  let stage: string | null = null;
+  // Gets the current question text
+  const getCurrentQuestion = () => investmentStageFlow[currentNodeId].question;
 
-  // Returns the question string of the current node
-  const getCurrentQuestion = () => {
-    return investmentStageFlow[currentNodeId].question;
-  };
+  // Gets the current question's answer options
+  const getCurrentAnswers = () => investmentStageFlow[currentNodeId].answers;
 
-  // Returns all answer choices for the current node (as an object)
-  const getCurrentAnswers = () => {
-    return investmentStageFlow[currentNodeId].answers;
-  };
-
-  // Accepts an answer, checks if it's valid, and updates the flow state.
-  // If the answer leads to a final stage, it sets the stage.
-  // Otherwise, it moves to the next question.
+  // Processes the user's answer
   const answerQuestion = (answer: string) => {
     const answerConfig = investmentStageFlow[currentNodeId].answers[answer];
-
-    if (!answerConfig) {
-      // If the answer is not valid for the current question, throw an error
-      throw new Error(
-        `Invalid answer: "${answer}" for question "${currentNodeId}"`,
-      );
-    }
-
     if (answerConfig.setStage) {
-      // Final stage has been reached
-      stage = answerConfig.setStage;
+      stage = answerConfig.setStage; // Sets the final stage
     } else if (answerConfig.next) {
-      // Move to the next question
-      currentNodeId = answerConfig.next;
+      currentNodeId = answerConfig.next; // Moves to the next question
     }
   };
 
-  // Returns the final investment stage if it was set, or a default message
-  const OnSuccess = () => {
-    return stage ? stage : 'Stage not available yet';
-  };
+  // Returns the final stage or a default message
+  const OnSuccess = () => stage || 'Stage not available yet';
 
-  // Expose the controller API to external consumers
+  // Returns the controller interface
   return {
     getCurrentQuestion,
     getCurrentAnswers,
