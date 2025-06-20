@@ -1,7 +1,6 @@
 // Home.tsx
 import Sidebar from './UIcomponents/SideBar';
 import Chat from './UIcomponents/Chat';
-import { chatFlow } from './dataflow/flow';
 
 export default function Home() {
   return (
@@ -9,7 +8,7 @@ export default function Home() {
       <div className="flex">
         <Sidebar />
         <div className="flex-1">
-          <Chat customFlow={chatFlow} />
+          <Chat />
         </div>
       </div>
     </main>

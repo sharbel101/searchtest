@@ -2,8 +2,9 @@
 
 import React from 'react';
 import ChatBot, { Flow } from 'react-chatbotify';
+import { generateChatBotFlow } from '../dataflow/constructor';
 
-export default function Chat({ customFlow }: any) {
+export default function Chat() {
   const settings = {
     isOpen: true, // Show the bot by default
     general: {
@@ -99,6 +100,8 @@ export default function Chat({ customFlow }: any) {
       borderRadius: '0px',
     },
   };
+
+  const customFlow = generateChatBotFlow();
 
   return <ChatBot settings={settings} styles={styles} flow={customFlow} />;
 }

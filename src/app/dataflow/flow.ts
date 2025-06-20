@@ -3,7 +3,7 @@
 import { flowInjection } from './flowInjection';
 import NdaComponent from './NdaComponent';
 // Defining enums for field types to ensure scalability and type safety
-enum FieldType {
+export enum FieldType {
   Text = 'text',
   File = 'file',
   Signature = 'signature',
@@ -16,7 +16,7 @@ enum FieldType {
 }
 
 // Type for form fields, defining structure and validation
-type FormField = {
+export type FormField = {
   type: FieldType; // Enum-based field type for consistency
   id: string; // Unique identifier for the field
   label: string; // Display label for the field
@@ -34,7 +34,7 @@ type FormField = {
 };
 
 // Type for flow sections, representing a group of fields
-type FlowSection = {
+export type FlowSection = {
   sectionTitle: string; // Title of the section
   sectionId: string; // Unique identifier for the section
   fields: { [key: string]: FormField }; // Object of fields for a section, defining all fields like companyType or socialMediaAccounts
