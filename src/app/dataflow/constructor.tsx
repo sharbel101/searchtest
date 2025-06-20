@@ -1,32 +1,45 @@
 'use client';
-
+import { Flow } from 'react-chatbotify';
 import { chatFlow, FieldType, FormField, FlowSection } from './flow';
+import { UploadFileHandler } from './UploadFileHandler';
+import SectionComponent from '../UIcomponents/SectionComponent';
 
 // Track where we are in the flow
 let currentSectionIndex = 0;
 let currentFieldIndex = 0;
 let sections: FlowSection[] = [];
 let currentFields: FormField[] = [];
+let currentAnswers: Record<string, { path?: string; setStage: string }>[] = [];
 
 // Store active flow controllers for FlowFunc fields
 let flowControllers: { [key: string]: any } = {};
 
-export const generateChatBotFlow = () => {
+export const generateChatBotFlow = (): Flow => {
   return {
     // 1. Start the flow
     start: {
-      message: "Let's begin!",
+      component: (
+        <SectionComponent
+          title={"Hi, Let's Begin!"}
+          body={'Send me anyhting to continue.'}
+        />
+      ),
       path: 'setup',
     },
 
     // 2. Setup: Convert chatFlow object to arrays for easy looping
     setup: {
-      message: () => {
+      component: () => {
         sections = Object.values(chatFlow);
 
         // Check if we have sections
         if (currentSectionIndex >= sections.length) {
-          return 'All sections completed!';
+          return (
+            <SectionComponent
+              title={'Completed!'}
+              body={`This section has been completed. Send me anything to continue. `}
+            />
+          );
         }
 
         const currentSection = sections[currentSectionIndex];
@@ -36,8 +49,12 @@ export const generateChatBotFlow = () => {
           `DEBUG: Section ${currentSectionIndex}: ${currentSection.sectionTitle}`,
         );
         console.log(`DEBUG: Fields in section: ${currentFields.length}`);
-
-        return `Starting section: ${currentSection.sectionTitle}`;
+        return (
+          <SectionComponent
+            title={`Starting section ${currentSection.sectionTitle}`}
+            body={``}
+          />
+        );
       },
       path: () => {
         // If no more sections, end
@@ -58,10 +75,10 @@ export const generateChatBotFlow = () => {
 
     // 3. Main loop: Handle each field one by one
     loop: {
-      message: (params: any) => {
+      component: (params: any) => {
         // Safety check
         if (currentSectionIndex >= sections.length) {
-          return 'No more sections!';
+          return <SectionComponent title={`No more sections!`} body={``} />;
         }
 
         const section = sections[currentSectionIndex];
@@ -69,7 +86,14 @@ export const generateChatBotFlow = () => {
 
         // Check if we're past the last field in this section
         if (currentFieldIndex >= currentFields.length) {
-          return 'This section is completed, moving to next section...';
+          currentSectionIndex++;
+          currentFieldIndex = 0;
+          return (
+            <SectionComponent
+              title={`Completed!`}
+              body={`This section is completed, Send me anything to continue`}
+            />
+          );
         }
 
         const field = currentFields[currentFieldIndex];
@@ -116,8 +140,7 @@ export const generateChatBotFlow = () => {
           console.log(
             `DEBUG: Section ${currentSectionIndex} completed, moving to next`,
           );
-          currentSectionIndex++;
-          currentFieldIndex = 0;
+
           return 'setup';
         }
 
@@ -152,6 +175,66 @@ export const generateChatBotFlow = () => {
         );
         currentFieldIndex++;
         return 'loop';
+      },
+
+      /*
+
+        THIS COULD WORK IF WE HAVE FIELDS AS GLOBAL VARIABLE
+
+      ...(field.type === FieldType.File && {
+        file: (params: string) => UploadFileHandler(params),
+      }),
+
+
+      */
+      file: async (params: any) => {
+        const section = sections[currentSectionIndex];
+        if (!section || !section.fields) {
+          console.warn(
+            'Invalid section or missing fields at index',
+            currentSectionIndex,
+          );
+          return;
+        }
+
+        const currentFields = Object.values(section.fields);
+        const field = currentFields[currentFieldIndex];
+
+        if (field?.type === FieldType.File || field.type === FieldType.Video) {
+          await UploadFileHandler(params); // handles upload side effect
+        } else {
+          console.warn('Expected file field, but got:', field?.type);
+        }
+      },
+
+      options: () => {
+        const section = sections[currentSectionIndex];
+        if (!section || !section.fields) return [];
+
+        const currentFields = Object.values(section.fields);
+        const field = currentFields[currentFieldIndex];
+
+        const allAnswers: string[] = [];
+
+        if (field?.options) {
+          field.options.forEach((option: { id: string; value: string }) => {
+            allAnswers.push(option.value);
+          });
+        }
+
+        return allAnswers;
+      },
+
+      // WHEN THE INPUT EXPECTED IS FILE IT WILL DISABLE THE INPUT TEXT BOX
+      chatDisabled: () => {
+        const section = sections[currentSectionIndex];
+        const currentFields = Object.values(section.fields);
+        const field = currentFields[currentFieldIndex];
+
+        if (field.type === FieldType.File || field.type === FieldType.Video) {
+          return true;
+        }
+        return false;
       },
     },
 
