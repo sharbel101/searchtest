@@ -10,7 +10,7 @@ export default function QuestionDetails({ flowItem }: QuestionDetailsProps) {
     <div className="mt-2 space-y-1">
       {Object.entries(flowItem.fields).map(([fieldKey, fieldConfig]) => {
         return (
-          <div key={fieldKey} className="text-sm text-gray-400 pl-2">
+          <div key={fieldKey} className="text-sm text-gray-400 pl-4 mb-4">
             • {fieldConfig.label}
             {fieldConfig.required && (
               <span className="text-red-400 ml-1">*</span>
