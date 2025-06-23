@@ -168,34 +168,12 @@ export const generateChatBotFlow = (): Flow => ({
           console.log('DEBUG: FlowFunc received answer:', params.input);
 
           // Process the answer through the controller
-          currentFlowController.answerQuestion(params.input);
 
           // Check if the flow is complete
-          const result = currentFlowController.OnSuccess();
+          const result = currentFlowController.answerQuestion(params.input);
           console.log('DEBUG: FlowFunc OnSuccess result:', result);
 
-          if (result !== 'Stage not available yet') {
-            // FlowFunc is complete - store the result
-            console.log('DEBUG: FlowFunc completed with result:', result);
-
-            // Update the section's field value in the store
-            const updatedSections = Object.values(chatFlow).map((sec) => {
-              if (sec.sectionId === section.sectionId) {
-                return {
-                  ...sec,
-                  fields: {
-                    ...sec.fields,
-                    [field.id]: {
-                      ...sec.fields[field.id],
-                      value: result,
-                    },
-                  },
-                };
-              }
-              return sec;
-            });
-            setSections(updatedSections);
-
+          if (result.setStage) {
             // Mark that we're done with this FlowFunc
             isInFlowFunc = false;
             currentFlowController = null;
