@@ -2,9 +2,14 @@
 
 import { Flow } from 'react-chatbotify';
 import { chatFlow, FieldType } from './flow';
+import { flowInjection } from './flowInjection';
 import { UploadFileHandler } from './UploadFileHandler';
 import SectionComponent from '../UIcomponents/SectionComponent';
 import { useFlowStore } from './FlowStore';
+
+// FlowFunc state management
+let currentFlowController: any = null;
+let isInFlowFunc = false;
 
 export const generateChatBotFlow = (): Flow => ({
   start: {
@@ -61,23 +66,72 @@ export const generateChatBotFlow = (): Flow => ({
 
   loop: {
     component: (params: any) => {
-      const { getCurrentField } = useFlowStore.getState();
+      const { getCurrentField, getCurrentSection } = useFlowStore.getState();
 
       const field = getCurrentField();
+      const section = getCurrentSection();
+
       if (!field) {
         return (
           <SectionComponent
-            title="No more fields In this section..."
+            title="No more fields in this section..."
             body="Send me anything to jump to the next section"
           />
         );
       }
 
+      // Handle FlowFunc fields
       if (field.type === FieldType.FlowFunc && field.flowInjection) {
-        useFlowStore.getState().setSubFlow(field.flowInjection);
+        if (!isInFlowFunc) {
+          // Initialize the flow controller
+          try {
+            // Get the flow controller from flowInjection
+            currentFlowController = flowInjection();
+            isInFlowFunc = true;
+            console.log(
+              'DEBUG: FlowFunc controller initialized for:',
+              field.flowInjection,
+            );
+          } catch (error) {
+            console.error('DEBUG: Error initializing FlowFunc:', error);
+            return (
+              <SectionComponent
+                title="Error"
+                body={`Error loading ${field.label}. Please try again.`}
+              />
+            );
+          }
+        }
+
+        if (currentFlowController) {
+          // Get current question and answers
+          const question = currentFlowController.getCurrentQuestion();
+          const answers = Object.keys(
+            currentFlowController.getCurrentAnswers(),
+          );
+
+          console.log('DEBUG: Current question:', question);
+          console.log('DEBUG: Available answers:', answers);
+
+          // Format the message with buttons for answers
+          let body = question;
+          if (answers.length > 0) {
+            body += '\n\nPlease select one of the following options:';
+            answers.forEach((answer: string, index: number) => {
+              body += `\n${index + 1}. ${answer}`;
+            });
+          }
+
+          return <SectionComponent title={field.label} body={body} />;
+        }
       }
 
-      return field.description || `Please provide ${field.label}`;
+      return (
+        <SectionComponent
+          title={field.label}
+          body={field.description || `Please provide ${field.label}`}
+        />
+      );
     },
 
     path: (params: any) => {
@@ -87,6 +141,7 @@ export const generateChatBotFlow = (): Flow => ({
         incrementField,
         incrementSection,
         resetFieldIndex,
+        setSections,
       } = useFlowStore.getState();
 
       const section = getCurrentSection();
@@ -96,24 +151,100 @@ export const generateChatBotFlow = (): Flow => ({
 
       const field = getCurrentField();
 
-      // 1) if no more fields in this section, advance to next
+      // If no more fields in this section, advance to next
       if (!field) {
         incrementSection();
         resetFieldIndex();
-
-        // if there *is* another section, go setup; else end
         return useFlowStore.getState().getCurrentSection() ? 'setup' : 'end';
       }
 
-      // 2) if FlowFunc, only advance when complete
-      // if (field.type === FieldType.FlowFunc) {
+      // Handle FlowFunc field responses
+      if (
+        field.type === FieldType.FlowFunc &&
+        isInFlowFunc &&
+        currentFlowController
+      ) {
+        if (params && params.input) {
+          console.log('DEBUG: FlowFunc received answer:', params.input);
 
-      //   }
-      //   return 'loop';
-      // }
+          // Process the answer through the controller
+          currentFlowController.answerQuestion(params.input);
 
-      // 3) regular field → just step forward
+          // Check if the flow is complete
+          const result = currentFlowController.OnSuccess();
+          console.log('DEBUG: FlowFunc OnSuccess result:', result);
+
+          if (result !== 'Stage not available yet') {
+            // FlowFunc is complete - store the result
+            console.log('DEBUG: FlowFunc completed with result:', result);
+
+            // Update the section's field value in the store
+            const updatedSections = Object.values(chatFlow).map((sec) => {
+              if (sec.sectionId === section.sectionId) {
+                return {
+                  ...sec,
+                  fields: {
+                    ...sec.fields,
+                    [field.id]: {
+                      ...sec.fields[field.id],
+                      value: result,
+                    },
+                  },
+                };
+              }
+              return sec;
+            });
+            setSections(updatedSections);
+
+            // Mark that we're done with this FlowFunc
+            isInFlowFunc = false;
+            currentFlowController = null;
+
+            // Move to next field or section
+            incrementField();
+            const nextField = getCurrentField();
+            if (!nextField) {
+              incrementSection();
+              resetFieldIndex();
+              return getCurrentSection() ? 'setup' : 'end';
+            }
+            return 'loop';
+          }
+          // If not complete, stay in loop to show the next question
+          return 'loop';
+        }
+        return 'loop';
+      }
+
+      // Handle regular field
+      if (params && params.input) {
+        // Update the section's field value in the store
+        const updatedSections = Object.values(chatFlow).map((sec) => {
+          if (sec.sectionId === section.sectionId) {
+            return {
+              ...sec,
+              fields: {
+                ...sec.fields,
+                [field.id]: {
+                  ...sec.fields[field.id],
+                  value: params.input,
+                },
+              },
+            };
+          }
+          return sec;
+        });
+        setSections(updatedSections);
+      }
+
+      // Move to next field or section
       incrementField();
+      const nextField = getCurrentField();
+      if (!nextField) {
+        incrementSection();
+        resetFieldIndex();
+        return getCurrentSection() ? 'setup' : 'end';
+      }
       return 'loop';
     },
 
@@ -127,7 +258,19 @@ export const generateChatBotFlow = (): Flow => ({
 
     options: () => {
       const { getCurrentField } = useFlowStore.getState();
-      return getCurrentField()?.options?.map((o) => o.value) || [];
+      const field = getCurrentField();
+
+      // Handle FlowFunc options
+      if (
+        field?.type === FieldType.FlowFunc &&
+        isInFlowFunc &&
+        currentFlowController
+      ) {
+        return Object.keys(currentFlowController.getCurrentAnswers());
+      }
+
+      // Handle regular field options
+      return field?.options?.map((o) => o.value) || [];
     },
 
     chatDisabled: () => {
