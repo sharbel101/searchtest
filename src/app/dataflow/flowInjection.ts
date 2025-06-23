@@ -1,7 +1,7 @@
 'use client';
 
 // Defines a single question in the flow
-type QuestionNode = {
+export type QuestionNode = {
   id: string; // Unique identifier for the question
   question: string; // The question text to display
   answers: Record<string, { next?: string; setStage?: string }>; // Maps answers to next question ID or final stage
@@ -16,7 +16,7 @@ export type FlowController = {
 };
 
 // The flow structure with all questions and their answers
-const investmentStageFlow: { [key: string]: QuestionNode } = {
+export const investmentStageFlow: { [key: string]: QuestionNode } = {
   q1: {
     id: 'q1',
     question: 'Have you ever closed an investment round?', // First question

@@ -1,247 +1,144 @@
 'use client';
+
 import { Flow } from 'react-chatbotify';
-import { chatFlow, FieldType, FormField, FlowSection } from './flow';
+import { chatFlow, FieldType } from './flow';
 import { UploadFileHandler } from './UploadFileHandler';
 import SectionComponent from '../UIcomponents/SectionComponent';
+import { useFlowStore } from './FlowStore';
 
-// Track where we are in the flow
-let currentSectionIndex = 0;
-let currentFieldIndex = 0;
-let sections: FlowSection[] = [];
-let currentFields: FormField[] = [];
-let currentAnswers: Record<string, { path?: string; setStage: string }>[] = [];
+export const generateChatBotFlow = (): Flow => ({
+  start: {
+    component: (
+      <SectionComponent
+        title="Hi, Let's Begin!"
+        body="Send me anything to continue."
+      />
+    ),
+    path: 'setup',
+  },
 
-// Store active flow controllers for FlowFunc fields
-let flowControllers: { [key: string]: any } = {};
+  setup: {
+    component: () => {
+      const { setSections, setSectionOpened, currentSectionIndex } =
+        useFlowStore.getState();
 
-export const generateChatBotFlow = (): Flow => {
-  return {
-    // 1. Start the flow
-    start: {
-      component: (
+      // load all sections once
+      const allSections = Object.values(chatFlow);
+      setSections(allSections);
+
+      // mark this section opened
+      setSectionOpened(currentSectionIndex);
+
+      const current = allSections[currentSectionIndex];
+      return (
         <SectionComponent
-          title={"Hi, Let's Begin!"}
-          body={'Send me anyhting to continue.'}
+          title={`Starting section ${current?.sectionTitle ?? 'Unknown'}`}
+          body=""
         />
-      ),
-      path: 'setup',
+      );
     },
+    path: () => {
+      const { getCurrentSection, incrementSection, resetFieldIndex } =
+        useFlowStore.getState();
 
-    // 2. Setup: Convert chatFlow object to arrays for easy looping
-    setup: {
-      component: () => {
-        sections = Object.values(chatFlow);
+      const current = getCurrentSection();
+      if (!current) {
+        // no sections at all
+        return 'end';
+      }
 
-        // Check if we have sections
-        if (currentSectionIndex >= sections.length) {
-          return (
-            <SectionComponent
-              title={'Completed!'}
-              body={`This section has been completed. Send me anything to continue. `}
-            />
-          );
-        }
+      const fields = Object.values(current.fields);
+      if (fields.length === 0) {
+        // skip empty section
+        incrementSection();
+        resetFieldIndex();
+        return 'setup';
+      }
 
-        const currentSection = sections[currentSectionIndex];
-        currentFields = Object.values(currentSection.fields);
+      return 'loop';
+    },
+  },
 
-        console.log(
-          `DEBUG: Section ${currentSectionIndex}: ${currentSection.sectionTitle}`,
-        );
-        console.log(`DEBUG: Fields in section: ${currentFields.length}`);
+  loop: {
+    component: (params: any) => {
+      const { getCurrentField } = useFlowStore.getState();
+
+      const field = getCurrentField();
+      if (!field) {
         return (
           <SectionComponent
-            title={`Starting section ${currentSection.sectionTitle}`}
-            body={``}
+            title="No more fields In this section..."
+            body="Send me anything to jump to the next section"
           />
         );
-      },
-      path: () => {
-        // If no more sections, end
-        if (currentSectionIndex >= sections.length) {
-          return 'end';
-        }
+      }
 
-        // If current section has no fields, skip to next
-        if (currentFields.length === 0) {
-          currentSectionIndex++;
-          currentFieldIndex = 0;
-          return 'setup';
-        }
+      if (field.type === FieldType.FlowFunc && field.flowInjection) {
+        useFlowStore.getState().setSubFlow(field.flowInjection);
+      }
 
-        return 'loop';
-      },
+      return field.description || `Please provide ${field.label}`;
     },
 
-    // 3. Main loop: Handle each field one by one
-    loop: {
-      component: (params: any) => {
-        // Safety check
-        if (currentSectionIndex >= sections.length) {
-          return <SectionComponent title={`No more sections!`} body={``} />;
-        }
+    path: (params: any) => {
+      const {
+        getCurrentSection,
+        getCurrentField,
+        incrementField,
+        incrementSection,
+        resetFieldIndex,
+      } = useFlowStore.getState();
 
-        const section = sections[currentSectionIndex];
-        currentFields = Object.values(section.fields);
+      const section = getCurrentSection();
+      if (!section) {
+        return 'end';
+      }
 
-        // Check if we're past the last field in this section
-        if (currentFieldIndex >= currentFields.length) {
-          currentSectionIndex++;
-          currentFieldIndex = 0;
-          return (
-            <SectionComponent
-              title={`Completed!`}
-              body={`This section is completed, Send me anything to continue`}
-            />
-          );
-        }
+      const field = getCurrentField();
 
-        const field = currentFields[currentFieldIndex];
+      // 1) if no more fields in this section, advance to next
+      if (!field) {
+        incrementSection();
+        resetFieldIndex();
 
-        console.log(
-          `DEBUG: Processing field ${currentFieldIndex}: ${field.label} (${field.type})`,
-        );
+        // if there *is* another section, go setup; else end
+        return useFlowStore.getState().getCurrentSection() ? 'setup' : 'end';
+      }
 
-        // Handle FlowFunc fields
-        if (field.type === FieldType.FlowFunc && field.flowInjection) {
-          const controllerId = field.id;
+      // 2) if FlowFunc, only advance when complete
+      // if (field.type === FieldType.FlowFunc) {
 
-          // Create controller if first time
-          if (!flowControllers[controllerId]) {
-            flowControllers[controllerId] = field.flowInjection((result) => {
-              console.log(`FlowFunc completed with result: ${result}`);
-            });
-          }
+      //   }
+      //   return 'loop';
+      // }
 
-          // Process user's answer if they gave one
-          if (params.userInput) {
-            flowControllers[controllerId].answerQuestion(params.userInput);
-          }
-
-          // Return current question
-          return flowControllers[controllerId].getCurrentQuestion();
-        }
-
-        // For regular fields
-        return field.description || `Please provide ${field.label}`;
-      },
-
-      path: (params: any) => {
-        // Safety check
-        if (currentSectionIndex >= sections.length) {
-          return 'end';
-        }
-
-        const section = sections[currentSectionIndex];
-        currentFields = Object.values(section.fields);
-
-        // If we're past the last field, move to next section
-        if (currentFieldIndex >= currentFields.length) {
-          console.log(
-            `DEBUG: Section ${currentSectionIndex} completed, moving to next`,
-          );
-
-          return 'setup';
-        }
-
-        const field = currentFields[currentFieldIndex];
-
-        // Handle FlowFunc completion
-        if (field.type === FieldType.FlowFunc) {
-          const controller = flowControllers[field.id];
-          if (controller) {
-            const question = controller.getCurrentQuestion();
-
-            // If FlowFunc is done, clean up and move to next field
-            if (
-              !question ||
-              question.includes('complete') ||
-              question.includes('done')
-            ) {
-              console.log(`DEBUG: FlowFunc ${field.id} completed`);
-              delete flowControllers[field.id];
-              currentFieldIndex++;
-              return 'loop';
-            }
-          }
-
-          // FlowFunc still has questions, stay in loop
-          return 'loop';
-        }
-
-        // For regular fields, move to next field after getting input
-        console.log(
-          `DEBUG: Regular field completed, moving from field ${currentFieldIndex} to ${currentFieldIndex + 1}`,
-        );
-        currentFieldIndex++;
-        return 'loop';
-      },
-
-      /*
-
-        THIS COULD WORK IF WE HAVE FIELDS AS GLOBAL VARIABLE
-
-      ...(field.type === FieldType.File && {
-        file: (params: string) => UploadFileHandler(params),
-      }),
-
-
-      */
-      file: async (params: any) => {
-        const section = sections[currentSectionIndex];
-        if (!section || !section.fields) {
-          console.warn(
-            'Invalid section or missing fields at index',
-            currentSectionIndex,
-          );
-          return;
-        }
-
-        const currentFields = Object.values(section.fields);
-        const field = currentFields[currentFieldIndex];
-
-        if (field?.type === FieldType.File || field.type === FieldType.Video) {
-          await UploadFileHandler(params); // handles upload side effect
-        } else {
-          console.warn('Expected file field, but got:', field?.type);
-        }
-      },
-
-      options: () => {
-        const section = sections[currentSectionIndex];
-        if (!section || !section.fields) return [];
-
-        const currentFields = Object.values(section.fields);
-        const field = currentFields[currentFieldIndex];
-
-        const allAnswers: string[] = [];
-
-        if (field?.options) {
-          field.options.forEach((option: { id: string; value: string }) => {
-            allAnswers.push(option.value);
-          });
-        }
-
-        return allAnswers;
-      },
-
-      // WHEN THE INPUT EXPECTED IS FILE IT WILL DISABLE THE INPUT TEXT BOX
-      chatDisabled: () => {
-        const section = sections[currentSectionIndex];
-        const currentFields = Object.values(section.fields);
-        const field = currentFields[currentFieldIndex];
-
-        if (field.type === FieldType.File || field.type === FieldType.Video) {
-          return true;
-        }
-        return false;
-      },
+      // 3) regular field → just step forward
+      incrementField();
+      return 'loop';
     },
 
-    // 4. End
-    end: {
-      message: 'Thank you! All sections completed.',
-      chatDisabled: true,
+    file: async (params: any) => {
+      const { getCurrentField } = useFlowStore.getState();
+      const f = getCurrentField();
+      if (f?.type === FieldType.File || f?.type === FieldType.Video) {
+        await UploadFileHandler(params);
+      }
     },
-  };
-};
+
+    options: () => {
+      const { getCurrentField } = useFlowStore.getState();
+      return getCurrentField()?.options?.map((o) => o.value) || [];
+    },
+
+    chatDisabled: () => {
+      const { getCurrentField } = useFlowStore.getState();
+      const f = getCurrentField();
+      return f?.type === FieldType.File || f?.type === FieldType.Video;
+    },
+  },
+
+  end: {
+    message: 'Thank you! All sections completed.',
+    chatDisabled: true,
+  },
+});
