@@ -28,11 +28,6 @@ export type FormField = {
   validation?: RegExp | ((value: any) => boolean); // Optional validation rule used to validate string inputs by testing if they match a specific pattern
   subFields?: { [key: string]: FormField };
   flowInjection?: string;
-  // (onSuccess: (result: string) => void) => {
-  //   getCurrentQuestion: () => string;
-  //   getCurrentAnswers: () => string[];
-  //   answerQuestion: (answer: string) => void;
-  //};  subfields is a form that takes all the subfields and then parses them to an array that puts them with their object respectively
 };
 
 // Type for flow sections, representing a group of fields
@@ -51,6 +46,41 @@ type ChatFlow = {
 
 // Defining the chat flow structure with sections and their fields
 const chatFlow: ChatFlow = {
+  investmentStage: {
+    // Title of this section in the flow
+    sectionTitle: 'Investment Stage',
+
+    // Unique identifier for this section
+    sectionId: 'investmentStage',
+
+    // Fields defined in this section
+    opened: false,
+    fields: {
+      IS: {
+        // Unique field ID
+        id: 'investment-stage-chart',
+
+        // The field type is a functional flow interaction
+        type: FieldType.FlowFunc,
+
+        // Label shown in UI
+        label: 'Investment Stage',
+
+        // Description shown to the user
+        description: 'Answer questions to determine your investment stage',
+
+        // This field must be filled before progressing
+        required: true,
+
+        opened: false,
+
+        flowInjection: 'investmentStageFlow',
+      },
+    },
+
+    // Next node to navigate to in the flow after this section
+    nextNode: 'departments',
+  },
   nda: {
     sectionTitle: 'NDA',
     sectionId: 'nda',
@@ -238,450 +268,6 @@ const chatFlow: ChatFlow = {
       },
     },
     nextNode: 'productsAndServices',
-  },
-  productsAndServices: {
-    sectionTitle: 'Products & Services + Description',
-    sectionId: 'productsAndServices',
-    opened: false,
-    fields: {
-      products: {
-        id: 'products-services',
-        type: FieldType.Array,
-        label: 'Products & Services',
-        description: 'List products or services with details.',
-        opened: false,
-        subFields: {
-          type: {
-            id: 'product-type',
-            type: FieldType.Dropdown,
-            label: 'Type',
-            options: [
-              { id: 'product', value: 'product' },
-              { id: 'service', value: 'service' },
-            ],
-            required: true,
-            opened: false,
-          },
-          name: {
-            id: 'product-name',
-            type: FieldType.Text,
-            label: 'Name',
-            required: true,
-            opened: false,
-          },
-          desc: {
-            id: 'product-desc',
-            type: FieldType.Text,
-            label: 'Description',
-            required: true,
-            opened: false,
-          },
-          photos: {
-            id: 'product-photos',
-            type: FieldType.File,
-            label: 'Photos',
-            required: false,
-            opened: false,
-          },
-          ios_app_url: {
-            id: 'ios-app-url',
-            type: FieldType.Url,
-            label: 'iOS App URL',
-            required: false,
-            opened: false,
-          },
-          android_app_url: {
-            id: 'android-app-url',
-            type: FieldType.Url,
-            label: 'Android App URL',
-            required: false,
-            opened: false,
-          },
-          general_customer_feedback: {
-            id: 'customer-feedback',
-            type: FieldType.Text,
-            label: 'General Customer Feedback',
-            placeholder: 'example: Loved by more than 500 happy customers',
-            required: false,
-            opened: false,
-          },
-        },
-      },
-    },
-    nextNode: 'patents',
-  },
-  patents: {
-    sectionTitle: 'Patents',
-    sectionId: 'patents',
-    opened: false,
-    fields: {
-      patents: {
-        id: 'patents-list',
-        type: FieldType.Array,
-        label: 'Patents',
-        description: 'List patents with details.',
-        opened: false,
-        subFields: {
-          title: {
-            id: 'patent-title',
-            type: FieldType.Text,
-            label: 'Title',
-            required: true,
-            opened: false,
-          },
-          desc: {
-            id: 'patent-desc',
-            type: FieldType.Text,
-            label: 'Description',
-            required: true,
-            opened: false,
-          },
-          file: {
-            id: 'patent-file',
-            type: FieldType.File,
-            label: 'File (PDF)',
-            required: true,
-            opened: false,
-          },
-        },
-      },
-    },
-    nextNode: 'achievements',
-  },
-  achievements: {
-    sectionTitle: 'Achievements',
-    sectionId: 'achievements',
-    opened: false,
-    fields: {
-      awards: {
-        id: 'awards-list',
-        type: FieldType.Array,
-        label: 'Awards',
-        description: 'List awards with details.',
-        opened: false,
-        subFields: {
-          type: {
-            id: 'award-name',
-            type: FieldType.Text,
-            label: 'Name',
-            required: true,
-            opened: false,
-          },
-          des: {
-            id: 'award-desc',
-            type: FieldType.Text,
-            label: 'Description',
-            required: true,
-            opened: false,
-          },
-          url: {
-            id: 'award-url',
-            type: FieldType.Url,
-            label: 'URL',
-            required: false,
-            opened: false,
-          },
-          image: {
-            id: 'award-image',
-            type: FieldType.File,
-            label: 'Image',
-            required: false,
-            opened: false,
-          },
-        },
-      },
-    },
-    nextNode: 'investmentStage',
-  },
-  // Import the flowInjection function
-  investmentStage: {
-    // Title of this section in the flow
-    sectionTitle: 'Investment Stage',
-
-    // Unique identifier for this section
-    sectionId: 'investmentStage',
-
-    // Fields defined in this section
-    opened: false,
-    fields: {
-      IS: {
-        // Unique field ID
-        id: 'investment-stage-chart',
-
-        // The field type is a functional flow interaction
-        type: FieldType.FlowFunc,
-
-        // Label shown in UI
-        label: 'Investment Stage',
-
-        // Description shown to the user
-        description: 'Answer questions to determine your investment stage',
-
-        // This field must be filled before progressing
-        required: true,
-
-        opened: false,
-
-        // flowInjection is a function that takes a callback (onSuccess) to be called when a stage is determined
-        flowInjection: 'investmentStageFlow',
-
-        // (onSuccess: (result: string) => void) => {
-        //   // Instantiate the controller returned from the external flowInjection file
-        //   const controller = flowInjection();
-
-        //   // Return an interface that the form engine will use to drive the dynamic question flow
-        //   return {
-        //     // Function to get the current question text
-        //     getCurrentQuestion: controller.getCurrentQuestion,
-
-        //     // Function to get current answer choices as a list of strings (keys)
-        //     getCurrentAnswers: () =>
-        //       Object.keys(controller.getCurrentAnswers()),
-
-        //     // Function to handle an answer selected by the user
-        //     answerQuestion: (answer: string) => {
-        //       // Pass the answer to the flow logic
-        //       controller.answerQuestion(answer);
-
-        //       // Get the result (stage) from the controller after processing the answer
-        //       const result = controller.OnSuccess();
-
-        //       // If a stage has been determined, invoke the onSuccess callback with it
-        //       if (result !== 'Stage not available yet') {
-        //         onSuccess(result);
-        //       }
-        //     },
-        //   };
-        // },
-      },
-    },
-
-    // Next node to navigate to in the flow after this section
-    nextNode: 'departments',
-  },
-
-  departments: {
-    sectionTitle: 'Departments',
-    sectionId: 'departments',
-    opened: false,
-    fields: {
-      organizationChart: {
-        id: 'org-chart',
-        type: FieldType.File,
-        label: 'Organization Chart',
-        description: 'Upload organization chart (PDF, Excel, CSV).',
-        required: true,
-        opened: false,
-      },
-      fs_department: {
-        id: 'dept-details',
-        type: FieldType.File,
-        label: 'Department Details',
-        description:
-          'Upload department details (check fs_department excel sheet).',
-        required: false,
-        opened: false,
-      },
-    },
-    nextNode: 'financials',
-  },
-  financials: {
-    sectionTitle: 'Financials',
-    sectionId: 'financials',
-    opened: false,
-    fields: {
-      valuation: {
-        id: 'company-valuation',
-        type: FieldType.Text,
-        label: 'Valuation',
-        placeholder: 'Enter valuation amount',
-        required: true,
-        description: 'Provide company valuation.',
-        opened: false,
-      },
-      previousBalanceSheets: {
-        id: 'balance-sheets',
-        type: FieldType.File,
-        label: 'Previous Balance Sheets',
-        description: 'Upload previous balance sheets (PDF, Excel, CSV).',
-        required: true,
-        opened: false,
-      },
-      previousPLStatements: {
-        id: 'pl-statements',
-        type: FieldType.File,
-        label: 'Previous P&L Statements',
-        description: 'Upload previous P&L statements (PDF, Excel, CSV).',
-        required: true,
-        opened: false,
-      },
-      annualAuditReports: {
-        id: 'audit-reports',
-        type: FieldType.File,
-        label: 'Annual Audit Reports',
-        description: 'Upload annual audit reports (PDF, Excel, CSV).',
-        required: true,
-        opened: false,
-      },
-      fs_financials: {
-        id: 'financial-details',
-        type: FieldType.File,
-        label: 'Financial Details',
-        description:
-          'Upload financial details (check fs_financials excel sheet).',
-        required: false,
-        opened: false,
-      },
-    },
-    nextNode: 'marketing',
-  },
-  marketing: {
-    sectionTitle: 'Marketing',
-    sectionId: 'marketing',
-    opened: false,
-    fields: {
-      customerSatisfactionRate: {
-        id: 'satisfaction-rate',
-        type: FieldType.Text,
-        label: 'Customer Satisfaction Rate',
-        placeholder: 'e.g., 95%',
-        required: false,
-        description: 'Enter customer satisfaction rate.',
-        opened: false,
-      },
-      customerRetentionRate: {
-        id: 'retention-rate',
-        type: FieldType.Text,
-        label: 'Customer Retention Rate',
-        placeholder: 'e.g., 90%',
-        required: false,
-        description: 'Enter customer retention rate.',
-        opened: false,
-      },
-      customerLifetimeValue: {
-        id: 'clv',
-        type: FieldType.Text,
-        label: 'Customer Lifetime Value (CLV)',
-        placeholder: 'e.g., $500',
-        required: false,
-        description: 'Enter customer lifetime value.',
-        opened: false,
-      },
-      fs_marketing: {
-        id: 'marketing-details',
-        type: FieldType.File,
-        label: 'Marketing Details',
-        description:
-          'Upload marketing details (check fs_marketing excel sheet).',
-        required: false,
-        opened: false,
-      },
-    },
-    nextNode: 'strategy',
-  },
-  strategy: {
-    sectionTitle: 'Strategy',
-    sectionId: 'strategy',
-    opened: false,
-    fields: {
-      SWOT: {
-        id: 'swot-analysis',
-        type: FieldType.File,
-        label: 'SWOT Analysis',
-        description: 'Upload SWOT analysis (PDF) or chat with GPT.',
-        required: false,
-        opened: false,
-      },
-      STR: {
-        id: 'strategy-chart',
-        type: FieldType.Text,
-        label: 'Strategy Chart',
-        description: 'Provide strategy details (chart form).',
-        required: true,
-        opened: false,
-      },
-    },
-    nextNode: 'competition',
-  },
-  competition: {
-    sectionTitle: 'Competition',
-    sectionId: 'competition',
-    opened: false,
-    fields: {
-      competitors: {
-        id: 'competitors-list',
-        type: FieldType.Array,
-        label: 'Competitors',
-        description: 'List competitors with details.',
-        opened: false,
-        subFields: {
-          name: {
-            id: 'competitor-name',
-            type: FieldType.Text,
-            label: 'Name',
-            required: true,
-            opened: false,
-          },
-          url: {
-            id: 'competitor-url',
-            type: FieldType.Url,
-            label: 'URL',
-            required: false,
-            opened: false,
-          },
-          whatDoTheyDoDifferently: {
-            id: 'competitor-diff',
-            type: FieldType.Text,
-            label: 'What Do They Do Differently',
-            required: true,
-            opened: false,
-          },
-        },
-      },
-    },
-    nextNode: 'documents',
-  },
-  documents: {
-    sectionTitle: 'Documents',
-    sectionId: 'documents',
-    opened: false,
-    fields: {
-      registrationDocuments: {
-        id: 'reg-docs',
-        type: FieldType.File,
-        label: 'Registration Documents',
-        description: 'Upload multiple registration documents (PDF).',
-        required: true,
-        opened: false,
-      },
-    },
-    nextNode: 'theAsk',
-  },
-  theAsk: {
-    sectionTitle: 'The Ask',
-    sectionId: 'theAsk',
-    opened: false,
-    fields: {
-      askVsValuation: {
-        id: 'ask-valuation',
-        type: FieldType.Text,
-        label: 'Ask vs Valuation',
-        placeholder: 'e.g., 10%',
-        required: true,
-        description: 'Enter the percentage of ask vs valuation.',
-        opened: false,
-      },
-      typeOfInvestor: {
-        id: 'investor-type',
-        type: FieldType.Text,
-        label: 'Type of Investor',
-        placeholder: 'e.g., Angel, VC',
-        required: false,
-        description: 'Specify the type of investor (optional).',
-        opened: false,
-      },
-    },
-    nextNode: null,
   },
 };
 

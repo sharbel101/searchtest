@@ -28,8 +28,19 @@ interface FlowState {
   getCurrentSubFlowFields: (currentSubFlow: string) => QuestionNode[] | null;
   incrementSubFlowField: () => void;
 
-  getNextSubFlowId: (answer: string) => string | null;
-  getSetStage: (answer: string) => string | null;
+  currentNodeId: string;
+  stage: string | null;
+
+  setCurrentNodeId: (id: string) => void;
+  setStage: (stage: string) => void;
+
+  currentFlowController: any;
+  isInFlowFunc: boolean;
+  questionBody: string;
+
+  setCurrentFlowController: (controller: any) => void;
+  setIsInFlowFunc: (val: boolean) => void;
+  setQuestionBody: (text: string) => void;
 }
 
 export const useFlowStore = create<FlowState>((set, get) => ({
@@ -40,6 +51,11 @@ export const useFlowStore = create<FlowState>((set, get) => ({
 
   currentSubFlow: '',
   currentSubFlowFieldIndex: 0,
+  currentNodeId: 'q1',
+  stage: null,
+  currentFlowController: null,
+  isInFlowFunc: false,
+  questionBody: '',
 
   setSections: (sections) => set({ sections }),
   incrementField: () =>
@@ -75,14 +91,11 @@ export const useFlowStore = create<FlowState>((set, get) => ({
     const subFlows: Record<string, Record<string, QuestionNode>> = {
       investmentStageFlow,
     };
-
     const flow = subFlows[subFlowName];
-
     if (!flow) {
       console.warn(`Subflow "${subFlowName}" not found.`);
       return [];
     }
-
     return Object.values(flow);
   },
 
@@ -91,19 +104,14 @@ export const useFlowStore = create<FlowState>((set, get) => ({
       currentSubFlowFieldIndex: state.currentSubFlowFieldIndex + 1,
     })),
 
-  getNextSubFlowId: (answer: string) => {
-    // Placeholder logic, replace with your actual logic
-    // Example: return next subflow id based on answer
-    return null;
-  },
+  setSubFlow: (subFlow: string) =>
+    set({ currentSubFlow: subFlow, currentSubFlowFieldIndex: 0 }),
 
-  getSetStage: (answer: string) => {
-    // Placeholder logic, replace with your actual logic
-    // Example: return stage based on answer
-    return null;
-  },
+  setCurrentNodeId: (id) => set({ currentNodeId: id }),
+  setStage: (stage) => set({ stage }),
 
-  setSubFlow: (subFlow: string) => {
-    set({ currentSubFlow: subFlow, currentSubFlowFieldIndex: 0 });
-  },
+  setCurrentFlowController: (controller: any) =>
+    set({ currentFlowController: controller }),
+  setIsInFlowFunc: (val: boolean) => set({ isInFlowFunc: val }),
+  setQuestionBody: (text: string) => set({ questionBody: text }),
 }));
