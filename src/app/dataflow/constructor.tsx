@@ -47,13 +47,20 @@ export const generateChatBotFlow = (): Flow => {
           useFlowStore.getState();
 
         const current = getCurrentSection();
+        console.log(
+          'DEBUG: this is the current section:' + current?.sectionTitle,
+        );
         if (!current) return 'end';
 
         const fields = Object.values(current.fields);
         if (fields.length === 0) {
-          incrementSection();
-          resetFieldIndex();
-          return 'setup';
+          useFlowStore.getState().advanceToNextSection();
+          const newSection = useFlowStore.getState().getCurrentSection();
+          console.log(
+            'DEBUG: Advanced to next section. New section:',
+            newSection,
+          );
+          return newSection ? 'setup' : 'end';
         }
 
         return 'loop';
@@ -73,6 +80,8 @@ export const generateChatBotFlow = (): Flow => {
 
         const field = getCurrentField();
         const section = getCurrentSection();
+
+        console.log('DEBUG: this is the current Field:' + field);
 
         if (!field) {
           return (
@@ -212,10 +221,13 @@ export const generateChatBotFlow = (): Flow => {
 
         incrementField();
         const nextField = getCurrentField();
+
         if (!nextField) {
-          incrementSection();
-          resetFieldIndex();
-          return getCurrentSection() ? 'setup' : 'end';
+          resetFieldIndex(); // reset field index so that getCurrentField() returns null
+          incrementSection(); // advance to the next section
+
+          const nextSection = getCurrentSection();
+          return nextSection ? 'setup' : 'end';
         }
 
         return 'loop';

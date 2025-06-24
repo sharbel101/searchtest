@@ -10,23 +10,22 @@ interface FlowState {
   currentSectionIndex: number;
   currentFieldIndex: number;
   sections: FlowSection[];
-  flowControllers: { [key: string]: any };
 
   setSections: (sections: FlowSection[]) => void;
   incrementField: () => void;
   incrementSection: () => void;
   resetFieldIndex: () => void;
+  advanceToNextSection: () => void;
   setSectionOpened: (index: number) => void;
 
   getCurrentSection: () => FlowSection | null;
   getCurrentField: () => FormField | null;
 
   currentSubFlow: string;
-  setSubFlow: (subFlow: string) => void;
-
   currentSubFlowFieldIndex: number;
-  getCurrentSubFlowFields: (currentSubFlow: string) => QuestionNode[] | null;
+  getCurrentSubFlowFields: (name: string) => QuestionNode[] | null;
   incrementSubFlowField: () => void;
+  setSubFlow: (name: string) => void;
 
   currentNodeId: string;
   stage: string | null;
@@ -47,15 +46,6 @@ export const useFlowStore = create<FlowState>((set, get) => ({
   currentSectionIndex: 0,
   currentFieldIndex: 0,
   sections: [],
-  flowControllers: {},
-
-  currentSubFlow: '',
-  currentSubFlowFieldIndex: 0,
-  currentNodeId: 'q1',
-  stage: null,
-  currentFlowController: null,
-  isInFlowFunc: false,
-  questionBody: '',
 
   setSections: (sections) => set({ sections }),
   incrementField: () =>
@@ -65,6 +55,12 @@ export const useFlowStore = create<FlowState>((set, get) => ({
       currentSectionIndex: state.currentSectionIndex + 1,
     })),
   resetFieldIndex: () => set({ currentFieldIndex: 0 }),
+
+  advanceToNextSection: () =>
+    set((state) => ({
+      currentSectionIndex: state.currentSectionIndex + 1,
+      currentFieldIndex: 0,
+    })),
 
   setSectionOpened: (index) =>
     set((state) => {
@@ -77,26 +73,36 @@ export const useFlowStore = create<FlowState>((set, get) => ({
 
   getCurrentSection: () => {
     const { sections, currentSectionIndex } = get();
-    return sections[currentSectionIndex] || null;
+    if (
+      !sections ||
+      currentSectionIndex < 0 ||
+      currentSectionIndex >= sections.length
+    )
+      return null;
+    return sections[currentSectionIndex];
   },
 
   getCurrentField: () => {
     const section = get().getCurrentSection();
     if (!section) return null;
+
     const fields = Object.values(section.fields);
-    return fields[get().currentFieldIndex] || null;
+    const index = get().currentFieldIndex;
+    if (index < 0 || index >= fields.length) return null;
+
+    return fields[index];
   },
+
+  // Subflow
+  currentSubFlow: '',
+  currentSubFlowFieldIndex: 0,
 
   getCurrentSubFlowFields: (subFlowName: string) => {
     const subFlows: Record<string, Record<string, QuestionNode>> = {
       investmentStageFlow,
     };
     const flow = subFlows[subFlowName];
-    if (!flow) {
-      console.warn(`Subflow "${subFlowName}" not found.`);
-      return [];
-    }
-    return Object.values(flow);
+    return flow ? Object.values(flow) : [];
   },
 
   incrementSubFlowField: () =>
@@ -104,14 +110,21 @@ export const useFlowStore = create<FlowState>((set, get) => ({
       currentSubFlowFieldIndex: state.currentSubFlowFieldIndex + 1,
     })),
 
-  setSubFlow: (subFlow: string) =>
+  setSubFlow: (subFlow) =>
     set({ currentSubFlow: subFlow, currentSubFlowFieldIndex: 0 }),
+
+  currentNodeId: 'q1',
+  stage: null,
 
   setCurrentNodeId: (id) => set({ currentNodeId: id }),
   setStage: (stage) => set({ stage }),
 
-  setCurrentFlowController: (controller: any) =>
+  currentFlowController: null,
+  isInFlowFunc: false,
+  questionBody: '',
+
+  setCurrentFlowController: (controller) =>
     set({ currentFlowController: controller }),
-  setIsInFlowFunc: (val: boolean) => set({ isInFlowFunc: val }),
-  setQuestionBody: (text: string) => set({ questionBody: text }),
+  setIsInFlowFunc: (val) => set({ isInFlowFunc: val }),
+  setQuestionBody: (text) => set({ questionBody: text }),
 }));
