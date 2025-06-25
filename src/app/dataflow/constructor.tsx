@@ -10,12 +10,24 @@ import { useFlowStore } from './FlowStore';
 export const generateChatBotFlow = (): Flow => {
   return {
     start: {
-      component: (
-        <SectionComponent
-          title="Hi, Let's Begin!"
-          body="Send me anything to continue."
-        />
-      ),
+      component: () => {
+        const { setSections } = useFlowStore.getState();
+
+        const allSections = Object.values(chatFlow);
+        setSections(allSections);
+
+        if (allSections.length === 0) {
+          return (
+            <SectionComponent title="Error!" body="No Sections provided!" />
+          );
+        }
+        return (
+          <SectionComponent
+            title="Hi, shall we begin?"
+            body="Send me anything to continue"
+          />
+        );
+      },
       path: 'setup',
     },
 
@@ -26,6 +38,7 @@ export const generateChatBotFlow = (): Flow => {
           setSectionOpened,
           currentSectionIndex,
           resetFieldIndex,
+          incrementField,
         } = useFlowStore.getState();
 
         const allSections = Object.values(chatFlow);
@@ -83,7 +96,8 @@ export const generateChatBotFlow = (): Flow => {
 
         console.log('DEBUG: this is the current Field:' + field);
 
-        if (!field) {
+        if (!field || !field.label) {
+          console.warn('FIELD IS MISSING OR INVALID:', field);
           return (
             <SectionComponent
               title="No more fields in this section..."
@@ -266,6 +280,7 @@ export const generateChatBotFlow = (): Flow => {
         return (
           f?.type === FieldType.File ||
           f?.type === FieldType.Video ||
+          f?.type === FieldType.Dropdown ||
           (f?.type === FieldType.FlowFunc && currentFlowController)
         );
       },
