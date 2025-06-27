@@ -98,6 +98,7 @@ export const useFlowStore = create<FlowState>((set, get) => ({
   currentSubFlowFieldIndex: 0,
 
   getCurrentSubFlowFields: (subFlowName: string) => {
+    //TODOs remove it
     const subFlows: Record<string, Record<string, QuestionNode>> = {
       investmentStageFlow,
     };

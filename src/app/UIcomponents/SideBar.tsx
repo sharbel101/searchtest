@@ -6,31 +6,68 @@ import { Button } from '@/components/ui/button';
 import QuestionDetails from './QuestionDetails';
 import { useFlowStore } from '../dataflow/FlowStore';
 
+// Individual Section Component
+interface SectionProps {
+  section: any; // Replace with your actual section type
+  index: number;
+  isAccessible: boolean;
+}
+
+function SectionItem({ section, index, isAccessible }: SectionProps) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleToggle = () => {
+    if (isAccessible) {
+      setIsOpen((prev) => !prev);
+    }
+  };
+
+  return (
+    <div
+      className={`p-3 rounded-lg transition-colors duration-150 ${
+        isAccessible
+          ? 'bg-gray-700 hover:bg-gray-600 cursor-pointer'
+          : 'bg-gray-900 opacity-50 cursor-not-allowed'
+      }`}
+      onClick={handleToggle}
+    >
+      <div className="font-medium text-gray-300 mb-1">
+        {section.sectionTitle}
+      </div>
+      {isAccessible && isOpen && <QuestionDetails flowItem={section} />}
+    </div>
+  );
+}
+
+// Sections List Component
+interface SectionsListProps {
+  sections: any[]; // Replace with your actual section type
+  currentSectionIndex: number;
+}
+
+function SectionsList({ sections, currentSectionIndex }: SectionsListProps) {
+  return (
+    <nav className="p-4 space-y-4 overflow-y-auto max-h-[calc(100vh-64px)]">
+      {sections.map((section, index) => (
+        <SectionItem
+          key={`${index}-${section.sectionTitle}`}
+          section={section}
+          index={index}
+          isAccessible={index <= currentSectionIndex}
+        />
+      ))}
+    </nav>
+  );
+}
+
+// Main Sidebar Component
 export default function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
-  const [openedQuestions, setOpenedQuestions] = useState<Set<string>>(
-    new Set(),
-  );
 
   const sections = useFlowStore((state) => state.sections);
   const currentSectionIndex = useFlowStore(
     (state) => state.currentSectionIndex,
   );
-
-  const handleToggleDetails = (index: number) => {
-    const section = sections[index];
-    const key = `${index}-${section.sectionTitle}`;
-
-    setOpenedQuestions((prevOpened) => {
-      const newOpened = new Set(prevOpened);
-      if (newOpened.has(key)) {
-        newOpened.delete(key);
-      } else {
-        newOpened.add(key);
-      }
-      return newOpened;
-    });
-  };
 
   return (
     <div
@@ -54,34 +91,10 @@ export default function Sidebar() {
 
       {/* Section Navigation */}
       {!collapsed && (
-        <nav className="p-4 space-y-4 overflow-y-auto max-h-[calc(100vh-64px)]">
-          {sections.map((section, index) => {
-            const key = `${index}-${section.sectionTitle}`;
-            const isOpen = openedQuestions.has(key);
-            const isAccessible = index <= currentSectionIndex;
-
-            return (
-              <div
-                key={key}
-                className={`p-3 rounded-lg transition-colors duration-150 ${
-                  isAccessible
-                    ? 'bg-gray-700 hover:bg-gray-600 cursor-pointer'
-                    : 'bg-gray-900 opacity-50 cursor-not-allowed'
-                }`}
-                onClick={() => {
-                  if (isAccessible) handleToggleDetails(index);
-                }}
-              >
-                <div className="font-medium text-gray-300 mb-1">
-                  {section.sectionTitle}
-                </div>
-                {isAccessible && isOpen && (
-                  <QuestionDetails flowItem={section} />
-                )}
-              </div>
-            );
-          })}
-        </nav>
+        <SectionsList
+          sections={sections}
+          currentSectionIndex={currentSectionIndex}
+        />
       )}
     </div>
   );

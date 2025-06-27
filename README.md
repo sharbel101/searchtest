@@ -51,6 +51,16 @@ Make sure you have _pnpm_ installed globally. If not: `npm install -g pnpm`
 - [ ] Create a chatbot using `react-chatbotify`
       👉 Reference: https://react-chatbotify.com/docs/examples/basic_form
 
+### Week 3
+
+- [ ] ui same as design
+- [ ] replace components with markup
+- [ ] streaming
+- [ ] import chatbot sourcecode (to start customizing inputs, icons designs etc...)
+- [ ] async flow injection
+- [ ] fix duplicate bug
+- [ ] remove everything in store related to `opened`
+
 ---
 
 ## 📆 Daily Tasks

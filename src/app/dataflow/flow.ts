@@ -34,7 +34,7 @@ export type FormField = {
 export type FlowSection = {
   sectionTitle: string; // Title of the section
   sectionId: string; // Unique identifier for the section
-  opened: boolean;
+  opened?: boolean;
   fields: { [key: string]: FormField }; // Object of fields for a section, defining all fields like companyType or socialMediaAccounts
   nextNode?: string | null; // ID of the next section in the flow, allowing null
 };
@@ -49,14 +49,14 @@ const chatFlow: ChatFlow = {
   nda: {
     sectionTitle: 'NDA',
     sectionId: 'nda',
-    opened: false,
+    //opened: false,
     fields: {
       companiesNDAForm: {
         id: 'nda-form',
         type: FieldType.File,
         label: 'Companies NDAs Form',
         description: 'Upload the signed NDA form (PDF format).',
-        opened: false,
+        //opened: false,
         required: true,
       },
     },
@@ -65,7 +65,7 @@ const chatFlow: ChatFlow = {
   portfolio: {
     sectionTitle: 'Portfolio',
     sectionId: 'portfolio',
-    opened: false,
+    //opened: false,
     fields: {
       companyType: {
         id: 'company-name',
@@ -74,7 +74,7 @@ const chatFlow: ChatFlow = {
         placeholder: 'Enter company name',
         required: true,
         description: 'Provide the full legal name of the company.',
-        opened: false,
+        //opened: false,
       },
       logo: {
         id: 'company-logo',
@@ -82,7 +82,7 @@ const chatFlow: ChatFlow = {
         label: 'Logo',
         description: 'Upload the company logo (image file).',
         required: true,
-        opened: false,
+        //opened: false,
       },
       industry: {
         id: 'industry-type',
@@ -95,7 +95,7 @@ const chatFlow: ChatFlow = {
         ],
         required: true,
         description: 'Select industry type (input details for "Other").',
-        opened: false,
+        //opened: false,
       },
       description: {
         id: 'company-description',
@@ -104,7 +104,7 @@ const chatFlow: ChatFlow = {
         placeholder: 'Enter a brief description',
         required: true,
         description: 'Provide a summary of the company.',
-        opened: false,
+        //opened: false,
       },
       countryOfOperation: {
         id: 'country-operation',
@@ -113,14 +113,14 @@ const chatFlow: ChatFlow = {
         options: [{ id: 'usa', value: 'USA' }],
         required: true,
         description: 'Select the primary country of operation.',
-        opened: false,
+        //opened: false,
       },
       socialMediaAccounts: {
         id: 'social-media-accounts',
         type: FieldType.Array,
         label: 'Social Media Accounts',
         description: 'Provide URLs for social media profiles (all optional).',
-        opened: false,
+        //opened: false,
         subFields: {
           tiktok: {
             id: 'tiktok-url',
@@ -168,7 +168,7 @@ const chatFlow: ChatFlow = {
         required: false,
         description: 'Provide the company’s main website URL.',
         validation: /^(https?:\/\/)?([\w\-]+\.)+[\w\-]+(\/[\w\-]*)*\/?$/,
-        opened: false,
+        //opened: false,
       },
     },
     nextNode: 'foundingTeam',
@@ -176,7 +176,7 @@ const chatFlow: ChatFlow = {
   foundingTeam: {
     sectionTitle: 'Founding Team',
     sectionId: 'foundingTeam',
-    opened: false,
+    //opened: false,
     fields: {
       teamMembersProfile: {
         id: 'team-members',
@@ -189,28 +189,28 @@ const chatFlow: ChatFlow = {
             type: FieldType.Text,
             label: 'Full Name',
             required: true,
-            opened: false,
+            //opened: false,
           },
           roleTitle: {
             id: 'team-role',
             type: FieldType.Text,
             label: 'Role Title',
             required: true,
-            opened: false,
+            //opened: false,
           },
           background: {
             id: 'team-background',
             type: FieldType.Text,
             label: 'Background',
             required: false,
-            opened: false,
+            //opened: false,
           },
           expertise: {
             id: 'team-expertise',
             type: FieldType.Text,
             label: 'Expertise',
             required: false,
-            opened: false,
+            //opened: false,
           },
         },
       },
@@ -220,7 +220,7 @@ const chatFlow: ChatFlow = {
         label: 'Team Video',
         description: 'Upload a team video (max 2 minutes).',
         required: false,
-        opened: false,
+        //opened: false,
       },
       teamStandards: {
         id: 'team-standards',
@@ -229,7 +229,7 @@ const chatFlow: ChatFlow = {
         placeholder: 'your motto, your culture etc...',
         required: false,
         description: 'Describe the team’s motto, culture...',
-        opened: false,
+        //opened: false,
       },
     },
     nextNode: 'productsAndServices',
@@ -237,14 +237,14 @@ const chatFlow: ChatFlow = {
   productsAndServices: {
     sectionTitle: 'Products & Services + Description',
     sectionId: 'productsAndServices',
-    opened: false,
+    //opened: false,
     fields: {
       products: {
         id: 'products-services',
         type: FieldType.Array,
         label: 'Products & Services',
         description: 'List products or services with details.',
-        opened: false,
+        //opened: false,
         subFields: {
           type: {
             id: 'product-type',
@@ -255,42 +255,42 @@ const chatFlow: ChatFlow = {
               { id: 'service', value: 'service' },
             ],
             required: true,
-            opened: false,
+            //opened: false,
           },
           name: {
             id: 'product-name',
             type: FieldType.Text,
             label: 'Name',
             required: true,
-            opened: false,
+            //opened: false,
           },
           desc: {
             id: 'product-desc',
             type: FieldType.Text,
             label: 'Description',
             required: true,
-            opened: false,
+            //opened: false,
           },
           photos: {
             id: 'product-photos',
             type: FieldType.File,
             label: 'Photos',
             required: false,
-            opened: false,
+            //opened: false,
           },
           ios_app_url: {
             id: 'ios-app-url',
             type: FieldType.Url,
             label: 'iOS App URL',
             required: false,
-            opened: false,
+            //opened: false,
           },
           android_app_url: {
             id: 'android-app-url',
             type: FieldType.Url,
             label: 'Android App URL',
             required: false,
-            opened: false,
+            //opened: false,
           },
           general_customer_feedback: {
             id: 'customer-feedback',
@@ -298,7 +298,7 @@ const chatFlow: ChatFlow = {
             label: 'General Customer Feedback',
             placeholder: 'example: Loved by more than 500 happy customers',
             required: false,
-            opened: false,
+            //opened: false,
           },
         },
       },
@@ -308,35 +308,35 @@ const chatFlow: ChatFlow = {
   patents: {
     sectionTitle: 'Patents',
     sectionId: 'patents',
-    opened: false,
+    //opened: false,
     fields: {
       patents: {
         id: 'patents-list',
         type: FieldType.Array,
         label: 'Patents',
         description: 'List patents with details.',
-        opened: false,
+        //opened: false,
         subFields: {
           title: {
             id: 'patent-title',
             type: FieldType.Text,
             label: 'Title',
             required: true,
-            opened: false,
+            //opened: false,
           },
           desc: {
             id: 'patent-desc',
             type: FieldType.Text,
             label: 'Description',
             required: true,
-            opened: false,
+            //opened: false,
           },
           file: {
             id: 'patent-file',
             type: FieldType.File,
             label: 'File (PDF)',
             required: true,
-            opened: false,
+            //opened: false,
           },
         },
       },
@@ -346,42 +346,42 @@ const chatFlow: ChatFlow = {
   achievements: {
     sectionTitle: 'Achievements',
     sectionId: 'achievements',
-    opened: false,
+    //opened: false,
     fields: {
       awards: {
         id: 'awards-list',
         type: FieldType.Array,
         label: 'Awards',
         description: 'List awards with details.',
-        opened: false,
+        //opened: false,
         subFields: {
           type: {
             id: 'award-name',
             type: FieldType.Text,
             label: 'Name',
             required: true,
-            opened: false,
+            //opened: false,
           },
           des: {
             id: 'award-desc',
             type: FieldType.Text,
             label: 'Description',
             required: true,
-            opened: false,
+            //opened: false,
           },
           url: {
             id: 'award-url',
             type: FieldType.Url,
             label: 'URL',
             required: false,
-            opened: false,
+            //opened: false,
           },
           image: {
             id: 'award-image',
             type: FieldType.File,
             label: 'Image',
             required: false,
-            opened: false,
+            //opened: false,
           },
         },
       },
@@ -397,7 +397,7 @@ const chatFlow: ChatFlow = {
     sectionId: 'investmentStage',
 
     // Fields defined in this section
-    opened: false,
+    //opened: false,
     fields: {
       IS: {
         // Unique field ID
@@ -415,7 +415,7 @@ const chatFlow: ChatFlow = {
         // This field must be filled before progressing
         required: true,
 
-        opened: false,
+        //opened: false,
 
         flowInjection: 'investmentStageFlow',
       },
@@ -427,7 +427,7 @@ const chatFlow: ChatFlow = {
   departments: {
     sectionTitle: 'Departments',
     sectionId: 'departments',
-    opened: false,
+    //opened: false,
     fields: {
       organizationChart: {
         id: 'org-chart',
@@ -435,7 +435,7 @@ const chatFlow: ChatFlow = {
         label: 'Organization Chart',
         description: 'Upload organization chart (PDF, Excel, CSV).',
         required: true,
-        opened: false,
+        //opened: false,
       },
       fs_department: {
         id: 'dept-details',
@@ -444,7 +444,7 @@ const chatFlow: ChatFlow = {
         description:
           'Upload department details (check fs_department excel sheet).',
         required: false,
-        opened: false,
+        //opened: false,
       },
     },
     nextNode: 'financials',
@@ -452,7 +452,7 @@ const chatFlow: ChatFlow = {
   financials: {
     sectionTitle: 'Financials',
     sectionId: 'financials',
-    opened: false,
+    //opened: false,
     fields: {
       valuation: {
         id: 'company-valuation',
@@ -461,7 +461,7 @@ const chatFlow: ChatFlow = {
         placeholder: 'Enter valuation amount',
         required: true,
         description: 'Provide company valuation.',
-        opened: false,
+        //opened: false,
       },
       previousBalanceSheets: {
         id: 'balance-sheets',
@@ -469,7 +469,7 @@ const chatFlow: ChatFlow = {
         label: 'Previous Balance Sheets',
         description: 'Upload previous balance sheets (PDF, Excel, CSV).',
         required: true,
-        opened: false,
+        //opened: false,
       },
       previousPLStatements: {
         id: 'pl-statements',
@@ -477,7 +477,7 @@ const chatFlow: ChatFlow = {
         label: 'Previous P&L Statements',
         description: 'Upload previous P&L statements (PDF, Excel, CSV).',
         required: true,
-        opened: false,
+        //opened: false,
       },
       annualAuditReports: {
         id: 'audit-reports',
@@ -485,7 +485,7 @@ const chatFlow: ChatFlow = {
         label: 'Annual Audit Reports',
         description: 'Upload annual audit reports (PDF, Excel, CSV).',
         required: true,
-        opened: false,
+        //opened: false,
       },
       fs_financials: {
         id: 'financial-details',
@@ -494,7 +494,7 @@ const chatFlow: ChatFlow = {
         description:
           'Upload financial details (check fs_financials excel sheet).',
         required: false,
-        opened: false,
+        //opened: false,
       },
     },
     nextNode: 'marketing',
@@ -502,7 +502,7 @@ const chatFlow: ChatFlow = {
   marketing: {
     sectionTitle: 'Marketing',
     sectionId: 'marketing',
-    opened: false,
+    //opened: false,
     fields: {
       customerSatisfactionRate: {
         id: 'satisfaction-rate',
@@ -511,7 +511,7 @@ const chatFlow: ChatFlow = {
         placeholder: 'e.g., 95%',
         required: false,
         description: 'Enter customer satisfaction rate.',
-        opened: false,
+        //opened: false,
       },
       customerRetentionRate: {
         id: 'retention-rate',
@@ -520,7 +520,7 @@ const chatFlow: ChatFlow = {
         placeholder: 'e.g., 90%',
         required: false,
         description: 'Enter customer retention rate.',
-        opened: false,
+        //opened: false,
       },
       customerLifetimeValue: {
         id: 'clv',
@@ -529,7 +529,7 @@ const chatFlow: ChatFlow = {
         placeholder: 'e.g., $500',
         required: false,
         description: 'Enter customer lifetime value.',
-        opened: false,
+        //opened: false,
       },
       fs_marketing: {
         id: 'marketing-details',
@@ -538,7 +538,7 @@ const chatFlow: ChatFlow = {
         description:
           'Upload marketing details (check fs_marketing excel sheet).',
         required: false,
-        opened: false,
+        //opened: false,
       },
     },
     nextNode: 'strategy',
@@ -546,7 +546,7 @@ const chatFlow: ChatFlow = {
   strategy: {
     sectionTitle: 'Strategy',
     sectionId: 'strategy',
-    opened: false,
+    //opened: false,
     fields: {
       SWOT: {
         id: 'swot-analysis',
@@ -554,7 +554,7 @@ const chatFlow: ChatFlow = {
         label: 'SWOT Analysis',
         description: 'Upload SWOT analysis (PDF) or chat with GPT.',
         required: false,
-        opened: false,
+        //opened: false,
       },
       STR: {
         id: 'strategy-chart',
@@ -562,7 +562,7 @@ const chatFlow: ChatFlow = {
         label: 'Strategy Chart',
         description: 'Provide strategy details (chart form).',
         required: true,
-        opened: false,
+        //opened: false,
       },
     },
     nextNode: 'competition',
@@ -570,35 +570,35 @@ const chatFlow: ChatFlow = {
   competition: {
     sectionTitle: 'Competition',
     sectionId: 'competition',
-    opened: false,
+    //opened: false,
     fields: {
       competitors: {
         id: 'competitors-list',
         type: FieldType.Array,
         label: 'Competitors',
         description: 'List competitors with details.',
-        opened: false,
+        //opened: false,
         subFields: {
           name: {
             id: 'competitor-name',
             type: FieldType.Text,
             label: 'Name',
             required: true,
-            opened: false,
+            //opened: false,
           },
           url: {
             id: 'competitor-url',
             type: FieldType.Url,
             label: 'URL',
             required: false,
-            opened: false,
+            //opened: false,
           },
           whatDoTheyDoDifferently: {
             id: 'competitor-diff',
             type: FieldType.Text,
             label: 'What Do They Do Differently',
             required: true,
-            opened: false,
+            //opened: false,
           },
         },
       },
@@ -608,7 +608,7 @@ const chatFlow: ChatFlow = {
   documents: {
     sectionTitle: 'Documents',
     sectionId: 'documents',
-    opened: false,
+    //opened: false,
     fields: {
       registrationDocuments: {
         id: 'reg-docs',
@@ -616,7 +616,7 @@ const chatFlow: ChatFlow = {
         label: 'Registration Documents',
         description: 'Upload multiple registration documents (PDF).',
         required: true,
-        opened: false,
+        //opened: false,
       },
     },
     nextNode: 'theAsk',
@@ -624,7 +624,7 @@ const chatFlow: ChatFlow = {
   theAsk: {
     sectionTitle: 'The Ask',
     sectionId: 'theAsk',
-    opened: false,
+    //opened: false,
     fields: {
       askVsValuation: {
         id: 'ask-valuation',
@@ -633,7 +633,7 @@ const chatFlow: ChatFlow = {
         placeholder: 'e.g., 10%',
         required: true,
         description: 'Enter the percentage of ask vs valuation.',
-        opened: false,
+        //opened: false,
       },
       typeOfInvestor: {
         id: 'investor-type',
@@ -642,7 +642,7 @@ const chatFlow: ChatFlow = {
         placeholder: 'e.g., Angel, VC',
         required: false,
         description: 'Specify the type of investor (optional).',
-        opened: false,
+        //opened: false,
       },
     },
     nextNode: null,

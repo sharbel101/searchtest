@@ -1,13 +1,13 @@
 'use client';
 
-import { Flow } from 'react-chatbotify';
+import { Block, Flow } from 'react-chatbotify';
 import { chatFlow, FieldType } from './flow';
 import { flowInjection } from './flowInjection';
 import { UploadFileHandler } from './UploadFileHandler';
 import SectionComponent from '../UIcomponents/SectionComponent';
 import { useFlowStore } from './FlowStore';
 
-export const generateChatBotFlow = (): Flow => {
+export const generateChatBotFlow = (): Record<string, Block> => {
   return {
     start: {
       component: () => {
@@ -29,6 +29,9 @@ export const generateChatBotFlow = (): Flow => {
         );
       },
       path: 'setup',
+      transition: () => {
+        return 4000;
+      },
     },
 
     setup: {
@@ -78,6 +81,8 @@ export const generateChatBotFlow = (): Flow => {
 
         return 'loop';
       },
+
+      transition: 1000,
     },
 
     loop: {
@@ -107,6 +112,10 @@ export const generateChatBotFlow = (): Flow => {
         }
 
         if (field.type === FieldType.FlowFunc && field.flowInjection) {
+          //TODOs
+          // const flowData= await fetchFlowInjectionData(field.flowInjection)
+          // setInStore(flowData)
+
           if (!isInFlowFunc || !currentFlowController) {
             try {
               setCurrentFlowController(null);
@@ -283,6 +292,19 @@ export const generateChatBotFlow = (): Flow => {
           f?.type === FieldType.Dropdown ||
           (f?.type === FieldType.FlowFunc && currentFlowController)
         );
+      },
+
+      transition: () => {
+        const {
+          getCurrentField,
+          getCurrentSection,
+          setCurrentFlowController,
+          setIsInFlowFunc,
+          currentFlowController,
+          isInFlowFunc,
+        } = useFlowStore.getState();
+        const field = getCurrentField();
+        if (!field || !field.label) return 2000;
       },
     },
 
