@@ -1,171 +1,172 @@
 'use client';
 
-import { Block, Flow } from 'react-chatbotify';
+import { Block } from 'react-chatbotify';
 import { chatFlow, FieldType } from './flow';
-import { flowInjection } from './flowInjection';
-import { UploadFileHandler } from './UploadFileHandler';
-import SectionComponent from '../UIcomponents/SectionComponent';
 import { useFlowStore } from './FlowStore';
+import { createFlowController, QuestionNode } from './flowEngine';
+import { UploadFileHandler } from './UploadFileHandler';
+import MarkdownRenderer, {
+  MarkdownRendererBlock,
+} from '@rcb-plugins/markdown-renderer';
+import SectionComponent from '../UIcomponents/SectionComponent';
 
 export const generateChatBotFlow = (): Record<string, Block> => {
   return {
     start: {
       component: () => {
         const { setSections } = useFlowStore.getState();
-
         const allSections = Object.values(chatFlow);
         setSections(allSections);
 
-        if (allSections.length === 0) {
+        if (allSections.length !== 0) {
           return (
-            <SectionComponent title="Error!" body="No Sections provided!" />
+            <div className="p-4 bg-cyan-50 rounded-xl shadow">
+              <h1 className="text-xl font-light text-cyan-600 mb-2">
+                Hi! We&apos;re setting things up!
+              </h1>
+              <h3 className="text-sm font-light text-cyan-400">Loading...</h3>
+            </div>
+          );
+        } else {
+          return (
+            <div className="p-4 bg-red-50 rounded-xl shadow">
+              <h1 className="text-xl font-light text-red-600 mb-2">
+                No section available!
+              </h1>
+              <h3 className="text-sm font-light text-red-400">Error...</h3>
+            </div>
           );
         }
-        return (
-          <SectionComponent
-            title="Hi, shall we begin?"
-            body="Send me anything to continue"
-          />
-        );
       },
-      path: 'setup',
-      transition: () => {
-        return 4000;
+      renderMarkdown: ['BOT', 'USER'],
+      path: () => {
+        const allSections = Object.values(chatFlow);
+        return allSections.length !== 0 ? 'setup' : 'emptyFlow';
       },
-    },
+      transition: 2000,
+    } as MarkdownRendererBlock,
 
     setup: {
       component: () => {
-        const {
-          setSections,
-          setSectionOpened,
-          currentSectionIndex,
-          resetFieldIndex,
-          incrementField,
-        } = useFlowStore.getState();
-
+        const { setSections, currentSectionIndex, resetFieldIndex } =
+          useFlowStore.getState();
         const allSections = Object.values(chatFlow);
         setSections(allSections);
-        setSectionOpened(currentSectionIndex);
         resetFieldIndex();
-
         const current = allSections[currentSectionIndex] || null;
 
         return (
-          <SectionComponent
-            title={`Starting section ${current?.sectionTitle ?? 'Unknown'}`}
-            body=""
-          />
+          <div className="p-4">
+            <h2 className="text-xl font-light text-cyan-400">
+              Starting section: {current?.sectionTitle ?? 'Unknown'}
+            </h2>
+          </div>
         );
       },
       path: () => {
-        const { getCurrentSection, incrementSection, resetFieldIndex } =
+        const { getCurrentSection, advanceToNextSection } =
           useFlowStore.getState();
-
         const current = getCurrentSection();
-        console.log(
-          'DEBUG: this is the current section:' + current?.sectionTitle,
-        );
         if (!current) return 'end';
 
         const fields = Object.values(current.fields);
         if (fields.length === 0) {
-          useFlowStore.getState().advanceToNextSection();
+          advanceToNextSection();
           const newSection = useFlowStore.getState().getCurrentSection();
-          console.log(
-            'DEBUG: Advanced to next section. New section:',
-            newSection,
-          );
           return newSection ? 'setup' : 'end';
         }
-
         return 'loop';
       },
-
-      transition: 1000,
+      transition: 2000,
     },
 
     loop: {
-      component: (params: any) => {
+      component: () => {
         const {
           getCurrentField,
           getCurrentSection,
+          setSubFlowByName,
           setCurrentFlowController,
           setIsInFlowFunc,
           currentFlowController,
           isInFlowFunc,
+          setQuestionBody,
         } = useFlowStore.getState();
 
         const field = getCurrentField();
         const section = getCurrentSection();
 
-        console.log('DEBUG: this is the current Field:' + field);
-
         if (!field || !field.label) {
-          console.warn('FIELD IS MISSING OR INVALID:', field);
           return (
-            <SectionComponent
-              title="No more fields in this section..."
-              body="Send me anything to jump to the next section"
-            />
+            <div className="p-4 bg-cyan-50 rounded-xl shadow-md">
+              <h3 className="text-base font-light text-cyan-600 mb-2">
+                No more fields in this section...
+              </h3>
+              <p className="text-xs text-gray-600">
+                Send me anything to jump to the next section.
+              </p>
+            </div>
           );
         }
 
-        if (field.type === FieldType.FlowFunc && field.flowInjection) {
-          //TODOs
-          // const flowData= await fetchFlowInjectionData(field.flowInjection)
-          // setInStore(flowData)
+        // Handle injected flow (FlowFunc) start
+        if (
+          field.type === FieldType.FlowFunc &&
+          field.flowInjection &&
+          !isInFlowFunc
+        ) {
+          const subFlow =
+            useFlowStore.getState().allSubFlows?.[field.flowInjection];
+          if (subFlow) {
+            setSubFlowByName(field.flowInjection);
 
-          if (!isInFlowFunc || !currentFlowController) {
-            try {
-              setCurrentFlowController(null);
-              setIsInFlowFunc(false);
+            const flowController = createFlowController(subFlow);
 
-              let controller;
-              if (typeof field.flowInjection === 'string') {
-                if (field.flowInjection === 'investmentStageFlow') {
-                  controller = flowInjection();
-                } else {
-                  throw new Error(
-                    `Unknown flow injection: ${field.flowInjection}`,
-                  );
-                }
-              } else if (typeof field.flowInjection === 'function') {
-                controller = (field.flowInjection as () => any)();
-              } else {
-                throw new Error('Invalid flowInjection type');
-              }
+            // Initialize controller in zustand
+            setCurrentFlowController(flowController);
+            setIsInFlowFunc(true);
 
-              setCurrentFlowController(controller);
-              setIsInFlowFunc(true);
-            } catch (error) {
-              console.error(`Error initializing FlowFunc:`, error);
-              return (
-                <SectionComponent
-                  title="Error"
-                  body={`Error loading ${field.label}. Please try again.`}
-                />
-              );
-            }
-          }
+            // Set initial question body to display
+            const initialQuestion = flowController.getCurrentQuestion();
+            setQuestionBody(initialQuestion);
 
-          const controller = useFlowStore.getState().currentFlowController;
-          if (controller) {
-            const question = controller.getCurrentQuestion();
-            const answers = controller.getCurrentAnswers();
-
-            let body = question;
+            // Compose body with question and options for display
+            const answers = flowController.getCurrentAnswers();
+            let body = initialQuestion;
             if (answers.length > 0) {
               body += '\n\nPlease select one of the following options:';
-              answers.forEach((answer: string, index: number) => {
-                body += `\n${index + 1}. ${answer}`;
+              answers.forEach((answer: string, idx: number) => {
+                body += `\n${idx + 1}. ${answer}`;
               });
             }
 
             return <SectionComponent title={field.label} body={body} />;
+          } else {
+            return <p>Subflow &quot;{field.flowInjection}&quot; not found.</p>;
           }
         }
 
+        // When inside injected subflow, render current question and answers
+        if (
+          field.type === FieldType.FlowFunc &&
+          isInFlowFunc &&
+          currentFlowController
+        ) {
+          const question = currentFlowController.getCurrentQuestion();
+          const answers = currentFlowController.getCurrentAnswers();
+
+          let body = question;
+          if (answers.length > 0) {
+            body += '\n\nPlease select one of the following options:';
+            answers.forEach((answer: string, idx: number) => {
+              body += `\n${idx + 1}. ${answer}`;
+            });
+          }
+
+          return <SectionComponent title={field.label} body={body} />;
+        }
+
+        // Default rendering for normal fields: use label + description
         return (
           <SectionComponent
             title={field.label}
@@ -174,22 +175,23 @@ export const generateChatBotFlow = (): Record<string, Block> => {
         );
       },
 
-      path: (params: any) => {
+      path: (params: { userInput?: string }) => {
         const {
           getCurrentSection,
           getCurrentField,
           incrementField,
           incrementSection,
           resetFieldIndex,
-          setSections,
-          currentFlowController,
-          isInFlowFunc,
           setCurrentFlowController,
           setIsInFlowFunc,
+          currentFlowController,
+          isInFlowFunc,
+          setStage,
+          advanceToNextSection,
+          setQuestionBody,
         } = useFlowStore.getState();
 
         const section = getCurrentSection();
-
         if (!section) return 'end';
 
         const field = getCurrentField();
@@ -199,6 +201,7 @@ export const generateChatBotFlow = (): Record<string, Block> => {
           return getCurrentSection() ? 'setup' : 'end';
         }
 
+        // Inside injected subflow flow
         if (
           field.type === FieldType.FlowFunc &&
           isInFlowFunc &&
@@ -207,48 +210,44 @@ export const generateChatBotFlow = (): Record<string, Block> => {
           if (params?.userInput !== undefined) {
             currentFlowController.answerQuestion(params.userInput);
 
-            const result = currentFlowController.OnSuccess();
+            // Check if stage is set after answering
+            const stageResult = currentFlowController.OnSuccess();
+            if (stageResult !== 'Stage not available yet') {
+              setStage(stageResult);
 
-            if (result !== 'Stage not available yet') {
+              // Exit subflow
               setIsInFlowFunc(false);
               setCurrentFlowController(null);
-              incrementSection();
-              resetFieldIndex();
-              return 'setup';
+
+              // Continue main flow
+              incrementField();
+              const nextField = getCurrentField();
+
+              if (!nextField) {
+                resetFieldIndex();
+                incrementSection();
+                const nextSection = getCurrentSection();
+                return nextSection ? 'setup' : 'end';
+              }
+
+              return 'loop';
             }
 
+            // Continue inside subflow if no stage set yet
+            setQuestionBody(currentFlowController.getCurrentQuestion());
             return 'loop';
           }
 
           return 'loop';
         }
 
-        if (params?.userInput) {
-          const updatedSections = Object.values(chatFlow).map((sec) => {
-            if (sec.sectionId === section.sectionId) {
-              return {
-                ...sec,
-                fields: {
-                  ...sec.fields,
-                  [field.id]: {
-                    ...sec.fields[field.id],
-                    value: params.userInput,
-                  },
-                },
-              };
-            }
-            return sec;
-          });
-          setSections(updatedSections);
-        }
-
+        // Normal flow: increment fields and sections
         incrementField();
         const nextField = getCurrentField();
 
         if (!nextField) {
-          resetFieldIndex(); // reset field index so that getCurrentField() returns null
-          incrementSection(); // advance to the next section
-
+          resetFieldIndex();
+          incrementSection();
           const nextSection = getCurrentSection();
           return nextSection ? 'setup' : 'end';
         }
@@ -259,7 +258,9 @@ export const generateChatBotFlow = (): Record<string, Block> => {
       file: async (params: any) => {
         const { getCurrentField } = useFlowStore.getState();
         const f = getCurrentField();
-
+        if (f?.type === FieldType.Dropdown) {
+          return null;
+        }
         if (f?.type === FieldType.File || f?.type === FieldType.Video) {
           await UploadFileHandler(params);
         }
@@ -285,7 +286,6 @@ export const generateChatBotFlow = (): Record<string, Block> => {
         const { getCurrentField, currentFlowController } =
           useFlowStore.getState();
         const f = getCurrentField();
-
         return (
           f?.type === FieldType.File ||
           f?.type === FieldType.Video ||
@@ -293,23 +293,29 @@ export const generateChatBotFlow = (): Record<string, Block> => {
           (f?.type === FieldType.FlowFunc && currentFlowController)
         );
       },
-
-      transition: () => {
-        const {
-          getCurrentField,
-          getCurrentSection,
-          setCurrentFlowController,
-          setIsInFlowFunc,
-          currentFlowController,
-          isInFlowFunc,
-        } = useFlowStore.getState();
-        const field = getCurrentField();
-        if (!field || !field.label) return 2000;
-      },
     },
 
     end: {
-      message: 'Thank you! All sections completed.',
+      component: () => (
+        <div className="p-4 bg-green-50 rounded-xl shadow text-center">
+          <h2 className="text-xl font-light text-green-600 mb-2">
+            🎉 Thank you!
+          </h2>
+          <p className="text-xs text-gray-700">All sections completed.</p>
+        </div>
+      ),
+      chatDisabled: true,
+    },
+
+    emptyFlow: {
+      component: () => (
+        <div className="p-4 bg-yellow-50 rounded-xl shadow text-center">
+          <h2 className="text-xl font-light text-yellow-600 mb-2">
+            No section available
+          </h2>
+          <p className="text-xs text-yellow-500">An error occurred.</p>
+        </div>
+      ),
       chatDisabled: true,
     },
   };

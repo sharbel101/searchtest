@@ -1,7 +1,7 @@
 'use client';
 
-import React from 'react';
-import ChatBot, { Flow } from 'react-chatbotify';
+import React, { useState, useEffect } from 'react';
+import ChatBot from 'react-chatbotify';
 import { generateChatBotFlow } from '../dataflow/constructor';
 
 export default function Chat() {

@@ -1,6 +1,13 @@
 import { create } from 'zustand';
+
 import { FieldType, FlowSection, FormField } from './flow';
-import { investmentStageFlow, QuestionNode } from './flowInjection';
+import { QuestionNode } from './flowEngine';
+import { investmentStageFlow } from './InvestmentFlow';
+
+// Map of all available subflows
+const subFlows: Record<string, Record<string, QuestionNode>> = {
+  investmentStageFlow,
+};
 
 export type TypeSubFlow = {
   [key: string]: QuestionNode;
@@ -16,16 +23,15 @@ interface FlowState {
   incrementSection: () => void;
   resetFieldIndex: () => void;
   advanceToNextSection: () => void;
-  setSectionOpened: (index: number) => void;
 
   getCurrentSection: () => FlowSection | null;
   getCurrentField: () => FormField | null;
 
-  currentSubFlow: string;
+  currentSubFlow: Record<string, QuestionNode>;
   currentSubFlowFieldIndex: number;
   getCurrentSubFlowFields: (name: string) => QuestionNode[] | null;
+  setSubFlowByName: (name: string) => void;
   incrementSubFlowField: () => void;
-  setSubFlow: (name: string) => void;
 
   currentNodeId: string;
   stage: string | null;
@@ -40,6 +46,8 @@ interface FlowState {
   setCurrentFlowController: (controller: any) => void;
   setIsInFlowFunc: (val: boolean) => void;
   setQuestionBody: (text: string) => void;
+
+  allSubFlows?: Record<string, any>;
 }
 
 export const useFlowStore = create<FlowState>((set, get) => ({
@@ -61,15 +69,6 @@ export const useFlowStore = create<FlowState>((set, get) => ({
       currentSectionIndex: state.currentSectionIndex + 1,
       currentFieldIndex: 0,
     })),
-
-  setSectionOpened: (index) =>
-    set((state) => {
-      const updated = [...state.sections];
-      if (updated[index]) {
-        updated[index] = { ...updated[index], opened: true };
-      }
-      return { sections: updated };
-    }),
 
   getCurrentSection: () => {
     const { sections, currentSectionIndex } = get();
@@ -93,26 +92,31 @@ export const useFlowStore = create<FlowState>((set, get) => ({
     return fields[index];
   },
 
-  // Subflow
-  currentSubFlow: '',
+  // Subflow logic
+  currentSubFlow: {},
   currentSubFlowFieldIndex: 0,
 
   getCurrentSubFlowFields: (subFlowName: string) => {
-    //TODOs remove it
-    const subFlows: Record<string, Record<string, QuestionNode>> = {
-      investmentStageFlow,
-    };
     const flow = subFlows[subFlowName];
-    return flow ? Object.values(flow) : [];
+    return flow ? Object.values(flow) : null;
+  },
+
+  setSubFlowByName: (name: string) => {
+    const flow = subFlows[name];
+    if (flow) {
+      set({
+        currentSubFlow: flow,
+        currentSubFlowFieldIndex: 0,
+      });
+    } else {
+      console.warn(`Subflow "${name}" not found.`);
+    }
   },
 
   incrementSubFlowField: () =>
     set((state) => ({
       currentSubFlowFieldIndex: state.currentSubFlowFieldIndex + 1,
     })),
-
-  setSubFlow: (subFlow) =>
-    set({ currentSubFlow: subFlow, currentSubFlowFieldIndex: 0 }),
 
   currentNodeId: 'q1',
   stage: null,
@@ -128,4 +132,7 @@ export const useFlowStore = create<FlowState>((set, get) => ({
     set({ currentFlowController: controller }),
   setIsInFlowFunc: (val) => set({ isInFlowFunc: val }),
   setQuestionBody: (text) => set({ questionBody: text }),
+
+  // <<< Add allSubFlows here to fix your error >>>
+  allSubFlows: subFlows,
 }));
