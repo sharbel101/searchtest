@@ -1,53 +1,34 @@
 'use client';
 
-import { Block } from 'react-chatbotify';
+import { Block } from '@/Chatbot/src';
 import { chatFlow, FieldType } from './flow';
 import { useFlowStore } from './FlowStore';
-import { createFlowController, QuestionNode } from './flowEngine';
+import { createFlowController } from './flowEngine';
 import { UploadFileHandler } from './UploadFileHandler';
-import MarkdownRenderer, {
-  MarkdownRendererBlock,
-} from '@rcb-plugins/markdown-renderer';
-import SectionComponent from '../UIcomponents/SectionComponent';
 
 export const generateChatBotFlow = (): Record<string, Block> => {
   return {
     start: {
-      component: () => {
+      message: () => {
         const { setSections } = useFlowStore.getState();
         const allSections = Object.values(chatFlow);
         setSections(allSections);
 
         if (allSections.length !== 0) {
-          return (
-            <div className="p-4 bg-cyan-50 rounded-xl shadow">
-              <h1 className="text-xl font-light text-cyan-600 mb-2">
-                Hi! We&apos;re setting things up!
-              </h1>
-              <h3 className="text-sm font-light text-cyan-400">Loading...</h3>
-            </div>
-          );
+          return "Hi! We're setting things up! Loading...";
         } else {
-          return (
-            <div className="p-4 bg-red-50 rounded-xl shadow">
-              <h1 className="text-xl font-light text-red-600 mb-2">
-                No section available!
-              </h1>
-              <h3 className="text-sm font-light text-red-400">Error...</h3>
-            </div>
-          );
+          return 'No section available! Error...';
         }
       },
-      renderMarkdown: ['BOT', 'USER'],
       path: () => {
         const allSections = Object.values(chatFlow);
         return allSections.length !== 0 ? 'setup' : 'emptyFlow';
       },
       transition: 2000,
-    } as MarkdownRendererBlock,
+    },
 
     setup: {
-      component: () => {
+      message: () => {
         const { setSections, currentSectionIndex, resetFieldIndex } =
           useFlowStore.getState();
         const allSections = Object.values(chatFlow);
@@ -55,13 +36,9 @@ export const generateChatBotFlow = (): Record<string, Block> => {
         resetFieldIndex();
         const current = allSections[currentSectionIndex] || null;
 
-        return (
-          <div className="p-4">
-            <h2 className="text-xl font-light text-cyan-400">
-              Starting section: {current?.sectionTitle ?? 'Unknown'}
-            </h2>
-          </div>
-        );
+        return current
+          ? `Starting section: ${current.sectionTitle}`
+          : 'Starting section: Unknown';
       },
       path: () => {
         const { getCurrentSection, advanceToNextSection } =
@@ -81,7 +58,7 @@ export const generateChatBotFlow = (): Record<string, Block> => {
     },
 
     loop: {
-      component: () => {
+      message: () => {
         const {
           getCurrentField,
           getCurrentSection,
@@ -97,19 +74,9 @@ export const generateChatBotFlow = (): Record<string, Block> => {
         const section = getCurrentSection();
 
         if (!field || !field.label) {
-          return (
-            <div className="p-4 bg-cyan-50 rounded-xl shadow-md">
-              <h3 className="text-base font-light text-cyan-600 mb-2">
-                No more fields in this section...
-              </h3>
-              <p className="text-xs text-gray-600">
-                Send me anything to jump to the next section.
-              </p>
-            </div>
-          );
+          return 'No more fields in this section... Send me anything to jump to the next section.';
         }
 
-        // Handle injected flow (FlowFunc) start
         if (
           field.type === FieldType.FlowFunc &&
           field.flowInjection &&
@@ -122,15 +89,12 @@ export const generateChatBotFlow = (): Record<string, Block> => {
 
             const flowController = createFlowController(subFlow);
 
-            // Initialize controller in zustand
             setCurrentFlowController(flowController);
             setIsInFlowFunc(true);
 
-            // Set initial question body to display
             const initialQuestion = flowController.getCurrentQuestion();
             setQuestionBody(initialQuestion);
 
-            // Compose body with question and options for display
             const answers = flowController.getCurrentAnswers();
             let body = initialQuestion;
             if (answers.length > 0) {
@@ -140,13 +104,12 @@ export const generateChatBotFlow = (): Record<string, Block> => {
               });
             }
 
-            return <SectionComponent title={field.label} body={body} />;
+            return `${field.label}\n\n${body}`;
           } else {
-            return <p>Subflow &quot;{field.flowInjection}&quot; not found.</p>;
+            return `Subflow "${field.flowInjection}" not found.`;
           }
         }
 
-        // When inside injected subflow, render current question and answers
         if (
           field.type === FieldType.FlowFunc &&
           isInFlowFunc &&
@@ -163,16 +126,11 @@ export const generateChatBotFlow = (): Record<string, Block> => {
             });
           }
 
-          return <SectionComponent title={field.label} body={body} />;
+          return `${field.label}\n\n${body}`;
         }
 
-        // Default rendering for normal fields: use label + description
-        return (
-          <SectionComponent
-            title={field.label}
-            body={field.description || `Please provide ${field.label}`}
-          />
-        );
+        // Default fallback
+        return `${field.label}\n${field.description || `Please provide ${field.label}`}`;
       },
 
       path: (params: { userInput?: string }) => {
@@ -201,7 +159,6 @@ export const generateChatBotFlow = (): Record<string, Block> => {
           return getCurrentSection() ? 'setup' : 'end';
         }
 
-        // Inside injected subflow flow
         if (
           field.type === FieldType.FlowFunc &&
           isInFlowFunc &&
@@ -210,16 +167,12 @@ export const generateChatBotFlow = (): Record<string, Block> => {
           if (params?.userInput !== undefined) {
             currentFlowController.answerQuestion(params.userInput);
 
-            // Check if stage is set after answering
             const stageResult = currentFlowController.OnSuccess();
             if (stageResult !== 'Stage not available yet') {
               setStage(stageResult);
-
-              // Exit subflow
               setIsInFlowFunc(false);
               setCurrentFlowController(null);
 
-              // Continue main flow
               incrementField();
               const nextField = getCurrentField();
 
@@ -233,7 +186,6 @@ export const generateChatBotFlow = (): Record<string, Block> => {
               return 'loop';
             }
 
-            // Continue inside subflow if no stage set yet
             setQuestionBody(currentFlowController.getCurrentQuestion());
             return 'loop';
           }
@@ -241,7 +193,6 @@ export const generateChatBotFlow = (): Record<string, Block> => {
           return 'loop';
         }
 
-        // Normal flow: increment fields and sections
         incrementField();
         const nextField = getCurrentField();
 
@@ -296,26 +247,12 @@ export const generateChatBotFlow = (): Record<string, Block> => {
     },
 
     end: {
-      component: () => (
-        <div className="p-4 bg-green-50 rounded-xl shadow text-center">
-          <h2 className="text-xl font-light text-green-600 mb-2">
-            🎉 Thank you!
-          </h2>
-          <p className="text-xs text-gray-700">All sections completed.</p>
-        </div>
-      ),
+      message: () => '🎉 Thank you! All sections completed.',
       chatDisabled: true,
     },
 
     emptyFlow: {
-      component: () => (
-        <div className="p-4 bg-yellow-50 rounded-xl shadow text-center">
-          <h2 className="text-xl font-light text-yellow-600 mb-2">
-            No section available
-          </h2>
-          <p className="text-xs text-yellow-500">An error occurred.</p>
-        </div>
-      ),
+      message: () => 'No section available. An error occurred.',
       chatDisabled: true,
     },
   };

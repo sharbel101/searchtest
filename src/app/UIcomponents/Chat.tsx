@@ -1,12 +1,13 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import ChatBot from 'react-chatbotify';
+import ChatBot from '@/Chatbot/src';
 import { generateChatBotFlow } from '../dataflow/constructor';
 
 export default function Chat() {
   const settings = {
-    isOpen: true, // Show the bot by default
+    simulateStream: true,
+    isOpen: true,
     general: {
       embedded: true,
       primaryColor: '#42b0c5',
