@@ -1,6 +1,6 @@
 'use client';
 
-import NdaComponent from '../UIcomponents/NdaComponent';
+// import NdaComponent from '../../app/UIcomponents/NdaComponent';
 // Defining enums for field types to ensure scalability and type safety
 export enum FieldType {
   Text = 'text',
@@ -377,6 +377,7 @@ const chatFlow: ChatFlow = {
         // This field must be filled before progressing
         required: true,
 
+        //rename to flowInjectionID
         flowInjection: 'investmentStageFlow',
       },
     },

@@ -2,10 +2,23 @@
 
 import React, { useState, useEffect } from 'react';
 import ChatBot from '@/Chatbot/src';
-import { generateChatBotFlow } from '../dataflow/constructor';
+import { generateChatBotFlow } from '../../dataflow/constructor';
 
 export default function Chat() {
   const settings = {
+    footer: {
+      text: '',
+    },
+
+    userBubble: {
+      simulateStream: true,
+      streamSpeed: 30,
+    },
+    botBubble: {
+      simulateStream: true,
+      streamSpeed: 30,
+    },
+
     simulateStream: true,
     isOpen: true,
     general: {

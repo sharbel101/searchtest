@@ -1,6 +1,7 @@
 // Home.tsx
-import Sidebar from './UIcomponents/SideBar';
-import Chat from './UIcomponents/Chat';
+
+import Chat from '@/components/ui/Layout/Chat';
+import Sidebar from '@/components/ui/Layout/SideBar';
 
 export default function Home() {
   return (

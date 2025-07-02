@@ -2,9 +2,10 @@
 
 import { useState } from 'react';
 import { Menu } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import QuestionDetails from './QuestionDetails';
-import { useFlowStore } from '../dataflow/FlowStore';
+import { Button } from '@/components/ui/ShadCn/button';
+
+import { useFlowStore } from '../../dataflow/FlowStore';
+import QuestionDetails from '../Chatbot/QuestionDetails';
 
 // Individual Section Component
 interface SectionProps {

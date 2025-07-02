@@ -2,15 +2,15 @@ import { Settings } from '../types/Settings';
 import { Styles } from '../types/Styles';
 import { Theme } from '../types/Theme';
 import { ThemeCacheData } from '../types/internal/ThemeCacheData';
-import { viteConfig } from '../viteconfig';
+import { Config } from '../chatbbot_config';
 
 // The configuration values like DEFAULT_URL, DEFAULT_EXPIRATION, and CACHE_KEY_PREFIX
 // were previously accessed using `import.meta.env` directly. To centralize and
 // simplify configuration management, they have been moved to a separate Vite config file
 // (viteconfig.ts) and are imported here.
-const DEFAULT_URL = viteConfig.DEFAULT_URL;
-const DEFAULT_EXPIRATION = viteConfig.DEFAULT_EXPIRATION;
-const CACHE_KEY_PREFIX = viteConfig.CACHE_KEY_PREFIX;
+const DEFAULT_URL = Config.DEFAULT_URL;
+const DEFAULT_EXPIRATION = Config.DEFAULT_EXPIRATION;
+const CACHE_KEY_PREFIX = Config.CACHE_KEY_PREFIX;
 
 /**
  * Fetches the cached theme if it exist and checks for expiry.

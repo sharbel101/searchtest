@@ -1,5 +1,5 @@
+import { chatFlow } from '@/components/dataflow/flow';
 import React from 'react';
-import { chatFlow } from '../dataflow/flow';
 
 interface QuestionDetailsProps {
   flowItem: (typeof chatFlow)[keyof typeof chatFlow];
