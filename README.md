@@ -61,6 +61,14 @@ Make sure you have _pnpm_ installed globally. If not: `npm install -g pnpm`
 - [ ] fix duplicate bug
 - [ ] remove everything in store related to `opened`
 
+### Week 4
+
+- [ ] ui same as design
+- [ ] is object
+- [ ] if jumpTo(path) for different loops
+- [ ] markup
+- [ ] making chartFrom async
+
 ---
 
 ## 📆 Daily Tasks

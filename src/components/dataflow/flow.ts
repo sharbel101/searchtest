@@ -45,6 +45,40 @@ type ChatFlow = {
 
 // Defining the chat flow structure with sections and their fields
 const chatFlow: ChatFlow = {
+  investmentStage: {
+    // Title of this section in the flow
+    sectionTitle: 'Investment Stage',
+
+    // Unique identifier for this section
+    sectionId: 'investmentStage',
+
+    // Fields defined in this section
+    fields: {
+      IS: {
+        // Unique field ID
+        id: 'investment-stage-chart',
+
+        // The field type is a functional flow interaction
+        type: FieldType.FlowFunc,
+
+        // Label shown in UI
+        label: 'Investment Stage',
+
+        // Description shown to the user
+        description: 'Answer questions to determine your investment stage',
+
+        // This field must be filled before progressing
+        required: true,
+
+        //rename to flowInjectionID
+        flowInjection: 'investmentStageFlow',
+      },
+    },
+
+    // Next node to navigate to in the flow after this section
+    nextNode: 'departments',
+  },
+
   nda: {
     sectionTitle: 'NDA',
     sectionId: 'nda',
@@ -352,7 +386,7 @@ const chatFlow: ChatFlow = {
     nextNode: 'investmentStage',
   },
   // // Import the flowInjection function
-  investmentStage: {
+  investmentStage2: {
     // Title of this section in the flow
     sectionTitle: 'Investment Stage',
 
@@ -377,8 +411,10 @@ const chatFlow: ChatFlow = {
         // This field must be filled before progressing
         required: true,
 
-        //rename to flowInjectionID
-        flowInjection: 'investmentStageFlow',
+        flowInjection: 'investmentStageFlow2',
+
+        //to do
+        // flowInjection:{id: 'investmentStageFlow', type:"flowchart"}, //flowchart or fs
       },
     },
 

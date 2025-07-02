@@ -82,6 +82,7 @@ export const generateChatBotFlow = (): Record<string, Block> => {
           field.flowInjection &&
           !isInFlowFunc
         ) {
+          //to do
           //is has to be async
           //const subFlowData= await getSubFlowFromServer(field.flowInjection);
           //useFlowStore.getState().setSubFlow(subFlowData);
