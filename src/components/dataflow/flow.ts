@@ -26,7 +26,7 @@ export type FormField = {
   opened?: boolean;
   validation?: RegExp | ((value: any) => boolean); // Optional validation rule used to validate string inputs by testing if they match a specific pattern
   subFields?: { [key: string]: FormField };
-  flowInjection?: string;
+  flowInjection?: { name: string; type: string };
 };
 
 // Type for flow sections, representing a group of fields
@@ -45,6 +45,7 @@ type ChatFlow = {
 
 // Defining the chat flow structure with sections and their fields
 const chatFlow: ChatFlow = {
+  /*
   investmentStage: {
     // Title of this section in the flow
     sectionTitle: 'Investment Stage',
@@ -71,14 +72,17 @@ const chatFlow: ChatFlow = {
         required: true,
 
         //rename to flowInjectionID
-        flowInjection: 'investmentStageFlow',
+        flowInjection: {
+          name:'investmentStageFlow',
+          type:'ChartForm'
+        },
       },
     },
 
     // Next node to navigate to in the flow after this section
     nextNode: 'departments',
   },
-
+*/
   nda: {
     sectionTitle: 'NDA',
     sectionId: 'nda',
@@ -411,10 +415,10 @@ const chatFlow: ChatFlow = {
         // This field must be filled before progressing
         required: true,
 
-        flowInjection: 'investmentStageFlow2',
-
-        //to do
-        // flowInjection:{id: 'investmentStageFlow', type:"flowchart"}, //flowchart or fs
+        flowInjection: {
+          name: 'investmentStageFlow',
+          type: 'ChartForm',
+        },
       },
     },
 

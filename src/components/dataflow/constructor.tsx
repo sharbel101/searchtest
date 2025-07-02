@@ -5,6 +5,7 @@ import { chatFlow, FieldType } from './flow';
 import { useFlowStore } from './FlowStore';
 import { createFlowController } from './flowEngine';
 import { UploadFileHandler } from './UploadFileHandler';
+import { fetchAndSetSubFlow } from '../dataflow/dummy/FetchSubFlow';
 
 export const generateChatBotFlow = (): Record<string, Block> => {
   return {
@@ -24,6 +25,7 @@ export const generateChatBotFlow = (): Record<string, Block> => {
         const allSections = Object.values(chatFlow);
         return allSections.length !== 0 ? 'setup' : 'emptyFlow';
       },
+      chatDisabled: true,
       transition: 2000,
     },
 
@@ -54,20 +56,17 @@ export const generateChatBotFlow = (): Record<string, Block> => {
         }
         return 'loop';
       },
+      chatDisabled: true,
       transition: 2000,
     },
 
     loop: {
-      message: () => {
+      message: async () => {
         const {
           getCurrentField,
           getCurrentSection,
-          setSubFlowByName,
-          setCurrentFlowController,
-          setIsInFlowFunc,
           currentFlowController,
           isInFlowFunc,
-          setQuestionBody,
         } = useFlowStore.getState();
 
         const field = getCurrentField();
@@ -75,43 +74,6 @@ export const generateChatBotFlow = (): Record<string, Block> => {
 
         if (!field || !field.label) {
           return 'No more fields in this section... Send me anything to jump to the next section.';
-        }
-
-        if (
-          field.type === FieldType.FlowFunc &&
-          field.flowInjection &&
-          !isInFlowFunc
-        ) {
-          //to do
-          //is has to be async
-          //const subFlowData= await getSubFlowFromServer(field.flowInjection);
-          //useFlowStore.getState().setSubFlow(subFlowData);
-          const subFlow =
-            useFlowStore.getState().allSubFlows?.[field.flowInjection];
-          if (subFlow) {
-            setSubFlowByName(field.flowInjection);
-
-            const flowController = createFlowController(subFlow);
-
-            setCurrentFlowController(flowController);
-            setIsInFlowFunc(true);
-
-            const initialQuestion = flowController.getCurrentQuestion();
-            setQuestionBody(initialQuestion);
-
-            const answers = flowController.getCurrentAnswers();
-            let body = initialQuestion;
-            if (answers.length > 0) {
-              body += '\n\nPlease select one of the following options:';
-              answers.forEach((answer: string, idx: number) => {
-                body += `\n${idx + 1}. ${answer}`;
-              });
-            }
-
-            return `${field.label}\n\n${body}`;
-          } else {
-            return `Subflow "${field.flowInjection}" not found.`;
-          }
         }
 
         if (
@@ -161,6 +123,16 @@ export const generateChatBotFlow = (): Record<string, Block> => {
           incrementSection();
           resetFieldIndex();
           return getCurrentSection() ? 'setup' : 'end';
+        }
+
+        // Redirect to chartForm if field has flowInjection and not already in flow func
+        if (
+          field.type === FieldType.FlowFunc &&
+          field.flowInjection &&
+          field.flowInjection.type === 'ChartForm' &&
+          !isInFlowFunc
+        ) {
+          return 'chartForm';
         }
 
         if (
@@ -247,6 +219,143 @@ export const generateChatBotFlow = (): Record<string, Block> => {
           f?.type === FieldType.Dropdown ||
           (f?.type === FieldType.FlowFunc && currentFlowController)
         );
+      },
+    },
+
+    // === New chartForm block dedicated for flowInjection Chart forms (investementStage) ===
+    chartForm: {
+      message: async () => {
+        const { getCurrentField, currentFlowController, isInFlowFunc } =
+          useFlowStore.getState();
+
+        const field = getCurrentField();
+
+        if (!field || !field.label) {
+          return 'No more subflow fields available.';
+        }
+
+        if (!isInFlowFunc && field.flowInjection) {
+          const subFlowData = await fetchAndSetSubFlow(
+            field.flowInjection.name,
+            6000,
+          );
+          return subFlowData || `Subflow "${field.flowInjection}" not found.`;
+        }
+
+        if (isInFlowFunc && currentFlowController) {
+          const question = currentFlowController.getCurrentQuestion();
+          const answers = currentFlowController.getCurrentAnswers();
+
+          let body = question;
+          if (answers.length > 0) {
+            body += '\n\nPlease select one of the following options:';
+            answers.forEach((answer: string, idx: number) => {
+              body += `\n${idx + 1}. ${answer}`;
+            });
+          }
+
+          return `${field.label}\n\n${body}`;
+        }
+
+        return `${field.label}\n${field.description || `Please provide ${field.label}`}`;
+      },
+
+      path: (params: { userInput?: string }) => {
+        const {
+          getCurrentField,
+          incrementField,
+          resetFieldIndex,
+          incrementSection,
+          getCurrentSection,
+          setStage,
+          setIsInFlowFunc,
+          setCurrentFlowController,
+          currentFlowController,
+          isInFlowFunc,
+          setQuestionBody,
+        } = useFlowStore.getState();
+
+        const field = getCurrentField();
+
+        if (!field) {
+          // Subflow ended, reset and go back to main flow setup or end
+          setIsInFlowFunc(false);
+          setCurrentFlowController(null);
+          resetFieldIndex();
+          incrementSection();
+          return getCurrentSection() ? 'setup' : 'end';
+        }
+
+        if (
+          isInFlowFunc &&
+          currentFlowController &&
+          params?.userInput !== undefined
+        ) {
+          currentFlowController.answerQuestion(params.userInput);
+
+          const stageResult = currentFlowController.OnSuccess();
+          if (stageResult !== 'Stage not available yet') {
+            setStage(stageResult);
+            setIsInFlowFunc(false);
+            setCurrentFlowController(null);
+
+            incrementField();
+            const nextField = getCurrentField();
+
+            if (!nextField) {
+              resetFieldIndex();
+              incrementSection();
+              return getCurrentSection() ? 'setup' : 'end';
+            }
+            return 'chartForm';
+          }
+
+          setQuestionBody(currentFlowController.getCurrentQuestion());
+          return 'chartForm';
+        }
+
+        return 'chartForm';
+      },
+
+      options: () => {
+        const { getCurrentField, currentFlowController, isInFlowFunc } =
+          useFlowStore.getState();
+
+        const field = getCurrentField();
+
+        if (
+          field?.type === FieldType.FlowFunc &&
+          isInFlowFunc &&
+          currentFlowController
+        ) {
+          return currentFlowController.getCurrentAnswers();
+        }
+
+        return field?.options?.map((o: { value: string }) => o.value) || [];
+      },
+
+      chatDisabled: () => {
+        const { getCurrentField, currentFlowController } =
+          useFlowStore.getState();
+        const f = getCurrentField();
+
+        return (
+          f?.type === FieldType.File ||
+          f?.type === FieldType.Video ||
+          f?.type === FieldType.Dropdown ||
+          (f?.type === FieldType.FlowFunc && currentFlowController !== null)
+        );
+      },
+
+      file: async (params: any) => {
+        const { getCurrentField } = useFlowStore.getState();
+        const f = getCurrentField();
+
+        if (f?.type === FieldType.Dropdown) return null;
+
+        if (f?.type === FieldType.File || f?.type === FieldType.Video) {
+          await UploadFileHandler(params);
+        }
       },
     },
 
