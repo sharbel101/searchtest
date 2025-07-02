@@ -64,10 +64,10 @@ Make sure you have _pnpm_ installed globally. If not: `npm install -g pnpm`
 ### Week 4
 
 - [ ] ui same as design (charbel)
-- [ ] making flow injeciotn as object (joe)
-- [ ] if jumpTo(path) for different loops (charbel)
+- [ ] making flow injeciotn as object (joe) DONE DONE
+- [ ] if jumpTo(path) for different loops (charbel) DONE DONE
 - [ ] markup (joe)
-- [ ] making chartFrom async (joe)
+- [ ] making chartFrom async (joe) DONE DONE
 
 ---
 
