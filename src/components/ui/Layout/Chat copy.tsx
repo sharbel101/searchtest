@@ -1,55 +1,22 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import ChatBot from 'react-chatbotify';
 import { generateChatBotFlow } from '../../dataflow/constructor';
-import { useFlowStore } from '@/components/dataflow/FlowStore';
+import MarkdownRenderer from '@rcb-plugins/markdown-renderer';
 
 export default function Chat() {
-  const {
-    ChatBotComponent,
-    MarkdownRendererComponent,
-    setChatBotComponent,
-    setMarkdownRendererComponent,
-  } = useFlowStore();
-
-  useEffect(() => {
-    // Only load components if they haven't been loaded yet
-    // This prevents re-importing on every re-render if they're already in the store
-    if (!ChatBotComponent || !MarkdownRendererComponent) {
-      async function loadComponents() {
-        // Dynamically import ChatBot and MarkdownRenderer only on the client-side
-        const ChatBotModule = await import('react-chatbotify');
-        setChatBotComponent(ChatBotModule.default);
-
-        const MarkdownRendererModule = await import(
-          '@rcb-plugins/markdown-renderer'
-        );
-        setMarkdownRendererComponent(MarkdownRendererModule.default);
-      }
-      loadComponents();
-    }
-  }, [
-    ChatBotComponent,
-    MarkdownRendererComponent,
-    setChatBotComponent,
-    setMarkdownRendererComponent,
-  ]); // Dependencies for useEffect
-
-  if (!ChatBotComponent || !MarkdownRendererComponent) {
-    return <div>Loading chatbot...</div>; // Show loading state while components are being fetched
-  }
-
   const pluginConfig = {
+    // defaults to true, auto enable events required for plugin to work
     autoConfig: true,
   };
 
-  // Now use the components from the store
-  const plugins = [MarkdownRendererComponent(pluginConfig)];
+  const plugins = [MarkdownRenderer(pluginConfig)];
 
   const settings = {
     footer: {
       text: '',
     },
+
     userBubble: {
       simulateStream: true,
       streamSpeed: 30,
@@ -58,6 +25,7 @@ export default function Chat() {
       simulateStream: true,
       streamSpeed: 30,
     },
+
     simulateStream: true,
     isOpen: true,
     general: {
@@ -157,7 +125,7 @@ export default function Chat() {
   const customFlow = generateChatBotFlow();
 
   return (
-    <ChatBotComponent
+    <ChatBot
       settings={settings}
       styles={styles}
       flow={customFlow}

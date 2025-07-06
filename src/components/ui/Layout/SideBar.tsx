@@ -5,7 +5,7 @@ import { Menu } from 'lucide-react';
 import { Button } from '@/components/ui/ShadCn/button';
 
 import { useFlowStore } from '../../dataflow/FlowStore';
-import QuestionDetails from '../Chatbot/QuestionDetails';
+import QuestionDetails from '../Chatbot UI/QuestionDetails';
 
 // Individual Section Component
 interface SectionProps {

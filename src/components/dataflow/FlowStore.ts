@@ -1,6 +1,8 @@
 import { create } from 'zustand';
 import { FlowSection, FormField } from './flow';
-import { QuestionNode } from './flowEngine';
+
+import type ChatBot from 'react-chatbotify';
+import type MarkdownRenderer from '@rcb-plugins/markdown-renderer';
 
 interface FlowState {
   currentSectionIndex: number;
@@ -29,6 +31,13 @@ interface FlowState {
   setCurrentFlowController: (controller: any) => void;
   setIsInFlowFunc: (val: boolean) => void;
   setQuestionBody: (text: string) => void;
+
+  // New properties for storing components
+  ChatBotComponent: typeof ChatBot | null; // Use typeof to get the type of the imported module's default export
+  MarkdownRendererComponent: typeof MarkdownRenderer | null; // Same here
+
+  setChatBotComponent: (component: typeof ChatBot) => void;
+  setMarkdownRendererComponent: (component: typeof MarkdownRenderer) => void;
 }
 
 export const useFlowStore = create<FlowState>((set, get) => ({
@@ -83,4 +92,13 @@ export const useFlowStore = create<FlowState>((set, get) => ({
     set({ currentFlowController: controller }),
   setIsInFlowFunc: (val) => set({ isInFlowFunc: val }),
   setQuestionBody: (text) => set({ questionBody: text }),
+
+  // Initialize new component states to null
+  ChatBotComponent: null,
+  MarkdownRendererComponent: null,
+
+  // New actions to set the components
+  setChatBotComponent: (component) => set({ ChatBotComponent: component }),
+  setMarkdownRendererComponent: (component) =>
+    set({ MarkdownRendererComponent: component }),
 }));

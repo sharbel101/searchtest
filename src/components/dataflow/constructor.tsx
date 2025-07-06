@@ -1,11 +1,13 @@
 'use client';
 
-import { Block } from '@/Chatbot/src';
+import { Block } from 'react-chatbotify';
 import { chatFlow, FieldType } from './flow';
 import { useFlowStore } from './FlowStore';
-import { createFlowController } from './flowEngine';
 import { UploadFileHandler } from './UploadFileHandler';
 import { fetchAndSetSubFlow } from '../dataflow/dummy/FetchSubFlow';
+import MarkdownRenderer, {
+  MarkdownRendererBlock,
+} from '@rcb-plugins/markdown-renderer';
 
 export const generateChatBotFlow = (): Record<string, Block> => {
   return {
@@ -16,18 +18,19 @@ export const generateChatBotFlow = (): Record<string, Block> => {
         setSections(allSections);
 
         if (allSections.length !== 0) {
-          return "Hi! We're setting things up! Loading...";
+          return `**Hi!** We're setting things up! _Loading..._`;
         } else {
-          return 'No section available! Error...';
+          return `**No section available!** \n\n_Error..._`;
         }
       },
+      renderMarkdown: ['BOT', 'USER'],
       path: () => {
         const allSections = Object.values(chatFlow);
         return allSections.length !== 0 ? 'setup' : 'emptyFlow';
       },
       chatDisabled: true,
       transition: 2000,
-    },
+    } as MarkdownRendererBlock,
 
     setup: {
       message: () => {
@@ -39,9 +42,10 @@ export const generateChatBotFlow = (): Record<string, Block> => {
         const current = allSections[currentSectionIndex] || null;
 
         return current
-          ? `Starting section: ${current.sectionTitle}`
-          : 'Starting section: Unknown';
+          ? `**Starting section:** \n\n### ${current.sectionTitle}`
+          : `**Starting section:** \n\n_Unknown_`;
       },
+      renderMarkdown: ['BOT', 'USER'],
       path: () => {
         const { getCurrentSection, advanceToNextSection } =
           useFlowStore.getState();
@@ -58,7 +62,7 @@ export const generateChatBotFlow = (): Record<string, Block> => {
       },
       chatDisabled: true,
       transition: 2000,
-    },
+    } as MarkdownRendererBlock,
 
     loop: {
       message: async () => {
@@ -73,7 +77,7 @@ export const generateChatBotFlow = (): Record<string, Block> => {
         const section = getCurrentSection();
 
         if (!field || !field.label) {
-          return 'No more fields in this section... Send me anything to jump to the next section.';
+          return `**No more fields in this section...**\n\n_Send me anything to jump to the next section._`;
         }
 
         if (
@@ -86,19 +90,19 @@ export const generateChatBotFlow = (): Record<string, Block> => {
 
           let body = question;
           if (answers.length > 0) {
-            body += '\n\nPlease select one of the following options:';
+            body += `\n\n**Please select one of the following options:**`;
             answers.forEach((answer: string, idx: number) => {
               body += `\n${idx + 1}. ${answer}`;
             });
           }
 
-          return `${field.label}\n\n${body}`;
+          return `**${field.label}**\n\n${body}`;
         }
 
         // Default fallback
-        return `${field.label}\n${field.description || `Please provide ${field.label}`}`;
+        return `**${field.label}**\n\n${field.description || `Please provide ${field.label}`}`;
       },
-
+      renderMarkdown: ['BOT', 'USER'],
       path: (params: { userInput?: string }) => {
         const {
           getCurrentSection,
@@ -220,7 +224,7 @@ export const generateChatBotFlow = (): Record<string, Block> => {
           (f?.type === FieldType.FlowFunc && currentFlowController)
         );
       },
-    },
+    } as MarkdownRendererBlock,
 
     // === New chartForm block dedicated for flowInjection Chart forms (investementStage) ===
     chartForm: {
@@ -231,7 +235,7 @@ export const generateChatBotFlow = (): Record<string, Block> => {
         const field = getCurrentField();
 
         if (!field || !field.label) {
-          return 'No more subflow fields available.';
+          return `**No more subflow fields available.**`;
         }
 
         if (!isInFlowFunc && field.flowInjection) {
@@ -239,7 +243,9 @@ export const generateChatBotFlow = (): Record<string, Block> => {
             field.flowInjection.name,
             6000,
           );
-          return subFlowData || `Subflow "${field.flowInjection}" not found.`;
+          return (
+            subFlowData || `Subflow **"${field.flowInjection}"** not found.`
+          );
         }
 
         if (isInFlowFunc && currentFlowController) {
@@ -248,18 +254,18 @@ export const generateChatBotFlow = (): Record<string, Block> => {
 
           let body = question;
           if (answers.length > 0) {
-            body += '\n\nPlease select one of the following options:';
+            body += '\n\n**Please select one of the following options:**';
             answers.forEach((answer: string, idx: number) => {
               body += `\n${idx + 1}. ${answer}`;
             });
           }
 
-          return `${field.label}\n\n${body}`;
+          return `**${field.label}**\n\n${body}`;
         }
 
-        return `${field.label}\n${field.description || `Please provide ${field.label}`}`;
+        return `**${field.label}**\n\n${field.description || `Please provide ${field.label}`}`;
       },
-
+      renderMarkdown: ['BOT', 'USER'],
       path: (params: { userInput?: string }) => {
         const {
           getCurrentField,
@@ -357,16 +363,18 @@ export const generateChatBotFlow = (): Record<string, Block> => {
           await UploadFileHandler(params);
         }
       },
-    },
+    } as MarkdownRendererBlock,
 
     end: {
-      message: () => '🎉 Thank you! All sections completed.',
+      message: () => `🎉 **Thank you!** All sections completed.`,
+      renderMarkdown: ['BOT', 'USER'],
       chatDisabled: true,
-    },
+    } as MarkdownRendererBlock,
 
     emptyFlow: {
-      message: () => 'No section available. An error occurred.',
+      message: () => `**No section available.**\n\n_An error occurred._`,
+      renderMarkdown: ['BOT', 'USER'],
       chatDisabled: true,
-    },
+    } as MarkdownRendererBlock,
   };
 };
