@@ -1,6 +1,6 @@
 // Home.tsx
 
-import Chat from '@/components/ui/Layout/Chat';
+import ChatWrapper from '@/components/ui/Layout/ChatWrapper'; //wrapper with cleint side dynamic import
 import Sidebar from '@/components/ui/Layout/SideBar';
 
 export default function Home() {
@@ -9,7 +9,7 @@ export default function Home() {
       <div className="flex">
         <Sidebar />
         <div className="flex-1">
-          <Chat />
+          <ChatWrapper />
         </div>
       </div>
     </main>

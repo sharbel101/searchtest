@@ -6,7 +6,7 @@ import { allSubFlows } from './AllSubFlowsData';
 
 export const fetchAndSetSubFlow = async (
   flowName: string,
-  delayMs: number,
+  delayMs: number = 6000,
 ): Promise<string | null> => {
   const { setCurrentFlowController, setIsInFlowFunc, setQuestionBody } =
     useFlowStore.getState();

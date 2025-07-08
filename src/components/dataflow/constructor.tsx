@@ -241,8 +241,11 @@ export const generateChatBotFlow = (): Record<string, Block> => {
         if (!isInFlowFunc && field.flowInjection) {
           const subFlowData = await fetchAndSetSubFlow(
             field.flowInjection.name,
-            6000,
+            //  6000,
           );
+
+          //extra info and appeding to the message should be here
+
           return (
             subFlowData || `Subflow **"${field.flowInjection}"** not found.`
           );

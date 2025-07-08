@@ -3,41 +3,42 @@
 import React, { useEffect } from 'react';
 import { generateChatBotFlow } from '../../dataflow/constructor';
 import { useFlowStore } from '@/components/dataflow/FlowStore';
+import dynamic from 'next/dynamic';
+import ChatBotComponent from 'react-chatbotify';
+
+import MarkdownRendererComponent from '@rcb-plugins/markdown-renderer';
 
 export default function Chat() {
-  const {
-    ChatBotComponent,
-    MarkdownRendererComponent,
-    setChatBotComponent,
-    setMarkdownRendererComponent,
-  } = useFlowStore();
+  // const {
 
-  useEffect(() => {
-    // Only load components if they haven't been loaded yet
-    // This prevents re-importing on every re-render if they're already in the store
-    if (!ChatBotComponent || !MarkdownRendererComponent) {
-      async function loadComponents() {
-        // Dynamically import ChatBot and MarkdownRenderer only on the client-side
-        const ChatBotModule = await import('react-chatbotify');
-        setChatBotComponent(ChatBotModule.default);
+  //   MarkdownRendererComponent,
 
-        const MarkdownRendererModule = await import(
-          '@rcb-plugins/markdown-renderer'
-        );
-        setMarkdownRendererComponent(MarkdownRendererModule.default);
-      }
-      loadComponents();
-    }
-  }, [
-    ChatBotComponent,
-    MarkdownRendererComponent,
-    setChatBotComponent,
-    setMarkdownRendererComponent,
-  ]); // Dependencies for useEffect
+  //   setMarkdownRendererComponent,
+  // } = useFlowStore();
 
-  if (!ChatBotComponent || !MarkdownRendererComponent) {
-    return <div>Loading chatbot...</div>; // Show loading state while components are being fetched
-  }
+  // useEffect(() => {
+  //   // Only load components if they haven't been loaded yet
+  //   // This prevents re-importing on every re-render if they're already in the store
+  //   if (  !MarkdownRendererComponent) {
+  //     async function loadComponents() {
+
+  //       const MarkdownRendererModule = await import(
+  //         '@rcb-plugins/markdown-renderer'
+  //       );
+  //       setMarkdownRendererComponent(MarkdownRendererModule.default);
+  //     }
+  //     loadComponents();
+  //   }
+  // }, [
+
+  //   MarkdownRendererComponent,
+
+  //   setMarkdownRendererComponent,
+  // ]); // Dependencies for useEffect
+
+  // if ( !MarkdownRendererComponent) {
+  //   return <div>Loading chatbot...</div>; // Show loading state while components are being fetched
+  // }
 
   const pluginConfig = {
     autoConfig: true,
