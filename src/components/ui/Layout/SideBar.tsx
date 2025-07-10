@@ -3,99 +3,110 @@
 import { useState } from 'react';
 import { Menu } from 'lucide-react';
 import { Button } from '@/components/ui/ShadCn/button';
-
 import { useFlowStore } from '../../dataflow/FlowStore';
 import QuestionDetails from '../Chatbot UI/QuestionDetails';
 
-// Individual Section Component
 interface SectionProps {
-  section: any; // Replace with your actual section type
+  section: any;
   index: number;
   isAccessible: boolean;
+  isActive: boolean;
 }
 
-function SectionItem({ section, index, isAccessible }: SectionProps) {
+function SectionItem({ section, isAccessible, isActive }: SectionProps) {
   const [isOpen, setIsOpen] = useState(false);
-
-  const handleToggle = () => {
-    if (isAccessible) {
-      setIsOpen((prev) => !prev);
-    }
-  };
+  const toggle = () => isAccessible && setIsOpen((o) => !o);
 
   return (
     <div
-      className={`p-3 rounded-lg transition-colors duration-150 ${
-        isAccessible
-          ? 'bg-gray-700 hover:bg-gray-600 cursor-pointer'
-          : 'bg-gray-900 opacity-50 cursor-not-allowed'
-      }`}
-      onClick={handleToggle}
+      onClick={toggle}
+      style={{
+        backgroundColor: isAccessible ? '#1F2937' : '#000',
+        borderRadius: 12,
+        padding: '12px 16px',
+        cursor: isAccessible ? 'pointer' : 'not-allowed',
+        opacity: isAccessible ? 1 : 0.5,
+        borderLeft: isActive ? '4px solid #42B0C5' : '4px solid transparent',
+        color: '#F9FAFB',
+        fontWeight: isActive ? 600 : 400,
+      }}
     >
-      <div className="font-medium text-gray-300 mb-1">
-        {section.sectionTitle}
-      </div>
-      {isAccessible && isOpen && <QuestionDetails flowItem={section} />}
+      {section.sectionTitle}
+      {isAccessible && isOpen && (
+        <div style={{ marginTop: 8 }}>
+          <QuestionDetails flowItem={section} />
+        </div>
+      )}
     </div>
   );
 }
 
-// Sections List Component
-interface SectionsListProps {
-  sections: any[]; // Replace with your actual section type
-  currentSectionIndex: number;
-}
-
-function SectionsList({ sections, currentSectionIndex }: SectionsListProps) {
-  return (
-    <nav className="p-4 space-y-4 overflow-y-auto max-h-[calc(100vh-64px)]">
-      {sections.map((section, index) => (
-        <SectionItem
-          key={`${index}-${section.sectionTitle}`}
-          section={section}
-          index={index}
-          isAccessible={index <= currentSectionIndex}
-        />
-      ))}
-    </nav>
-  );
-}
-
-// Main Sidebar Component
 export default function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
-
-  const sections = useFlowStore((state) => state.sections);
-  const currentSectionIndex = useFlowStore(
-    (state) => state.currentSectionIndex,
-  );
+  const sections = useFlowStore((s) => s.sections);
+  const currentIdx = useFlowStore((s) => s.currentSectionIndex);
 
   return (
     <div
-      className={`h-screen transition-all ${
-        collapsed ? 'w-16' : 'w-64'
-      } bg-gray-800 text-white flex flex-col`}
+      style={{
+        width: collapsed ? 64 : 256,
+        backgroundColor: '#000',
+        color: '#FFF',
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100vh',
+        transition: 'width 0.2s ease',
+        overflow: 'hidden', // <- ensure nothing overflows
+      }}
     >
       {/* Header */}
-      <div className="flex items-center justify-between p-4">
-        <span className="text-lg font-bold">
-          {!collapsed && 'Chatbot Flow'}
-        </span>
+      <div
+        style={{
+          height: 80,
+          background: 'linear-gradient(to left, #FF6EC4 0%, #3A86FF 100%)',
+          borderTopLeftRadius: 0,
+          padding: '0 16px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}
+      >
+        {!collapsed && (
+          <div style={{ fontSize: 16, fontWeight: 600, borderRadius: 0 }}>
+            Chatbot Flow
+          </div>
+        )}
         <Button
           variant="ghost"
           size="icon"
-          onClick={() => setCollapsed(!collapsed)}
+          onClick={() => setCollapsed((c) => !c)}
         >
-          <Menu className="h-5 w-5" />
+          <Menu size={20} color="#FFF" />
         </Button>
       </div>
 
-      {/* Section Navigation */}
+      {/* ONLY render the nav when expanded */}
       {!collapsed && (
-        <SectionsList
-          sections={sections}
-          currentSectionIndex={currentSectionIndex}
-        />
+        <nav
+          style={{
+            flex: 1,
+            overflowY: 'auto',
+            padding: '16px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 8,
+          }}
+        >
+          {sections.map((sec, i) => (
+            <SectionItem
+              key={i}
+              section={sec}
+              index={i}
+              isAccessible={i <= currentIdx}
+              isActive={i === currentIdx}
+            />
+          ))}
+        </nav>
       )}
     </div>
   );

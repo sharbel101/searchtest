@@ -29,7 +29,7 @@ export const generateChatBotFlow = (): Record<string, Block> => {
         return allSections.length !== 0 ? 'setup' : 'emptyFlow';
       },
       chatDisabled: true,
-      transition: 2000,
+      transition: 750,
     } as MarkdownRendererBlock,
 
     setup: {
@@ -61,20 +61,19 @@ export const generateChatBotFlow = (): Record<string, Block> => {
         return 'loop';
       },
       chatDisabled: true,
-      transition: 2000,
+      transition: 750,
     } as MarkdownRendererBlock,
 
     loop: {
       message: async () => {
         const {
           getCurrentField,
-          getCurrentSection,
           currentFlowController,
           isInFlowFunc,
+          questionBody,
         } = useFlowStore.getState();
 
         const field = getCurrentField();
-        const section = getCurrentSection();
 
         if (!field || !field.label) {
           return `**No more fields in this section...**\n\n_Send me anything to jump to the next section._`;
@@ -85,25 +84,23 @@ export const generateChatBotFlow = (): Record<string, Block> => {
           isInFlowFunc &&
           currentFlowController
         ) {
-          const question = currentFlowController.getCurrentQuestion();
           const answers = currentFlowController.getCurrentAnswers();
+          let body = questionBody; // This will already be set by fetchAndSetSubFlow or answerQuestion
 
-          let body = question;
           if (answers.length > 0) {
             body += `\n\n**Please select one of the following options:**`;
             answers.forEach((answer: string, idx: number) => {
               body += `\n${idx + 1}. ${answer}`;
             });
           }
-
           return `**${field.label}**\n\n${body}`;
         }
 
-        // Default fallback
+        // Default fallback for other field types
         return `**${field.label}**\n\n${field.description || `Please provide ${field.label}`}`;
       },
       renderMarkdown: ['BOT', 'USER'],
-      path: (params: { userInput?: string }) => {
+      path: async (params: { userInput?: string }) => {
         const {
           getCurrentSection,
           getCurrentField,
@@ -115,7 +112,6 @@ export const generateChatBotFlow = (): Record<string, Block> => {
           currentFlowController,
           isInFlowFunc,
           setStage,
-          advanceToNextSection,
           setQuestionBody,
         } = useFlowStore.getState();
 
@@ -130,15 +126,21 @@ export const generateChatBotFlow = (): Record<string, Block> => {
         }
 
         // Redirect to chartForm if field has flowInjection and not already in flow func
+        // We need to fetch the sub flow before redirecting to chartform
         if (
           field.type === FieldType.FlowFunc &&
           field.flowInjection &&
           field.flowInjection.type === 'ChartForm' &&
           !isInFlowFunc
         ) {
+          await fetchAndSetSubFlow(field.flowInjection.name);
           return 'chartForm';
         }
 
+        //HERE WE CAN ADD THE REDIRECTION FOR SOME OTHER TYPES OF FLOW INJECTIONS
+
+        // Handle user input for an active FlowFunc within the 'loop' if not using a dedicated block
+        // (This block is for generic FlowFunc handling, if it's not a ChartForm type injection)
         if (
           field.type === FieldType.FlowFunc &&
           isInFlowFunc &&
@@ -162,17 +164,15 @@ export const generateChatBotFlow = (): Record<string, Block> => {
                 const nextSection = getCurrentSection();
                 return nextSection ? 'setup' : 'end';
               }
-
               return 'loop';
             }
-
             setQuestionBody(currentFlowController.getCurrentQuestion());
             return 'loop';
           }
-
           return 'loop';
         }
 
+        // Default: just move to the next field
         incrementField();
         const nextField = getCurrentField();
 
@@ -214,58 +214,51 @@ export const generateChatBotFlow = (): Record<string, Block> => {
       },
 
       chatDisabled: () => {
-        const { getCurrentField, currentFlowController } =
+        const { getCurrentField, currentFlowController, isInFlowFunc } =
           useFlowStore.getState();
         const f = getCurrentField();
         return (
           f?.type === FieldType.File ||
           f?.type === FieldType.Video ||
           f?.type === FieldType.Dropdown ||
-          (f?.type === FieldType.FlowFunc && currentFlowController)
+          (f?.type === FieldType.FlowFunc &&
+            isInFlowFunc &&
+            currentFlowController) // Added isInFlowFunc check
         );
       },
     } as MarkdownRendererBlock,
 
-    // === New chartForm block dedicated for flowInjection Chart forms (investementStage) ===
+    // === New chartForm block dedicated for flowInjection
     chartForm: {
-      message: async () => {
-        const { getCurrentField, currentFlowController, isInFlowFunc } =
-          useFlowStore.getState();
+      message: () => {
+        const {
+          getCurrentField,
+          currentFlowController,
+          isInFlowFunc,
+          questionBody,
+        } = useFlowStore.getState();
 
         const field = getCurrentField();
 
         if (!field || !field.label) {
+          // This case should ideally not be hit if before hook works as expected for a valid field.
           return `**No more subflow fields available.**`;
         }
 
-        if (!isInFlowFunc && field.flowInjection) {
-          const subFlowData = await fetchAndSetSubFlow(
-            field.flowInjection.name,
-            //  6000,
-          );
-
-          //extra info and appeding to the message should be here
-
-          return (
-            subFlowData || `Subflow **"${field.flowInjection}"** not found.`
-          );
-        }
-
+        // If isInFlowFunc is true, it means the subflow is active and questionBody is set.
         if (isInFlowFunc && currentFlowController) {
-          const question = currentFlowController.getCurrentQuestion();
           const answers = currentFlowController.getCurrentAnswers();
+          let body = questionBody; // Use the stored questionBody
 
-          let body = question;
           if (answers.length > 0) {
             body += '\n\n**Please select one of the following options:**';
-            answers.forEach((answer: string, idx: number) => {
-              body += `\n${idx + 1}. ${answer}`;
-            });
+            // The options are also rendered by the `options` prop, but including here for clarity
           }
-
           return `**${field.label}**\n\n${body}`;
         }
 
+        // Fallback for unexpected scenarios, or if the field type somehow changed
+        // before the 'before' hook could correctly set isInFlowFunc.
         return `**${field.label}**\n\n${field.description || `Please provide ${field.label}`}`;
       },
       renderMarkdown: ['BOT', 'USER'],
@@ -286,8 +279,8 @@ export const generateChatBotFlow = (): Record<string, Block> => {
 
         const field = getCurrentField();
 
+        // Safety check, though 'before' should ensure field is available
         if (!field) {
-          // Subflow ended, reset and go back to main flow setup or end
           setIsInFlowFunc(false);
           setCurrentFlowController(null);
           resetFieldIndex();
@@ -295,6 +288,7 @@ export const generateChatBotFlow = (): Record<string, Block> => {
           return getCurrentSection() ? 'setup' : 'end';
         }
 
+        // --- Core logic for handling user input in an active subflow ---
         if (
           isInFlowFunc &&
           currentFlowController &&
@@ -304,10 +298,12 @@ export const generateChatBotFlow = (): Record<string, Block> => {
 
           const stageResult = currentFlowController.OnSuccess();
           if (stageResult !== 'Stage not available yet') {
+            // Subflow completed successfully
             setStage(stageResult);
             setIsInFlowFunc(false);
             setCurrentFlowController(null);
 
+            // Advance in the main flow
             incrementField();
             const nextField = getCurrentField();
 
@@ -316,14 +312,30 @@ export const generateChatBotFlow = (): Record<string, Block> => {
               incrementSection();
               return getCurrentSection() ? 'setup' : 'end';
             }
+            return 'loop'; // Go back to the main 'loop' block
+          } else {
+            // Subflow is ongoing, update question and stay in chartForm
+            setQuestionBody(currentFlowController.getCurrentQuestion());
             return 'chartForm';
           }
+        }
 
-          setQuestionBody(currentFlowController.getCurrentQuestion());
+        // --- This is the key change for handling the initial display ---
+        // If we are in an active subflow (meaning 'before' has run and set it up),
+        // and there's NO user input yet for this turn, we simply stay on 'chartForm'
+        // to await user input. This prevents the immediate loop.
+        if (isInFlowFunc && currentFlowController) {
           return 'chartForm';
         }
 
-        return 'chartForm';
+        // Fallback for unexpected states. This should ideally not be hit if flow is correct.
+        // If 'before' failed or field is somehow not a flow func that routes here.
+        console.warn("Unexpected state in chartForm path. Returning 'end'.", {
+          field,
+          isInFlowFunc,
+          currentFlowController,
+        });
+        return 'end'; // Or a more appropriate error state if desired
       },
 
       options: () => {
@@ -344,7 +356,7 @@ export const generateChatBotFlow = (): Record<string, Block> => {
       },
 
       chatDisabled: () => {
-        const { getCurrentField, currentFlowController } =
+        const { getCurrentField, currentFlowController, isInFlowFunc } =
           useFlowStore.getState();
         const f = getCurrentField();
 
@@ -352,7 +364,9 @@ export const generateChatBotFlow = (): Record<string, Block> => {
           f?.type === FieldType.File ||
           f?.type === FieldType.Video ||
           f?.type === FieldType.Dropdown ||
-          (f?.type === FieldType.FlowFunc && currentFlowController !== null)
+          (f?.type === FieldType.FlowFunc &&
+            isInFlowFunc &&
+            currentFlowController !== null)
         );
       },
 

@@ -69,7 +69,7 @@ Make sure you have _pnpm_ installed globally. If not: `npm install -g pnpm`
 - [ ] markup (joe)
 - [ ] making chartFrom async (joe) DONE DONE
 
----
+## JOE: I modifyed the UserOptions.tsx because it contains css properties and it affects our styling.
 
 ## 📆 Daily Tasks
 

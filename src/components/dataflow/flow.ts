@@ -82,7 +82,31 @@ const chatFlow: ChatFlow = {
     // Next node to navigate to in the flow after this section
     nextNode: 'departments',
   },
-*/
+
+
+
+  portfolio1: {
+    sectionTitle: 'Portfolio',
+    sectionId: 'portfolio',
+    fields: {
+      
+      industry: {
+        id: 'industry-type',
+        type: FieldType.Dropdown,
+        label: 'Industry',
+        options: [
+          { id: 'general', value: 'General' },
+          { id: 'specific', value: 'Specific' },
+          { id: 'other', value: 'Other' },
+        ],
+        required: true,
+        description: 'Select industry type (input details for "Other").',
+      },
+    },
+    nextNode: 'foundingTeam',
+  },
+  */
+
   nda: {
     sectionTitle: 'NDA',
     sectionId: 'nda',
