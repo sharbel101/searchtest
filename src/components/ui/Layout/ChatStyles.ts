@@ -146,9 +146,9 @@ export const styles: Styles = {
 
   // Send Button
   sendButtonStyle: {
-    backgroundColor: '#FFF',
+    backgroundColor: '#F3F4F6',
     border: 'none',
-    borderRadius: '50%',
+    borderRadius: '0%',
     width: 36,
     height: 36,
     display: 'flex',

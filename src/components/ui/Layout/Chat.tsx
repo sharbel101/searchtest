@@ -4,9 +4,9 @@ import React from 'react';
 import { generateChatBotFlow } from '../../dataflow/constructor';
 import { useFlowStore } from '../../dataflow/FlowStore';
 import ChatBotComponent from 'react-chatbotify';
-//import ChatBotComponent from '@/ChatBotFork';
 import MarkdownRendererComponent from '@rcb-plugins/markdown-renderer';
 import { styles } from './ChatStyles';
+import { Span } from 'next/dist/trace';
 
 export default function Chat() {
   // ——————————————
@@ -14,31 +14,63 @@ export default function Chat() {
   // ——————————————
   const sections = useFlowStore((s) => s.sections);
   const currentIdx = useFlowStore((s) => s.currentSectionIndex);
+
   console.log('sections:', sections, 'currentIdx:', currentIdx);
-  const currentSection =
-    sections[currentIdx]?.sectionTitle || 'Getting Started';
 
   // ——————————————
-  // 2) PLUGINS
+  // 2) DERIVE STATE DIRECTLY
+  // ——————————————
+  // Calculate the current section title based on the store data.
+
+  const currentSectionTitle =
+    sections[currentIdx]?.sectionTitle || 'getting started';
+
+  // ——————————————
+  // 3) PLUGINS
   // ——————————————
   const pluginConfig = { autoConfig: true };
   const plugins = [MarkdownRendererComponent(pluginConfig)];
 
   // ——————————————
-  // 3) SETTINGS
+  // 4) SETTINGS
   // ——————————————
   const settings = {
-    notification: { disabled: true },
+    notification: {
+      disabled: false,
+      defaultToggledOn: false,
+      volume: 0.2,
+      icon: () => {
+        return (
+          <span
+            className="icon-notification-on"
+            aria-label="notification-on"
+            role="img"
+          />
+        );
+      },
+      iconDisabled: () => {
+        return (
+          <span
+            className="icon-notification-off"
+            aria-label="notification-off"
+            role="img"
+          />
+        );
+      },
+    },
     voice: { disabled: true },
 
     header: {
       showAvatar: false,
       buttons: [],
-      closeChatIcon: '×',
+      closeChatIcon: () => {
+        return 'x';
+      },
+      // Use the derived currentSectionTitle here
       title: (
         <div style={{ color: '#FFF', lineHeight: 1.2 }}>
           <span style={{ fontSize: 16, fontWeight: 600 }}>
-            {currentSection}
+            {currentSectionTitle}
           </span>
         </div>
       ),
@@ -57,30 +89,30 @@ export default function Chat() {
       showHeader: true,
     },
     chatHistory: {
-      disabled: true, // disables chat history and hides the load chat history button
+      disabled: false,
       storageKey: 'concepts_settings',
     },
     chatWindow: { showScrollbar: true },
     device: { desktopEnabled: true },
     chatInput: {
-      sendButtonIcon: () => (
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-          <path
-            d="M3 8h8M8 3l5 5-5 5"
-            stroke="#FFF"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      ),
+      sendButtonIcon: () => {
+        return (
+          <span className="icon-SendButton" aria-label="Send" role="img" />
+        );
+      },
     },
+    fileAttachment: {},
   };
 
+  // ——————————————
+  // 5) RENDER
+  // ——————————————
   const customFlow = generateChatBotFlow();
 
   return (
     <ChatBotComponent
+      // 🚨 Add key={currentIdx} to force the component to re-mount when the section index changes.
+      //IT DID NOT WORK... Because it will rerender the whole chatbot and all the past history of other sections will disappear
       settings={settings}
       styles={styles}
       flow={customFlow}
