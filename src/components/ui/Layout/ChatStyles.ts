@@ -69,6 +69,7 @@ export const styles: Styles = {
     backgroundColor: '#000',
     borderTop: 'none',
     padding: 16,
+    color: '#FFF',
   },
 
   // Chat History Button
@@ -326,18 +327,18 @@ export const styles: Styles = {
     */
 
   // Bot Options
-  // botOptionStyle: {
-  //     backgroundColor: '#374151',
-  //     color: '#FFF',
-  //     border: 'none',
-  //     padding: '8px 12px',
-  //     borderRadius: 4,
-  //     cursor: 'pointer',
-  //     margin: '4px 0',
-  // },
-  // botOptionHoveredStyle: {
-  //     backgroundColor: '#4B5563',
-  // },
+  botOptionStyle: {
+    backgroundColor: '#374151',
+    color: '#FFF',
+    border: 'none',
+    padding: '8px 12px',
+    borderRadius: 4,
+    cursor: 'pointer',
+    margin: '4px 0',
+  },
+  botOptionHoveredStyle: {
+    backgroundColor: '#4B5563',
+  },
 
   // Bot Checkboxes
   botCheckboxRowStyle: {

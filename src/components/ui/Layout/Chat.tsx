@@ -3,8 +3,8 @@
 import React from 'react';
 import { generateChatBotFlow } from '../../dataflow/constructor';
 import { useFlowStore } from '../../dataflow/FlowStore';
-import ChatBotComponent from 'react-chatbotify';
-import MarkdownRendererComponent from '@rcb-plugins/markdown-renderer';
+import ChatBotComponent, { Flow } from '@/ChatBotFork';
+import MarkdownRenderer, { MarkdownRendererBlock } from '@/RCB_MarkDown';
 import { styles } from './ChatStyles';
 import { Span } from 'next/dist/trace';
 
@@ -29,7 +29,7 @@ export default function Chat() {
   // 3) PLUGINS
   // ——————————————
   const pluginConfig = { autoConfig: true };
-  const plugins = [MarkdownRendererComponent(pluginConfig)];
+  //const plugins = [MarkdownRendererComponent(pluginConfig)];
 
   // ——————————————
   // 4) SETTINGS
@@ -76,7 +76,9 @@ export default function Chat() {
       ),
     },
 
-    footer: { text: '' },
+    footer: {
+      text: '',
+    },
     userBubble: { simulateStream: true, streamSpeed: 30 },
     botBubble: { simulateStream: true, streamSpeed: 30 },
     simulateStream: true,
@@ -115,8 +117,8 @@ export default function Chat() {
       //IT DID NOT WORK... Because it will rerender the whole chatbot and all the past history of other sections will disappear
       settings={settings}
       styles={styles}
-      flow={customFlow}
-      plugins={plugins}
+      flow={customFlow as Flow} //not the best practice but it works
+      plugins={[MarkdownRenderer()]}
     />
   );
 }

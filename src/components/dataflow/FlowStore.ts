@@ -1,7 +1,8 @@
 import { create } from 'zustand';
 import { FlowSection, FormField } from './flow';
 
-import type ChatBot from 'react-chatbotify';
+// import type ChatBot from 'react-chatbotify';
+import type ChatBot from '@/ChatBotFork';
 import type MarkdownRenderer from '@rcb-plugins/markdown-renderer';
 
 interface FlowState {

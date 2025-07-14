@@ -1,15 +1,16 @@
 'use client';
 
-import { Block } from 'react-chatbotify';
+// import { Block } from 'react-chatbotify';
 import { chatFlow, FieldType } from './flow';
 import { useFlowStore } from './FlowStore';
 import { UploadFileHandler } from './UploadFileHandler';
 import { fetchAndSetSubFlow } from '../dataflow/dummy/FetchSubFlow';
-import MarkdownRenderer, {
-  MarkdownRendererBlock,
-} from '@rcb-plugins/markdown-renderer';
+import MarkdownRenderer, { MarkdownRendererBlock } from '@/RCB_MarkDown';
 
-export const generateChatBotFlow = (): Record<string, Block> => {
+export const generateChatBotFlow = (): Record<
+  string,
+  MarkdownRendererBlock
+> => {
   return {
     start: {
       message: () => {
