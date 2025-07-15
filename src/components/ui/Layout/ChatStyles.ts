@@ -1,4 +1,7 @@
+import type React from 'react';
+
 type Styles = { [key: string]: React.CSSProperties };
+
 export const styles: Styles = {
   // Tooltip
   tooltipStyle: {
@@ -53,7 +56,7 @@ export const styles: Styles = {
     alignItems: 'center',
     justifyContent: 'space-between',
     borderTopRightRadius: 16,
-    borderRadius: 0,
+    borderRadius: 0, // Base border-radius, overridden by borderTopRightRadius
   },
 
   // Body
@@ -116,9 +119,7 @@ export const styles: Styles = {
     flex: 1,
     backgroundColor: '#16181a',
     color: '#F9FAFB',
-    borderWidth: '0.5px',
-    borderStyle: 'solid',
-    borderColor: '#fff',
+    border: '0.5px solid #fff',
     borderRadius: 8,
     outline: 'none',
     padding: '8px 12px',
@@ -316,9 +317,7 @@ export const styles: Styles = {
     borderRadius: 16,
     fontFamily: 'Inter, sans-serif',
     fontSize: 14,
-    borderWidth: '2px',
-    borderStyle: 'solid',
-    borderColor: '#00B4D8',
+    border: '2px solid #00B4D8',
   },
 
   /*
@@ -359,9 +358,7 @@ export const styles: Styles = {
   botCheckMarkStyle: {
     width: 16,
     height: 16,
-    borderWidth: '1px',
-    borderStyle: 'solid',
-    borderColor: '#6B7280',
+    border: '1px solid #6B7280',
     borderRadius: 2,
   },
   botCheckMarkSelectedStyle: {

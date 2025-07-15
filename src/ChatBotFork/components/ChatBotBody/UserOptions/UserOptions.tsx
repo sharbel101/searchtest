@@ -45,7 +45,7 @@ const UserOptions = ({
       ? `url("${settings.general?.actionDisabledIcon}"), auto`
       : 'pointer',
     color: settings.general?.primaryColor,
-    borderColor: settings.general?.primaryColor,
+    border: settings.general?.primaryColor, //this here was borderColor. i removed the shorthand styling JOE
     backgroundColor: '#fff',
     ...styles.botOptionStyle,
   };
@@ -53,7 +53,7 @@ const UserOptions = ({
   // styles for bot hovered option
   const botOptionHoveredStyle: React.CSSProperties = {
     color: '#fff',
-    borderColor: settings.general?.primaryColor,
+    border: settings.general?.primaryColor, //this here was borderColor. i removed the shorthand styling JOE
     backgroundColor: settings.general?.primaryColor,
     ...styles.botOptionHoveredStyle,
   };

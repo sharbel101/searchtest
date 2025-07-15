@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 
 import { useSettingsContext } from '../../context/SettingsContext';
 import { useStylesContext } from '../../context/StylesContext';
-
+import { useFlowStore } from '@/components/dataflow/FlowStore';
 import './ChatBotHeader.css';
 
 /**
@@ -24,6 +24,9 @@ const ChatBotHeader = ({ buttons }: { buttons: React.ReactElement[] }) => {
     ...styles.headerStyle,
   };
 
+  // JOE : making the header dynamically change with the sections.
+  const currentSection = useFlowStore((state) => state.getCurrentSection());
+
   return (
     <div style={headerStyle} className="rcb-chat-header-container">
       <div className="rcb-chat-header">
@@ -33,7 +36,7 @@ const ChatBotHeader = ({ buttons }: { buttons: React.ReactElement[] }) => {
             className="rcb-bot-avatar"
           />
         )}
-        {settings.header?.title}
+        {currentSection?.sectionTitle}
       </div>
       <div className="rcb-chat-header">
         {buttons?.map((button: React.ReactElement, index: number) => (

@@ -66,14 +66,6 @@ export default function Chat() {
       closeChatIcon: () => {
         return 'x';
       },
-      // Use the derived currentSectionTitle here
-      title: (
-        <div style={{ color: '#FFF', lineHeight: 1.2 }}>
-          <span style={{ fontSize: 16, fontWeight: 600 }}>
-            {currentSectionTitle}
-          </span>
-        </div>
-      ),
     },
 
     footer: {
