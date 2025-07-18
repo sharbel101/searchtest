@@ -1,6 +1,6 @@
 'use client';
 
-import { createFlowController } from '../flowEngine';
+import { createFlowController } from '../MainFlow/flowEngine';
 import { useFlowStore } from '../FlowStore';
 import { allSubFlows } from './AllSubFlowsData';
 

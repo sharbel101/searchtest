@@ -1,6 +1,6 @@
 'use client';
 
-import { QuestionNode } from '../flowEngine';
+import { QuestionNode } from '../MainFlow/flowEngine';
 
 export const allSubFlows: Record<string, Record<string, QuestionNode>> = {
   investmentStageFlow: {

@@ -1,10 +1,10 @@
 'use client';
 
 // import { Block } from 'react-chatbotify';
-import { chatFlow, FieldType } from './flow';
+import { chatFlow, FieldType } from './MainFlow/flow';
 import { useFlowStore } from './FlowStore';
 import { UploadFileHandler } from './UploadFileHandler';
-import { fetchAndSetSubFlow } from '../dataflow/dummy/FetchSubFlow';
+import { fetchAndSetSubFlow } from './SubFlows/FetchSubFlow';
 import MarkdownRenderer, { MarkdownRendererBlock } from '@/RCB_MarkDown';
 
 export const generateChatBotFlow = (): Record<
@@ -113,6 +113,7 @@ export const generateChatBotFlow = (): Record<
           currentFlowController,
           isInFlowFunc,
           setStage,
+          stage,
           setQuestionBody,
         } = useFlowStore.getState();
 
@@ -136,6 +137,19 @@ export const generateChatBotFlow = (): Record<
         ) {
           await fetchAndSetSubFlow(field.flowInjection.name);
           return 'chartForm';
+        }
+
+        if (
+          field.type === FieldType.FlowFunc &&
+          field.flowInjection &&
+          field.flowInjection.type === 'OriginalSubFlow' &&
+          !isInFlowFunc &&
+          stage != '' &&
+          stage != null
+        ) {
+          //hone badde ghayyer l function la taemol fetch lal original Sub Flow data
+          await fetchAndSetSubFlow(stage);
+          return 'OriginalSubFlowLoop';
         }
 
         //HERE WE CAN ADD THE REDIRECTION FOR SOME OTHER TYPES OF FLOW INJECTIONS
@@ -394,5 +408,181 @@ export const generateChatBotFlow = (): Record<
       renderMarkdown: ['BOT', 'USER'],
       chatDisabled: true,
     } as MarkdownRendererBlock,
+
+    OriginalSubFlowLoop: {
+      message: async () => {
+        const {
+          getCurrentSubFlowField,
+          currentFlowController,
+          isInFlowFunc,
+          questionBody,
+        } = useFlowStore.getState();
+
+        const field = getCurrentSubFlowField();
+
+        if (!field || !field.label) {
+          return `**No more fields in this section...**\n\n_Send me anything to jump to the next section._`;
+        }
+
+        if (
+          field.type === FieldType.FlowFunc &&
+          isInFlowFunc &&
+          currentFlowController
+        ) {
+          const answers = currentFlowController.getCurrentAnswers();
+          let body = questionBody; // This will already be set by fetchAndSetSubFlow or answerQuestion
+
+          if (answers.length > 0) {
+            body += `\n\n**Please select one of the following options:**`;
+            answers.forEach((answer: string, idx: number) => {
+              body += `\n${idx + 1}. ${answer}`;
+            });
+          }
+          return `**${field.label}**\n\n${body}`;
+        }
+
+        // Default fallback for other field types
+        return `**${field.label}**\n\n${field.description || `Please provide ${field.label}`}`;
+      },
+      renderMarkdown: ['BOT', 'USER'],
+      path: async (params: { userInput?: string }) => {
+        const {
+          getCurrentSubFlowSection,
+          getCurrentSubFlowField,
+          incrementSubFlowField,
+          incrementSubFlowSection,
+          resetSubFlowFieldIndex,
+          setCurrentFlowController,
+          setIsInFlowFunc,
+          currentFlowController,
+          isInFlowFunc,
+          setStage,
+          stage,
+          setQuestionBody,
+        } = useFlowStore.getState();
+
+        const SubFlowSections = getCurrentSubFlowSection();
+        if (!SubFlowSections) return 'loop';
+
+        const SubFlowfield = getCurrentSubFlowField();
+        if (!SubFlowfield) {
+          incrementSubFlowSection();
+          resetSubFlowFieldIndex();
+          return getCurrentSubFlowSection() ? 'setup' : 'end';
+        }
+
+        //WE USE THIS IF WE WANT TO ADD CHARTFORM INJECTION LOGIC IN A NODE OF THE ORIGINAL SUB FLOW STRUCTURE
+
+        // if (
+        //   field.type === FieldType.FlowFunc &&
+        //   field.flowInjection &&
+        //   field.flowInjection.type === 'ChartForm' &&
+        //   !isInFlowFunc
+        // ) {
+        //   await fetchAndSetSubFlow(field.flowInjection.name);
+        //   return 'chartForm';
+        // }
+
+        //HERE WE CAN ADD THE REDIRECTION FOR SOME OTHER TYPES OF FLOW INJECTIONS
+
+        // // Handle user input for an active FlowFunc within the 'loop' if not using a dedicated block
+        // // (This block is for generic FlowFunc handling, if it's not a ChartForm type injection)
+        // if (
+        //   SubFlowfield.type === FieldType.FlowFunc &&
+        //   isInFlowFunc &&
+        //   currentFlowController
+        // ) {
+        //   if (params?.userInput !== undefined) {
+        //     currentFlowController.answerQuestion(params.userInput);
+
+        //     const stageResult = currentFlowController.OnSuccess();
+        //     if (stageResult !== 'Stage not available yet') {
+        //       setStage(stageResult);
+        //       setIsInFlowFunc(false);
+        //       setCurrentFlowController(null);
+
+        //       incrementSubFlowField();
+        //       const nextField = getCurrentSubFlowField();
+
+        //       if (!nextField) {
+        //         resetSubFlowFieldIndex();
+        //         incrementSubFlowSection();
+        //         const nextSection = getCurrentSubFlowSection();
+        //         return nextSection ? 'setup' : 'end';
+        //       }
+        //       return 'loop';
+        //     }
+        //     setQuestionBody(currentFlowController.getCurrentQuestion());
+        //     return 'loop';
+        //   }
+        //   return 'loop';
+        // }
+
+        // Default: just move to the next field
+        incrementSubFlowField();
+        const nextField = getCurrentSubFlowField();
+
+        if (!nextField) {
+          resetSubFlowFieldIndex();
+          incrementSubFlowSection();
+          const nextSubFlowSection = getCurrentSubFlowSection();
+          return nextSubFlowSection ? 'OriginalSubFlowLoop' : 'Setup';
+        }
+
+        return 'loop';
+      },
+
+      file: async (params: any) => {
+        const { getCurrentSubFlowField } = useFlowStore.getState();
+        const f = getCurrentSubFlowField();
+        if (f?.type === FieldType.Dropdown) {
+          return null;
+        }
+        if (f?.type === FieldType.File || f?.type === FieldType.Video) {
+          await UploadFileHandler(params);
+        }
+      },
+
+      options: () => {
+        const { getCurrentSubFlowField, currentFlowController, isInFlowFunc } =
+          useFlowStore.getState();
+        const field = getCurrentSubFlowField();
+
+        if (
+          field?.type === FieldType.FlowFunc &&
+          isInFlowFunc &&
+          currentFlowController
+        ) {
+          return currentFlowController.getCurrentAnswers();
+        }
+
+        return field?.options?.map((o: { value: string }) => o.value) || [];
+      },
+
+      chatDisabled: () => {
+        const { getCurrentSubFlowField, currentFlowController, isInFlowFunc } =
+          useFlowStore.getState();
+        const f = getCurrentSubFlowField();
+        return (
+          f?.type === FieldType.File ||
+          f?.type === FieldType.Video ||
+          f?.type === FieldType.Dropdown ||
+          (f?.type === FieldType.FlowFunc &&
+            isInFlowFunc &&
+            currentFlowController) // Added isInFlowFunc check
+        );
+      },
+    } as MarkdownRendererBlock,
   };
 };
+
+/**
+ * Bukra badde :
+ * Zid function to fetch the the Original SubFLow w bhotta bi zet l file taba3 l fetchSubFlow.ts
+ * Kermel esta3mela lal original subFLow
+ *
+ * bas khalles hayda l chi bi sir badde Chuf kif l chatbot 3am yemche bel Orignial sub flow bel node
+ * li sammayta OriginalSubFlowLoop.
+ *
+ *
+ */

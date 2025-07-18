@@ -39,7 +39,7 @@ export type FlowSection = {
 };
 
 // Type for the entire chat flow, mapping section IDs to sections
-type ChatFlow = {
+export type ChatFlow = {
   [key: string]: FlowSection;
 };
 
@@ -467,6 +467,10 @@ const chatFlow: ChatFlow = {
         description:
           'Upload department details (check fs_department excel sheet).',
         required: false,
+        flowInjection: {
+          name: 'DepartmentFlows',
+          type: 'OriginalSubFlow',
+        },
       },
     },
     nextNode: 'financials',

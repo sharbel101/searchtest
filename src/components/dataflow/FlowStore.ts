@@ -1,11 +1,8 @@
 import { create } from 'zustand';
-import { FlowSection, FormField } from './flow';
-
-// import type ChatBot from 'react-chatbotify';
-import type ChatBot from '@/ChatBotFork';
-import type MarkdownRenderer from '@rcb-plugins/markdown-renderer';
+import { FlowSection, FormField } from './MainFlow/flow';
 
 interface FlowState {
+  //for the main flow
   currentSectionIndex: number;
   currentFieldIndex: number;
   sections: FlowSection[];
@@ -25,6 +22,21 @@ interface FlowState {
   setCurrentNodeId: (id: string) => void;
   setStage: (stage: string) => void;
 
+  // for injected flows that have the same structure as the main flow ( Department, Financial, Marketing )
+  currentSubFlowSectionIndex: number;
+  currentSubFlowFieldIndex: number;
+  SubFlowSections: FlowSection[];
+
+  setSubFlowSections: (sections: FlowSection[]) => void;
+  incrementSubFlowField: () => void;
+  incrementSubFlowSection: () => void;
+  resetSubFlowFieldIndex: () => void;
+  advanceToNextSubFlowSection: () => void;
+
+  getCurrentSubFlowSection: () => FlowSection | null;
+  getCurrentSubFlowField: () => FormField | null;
+
+  // for injected chart forms
   currentFlowController: any;
   isInFlowFunc: boolean;
   questionBody: string;
@@ -32,13 +44,6 @@ interface FlowState {
   setCurrentFlowController: (controller: any) => void;
   setIsInFlowFunc: (val: boolean) => void;
   setQuestionBody: (text: string) => void;
-
-  // New properties for storing components
-  ChatBotComponent: typeof ChatBot | null; // Use typeof to get the type of the imported module's default export
-  MarkdownRendererComponent: typeof MarkdownRenderer | null; // Same here
-
-  setChatBotComponent: (component: typeof ChatBot) => void;
-  setMarkdownRendererComponent: (component: typeof MarkdownRenderer) => void;
 }
 
 export const useFlowStore = create<FlowState>((set, get) => ({
@@ -94,12 +99,45 @@ export const useFlowStore = create<FlowState>((set, get) => ({
   setIsInFlowFunc: (val) => set({ isInFlowFunc: val }),
   setQuestionBody: (text) => set({ questionBody: text }),
 
-  // Initialize new component states to null
-  ChatBotComponent: null,
-  MarkdownRendererComponent: null,
+  currentSubFlowSectionIndex: 0,
+  currentSubFlowFieldIndex: 0,
+  SubFlowSections: [],
 
-  // New actions to set the components
-  setChatBotComponent: (component) => set({ ChatBotComponent: component }),
-  setMarkdownRendererComponent: (component) =>
-    set({ MarkdownRendererComponent: component }),
+  setSubFlowSections: (sections) => set({ SubFlowSections: sections }),
+  incrementSubFlowField: () =>
+    set((state) => ({
+      currentSubFlowFieldIndex: state.currentSubFlowFieldIndex + 1,
+    })),
+  incrementSubFlowSection: () =>
+    set((state) => ({
+      currentSubFlowSectionIndex: state.currentSubFlowSectionIndex + 1,
+    })),
+  resetSubFlowFieldIndex: () => set({ currentSubFlowFieldIndex: 0 }),
+  advanceToNextSubFlowSection: () =>
+    set((state) => ({
+      currentSubFlowSectionIndex: state.currentSubFlowSectionIndex + 1,
+      currentSubFlowFieldIndex: 0,
+    })),
+
+  getCurrentSubFlowSection: () => {
+    const { SubFlowSections, currentSubFlowSectionIndex } = get();
+    if (
+      !SubFlowSections ||
+      currentSubFlowSectionIndex < 0 ||
+      currentSubFlowSectionIndex >= SubFlowSections.length
+    )
+      return null;
+    return SubFlowSections[currentSubFlowSectionIndex];
+  },
+
+  getCurrentSubFlowField: () => {
+    const section = get().getCurrentSubFlowSection();
+    if (!section) return null;
+
+    const fields = Object.values(section.fields);
+    const index = get().currentSubFlowFieldIndex;
+    if (index < 0 || index >= fields.length) return null;
+
+    return fields[index];
+  },
 }));

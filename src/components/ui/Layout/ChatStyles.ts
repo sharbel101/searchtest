@@ -320,11 +320,6 @@ export const styles: Styles = {
     border: '2px solid #00B4D8',
   },
 
-  /*
-        I commented this because it raises an error about someRef.current Because the chatbot already have it's
-        own CSS and when we wrote this style it makes bugs... NEED TO DISCUSS THIS WITH TEO (JOE).
-    */
-
   // Bot Options
   botOptionStyle: {
     backgroundColor: '#374151',
