@@ -1,6 +1,5 @@
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useRef } from 'react';
 
-import MediaDisplay from '../../ChatBotBody/MediaDisplay/MediaDisplay';
 import { getMediaFileDetails } from '../../../utils/mediaFileParser';
 import { useToastsInternal } from '../../../hooks/internal/useToastsInternal';
 import { useChatWindowInternal } from '../../../hooks/internal/useChatWindowInternal';
@@ -21,13 +20,16 @@ import './FileAttachmentButton.css';
  * Supports uploading of files from user.
  */
 const FileAttachmentButton = () => {
-  // handles settings
   const { settings } = useSettingsContext();
+  const { blockAllowsAttachment } = usePathsInternal();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // handles styles
-  const { styles } = useStylesContext();
+  const handleClick = () => {
+    if (blockAllowsAttachment) {
+      fileInputRef.current?.click();
+    }
+  };
 
-  // handles messages
   const {
     injectMessage,
     simulateStreamMessage,
@@ -35,111 +37,53 @@ const FileAttachmentButton = () => {
     removeMessage,
     endStreamMessage,
   } = useMessagesInternal();
-
-  // handles paths and blocks
-  const { getCurrPath, getPrevPath, goToPath, blockAllowsAttachment } =
-    usePathsInternal();
-
-  // handles bot refs
+  const { getCurrPath, getPrevPath, goToPath } = usePathsInternal();
   const { flowRef, inputRef } = useBotRefsContext();
   const flow = flowRef.current as Flow;
-
-  // handles toasts
   const { showToast, dismissToast } = useToastsInternal();
-
-  // handles rcb events
   const { dispatchRcbEvent } = useDispatchRcbEventInternal();
-
-  // handles chat window
   const { toggleChatWindow } = useChatWindowInternal();
-
-  // handles input text area
   const { setTextAreaValue } = useTextAreaInternal();
-
-  // handles user input submission
   const { handleSubmitText } = useSubmitInputInternal();
 
-  // styles for file attachment disabled button
-  const fileAttachmentButtonDisabledStyle = {
-    cursor: `url("${settings.general?.actionDisabledIcon}"), auto`,
-    ...styles.fileAttachmentButtonStyle, // by default inherit the base style
-    ...styles.fileAttachmentButtonDisabledStyle,
-  };
-
-  // styles for file attachment icon
-  const fileAttachmentIconStyle: React.CSSProperties = {
-    backgroundImage: `url(${settings.fileAttachment?.icon})`,
-    fill: '#a6a6a6',
-    ...styles.fileAttachmentIconStyle,
-  };
-
-  // styles for file attachment disabled icon
-  const fileAttachmentIconDisabledStyle: React.CSSProperties = {
-    backgroundImage: `url(${settings.fileAttachment?.icon})`,
-    fill: '#a6a6a6',
-    ...styles.fileAttachmentIconStyle, // by default inherit the base style
-    ...styles.fileAttachmentIconDisabledStyle,
-  };
-
-  /**
-   * Handles file uploads from user.
-   *
-   * @param event file upload event
-   */
   const handleUpload = async (event: ChangeEvent<HTMLInputElement>) => {
     const fileList = event.target.files;
     if (!fileList) {
       return;
     }
 
-    // freeze files
     const files = Array.from(fileList);
-    // reset uploads field
     event.target.value = '';
 
-    // handles user file upload event
     if (settings.event?.rcbUserUploadFile) {
-      const event = await dispatchRcbEvent(RcbEvent.USER_UPLOAD_FILE, {
+      const rcbEvent = await dispatchRcbEvent(RcbEvent.USER_UPLOAD_FILE, {
         files,
       });
-      if (event.defaultPrevented) {
+      if (rcbEvent.defaultPrevented) {
         return;
       }
     }
 
     const currPath = getCurrPath();
-    if (!currPath) {
-      return;
-    }
+    if (!currPath) return;
+
     const block = flow[currPath];
-    if (!block) {
-      return;
-    }
+    if (!block) return;
+
     const fileHandler = block.file;
-    if (fileHandler != null) {
+    if (fileHandler) {
       const fileNames = [];
-      for (let i = 0; i < files.length; i++) {
-        fileNames.push(files[i].name);
-        // checks if media (i.e. image, video, audio should be displayed)
-        if (!settings.fileAttachment?.showMediaDisplay) {
-          continue;
+      for (const file of files) {
+        fileNames.push(file.name);
+        if (settings.fileAttachment?.showMediaDisplay) {
+          const fileDetails = await getMediaFileDetails(file);
+          if (fileDetails.fileType && fileDetails.fileUrl) {
+            await injectMessage(
+              <div />, // MediaDisplay placeholder
+              'USER',
+            );
+          }
         }
-
-        // retrieves file details and skips if not image, video or audio
-        const fileDetails = await getMediaFileDetails(files[i]);
-        if (!fileDetails.fileType || !fileDetails.fileUrl) {
-          continue;
-        }
-
-        // sends media display if file details are valid
-        await injectMessage(
-          <MediaDisplay
-            file={files[i]}
-            fileType={fileDetails.fileType}
-            fileUrl={fileDetails.fileUrl}
-          />,
-          'USER',
-        );
       }
       await handleSubmitText(
         '📄 ' + fileNames.join(', '),
@@ -164,76 +108,28 @@ const FileAttachmentButton = () => {
     }
   };
 
-  /**
-   * Renders button depending on whether an svg component or image url is provided.
-   */
-  const renderButton = () => {
-    const IconComponent = blockAllowsAttachment
-      ? settings.fileAttachment?.icon
-      : settings.fileAttachment?.iconDisabled;
-    if (!IconComponent || typeof IconComponent === 'string') {
-      return (
-        <span
-          className={
-            blockAllowsAttachment
-              ? 'rcb-attach-icon-enabled'
-              : 'rcb-attach-icon-disabled'
-          }
-          style={
-            blockAllowsAttachment
-              ? fileAttachmentIconStyle
-              : fileAttachmentIconDisabledStyle
-          }
-        />
-      );
-    }
-    return (
-      IconComponent && (
-        <span
-          className={
-            blockAllowsAttachment
-              ? 'rcb-attach-icon-enabled'
-              : 'rcb-attach-icon-disabled'
-          }
-        >
-          <IconComponent
-            style={
-              blockAllowsAttachment
-                ? fileAttachmentIconStyle
-                : fileAttachmentIconDisabledStyle
-            }
-          />
-        </span>
-      )
-    );
-  };
-
   return (
-    <label
-      aria-label={settings.ariaLabel?.fileAttachmentButton ?? 'upload file'}
-      role="button"
-      className={
-        blockAllowsAttachment
-          ? 'rcb-attach-button-enabled'
-          : 'rcb-attach-button-disabled'
-      }
-      style={
-        blockAllowsAttachment
-          ? { ...styles.fileAttachmentButtonStyle }
-          : fileAttachmentButtonDisabledStyle
-      }
-    >
+    <>
+      <button
+        type="button"
+        aria-label={settings.ariaLabel?.fileAttachmentButton ?? 'upload file'}
+        onClick={handleClick}
+        disabled={!blockAllowsAttachment}
+        className={`rcb-file-attachment-button ${
+          !blockAllowsAttachment ? 'rcb-file-attachment-button-disabled' : ''
+        }`}
+      >
+        <img src="/new/attachment.svg" alt="attach" />
+      </button>
       <input
-        className="rcb-attach-input"
-        role="file"
+        ref={fileInputRef}
         type="file"
         onChange={handleUpload}
         multiple={settings.fileAttachment?.multiple}
         accept={settings.fileAttachment?.accept}
-        disabled={!blockAllowsAttachment}
+        style={{ display: 'none' }}
       />
-      {renderButton()}
-    </label>
+    </>
   );
 };
 

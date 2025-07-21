@@ -47,31 +47,33 @@ const BotMessage = ({
     : '';
 
   // determines whether it's a new sender (affects avatar display and offset)
-  const showAvatar = settings.botBubble?.showAvatar && isNewSender;
-  const offsetStyle = `rcb-bot-message${
-    !isNewSender && settings.botBubble?.showAvatar
-      ? ' rcb-bot-message-offset'
-      : ''
-  }`;
+  const showAvatar = settings.botBubble?.showAvatar;
+  const offsetStyle = `rcb-bot-message`;
 
   return (
     <div className="rcb-bot-message-container">
-      {showAvatar && (
-        <div
-          style={{ backgroundImage: `url("${settings.botBubble?.avatar}")` }}
-          className="rcb-message-bot-avatar"
-        />
-      )}
-      {isStringContent ? (
-        <div
-          style={botBubbleStyle}
-          className={`${offsetStyle} ${botBubbleEntryStyle}`}
-        >
-          {finalContent}
+      <div className="rcb-bot-message-header">
+        <div className="rcb-bot-logo">
+          <img
+            src="/assets/chatbot/v2/capbot_logo.png"
+            alt="CapBot Logo"
+            className="rcb-bot-logo-image"
+          />
         </div>
-      ) : (
-        <>{finalContent}</>
-      )}
+        <span className="rcb-bot-message-sender-name">CapBot</span>
+      </div>
+      <div className="rcb-bot-message-content">
+        {isStringContent ? (
+          <div
+            style={botBubbleStyle}
+            className={`${offsetStyle} ${botBubbleEntryStyle}`}
+          >
+            {finalContent}
+          </div>
+        ) : (
+          <>{finalContent}</>
+        )}
+      </div>
     </div>
   );
 };

@@ -2,22 +2,53 @@
 
 .rcb-bot-message-container {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 15px;
+  animation-duration: 0.2s;
+}
+
+.rcb-bot-message-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+  padding-left: 8px;
+}
+
+.rcb-bot-logo {
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+  display: flex;
+  align-items: center;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.rcb-bot-logo-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.rcb-bot-message-sender-name {
+  font-weight: 600;
+  font-size: 14px;
+  color: #333;
+}
+
+.rcb-bot-message-content {
+  display: flex;
+  align-items: center;
+  width: 100%;
 }
 
 .rcb-bot-message {
-  margin-top: 8px;
+  border-radius: 10px 10px 10px 0;
   padding: 12px 16px;
-  border-radius: 22px;
-  min-height: 20px;
-  height: fit-content;
-  width: fit-content;
-  font-size: 15px;
-  overflow-wrap: anywhere;
-  overflow: auto;
+  word-break: break-word;
   white-space: pre-wrap;
   text-align: left;
-  margin-left: 16px;
 }
 
 .rcb-bot-message-offset {
