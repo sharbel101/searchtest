@@ -105,7 +105,7 @@ const chatFlow: ChatFlow = {
     },
     nextNode: 'foundingTeam',
   },
-  */
+*/
 
   nda: {
     sectionTitle: 'NDA',
@@ -121,6 +121,31 @@ const chatFlow: ChatFlow = {
       },
     },
     nextNode: 'portfolio',
+  },
+  departments1: {
+    sectionTitle: 'Departments',
+    sectionId: 'departments',
+    fields: {
+      organizationChart: {
+        id: 'org-chart',
+        type: FieldType.File,
+        label: 'Organization Chart',
+        description: 'Upload organization chart (PDF, Excel, CSV).',
+        required: true,
+      },
+      fs_department: {
+        id: 'dept-details',
+        type: FieldType.FlowFunc,
+        label: 'Department Details',
+        description: '',
+        required: false,
+        flowInjection: {
+          name: 'fs_department',
+          type: 'OriginalSubFlow',
+        },
+      },
+    },
+    nextNode: 'financials',
   },
   portfolio: {
     sectionTitle: 'Portfolio',

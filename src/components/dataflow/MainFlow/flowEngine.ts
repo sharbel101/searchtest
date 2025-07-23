@@ -1,9 +1,13 @@
 'use client';
+import { StageSubFlow } from '../SubFlows/AllOriginalSubFlowsData';
+import { FormField } from './flow';
 
+//these TYPES are for the createFlowController
 export type QuestionNode = {
   id: string;
   question: string;
   answers: Record<string, { next?: string; setStage?: string }>;
+  options?: { id: string; value: string }[];
 };
 
 export type FlowDefinition = Record<string, QuestionNode>;
@@ -12,9 +16,16 @@ export type FlowController = {
   getCurrentQuestion: () => string;
   getCurrentAnswers: () => string[];
   answerQuestion: (answer: string) => void;
-  OnSuccess: () => string;
+  OnSuccess?: () => string;
 };
 
+// these TYPES are for the createOriginalSubFlowController
+export type TypeOriginalSubFlowsOptions = {
+  id: string;
+  value: string;
+};
+
+//  createFlowController
 export const createFlowController = (flow: FlowDefinition): FlowController => {
   let currentNodeId = 'q1';
   let stage: string | null = null;
@@ -47,5 +58,92 @@ export const createFlowController = (flow: FlowDefinition): FlowController => {
     getCurrentAnswers,
     answerQuestion,
     OnSuccess,
+  };
+};
+
+//   createOriginalSubFlowController
+
+export const createOriginalSubFlowController = (flow: StageSubFlow) => {
+  let currentNodeId = 'q1';
+
+  const getCurrentQuestion = (): string => {
+    const currentNode = flow[currentNodeId];
+    if (!currentNode) return '';
+
+    // Get the first field in the current node (assuming single field per question)
+    const firstFieldKey = Object.keys(currentNode.fields)[0];
+    const firstField = currentNode.fields[firstFieldKey];
+
+    return firstField?.label || '';
+  };
+
+  const getCurrentAnswers = (): any[] => {
+    const currentNode = flow[currentNodeId];
+    if (!currentNode) return [];
+
+    // Get the first field in the current node
+    const firstFieldKey = Object.keys(currentNode.fields)[0];
+    const firstField = currentNode.fields[firstFieldKey];
+
+    if (!firstField?.options) return [];
+
+    // Map the objects and extract their values into an array
+    return firstField.options.map((option) => option.value); // or option.text, option.id, etc.
+  };
+
+  const getCurrentSectionTitle = (): string => {
+    return flow[currentNodeId]?.sectionTitle || '';
+  };
+
+  const getCurrentSectionId = (): string => {
+    return flow[currentNodeId]?.sectionId || '';
+  };
+
+  const getCurrentFields = (): Record<string, FormField> => {
+    return flow[currentNodeId]?.fields || {};
+  };
+
+  const moveToNext = (): boolean => {
+    const currentNode = flow[currentNodeId];
+    if (!currentNode || !currentNode.nextNode) {
+      return false; // End of flow
+    }
+
+    currentNodeId = currentNode.nextNode;
+    return true;
+  };
+
+  const getCurrentNodeId = (): string => {
+    return currentNodeId;
+  };
+
+  const isAtEnd = (): boolean => {
+    const currentNode = flow[currentNodeId];
+    return !currentNode || currentNode.nextNode === null;
+  };
+
+  const goToNode = (nodeId: string): boolean => {
+    if (flow[nodeId]) {
+      currentNodeId = nodeId;
+      return true;
+    }
+    return false;
+  };
+
+  const getAllNodes = (): string[] => {
+    return Object.keys(flow);
+  };
+
+  return {
+    getCurrentQuestion,
+    getCurrentAnswers,
+    getCurrentSectionTitle,
+    getCurrentSectionId,
+    getCurrentFields,
+    getCurrentNodeId,
+    moveToNext,
+    isAtEnd,
+    goToNode,
+    getAllNodes,
   };
 };

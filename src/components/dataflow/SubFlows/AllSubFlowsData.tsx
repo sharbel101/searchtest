@@ -41,8 +41,8 @@ export const allSubFlows: Record<string, Record<string, QuestionNode>> = {
       question: 'Which series have you completed?',
       answers: {
         'Series A Only': { setStage: 'Early VC' },
-        'Series A & B': { setStage: 'Advanced VC' },
-        'Series A B C': { setStage: 'Advanced VC' },
+        'Series A & B': { setStage: 'AdvancedVC' },
+        'Series A B C': { setStage: 'AdvancedVC' },
         'More than 4 series': { setStage: 'PE Stages' },
       },
     },
