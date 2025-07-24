@@ -45,7 +45,6 @@ export type ChatFlow = {
 
 // Defining the chat flow structure with sections and their fields
 const chatFlow: ChatFlow = {
-  /*
   investmentStage: {
     // Title of this section in the flow
     sectionTitle: 'Investment Stage',
@@ -73,8 +72,8 @@ const chatFlow: ChatFlow = {
 
         //rename to flowInjectionID
         flowInjection: {
-          name:'investmentStageFlow',
-          type:'ChartForm'
+          name: 'investmentStageFlow',
+          type: 'ChartForm',
         },
       },
     },
@@ -83,8 +82,7 @@ const chatFlow: ChatFlow = {
     nextNode: 'departments',
   },
 
-
-
+  /*
   portfolio1: {
     sectionTitle: 'Portfolio',
     sectionId: 'portfolio',
@@ -122,6 +120,7 @@ const chatFlow: ChatFlow = {
     },
     nextNode: 'portfolio',
   },
+
   departments1: {
     sectionTitle: 'Departments',
     sectionId: 'departments',
@@ -147,6 +146,7 @@ const chatFlow: ChatFlow = {
     },
     nextNode: 'financials',
   },
+
   portfolio: {
     sectionTitle: 'Portfolio',
     sectionId: 'portfolio',

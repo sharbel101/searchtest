@@ -57,9 +57,12 @@ export const fetchAndSetOriginalSubFlow = async (
   setCurrentFlowController(flowController);
   setIsInFlowFunc(true);
 
-  //setSubFlowSections(subFlow); hattet hayde la jarreb hell l mechkle li bel OriginalSubFlowLoop
+  //I need a map to map over the subflow sections and put it inside a container and setSubFlowSections(container).
+  const sectionKeys = Object.values(subFlow);
+  setSubFlowSections(sectionKeys);
 
   const initialQuestion = flowController.getCurrentQuestion();
+  console.log('this is the Current question: ', initialQuestion);
   setQuestionBody(initialQuestion);
 
   if (delayMs > 0) {

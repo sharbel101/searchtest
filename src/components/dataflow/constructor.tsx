@@ -142,11 +142,13 @@ export const generateChatBotFlow = (): Record<
           field.type === FieldType.FlowFunc &&
           field.flowInjection &&
           field.flowInjection.type === 'OriginalSubFlow' &&
-          !isInFlowFunc
+          !isInFlowFunc &&
+          stage != null &&
+          stage != ''
         ) {
           const flow = await fetchAndSetOriginalSubFlow(
             field.flowInjection.name,
-            'AdvancedVC',
+            stage,
           );
           return 'OriginalSubFlowLoop';
         }
@@ -453,6 +455,7 @@ export const generateChatBotFlow = (): Record<
           getCurrentSection,
           setCurrentFlowController,
           setIsInFlowFunc,
+          incrementField,
           currentFlowController,
           isInFlowFunc,
           setStage,
@@ -463,15 +466,15 @@ export const generateChatBotFlow = (): Record<
         const SubFlowSections = getCurrentSubFlowSection();
 
         //IF there is no SubFLowSection we return to the loop object (main flow) to a new field and if
-        if (!SubFlowSections) {
-          const field = getCurrentField();
-          if (!field) {
-            incrementSection();
-            resetFieldIndex();
-            return getCurrentSection() ? 'setup' : 'end';
-          }
-          return 'loop';
-        }
+        // if (!SubFlowSections) {
+        //   const field = getCurrentField();
+        //   if (!field) {
+        //     incrementSection();
+        //     resetFieldIndex();
+        //     return getCurrentSection() ? 'setup' : 'end';
+        //   }
+        //   return 'loop';
+        // }
 
         const SubFlowfield = getCurrentSubFlowField();
         if (!SubFlowfield) {
@@ -488,7 +491,29 @@ export const generateChatBotFlow = (): Record<
           resetSubFlowFieldIndex();
           incrementSubFlowSection();
           const nextSubFlowSection = getCurrentSubFlowSection();
-          return nextSubFlowSection ? 'OriginalSubFlowLoop' : 'Setup';
+
+          if (nextSubFlowSection) {
+            return 'OriginalSubFlowLoop';
+          } else {
+            // Subflow has finished. Now resume main flow
+            setIsInFlowFunc(false); // <- Make sure this signals you're done with the subflow
+            setCurrentFlowController(null); // optional: reset flow controller
+
+            const mainFlowField = incrementField();
+            if (mainFlowField === undefined || mainFlowField === null) {
+              const mainFlowNextSection = incrementSection();
+              resetFieldIndex();
+              if (
+                mainFlowNextSection === undefined ||
+                mainFlowNextSection === null ||
+                mainFlowNextSection === ''
+              ) {
+                return 'loop';
+              }
+              return 'loop';
+            }
+            return 'loop'; // <- Resume main flow
+          }
         }
 
         return 'OriginalSubFlowLoop';
