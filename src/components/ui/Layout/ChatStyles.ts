@@ -65,7 +65,11 @@ export const styles: Styles = {
     backgroundColor: '#000',
     color: '#FFF',
     fontFamily: 'Inter, sans-serif',
+    scrollbarWidth: 'thin',
+    scrollbarColor: '#333 #000',
   },
+
+  // Custom scrollbar styles for webkit browsers
 
   // Footer
   footerStyle: {
@@ -104,16 +108,6 @@ export const styles: Styles = {
     textDecoration: 'underline',
   },
 
-  // Input Container
-  chatInputContainerStyle: {
-    display: 'flex',
-    alignItems: 'center',
-    padding: '8px 12px',
-    backgroundColor: '#000',
-    borderRadius: 0,
-    margin: '16px 0',
-  },
-
   // Input Area
   chatInputAreaStyle: {
     flex: 1,
@@ -146,62 +140,7 @@ export const styles: Styles = {
     color: '#EF4444',
   },
 
-  // Send Button
-  sendButtonStyle: {
-    backgroundColor: '#F3F4F6',
-    border: 'none',
-    borderRadius: '0%',
-    width: 36,
-    height: 36,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginLeft: 8,
-    cursor: 'pointer',
-  },
-  sendButtonHoveredStyle: {
-    backgroundColor: '#F3F4F6',
-  },
-  sendButtonDisabledStyle: {
-    opacity: 0.5,
-    cursor: 'not-allowed',
-  },
-
-  // Send Icon
-  sendIconStyle: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 16,
-    height: 16,
-  },
-  sendIconHoveredStyle: {
-    opacity: 0.8,
-  },
-  sendIconDisabledStyle: {
-    opacity: 0.5,
-  },
-
   // File Attachment
-  fileAttachmentButtonStyle: {
-    background: 'transparent',
-    border: 'none',
-    cursor: 'pointer',
-    marginRight: 8,
-    color: '#9CA3AF',
-    fontSize: 18,
-  },
-  fileAttachmentButtonDisabledStyle: {
-    cursor: 'not-allowed',
-    color: '#4B5563',
-  },
-  fileAttachmentIconStyle: {
-    color: '#9CA3AF',
-    fontSize: 18,
-  },
-  fileAttachmentIconDisabledStyle: {
-    color: '#6B7280',
-  },
 
   // Emoji
   emojiButtonStyle: {
@@ -321,17 +260,31 @@ export const styles: Styles = {
   },
 
   // Bot Options
+  // Bot Options
   botOptionStyle: {
-    backgroundColor: '#374151',
-    color: '#FFF',
-    border: 'none',
+    backgroundColor: '#ffffff',
+    color: '#374151',
+    border: '1px solid #E5E7EB',
     padding: '8px 12px',
     borderRadius: 4,
     cursor: 'pointer',
     margin: '4px 0',
+    transition:
+      'background-color 0.6s ease, color 0.6s ease, transform 0.4s ease, box-shadow 0.6s ease',
+    transform: 'translateY(0) scale(1)',
   },
   botOptionHoveredStyle: {
-    backgroundColor: '#4B5563',
+    backgroundColor: '#F9FAFB',
+    color: '#374151',
+    transform: 'translateY(-1px) scale(1.02)',
+    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+  },
+  botOptionSelectedStyle: {
+    backgroundColor: '#F3F4F6',
+    color: '#374151',
+    transform: 'translateY(-1px) scale(1.02)',
+    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
+    fontWeight: '500',
   },
 
   // Bot Checkboxes
@@ -341,27 +294,49 @@ export const styles: Styles = {
     gap: 8,
     margin: '4px 0',
   },
+
   botCheckboxNextStyle: {
-    backgroundColor: '#374151',
-    color: '#FFF',
-    border: 'none',
+    backgroundColor: '#ffffff',
+    color: '#374151',
+    border: '1px solid #E5E7EB',
     padding: '6px 10px',
     fontWeight: 500,
     borderRadius: 4,
     cursor: 'pointer',
+    transition:
+      'background-color 0.6s ease, color 0.6s ease, transform 0.4s ease, box-shadow 0.6s ease',
+    transform: 'translateY(0) scale(1)',
   },
+  botCheckboxNextHoveredStyle: {
+    backgroundColor: '#F9FAFB',
+    color: '#374151',
+    transform: 'translateY(-1px)',
+    boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)',
+  },
+
   botCheckMarkStyle: {
     width: 16,
     height: 16,
-    border: '1px solid #6B7280',
+    border: '1px solid #D1D5DB',
     borderRadius: 2,
+    backgroundColor: '#ffffff',
+    transition:
+      'border-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease, background-color 0.3s ease, color 0.3s ease',
+    transform: 'scale(1)',
+  },
+  botCheckMarkHoveredStyle: {
+    borderColor: '#9CA3AF',
+    transform: 'scale(1.05)',
+    boxShadow: '0 0 0 2px rgba(156, 163, 175, 0.2)',
   },
   botCheckMarkSelectedStyle: {
-    backgroundColor: '#4B5563',
-    color: '#FFF',
+    backgroundColor: '#374151',
+    color: '#ffffff',
+    borderColor: '#374151',
     borderRadius: 2,
+    transform: 'scale(1.05)',
+    boxShadow: '0 0 0 2px rgba(55, 65, 81, 0.3)',
   },
-
   // Typing Indicator
   rcbTypingIndicatorContainerStyle: {
     backgroundColor: '#2A2A2A',

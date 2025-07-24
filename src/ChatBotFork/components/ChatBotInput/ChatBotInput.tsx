@@ -57,6 +57,13 @@ const ChatBotInput = ({ buttons }: { buttons: React.ReactElement[] }) => {
   //handle textarea functionality
   const { setTextAreaValue } = useTextAreaInternal();
 
+  const fileAttachmentButton = buttons.find(
+    (button) => button.key === 'file-attachment',
+  );
+  const otherButtons = buttons.filter(
+    (button) => button.key !== 'file-attachment',
+  );
+
   // styles for text area
   const textAreaStyle: React.CSSProperties = {
     boxSizing: isDesktop ? 'content-box' : 'border-box',
@@ -185,6 +192,7 @@ const ChatBotInput = ({ buttons }: { buttons: React.ReactElement[] }) => {
       style={{ ...styles.chatInputContainerStyle }}
       className="rcb-chat-input"
     >
+      {fileAttachmentButton}
       {/* textarea intentionally does not use the disabled property to prevent keyboard from closing on mobile */}
       {textAreaSensitiveMode && settings.sensitiveInput?.maskInTextArea ? (
         <input
@@ -228,7 +236,7 @@ const ChatBotInput = ({ buttons }: { buttons: React.ReactElement[] }) => {
         />
       )}
       <>
-        {buttons?.map((button: React.ReactElement, index: number) => (
+        {otherButtons?.map((button: React.ReactElement, index: number) => (
           <Fragment key={index}>{button}</Fragment>
         ))}
         {settings.chatInput?.showCharacterCount &&

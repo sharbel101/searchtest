@@ -30,13 +30,12 @@ const ChatBotHeader = ({ buttons }: { buttons: React.ReactElement[] }) => {
   return (
     <div style={headerStyle} className="rcb-chat-header-container">
       <div className="rcb-chat-header">
-        {settings.header?.showAvatar && (
-          <div
-            style={{ backgroundImage: `url("${settings.header?.avatar}")` }}
-            className="rcb-bot-avatar"
-          />
-        )}
-        {currentSection?.sectionTitle}
+        <img
+          src="/assets/chatbot/v2/capbot_logo.png"
+          alt="CapBot Logo"
+          className="rcb-header-logo"
+        />
+        <h1 className="rcb-header-title">{currentSection?.sectionTitle}</h1>
       </div>
       <div className="rcb-chat-header">
         {buttons?.map((button: React.ReactElement, index: number) => (

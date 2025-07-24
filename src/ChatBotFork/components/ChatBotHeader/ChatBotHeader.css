@@ -1,17 +1,30 @@
 /* ChatBot Header */
 
 .rcb-chat-header-container {
-  padding: 12px;
-  color: #fff;
-  border-bottom: 1px solid #ccc;
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  max-height: 55px;
+  padding: 0 15px;
+  height: 60px;
 }
 
 .rcb-chat-header {
   display: flex;
-  flex-direction: row;
+  align-items: center;
+  color: white;
+}
+
+.rcb-header-logo {
+  width: 32px;
+  height: 32px;
+  margin-right: 12px;
+  border-radius: 50%;
+}
+
+.rcb-header-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
 }
 
 /* ChatBot Avatar */

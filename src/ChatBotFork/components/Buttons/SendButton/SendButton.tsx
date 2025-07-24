@@ -1,150 +1,49 @@
 import { useState, MouseEvent } from 'react';
-
 import { useSubmitInputInternal } from '../../../hooks/internal/useSubmitInputInternal';
 import { useBotStatesContext } from '../../../context/BotStatesContext';
 import { useSettingsContext } from '../../../context/SettingsContext';
-import { useStylesContext } from '../../../context/StylesContext';
 
 import './SendButton.css';
 
-/**
- * Sends current user input to the chat bot.
- */
 const SendButton = () => {
-  // handles settings
   const { settings } = useSettingsContext();
-
-  // handles styles
-  const { styles } = useStylesContext();
-
-  // handles bot states
-  const { textAreaDisabled } = useBotStatesContext();
-
-  // tracks if send button is hovered
-  const [isHovered, setIsHovered] = useState<boolean>(false);
-
-  // handles user input submission
+  const { textAreaDisabled, isBotTyping } = useBotStatesContext();
   const { handleSubmitText } = useSubmitInputInternal();
 
-  // styles for send button
-  const sendButtonStyle: React.CSSProperties = {
-    backgroundColor: settings.general?.primaryColor,
-    ...styles.sendButtonStyle,
+  const handleClick = async (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    if (textAreaDisabled || isBotTyping) return;
+    await handleSubmitText();
   };
 
-  // styles for disabled send button
-  const sendButtonDisabledStyle: React.CSSProperties = {
-    cursor: `url("${settings.general?.actionDisabledIcon}"), auto`,
-    backgroundColor: settings.general?.primaryColor,
-    ...styles.sendButtonStyle, // by default inherit the base style
-    ...styles.sendButtonDisabledStyle,
-  };
-
-  // styles for hovered send button
-  const sendButtonHoveredStyle: React.CSSProperties = {
-    backgroundColor: settings.general?.secondaryColor,
-    ...styles.sendButtonStyle, // by default inherit the base style
-    ...styles.sendButtonHoveredStyle,
-  };
-
-  // styles for send icon
-  const sendIconStyle: React.CSSProperties = {
-    backgroundImage: `url(${settings.chatInput?.sendButtonIcon})`,
-    fill: '#fff',
-    ...styles.sendIconStyle,
-  };
-
-  // styles for disabled send icon
-  const sendIconDisabledStyle: React.CSSProperties = {
-    backgroundImage: `url(${settings.chatInput?.sendButtonIcon})`,
-    fill: '#fff',
-    ...styles.sendIconStyle, // by default inherit the base style
-    ...styles.sendIconDisabledStyle,
-  };
-
-  // styles for hovered send icon
-  const sendIconHoveredStyle: React.CSSProperties = {
-    backgroundImage: `url(${settings.chatInput?.sendButtonIcon})`,
-    fill: '#fff',
-    ...styles.sendIconStyle, // by default inherit the base style
-    ...styles.sendIconHoveredStyle,
-  };
-
-  /**
-   * Handles mouse enter event on send button.
-   */
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-  };
-
-  /**
-   * Handles mouse leave event on send button.
-   */
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-  };
-
-  /**
-   * Renders button depending on whether an svg component or image url is provided.
-   */
-  const renderButton = () => {
-    const IconComponent = settings.chatInput?.sendButtonIcon;
-    if (!IconComponent || typeof IconComponent === 'string') {
-      return (
-        <span
-          className="rcb-send-icon"
-          data-testid="rcb-send-icon"
-          style={
-            textAreaDisabled
-              ? sendIconDisabledStyle
-              : isHovered
-                ? sendIconHoveredStyle
-                : sendIconStyle
-          }
-        />
-      );
-    }
-    return (
-      IconComponent && (
-        <span className="rcb-send-icon" data-testid="rcb-send-icon">
-          <IconComponent
-            style={
-              textAreaDisabled
-                ? sendIconDisabledStyle
-                : isHovered
-                  ? sendIconHoveredStyle
-                  : sendIconStyle
-            }
-          />
-        </span>
-      )
-    );
-  };
+  const isDisabled = textAreaDisabled || isBotTyping;
 
   return (
-    <div
+    <button
+      type="button"
       aria-label={settings.ariaLabel?.sendButton ?? 'send message'}
-      role="button"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      onMouseDown={async (event: MouseEvent) => {
-        event?.preventDefault();
-        if (textAreaDisabled) {
-          return;
-        }
-        await handleSubmitText();
-      }}
-      style={
-        textAreaDisabled
-          ? sendButtonDisabledStyle
-          : isHovered
-            ? sendButtonHoveredStyle
-            : sendButtonStyle
-      }
-      className="rcb-send-button"
+      disabled={isDisabled}
+      onClick={handleClick}
+      className={`rcb-send-button ${isDisabled ? 'rcb-send-button-disabled' : ''}`}
     >
-      {renderButton()}
-    </div>
+      {isBotTyping ? (
+        <div className="rcb-send-loading">
+          <div className="rcb-loading-dot"></div>
+          <div className="rcb-loading-dot"></div>
+          <div className="rcb-loading-dot"></div>
+        </div>
+      ) : (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          width="20"
+          height="20"
+        >
+          <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+        </svg>
+      )}
+    </button>
   );
 };
 
