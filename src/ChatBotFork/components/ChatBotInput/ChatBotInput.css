@@ -2,6 +2,7 @@
   display: flex;
   align-items: center;
   width: 100%;
+  padding-left: 8px; /* Optional: add left padding to the whole input area */
 }
 
 .rcb-chat-input-textarea {
@@ -14,21 +15,20 @@
   resize: none;
   height: auto;
   min-height: 38px;
-  overflow-y: scroll;
+  overflow: hidden; /* Hide scrollbars completely */
   font-family: inherit;
   background-color: #fff;
   color: #000;
   touch-action: none;
+  margin-left: 60px; /* This moves it slightly away from the left */
 }
 
+/* Scrollbar hidden – cross-browser */
 .rcb-chat-input-textarea::-webkit-scrollbar {
-  background-color: transparent;
+  display: none;
 }
 
-.rcb-chat-input-textarea::-webkit-scrollbar-thumb {
-  background-color: transparent;
-}
-
-.rcb-chat-input-textarea::-webkit-scrollbar-thumb:hover {
-  background-color: transparent;
+.rcb-chat-input-textarea {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }

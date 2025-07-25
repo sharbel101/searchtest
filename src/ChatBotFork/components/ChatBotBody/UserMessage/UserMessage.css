@@ -19,6 +19,8 @@
   white-space: pre-wrap;
   text-align: right;
   margin-right: 16px;
+
+  /* Removed background-color, color, and border so TS logic controls it */
 }
 
 .rcb-user-message-offset {

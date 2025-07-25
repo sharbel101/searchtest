@@ -5,12 +5,6 @@ import { Message } from '../../../types/Message';
 
 import './UserMessage.css';
 
-/**
- * Renders message from the user.
- *
- * @param message message to render
- * @param isNewSender whether this message is from a new sender
- */
 const UserMessage = ({
   message,
   isNewSender,
@@ -18,36 +12,48 @@ const UserMessage = ({
   message: Message;
   isNewSender: boolean;
 }) => {
-  // handles settings
   const { settings } = useSettingsContext();
-
-  // handles styles
   const { styles } = useStylesContext();
 
-  // checks if content should be rendered as html
   const isStringContent = typeof message.content === 'string';
   const baseContent: React.ReactNode = message.content;
 
-  // checks if content wrapper is defined to wrap around content
   const finalContent = message.contentWrapper ? (
     <message.contentWrapper>{baseContent}</message.contentWrapper>
   ) : (
     baseContent
   );
 
-  // styles for user bubble
+  // Determine if message is a file message (based on 📄 or extension)
+  const isFileMessage = (message: Message): boolean => {
+    if (typeof message.content === 'string') {
+      const content = message.content.trim();
+      return (
+        content.startsWith('📄') ||
+        /\.(pdf|png|jpe?g|docx?|xlsx?|pptx?|zip|txt)$/i.test(content)
+      );
+    }
+    return false;
+  };
+
+  const isFile = isFileMessage(message);
+
   const userBubbleStyle: CSSProperties = {
-    backgroundColor: settings.general?.primaryColor,
-    color: '#fff',
+    backgroundColor: isFile
+      ? settings.general?.primaryColor || '#007bff'
+      : '#fff',
+    color: isFile ? '#fff' : '#000',
+    border: isFile ? '2px solid #00B4D8' : 'none',
     maxWidth: settings.userBubble?.showAvatar ? '65%' : '70%',
     ...styles.userBubbleStyle,
   };
+
   const userBubbleEntryStyle = settings.userBubble?.animate
     ? 'rcb-user-message-entry'
     : '';
 
-  // determines whether it's a new sender (affects avatar display and offset)
   const showAvatar = settings.userBubble?.showAvatar && isNewSender;
+
   const offsetStyle = `rcb-user-message${
     !isNewSender && settings.userBubble?.showAvatar
       ? ' rcb-user-message-offset'

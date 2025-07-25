@@ -10,7 +10,12 @@
   cursor: pointer;
   transition: background-color 0.2s ease;
   padding: 0;
-  margin-right: 8px;
+  margin: 0 8px 0 0; /* right margin for spacing */
+  box-sizing: border-box;
+
+  /* Added for vertical control */
+  position: relative;
+  top: -44px; /* Adjust this value to move higher or lower */
 }
 
 .rcb-file-attachment-button:hover:not(:disabled) {
