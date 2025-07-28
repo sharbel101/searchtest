@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { FlowSection, FormField } from './MainFlow/flow';
+import { FlowSection, FormField } from '../../../data/MainFlow/flow';
 
 interface FlowState {
   //for the main flow

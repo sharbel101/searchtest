@@ -1,4 +1,4 @@
-import { FieldType } from '../../MainFlow/flow';
+import { FieldType } from '@/components/data/MainFlow/flow';
 
 export const Angel_Phase_Flow = {
   q1: {
@@ -1133,6 +1133,5 @@ export const Angel_Phase_Flow = {
         ],
       },
     },
-    nextNode: null,
   },
 };

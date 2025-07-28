@@ -1,4 +1,4 @@
-import { FieldType } from '../../MainFlow/flow';
+import { FieldType } from '@/components/data/MainFlow/flow';
 
 export const Private_Equity_Flow = {
   q1: {
@@ -606,6 +606,5 @@ export const Private_Equity_Flow = {
         ],
       },
     },
-    nextNode: null,
   },
 };

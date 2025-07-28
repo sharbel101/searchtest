@@ -1,4 +1,4 @@
-import { chatFlow } from '@/components/dataflow/MainFlow/flow';
+import { chatFlow } from '@/components/data/MainFlow/flow';
 import React from 'react';
 
 interface QuestionDetailsProps {

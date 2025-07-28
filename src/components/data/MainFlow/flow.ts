@@ -14,6 +14,20 @@ export enum FieldType {
   FlowFunc = 'flowfunc',
 }
 
+// export const FieldType = {
+//   Text: 'text',
+//   File: 'file',
+//   Signature: 'signature',
+//   Dropdown: 'dropdown',
+//   Video: 'video',
+//   Url: 'url',
+//   Array: 'array',
+//   Component: 'component',
+//   FlowFunc: 'flowfunc',
+// } as const;
+
+// export type FieldType = (typeof FieldType)[keyof typeof FieldType];
+
 // Type for form fields, defining structure and validation
 export type FormField = {
   type: FieldType; // Enum-based field type for consistency
@@ -27,7 +41,7 @@ export type FormField = {
   validation?: RegExp | ((value: any) => boolean); // Optional validation rule used to validate string inputs by testing if they match a specific pattern
   subFields?: { [key: string]: FormField };
   flowInjection?: { name: string; type: string };
-  nextField?: string | null;
+  nextField?: string | null; //todo remove the optional
 };
 
 // Type for flow sections, representing a group of fields
@@ -37,7 +51,7 @@ export type FlowSection = {
   opened?: boolean;
   fields: { [key: string]: FormField }; // Object of fields for a section, defining all fields like companyType or socialMediaAccounts
   firstField?: string;
-  nextNode?: string | null; // ID of the next section in the flow, allowing null
+  nextNode?: string | null; // ID of the next section in the flow, allowing null //todo remove the optional
 };
 
 // Type for the entire chat flow, mapping section IDs to sections

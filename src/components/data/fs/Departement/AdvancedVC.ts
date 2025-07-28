@@ -1,4 +1,4 @@
-import { FieldType } from '../../MainFlow/flow';
+import { FieldType } from '@/components/data/MainFlow/flow';
 
 export const Advanced_VC_Flow = {
   q1: {
@@ -833,6 +833,5 @@ export const Advanced_VC_Flow = {
         nextField: null,
       },
     },
-    nextNode: null,
   },
 };

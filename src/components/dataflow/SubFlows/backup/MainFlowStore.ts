@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { FlowSection, FormField } from './MainFlow/flow';
+import { FlowSection, FormField } from '../../../data/MainFlow/flow';
 
 interface FlowState {
   //for the main flow
@@ -40,7 +40,7 @@ interface FlowState {
   setQuestionBody: (text: string) => void;
 }
 
-export const useFlowStore = create<FlowState>((set, get) => ({
+export const useMainFlowStore = create<FlowState>((set, get) => ({
   currentSectionIndex: 0,
   currentFieldIndex: 0,
   sections: [],

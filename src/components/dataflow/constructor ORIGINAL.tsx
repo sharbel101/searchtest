@@ -1,8 +1,8 @@
 'use client';
 
 // import { Block } from 'react-chatbotify';
-import { chatFlow, FieldType } from './MainFlow/flow';
-import { useFlowStore } from './FlowStore ORIGINAL';
+import { chatFlow, FieldType } from '../data/MainFlow/flow';
+import { useFlowStore } from './SubFlows/backup/OriginalFlowStore';
 import { UploadFileHandler } from './UploadFileHandler';
 import {
   fetchAndSetChartFormSubFlow,

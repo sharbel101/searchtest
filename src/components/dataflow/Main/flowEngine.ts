@@ -1,6 +1,6 @@
 'use client';
-import { StageSubFlow } from '../SubFlows/AllOriginalSubFlowsData';
-import { FormField } from './flow';
+import { StageSubFlow } from '@/components/data/fs/AllOriginalSubFlowsData';
+import { FormField } from '@/components/data/MainFlow/flow';
 
 //these TYPES are for the createFlowController
 export type QuestionNode = {

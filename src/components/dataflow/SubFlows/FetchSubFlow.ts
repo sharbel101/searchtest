@@ -3,13 +3,14 @@
 import {
   createFlowController,
   createOriginalSubFlowController,
-} from '../MainFlow/flowEngine';
-import { useFlowStore } from '../FlowStore ORIGINAL';
-import { allSubFlows } from './AllSubFlowsData';
-import { AllOriginalSubFlowsData } from './AllOriginalSubFlowsData';
+} from '@/components/dataflow/Main/flowEngine';
+import { useFlowStore } from '@/components/dataflow/MainFlowStore';
+import { allSubFlows } from '@/components/data/ChartForm/AllSubFlowsData';
+import { AllOriginalSubFlowsData } from '@/components/data/fs/AllOriginalSubFlowsData';
 
 //Fetches the sub flow by name and initializes the flow controller.
 
+//IS
 export const fetchAndSetChartFormSubFlow = async (
   flowName: string,
   delayMs: number = 2000,
@@ -36,6 +37,7 @@ export const fetchAndSetChartFormSubFlow = async (
   return true;
 };
 
+//fs
 export const fetchAndSetOriginalSubFlow = async (
   flowName: string,
   stage: string,

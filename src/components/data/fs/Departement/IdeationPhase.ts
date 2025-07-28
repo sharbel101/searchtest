@@ -1,4 +1,4 @@
-import { FieldType } from '../../MainFlow/flow';
+import { FieldType } from '@/components/data/MainFlow/flow';
 
 export const Ideation_Phase_FLow = {
   q1: {
@@ -657,6 +657,5 @@ export const Ideation_Phase_FLow = {
         ],
       },
     },
-    nextNode: null,
   },
 };

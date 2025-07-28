@@ -1,4 +1,4 @@
-import { FlowSection } from '../MainFlow/flow';
+import { FlowSection } from '@/components/data/MainFlow/flow';
 import { Advanced_VC_Flow } from './Departement/AdvancedVC';
 import { Angel_Phase_Flow } from './Departement/AngelPhase';
 import { Early_VC_Flow } from './Departement/EarlyVC';
