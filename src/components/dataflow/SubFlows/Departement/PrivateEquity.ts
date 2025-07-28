@@ -4,6 +4,7 @@ export const Private_Equity_Flow = {
   q1: {
     sectionTitle: 'Organizational Chart',
     sectionId: 'org-chart',
+    firstField: 'orgChartStatus',
     fields: {
       orgChartStatus: {
         id: 'org-chart-status',
@@ -11,6 +12,7 @@ export const Private_Equity_Flow = {
         label:
           'Does the company have a formal and documented organizational chart?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_chart',
@@ -33,6 +35,7 @@ export const Private_Equity_Flow = {
   q2: {
     sectionTitle: 'Structure Review Frequency',
     sectionId: 'structure-review',
+    firstField: 'structureReview',
     fields: {
       structureReview: {
         id: 'structure-review',
@@ -40,6 +43,7 @@ export const Private_Equity_Flow = {
         label:
           'How often is the organizational structure reviewed and updated?',
         required: true,
+        nextField: null,
         options: [
           { id: 'no_review', value: 'No structured review process' },
           { id: 'yearly', value: 'Once a year' },
@@ -55,6 +59,7 @@ export const Private_Equity_Flow = {
   q3: {
     sectionTitle: 'Management Layers',
     sectionId: 'management-layers',
+    firstField: 'managementLayers',
     fields: {
       managementLayers: {
         id: 'management-layers',
@@ -62,6 +67,7 @@ export const Private_Equity_Flow = {
         label:
           'How many management layers exist between entry-level employees and the CEO?',
         required: true,
+        nextField: null,
         options: [
           {
             id: '5_plus',
@@ -80,6 +86,7 @@ export const Private_Equity_Flow = {
   q4: {
     sectionTitle: 'Department Reporting Structure',
     sectionId: 'department-reporting',
+    firstField: 'departmentReporting',
     fields: {
       departmentReporting: {
         id: 'department-reporting',
@@ -87,6 +94,7 @@ export const Private_Equity_Flow = {
         label:
           'Does each department report directly to its respective C-level executive?',
         required: true,
+        nextField: null,
         options: [
           { id: 'no_structure', value: 'No clear reporting structure' },
           {
@@ -105,6 +113,7 @@ export const Private_Equity_Flow = {
   q5: {
     sectionTitle: 'Business Units or Divisions',
     sectionId: 'business-units',
+    firstField: 'businessUnits',
     fields: {
       businessUnits: {
         id: 'business-units',
@@ -112,6 +121,7 @@ export const Private_Equity_Flow = {
         label:
           'Has the company expanded into multiple business units or divisions?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'single_entity',
@@ -133,6 +143,7 @@ export const Private_Equity_Flow = {
   q6: {
     sectionTitle: 'Middle Management Layer',
     sectionId: 'middle-management',
+    firstField: 'middleManagement',
     fields: {
       middleManagement: {
         id: 'middle-management',
@@ -140,6 +151,7 @@ export const Private_Equity_Flow = {
         label:
           'Does each department have a middle management layer separate from senior leadership?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_middle',
@@ -147,7 +159,7 @@ export const Private_Equity_Flow = {
           },
           {
             id: 'some_middle',
-            value: 'Some departments have middle management, others don’t',
+            value: 'Some departments have middle management, others don    t',
           },
           {
             id: 'yes_middle',
@@ -161,6 +173,7 @@ export const Private_Equity_Flow = {
   q7: {
     sectionTitle: 'C-Level Executives',
     sectionId: 'c-level-executives',
+    firstField: 'cLevelRoles',
     fields: {
       cLevelRoles: {
         id: 'c-level-roles',
@@ -168,6 +181,7 @@ export const Private_Equity_Flow = {
         label:
           'Which of the following C-level executives are present in the company?',
         required: true,
+        nextField: 'education',
         options: [
           { id: 'ceo', value: 'Chief Executive Officer (CEO)' },
           { id: 'coo', value: 'Chief Operating Officer (COO)' },
@@ -186,18 +200,12 @@ export const Private_Equity_Flow = {
           { id: '9_plus_c_levels', value: '9-10+' },
         ],
       },
-    },
-    nextNode: 'q8',
-  },
-  q8: {
-    sectionTitle: 'C-Level Executive Evaluation',
-    sectionId: 'c-level-evaluation',
-    fields: {
       education: {
         id: 'c-level-education',
         type: FieldType.Dropdown,
         label: 'What is their highest level of education?',
         required: true,
+        nextField: 'experienceYears',
         options: [
           { id: 'no_degree', value: 'No formal degree' },
           { id: 'bachelor', value: "Bachelor's degree" },
@@ -214,6 +222,7 @@ export const Private_Equity_Flow = {
         label:
           'How many years of experience does this C-level executive have in their respective field?',
         required: true,
+        nextField: 'leadershipStartup',
         options: [
           { id: 'lt3', value: 'Less than 3 years' },
           { id: '3_5', value: '3-5 years' },
@@ -227,6 +236,7 @@ export const Private_Equity_Flow = {
         label:
           'Has this executive previously held a leadership role in a startup or high-growth company?',
         required: true,
+        nextField: 'industryExperience',
         options: [
           { id: 'no_leadership', value: 'No prior leadership experience' },
           {
@@ -244,6 +254,7 @@ export const Private_Equity_Flow = {
         type: FieldType.Dropdown,
         label: 'What is their industry experience?',
         required: true,
+        nextField: 'investorParticipation',
         options: [
           { id: 'no_experience', value: 'No relevant industry experience' },
           {
@@ -259,6 +270,7 @@ export const Private_Equity_Flow = {
         label:
           'Does this executive participate in investor relations and board meetings?',
         required: true,
+        nextField: 'strategicInvolvement',
         options: [
           {
             id: 'only_ceo',
@@ -279,6 +291,7 @@ export const Private_Equity_Flow = {
         type: FieldType.Dropdown,
         label: 'How involved is this executive in strategic decision-making?',
         required: true,
+        nextField: null,
         options: [
           { id: 'minimal', value: 'Minimal involvement, execution-focused' },
           {
@@ -292,11 +305,12 @@ export const Private_Equity_Flow = {
         ],
       },
     },
-    nextNode: 'q9',
+    nextNode: 'q8',
   },
-  q9: {
+  q8: {
     sectionTitle: 'Established Departments',
     sectionId: 'established-departments',
+    firstField: 'departments',
     fields: {
       departments: {
         id: 'departments',
@@ -304,6 +318,7 @@ export const Private_Equity_Flow = {
         label:
           'Which of the following departments are formally established in your company?',
         required: true,
+        nextField: null,
         options: [
           { id: 'marketing', value: 'Marketing & Growth' },
           { id: 'sales', value: 'Sales & Business Development' },
@@ -327,11 +342,12 @@ export const Private_Equity_Flow = {
         ],
       },
     },
-    nextNode: 'q10',
+    nextNode: 'q9',
   },
-  q10: {
+  q9: {
     sectionTitle: 'Departmental KPIs',
     sectionId: 'department-kpis',
+    firstField: 'departmentKpis',
     fields: {
       departmentKpis: {
         id: 'department-kpis',
@@ -339,6 +355,7 @@ export const Private_Equity_Flow = {
         label:
           'Does each department have clear ownership of KPIs and performance metrics?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_kpis',
@@ -355,17 +372,19 @@ export const Private_Equity_Flow = {
         ],
       },
     },
-    nextNode: 'q11',
+    nextNode: 'q10',
   },
-  q11: {
+  q10: {
     sectionTitle: 'Internal Collaboration Tools',
     sectionId: 'internal-tools',
+    firstField: 'internalTools',
     fields: {
       internalTools: {
         id: 'internal-tools',
         type: FieldType.Dropdown,
         label: 'What tools or platforms are used for internal collaboration?',
         required: true,
+        nextField: null,
         options: [
           { id: 'no_tools', value: 'No tools, communication is unstructured' },
           {
@@ -380,11 +399,12 @@ export const Private_Equity_Flow = {
         ],
       },
     },
-    nextNode: 'q12',
+    nextNode: 'q11',
   },
-  q12: {
+  q11: {
     sectionTitle: 'Reporting System',
     sectionId: 'reporting-system',
+    firstField: 'reportingSystem',
     fields: {
       reportingSystem: {
         id: 'reporting-system',
@@ -392,6 +412,7 @@ export const Private_Equity_Flow = {
         label:
           'Are all department heads required to submit periodic reports on performance and progress?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_reporting',
@@ -408,18 +429,20 @@ export const Private_Equity_Flow = {
         ],
       },
     },
-    nextNode: 'q13',
+    nextNode: 'q12',
   },
-  q13: {
+  q12: {
     sectionTitle: 'Scalability Readiness',
     sectionId: 'scalability',
+    firstField: 'scalability',
     fields: {
       scalability: {
         id: 'scalability',
         type: FieldType.Dropdown,
         label:
-          'How resilient is the company’s department structure in handling rapid scaling?',
+          'How resilient is the company s department structure in handling rapid scaling?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'not_prepared',
@@ -437,11 +460,12 @@ export const Private_Equity_Flow = {
         ],
       },
     },
-    nextNode: 'q14',
+    nextNode: 'q13',
   },
-  q14: {
+  q13: {
     sectionTitle: 'Career Progression',
     sectionId: 'career-progression',
+    firstField: 'careerPaths',
     fields: {
       careerPaths: {
         id: 'career-paths',
@@ -449,6 +473,7 @@ export const Private_Equity_Flow = {
         label:
           'How well-defined are the career progression paths within each department?',
         required: true,
+        nextField: null,
         options: [
           { id: 'no_structure', value: 'No structured career growth plans' },
           {
@@ -463,11 +488,12 @@ export const Private_Equity_Flow = {
         ],
       },
     },
-    nextNode: 'q15',
+    nextNode: 'q14',
   },
-  q15: {
+  q14: {
     sectionTitle: 'Leadership Hiring Strategy',
     sectionId: 'leadership-hiring',
+    firstField: 'leadershipHiring',
     fields: {
       leadershipHiring: {
         id: 'leadership-hiring',
@@ -475,6 +501,7 @@ export const Private_Equity_Flow = {
         label:
           'How frequently are internal promotions vs. external hires made for leadership roles?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'mostly_external',
@@ -492,11 +519,12 @@ export const Private_Equity_Flow = {
         ],
       },
     },
-    nextNode: 'q16',
+    nextNode: 'q15',
   },
-  q16: {
+  q15: {
     sectionTitle: 'Global Workflow Optimization',
     sectionId: 'global-workflows',
+    firstField: 'globalWorkflow',
     fields: {
       globalWorkflow: {
         id: 'global-workflow',
@@ -504,6 +532,7 @@ export const Private_Equity_Flow = {
         label:
           'Are interdepartmental workflows optimized for multi-location or global operations?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_global',
@@ -520,11 +549,12 @@ export const Private_Equity_Flow = {
         ],
       },
     },
-    nextNode: 'q17',
+    nextNode: 'q16',
   },
-  q17: {
+  q16: {
     sectionTitle: 'Compliance and Risk',
     sectionId: 'compliance',
+    firstField: 'complianceDept',
     fields: {
       complianceDept: {
         id: 'compliance-dept',
@@ -532,6 +562,7 @@ export const Private_Equity_Flow = {
         label:
           'Does the company have a dedicated compliance or risk management department?',
         required: true,
+        nextField: null,
         options: [
           { id: 'no_compliance', value: 'No structured compliance process' },
           {
@@ -545,11 +576,12 @@ export const Private_Equity_Flow = {
         ],
       },
     },
-    nextNode: 'q18',
+    nextNode: 'q17',
   },
-  q18: {
+  q17: {
     sectionTitle: 'Department Optimization',
     sectionId: 'department-optimization',
+    firstField: 'departmentReview',
     fields: {
       departmentReview: {
         id: 'department-review',
@@ -557,6 +589,7 @@ export const Private_Equity_Flow = {
         label:
           'How frequently does the company restructure or optimize its departments?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'never',

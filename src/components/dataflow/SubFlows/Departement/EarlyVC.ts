@@ -4,6 +4,7 @@ export const Early_VC_Flow = {
   q1: {
     sectionTitle: 'Organizational Chart Documentation',
     sectionId: 'organizational-chart-documentation',
+    firstField: 'organizationalChartDocumentation',
     fields: {
       organizationalChartDocumentation: {
         id: 'organizational-chart-documentation',
@@ -11,6 +12,7 @@ export const Early_VC_Flow = {
         label:
           'Does the company have a formal and documented organizational chart?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_formal_chart',
@@ -34,6 +36,7 @@ export const Early_VC_Flow = {
   q2: {
     sectionTitle: 'Organizational Structure Review Frequency',
     sectionId: 'organizational-structure-review-frequency',
+    firstField: 'organizationalStructureReview',
     fields: {
       organizationalStructureReview: {
         id: 'organizational-structure-review',
@@ -41,6 +44,7 @@ export const Early_VC_Flow = {
         label:
           'How often is the organizational structure reviewed and updated?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_structured_review',
@@ -63,6 +67,7 @@ export const Early_VC_Flow = {
   q3: {
     sectionTitle: 'Management Layers',
     sectionId: 'management-layers',
+    firstField: 'managementLayers',
     fields: {
       managementLayers: {
         id: 'management-layers',
@@ -70,6 +75,7 @@ export const Early_VC_Flow = {
         label:
           'How many management layers exist between entry-level employees and the CEO?',
         required: true,
+        nextField: null,
         options: [
           {
             id: '5_plus_layers',
@@ -92,6 +98,7 @@ export const Early_VC_Flow = {
   q4: {
     sectionTitle: 'Department Reporting Structure',
     sectionId: 'department-reporting-structure',
+    firstField: 'departmentReportingStructure',
     fields: {
       departmentReportingStructure: {
         id: 'department-reporting-structure',
@@ -99,6 +106,7 @@ export const Early_VC_Flow = {
         label:
           'Does each department report directly to its respective C-level executive?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_clear_reporting',
@@ -121,6 +129,7 @@ export const Early_VC_Flow = {
   q5: {
     sectionTitle: 'C-Level Executives Present',
     sectionId: 'c-level-executives-present',
+    firstField: 'cLevelExecutivesPresent',
     fields: {
       cLevelExecutivesPresent: {
         id: 'c-level-executives-present',
@@ -128,6 +137,7 @@ export const Early_VC_Flow = {
         label:
           'Which of the following C-level executives are present in the company? (Select all that apply)',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'ceo',
@@ -198,12 +208,14 @@ export const Early_VC_Flow = {
   q6: {
     sectionTitle: 'C-Level Executive Education Level',
     sectionId: 'c-level-executive-education-level',
+    firstField: 'cLevelExecutiveEducation',
     fields: {
       cLevelExecutiveEducation: {
         id: 'c-level-executive-education',
         type: FieldType.Dropdown,
         label: 'What is their highest level of education?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_formal_degree',
@@ -230,6 +242,7 @@ export const Early_VC_Flow = {
   q7: {
     sectionTitle: 'C-Level Executive Experience Years',
     sectionId: 'c-level-executive-experience-years',
+    firstField: 'cLevelExecutiveExperience',
     fields: {
       cLevelExecutiveExperience: {
         id: 'c-level-executive-experience',
@@ -237,6 +250,7 @@ export const Early_VC_Flow = {
         label:
           'How many years of experience does this C-level executive have in their respective field?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'less_than_3_years',
@@ -263,6 +277,7 @@ export const Early_VC_Flow = {
   q8: {
     sectionTitle: 'C-Level Executive Leadership Experience',
     sectionId: 'c-level-executive-leadership-experience',
+    firstField: 'cLevelExecutiveLeadership',
     fields: {
       cLevelExecutiveLeadership: {
         id: 'c-level-executive-leadership',
@@ -270,6 +285,7 @@ export const Early_VC_Flow = {
         label:
           'Has this executive previously held a leadership role in a startup or high-growth company?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_prior_leadership',
@@ -292,12 +308,14 @@ export const Early_VC_Flow = {
   q9: {
     sectionTitle: 'C-Level Executive Industry Experience',
     sectionId: 'c-level-executive-industry-experience',
+    firstField: 'cLevelExecutiveIndustryExperience',
     fields: {
       cLevelExecutiveIndustryExperience: {
         id: 'c-level-executive-industry-experience',
         type: FieldType.Dropdown,
         label: 'What is their industry experience?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_relevant_industry',
@@ -320,6 +338,7 @@ export const Early_VC_Flow = {
   q10: {
     sectionTitle: 'C-Level Executive Investor Relations',
     sectionId: 'c-level-executive-investor-relations',
+    firstField: 'cLevelExecutiveInvestorRelations',
     fields: {
       cLevelExecutiveInvestorRelations: {
         id: 'c-level-executive-investor-relations',
@@ -327,6 +346,7 @@ export const Early_VC_Flow = {
         label:
           'Does this executive participate in investor relations and board meetings?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'only_ceo_interacts',
@@ -349,12 +369,14 @@ export const Early_VC_Flow = {
   q11: {
     sectionTitle: 'C-Level Executive Strategic Decision Making',
     sectionId: 'c-level-executive-strategic-decision-making',
+    firstField: 'cLevelExecutiveStrategicDecisions',
     fields: {
       cLevelExecutiveStrategicDecisions: {
         id: 'c-level-executive-strategic-decisions',
         type: FieldType.Dropdown,
         label: 'How involved is this executive in strategic decision-making?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'minimal_involvement',
@@ -377,12 +399,14 @@ export const Early_VC_Flow = {
   q12: {
     sectionTitle: 'Organization Chart Upload',
     sectionId: 'organization-chart-upload',
+    firstField: 'organizationChartUpload',
     fields: {
       organizationChartUpload: {
         id: 'organization-chart-upload',
         type: FieldType.File,
         label: 'Upload your organization chart',
         required: false,
+        nextField: null,
         acceptedTypes: ['.pdf'],
       },
     },
@@ -392,6 +416,7 @@ export const Early_VC_Flow = {
   q13: {
     sectionTitle: 'Formally Established Departments',
     sectionId: 'formally-established-departments',
+    firstField: 'formallyEstablishedDepartments',
     fields: {
       formallyEstablishedDepartments: {
         id: 'formally-established-departments',
@@ -399,6 +424,7 @@ export const Early_VC_Flow = {
         label:
           'Which of the following departments are formally established in your company? (Select all that apply)',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'marketing_growth',
@@ -485,12 +511,14 @@ export const Early_VC_Flow = {
   q14: {
     sectionTitle: 'Department Head Education Level',
     sectionId: 'department-head-education-level',
+    firstField: 'departmentHeadEducation',
     fields: {
       departmentHeadEducation: {
         id: 'department-head-education',
         type: FieldType.Dropdown,
         label: 'What is their highest level of education?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_formal_degree',
@@ -517,6 +545,7 @@ export const Early_VC_Flow = {
   q15: {
     sectionTitle: 'Department Head Experience Years',
     sectionId: 'department-head-experience-years',
+    firstField: 'departmentHeadExperience',
     fields: {
       departmentHeadExperience: {
         id: 'department-head-experience',
@@ -524,6 +553,7 @@ export const Early_VC_Flow = {
         label:
           'How many years of experience does the department head have in this function?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'less_than_3_years',
@@ -550,6 +580,7 @@ export const Early_VC_Flow = {
   q16: {
     sectionTitle: 'Department Head Startup Experience',
     sectionId: 'department-head-startup-experience',
+    firstField: 'departmentHeadStartupExperience',
     fields: {
       departmentHeadStartupExperience: {
         id: 'department-head-startup-experience',
@@ -557,6 +588,7 @@ export const Early_VC_Flow = {
         label:
           'Has this department head previously worked in a startup or high-growth company?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_prior_startup',
@@ -579,12 +611,14 @@ export const Early_VC_Flow = {
   q17: {
     sectionTitle: 'Department Employee Count',
     sectionId: 'department-employee-count',
+    firstField: 'departmentEmployeeCount',
     fields: {
       departmentEmployeeCount: {
         id: 'department-employee-count',
         type: FieldType.Dropdown,
         label: 'How many employees currently work in this department?',
         required: true,
+        nextField: null,
         options: [
           {
             id: '1_to_3_employees',
@@ -611,6 +645,7 @@ export const Early_VC_Flow = {
   q18: {
     sectionTitle: 'Department Employee Experience Percentage',
     sectionId: 'department-employee-experience-percentage',
+    firstField: 'departmentEmployeeExperiencePercentage',
     fields: {
       departmentEmployeeExperiencePercentage: {
         id: 'department-employee-experience-percentage',
@@ -618,6 +653,7 @@ export const Early_VC_Flow = {
         label:
           'What percentage of employees in this department have 5+ years of experience in their field?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'less_than_20_percent',
@@ -640,6 +676,7 @@ export const Early_VC_Flow = {
   q19: {
     sectionTitle: 'Department Performance Review Frequency',
     sectionId: 'department-performance-review-frequency',
+    firstField: 'departmentPerformanceReviewFrequency',
     fields: {
       departmentPerformanceReviewFrequency: {
         id: 'department-performance-review-frequency',
@@ -647,6 +684,7 @@ export const Early_VC_Flow = {
         label:
           'How frequently does this department conduct performance reviews?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_structured_evaluation',
@@ -673,6 +711,7 @@ export const Early_VC_Flow = {
   q20: {
     sectionTitle: 'Department Tools and Software',
     sectionId: 'department-tools-software',
+    firstField: 'departmentToolsSoftware',
     fields: {
       departmentToolsSoftware: {
         id: 'department-tools-software',
@@ -680,6 +719,7 @@ export const Early_VC_Flow = {
         label:
           'Does this department use dedicated tools/software to manage workflows?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_specialized_tools',
@@ -702,6 +742,7 @@ export const Early_VC_Flow = {
   q21: {
     sectionTitle: 'Department Documented Processes',
     sectionId: 'department-documented-processes',
+    firstField: 'departmentDocumentedProcesses',
     fields: {
       departmentDocumentedProcesses: {
         id: 'department-documented-processes',
@@ -709,6 +750,7 @@ export const Early_VC_Flow = {
         label:
           'Does this department have documented processes for its core functions?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_formal_documentation',
@@ -733,12 +775,14 @@ export const Early_VC_Flow = {
   q22: {
     sectionTitle: 'Department Process Review Frequency',
     sectionId: 'department-process-review-frequency',
+    firstField: 'departmentProcessReviewFrequency',
     fields: {
       departmentProcessReviewFrequency: {
         id: 'department-process-review-frequency',
         type: FieldType.Dropdown,
         label: 'How often are departmental processes reviewed and updated?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'never_informally',
@@ -765,6 +809,7 @@ export const Early_VC_Flow = {
   q23: {
     sectionTitle: 'Workflow Bottleneck Resolution',
     sectionId: 'workflow-bottleneck-resolution',
+    firstField: 'workflowBottleneckResolution',
     fields: {
       workflowBottleneckResolution: {
         id: 'workflow-bottleneck-resolution',
@@ -772,6 +817,7 @@ export const Early_VC_Flow = {
         label:
           'How are bottlenecks in workflows typically identified and resolved?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_structured_method',
@@ -794,6 +840,7 @@ export const Early_VC_Flow = {
   q24: {
     sectionTitle: 'Department KPI Ownership',
     sectionId: 'department-kpi-ownership',
+    firstField: 'departmentKpiOwnership',
     fields: {
       departmentKpiOwnership: {
         id: 'department-kpi-ownership',
@@ -801,6 +848,7 @@ export const Early_VC_Flow = {
         label:
           'Does each department have clear ownership of KPIs and performance metrics?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_clear_kpis',
@@ -823,12 +871,14 @@ export const Early_VC_Flow = {
   q25: {
     sectionTitle: 'Internal Collaboration Tools',
     sectionId: 'internal-collaboration-tools',
+    firstField: 'internalCollaborationTools',
     fields: {
       internalCollaborationTools: {
         id: 'internal-collaboration-tools',
         type: FieldType.Dropdown,
         label: 'What tools or platforms are used for internal collaboration?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_tools_unstructured',
@@ -852,6 +902,7 @@ export const Early_VC_Flow = {
   q26: {
     sectionTitle: 'Department Head Reporting Requirements',
     sectionId: 'department-head-reporting-requirements',
+    firstField: 'departmentHeadReportingRequirements',
     fields: {
       departmentHeadReportingRequirements: {
         id: 'department-head-reporting-requirements',
@@ -859,6 +910,7 @@ export const Early_VC_Flow = {
         label:
           'Are all department heads required to submit periodic reports on performance and progress?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_formal_reporting',
@@ -881,6 +933,7 @@ export const Early_VC_Flow = {
   q27: {
     sectionTitle: 'Department Structure Scalability',
     sectionId: 'department-structure-scalability',
+    firstField: 'departmentStructureScalability',
     fields: {
       departmentStructureScalability: {
         id: 'department-structure-scalability',
@@ -888,6 +941,7 @@ export const Early_VC_Flow = {
         label:
           "How resilient is the company's department structure in handling rapid scaling?",
         required: true,
+        nextField: null,
         options: [
           {
             id: 'not_prepared_growth',

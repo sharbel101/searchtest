@@ -4,6 +4,7 @@ export const Advanced_VC_Flow = {
   q1: {
     sectionTitle: 'Organizational Chart',
     sectionId: 'organizational-chart',
+    firstField: 'organizationalChart',
     fields: {
       organizationalChart: {
         id: 'organizational-chart',
@@ -26,6 +27,7 @@ export const Advanced_VC_Flow = {
             value: 'Yes, a fully structured and updated org chart exists',
           },
         ],
+        nextField: null, // Last field in section, will use nextNode
       },
     },
     nextNode: 'q2',
@@ -33,6 +35,7 @@ export const Advanced_VC_Flow = {
   q2: {
     sectionTitle: 'Organizational Structure Review',
     sectionId: 'organizational-structure-review',
+    firstField: 'structureReview',
     fields: {
       structureReview: {
         id: 'structure-review',
@@ -48,6 +51,7 @@ export const Advanced_VC_Flow = {
             value: 'Every quarter or as the company scales',
           },
         ],
+        nextField: null,
       },
     },
     nextNode: 'q3',
@@ -55,6 +59,7 @@ export const Advanced_VC_Flow = {
   q3: {
     sectionTitle: 'Management Layers',
     sectionId: 'management-layers',
+    firstField: 'managementLayers',
     fields: {
       managementLayers: {
         id: 'management-layers',
@@ -73,6 +78,7 @@ export const Advanced_VC_Flow = {
           },
           { id: '1_to_2_layers', value: '1-2 layers (lean and efficient)' },
         ],
+        nextField: null,
       },
     },
     nextNode: 'q4',
@@ -80,6 +86,7 @@ export const Advanced_VC_Flow = {
   q4: {
     sectionTitle: 'Department Reporting Structure',
     sectionId: 'department-reporting-structure',
+    firstField: 'departmentReporting',
     fields: {
       departmentReporting: {
         id: 'department-reporting',
@@ -101,6 +108,7 @@ export const Advanced_VC_Flow = {
             value: 'Yes, direct reporting to C-level executives',
           },
         ],
+        nextField: null,
       },
     },
     nextNode: 'q5',
@@ -108,6 +116,7 @@ export const Advanced_VC_Flow = {
   q5: {
     sectionTitle: 'Business Units Expansion',
     sectionId: 'business-units-expansion',
+    firstField: 'businessUnits',
     fields: {
       businessUnits: {
         id: 'business-units',
@@ -129,6 +138,7 @@ export const Advanced_VC_Flow = {
             value: 'Yes, clear separation of business units',
           },
         ],
+        nextField: null,
       },
     },
     nextNode: 'q6',
@@ -136,6 +146,7 @@ export const Advanced_VC_Flow = {
   q6: {
     sectionTitle: 'Middle Management Structure',
     sectionId: 'middle-management-structure',
+    firstField: 'middleManagement',
     fields: {
       middleManagement: {
         id: 'middle-management',
@@ -157,6 +168,7 @@ export const Advanced_VC_Flow = {
             value: 'Yes, structured middle management is in place',
           },
         ],
+        nextField: null,
       },
     },
     nextNode: 'q7',
@@ -164,6 +176,7 @@ export const Advanced_VC_Flow = {
   q7: {
     sectionTitle: 'C-Level Executive Structure',
     sectionId: 'c-level-executive-structure',
+    firstField: 'cLevelRolesPresent',
     fields: {
       cLevelRolesPresent: {
         id: 'c-level-roles-present',
@@ -183,6 +196,7 @@ export const Advanced_VC_Flow = {
           { id: 'clo', value: 'Chief Legal Officer (CLO)' },
           { id: 'other', value: 'Other (please specify)' },
         ],
+        nextField: 'cLevelCount',
       },
       cLevelCount: {
         id: 'c-level-count',
@@ -196,6 +210,7 @@ export const Advanced_VC_Flow = {
           { id: '6_to_8', value: '6-8 C-level executives' },
           { id: '9_plus', value: '9-10+' },
         ],
+        nextField: null,
       },
     },
     nextNode: 'q8',
@@ -203,6 +218,7 @@ export const Advanced_VC_Flow = {
   q8: {
     sectionTitle: 'C-Level Executive Evaluation',
     sectionId: 'c-level-executive-evaluation',
+    firstField: 'educationLevel',
     fields: {
       educationLevel: {
         id: 'education-level',
@@ -215,6 +231,7 @@ export const Advanced_VC_Flow = {
           { id: 'masters', value: "Master's degree (MBA, MSc, etc.)" },
           { id: 'phd', value: 'PhD or specialized industry certification' },
         ],
+        nextField: 'yearsExperience',
       },
       yearsExperience: {
         id: 'years-experience',
@@ -228,6 +245,7 @@ export const Advanced_VC_Flow = {
           { id: '6_to_10_years', value: '6-10 years' },
           { id: '10_plus_years', value: '10+ years' },
         ],
+        nextField: 'startupLeadershipExperience',
       },
       startupLeadershipExperience: {
         id: 'startup-leadership-experience',
@@ -249,6 +267,7 @@ export const Advanced_VC_Flow = {
             value: 'Previous leadership role in a high-growth startup',
           },
         ],
+        nextField: 'industryExperience',
       },
       industryExperience: {
         id: 'industry-experience',
@@ -269,6 +288,7 @@ export const Advanced_VC_Flow = {
             value: '5+ years in the same industry',
           },
         ],
+        nextField: 'investorRelationsParticipation',
       },
       investorRelationsParticipation: {
         id: 'investor-relations-participation',
@@ -290,6 +310,7 @@ export const Advanced_VC_Flow = {
             value: 'Regularly engages with investors and board members',
           },
         ],
+        nextField: 'strategicDecisionInvolvement',
       },
       strategicDecisionInvolvement: {
         id: 'strategic-decision-involvement',
@@ -310,6 +331,7 @@ export const Advanced_VC_Flow = {
             value: 'Fully engaged in strategy and company vision',
           },
         ],
+        nextField: null,
       },
     },
     nextNode: 'q9',
@@ -317,6 +339,7 @@ export const Advanced_VC_Flow = {
   q9: {
     sectionTitle: 'Department Structure & Evaluation',
     sectionId: 'department-structure-evaluation',
+    firstField: 'departmentsEstablished',
     fields: {
       departmentsEstablished: {
         id: 'departments-established',
@@ -346,6 +369,7 @@ export const Advanced_VC_Flow = {
           { id: 'r_and_d', value: 'Research & Development (R&D)' },
           { id: 'other', value: 'Other (please specify)' },
         ],
+        nextField: 'departmentsCount',
       },
       departmentsCount: {
         id: 'departments-count',
@@ -359,6 +383,7 @@ export const Advanced_VC_Flow = {
           { id: '7_to_9', value: '7-9 departments' },
           { id: '10_plus', value: '10+ departments' },
         ],
+        nextField: 'departmentHeadEducation',
       },
       departmentHeadEducation: {
         id: 'department-head-education',
@@ -372,6 +397,7 @@ export const Advanced_VC_Flow = {
           { id: 'masters', value: "Master's degree (MBA, MSc, etc.)" },
           { id: 'phd', value: 'PhD or specialized certification' },
         ],
+        nextField: 'departmentHeadExperience',
       },
       departmentHeadExperience: {
         id: 'department-head-experience',
@@ -385,6 +411,7 @@ export const Advanced_VC_Flow = {
           { id: '6_to_10_years', value: '6-10 years' },
           { id: '10_plus_years', value: '10+ years' },
         ],
+        nextField: 'departmentHeadStartupExperience',
       },
       departmentHeadStartupExperience: {
         id: 'department-head-startup-experience',
@@ -406,6 +433,7 @@ export const Advanced_VC_Flow = {
             value: 'Extensive startup experience in a similar role',
           },
         ],
+        nextField: 'departmentTeamSize',
       },
       departmentTeamSize: {
         id: 'department-team-size',
@@ -418,6 +446,7 @@ export const Advanced_VC_Flow = {
           { id: '8_to_12_employees', value: '8-12 employees' },
           { id: '13_plus_employees', value: '13+ employees' },
         ],
+        nextField: 'experiencedEmployeesPercentage',
       },
       experiencedEmployeesPercentage: {
         id: 'experienced-employees-percentage',
@@ -430,6 +459,7 @@ export const Advanced_VC_Flow = {
           { id: '20_to_50_percent', value: '20-50%' },
           { id: 'more_than_50_percent', value: 'More than 50%' },
         ],
+        nextField: 'performanceReviewFrequency',
       },
       performanceReviewFrequency: {
         id: 'performance-review-frequency',
@@ -446,6 +476,7 @@ export const Advanced_VC_Flow = {
           { id: 'bi_annually', value: 'Twice a year' },
           { id: 'quarterly', value: 'Every quarter' },
         ],
+        nextField: 'workflowToolsUsage',
       },
       workflowToolsUsage: {
         id: 'workflow-tools-usage',
@@ -467,6 +498,7 @@ export const Advanced_VC_Flow = {
             value: 'Yes, fully equipped with industry-standard tools',
           },
         ],
+        nextField: 'processDocumentation',
       },
       processDocumentation: {
         id: 'process-documentation',
@@ -490,6 +522,7 @@ export const Advanced_VC_Flow = {
             value: 'Yes, all workflows are documented and followed',
           },
         ],
+        nextField: 'processReviewFrequency',
       },
       processReviewFrequency: {
         id: 'process-review-frequency',
@@ -502,6 +535,7 @@ export const Advanced_VC_Flow = {
           { id: 'bi_annually', value: 'Twice a year' },
           { id: 'quarterly', value: 'Quarterly' },
         ],
+        nextField: 'bottleneckResolution',
       },
       bottleneckResolution: {
         id: 'bottleneck-resolution',
@@ -523,6 +557,7 @@ export const Advanced_VC_Flow = {
             value: 'Data-driven approach (KPIs, tracking, dashboards)',
           },
         ],
+        nextField: null,
       },
     },
     nextNode: 'q10',
@@ -530,6 +565,7 @@ export const Advanced_VC_Flow = {
   q10: {
     sectionTitle: 'Department KPIs & Performance',
     sectionId: 'department-kpis-performance',
+    firstField: 'departmentKpis',
     fields: {
       departmentKpis: {
         id: 'department-kpis',
@@ -551,6 +587,7 @@ export const Advanced_VC_Flow = {
             value: 'Yes, department KPIs are defined, tracked, and optimized',
           },
         ],
+        nextField: null,
       },
     },
     nextNode: 'q11',
@@ -558,6 +595,7 @@ export const Advanced_VC_Flow = {
   q11: {
     sectionTitle: 'Internal Collaboration Tools',
     sectionId: 'internal-collaboration-tools',
+    firstField: 'collaborationTools',
     fields: {
       collaborationTools: {
         id: 'collaboration-tools',
@@ -579,6 +617,7 @@ export const Advanced_VC_Flow = {
               'Centralized project management and communication tools (Slack, Asana, Jira, etc.)',
           },
         ],
+        nextField: null,
       },
     },
     nextNode: 'q12',
@@ -586,6 +625,7 @@ export const Advanced_VC_Flow = {
   q12: {
     sectionTitle: 'Department Reporting System',
     sectionId: 'department-reporting-system',
+    firstField: 'periodicReports',
     fields: {
       periodicReports: {
         id: 'periodic-reports',
@@ -607,6 +647,7 @@ export const Advanced_VC_Flow = {
             value: 'Yes, monthly/quarterly structured reports exist',
           },
         ],
+        nextField: null,
       },
     },
     nextNode: 'q13',
@@ -614,6 +655,7 @@ export const Advanced_VC_Flow = {
   q13: {
     sectionTitle: 'Scalability Resilience',
     sectionId: 'scalability-resilience',
+    firstField: 'scalabilityResilience',
     fields: {
       scalabilityResilience: {
         id: 'scalability-resilience',
@@ -636,6 +678,7 @@ export const Advanced_VC_Flow = {
               'Departments are structured for scalability and can handle rapid expansion',
           },
         ],
+        nextField: null,
       },
     },
     nextNode: 'q14',
@@ -643,6 +686,7 @@ export const Advanced_VC_Flow = {
   q14: {
     sectionTitle: 'Career Progression Paths',
     sectionId: 'career-progression-paths',
+    firstField: 'careerProgression',
     fields: {
       careerProgression: {
         id: 'career-progression',
@@ -665,6 +709,7 @@ export const Advanced_VC_Flow = {
             value: 'Clear promotion paths & professional development programs',
           },
         ],
+        nextField: null,
       },
     },
     nextNode: 'q15',
@@ -672,6 +717,7 @@ export const Advanced_VC_Flow = {
   q15: {
     sectionTitle: 'Internal vs External Hires',
     sectionId: 'internal-vs-external-hires',
+    firstField: 'hiringPattern',
     fields: {
       hiringPattern: {
         id: 'hiring-pattern',
@@ -694,6 +740,7 @@ export const Advanced_VC_Flow = {
               'Majority of leadership positions filled through internal promotions',
           },
         ],
+        nextField: null,
       },
     },
     nextNode: 'q16',
@@ -701,6 +748,7 @@ export const Advanced_VC_Flow = {
   q16: {
     sectionTitle: 'Global Operations Optimization',
     sectionId: 'global-operations-optimization',
+    firstField: 'globalOperations',
     fields: {
       globalOperations: {
         id: 'global-operations',
@@ -722,6 +770,7 @@ export const Advanced_VC_Flow = {
             value: 'Yes, fully structured processes for global teams',
           },
         ],
+        nextField: null,
       },
     },
     nextNode: 'q17',
@@ -729,6 +778,7 @@ export const Advanced_VC_Flow = {
   q17: {
     sectionTitle: 'Compliance & Risk Management',
     sectionId: 'compliance-risk-management',
+    firstField: 'complianceRisk',
     fields: {
       complianceRisk: {
         id: 'compliance-risk',
@@ -750,6 +800,7 @@ export const Advanced_VC_Flow = {
             value: 'Yes, fully developed compliance team',
           },
         ],
+        nextField: null,
       },
     },
     nextNode: 'q18',
@@ -757,6 +808,7 @@ export const Advanced_VC_Flow = {
   q18: {
     sectionTitle: 'Department Restructuring Frequency',
     sectionId: 'department-restructuring-frequency',
+    firstField: 'restructuringFrequency',
     fields: {
       restructuringFrequency: {
         id: 'restructuring-frequency',
@@ -778,6 +830,7 @@ export const Advanced_VC_Flow = {
             value: 'Every 6-12 months to match scaling needs',
           },
         ],
+        nextField: null,
       },
     },
     nextNode: null,

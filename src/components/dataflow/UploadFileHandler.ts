@@ -1,5 +1,8 @@
-//make it async add a timer and return a promise
-export const UploadFileHandler = (userInput: string) => {
+interface FileParams {
+  userInput?: string;
+}
+
+export const UploadFileHandler = (userInput: FileParams) => {
   console.log('File:' + userInput + ' have been uploaded!');
   return new Promise((resolve) => {
     setTimeout(() => {

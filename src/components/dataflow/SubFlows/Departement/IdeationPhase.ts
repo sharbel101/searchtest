@@ -4,12 +4,14 @@ export const Ideation_Phase_FLow = {
   q1: {
     sectionTitle: 'Number of Founders',
     sectionId: 'number-of-founders',
+    firstField: 'numberOfFounders',
     fields: {
       numberOfFounders: {
         id: 'number-of-founders',
         type: FieldType.Dropdown,
         label: 'Number of Founders or Cofounders',
         required: true,
+        nextField: null,
         options: [
           {
             id: '1_founder',
@@ -36,12 +38,14 @@ export const Ideation_Phase_FLow = {
   q2: {
     sectionTitle: 'Founders Education Background',
     sectionId: 'founders-education-background',
+    firstField: 'foundersEducationBackground',
     fields: {
       foundersEducationBackground: {
         id: 'founders-education-background',
         type: FieldType.Dropdown,
         label: 'Education Background of Founders',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_formal_education',
@@ -72,12 +76,14 @@ export const Ideation_Phase_FLow = {
   q3: {
     sectionTitle: 'Founders Past Experience and Skills',
     sectionId: 'founders-past-experience-skills',
+    firstField: 'foundersPastExperienceSkills',
     fields: {
       foundersPastExperienceSkills: {
         id: 'founders-past-experience-skills',
         type: FieldType.Dropdown,
         label: 'Past Experience & Key Skills',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_work_experience',
@@ -104,12 +110,14 @@ export const Ideation_Phase_FLow = {
   q4: {
     sectionTitle: 'Founder Responsibilities',
     sectionId: 'founder-responsibilities',
+    firstField: 'founderResponsibilities',
     fields: {
       founderResponsibilities: {
         id: 'founder-responsibilities',
         type: FieldType.Dropdown,
         label: 'Responsibilities of Each Founder',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_clear_responsibilities',
@@ -137,12 +145,14 @@ export const Ideation_Phase_FLow = {
   q5: {
     sectionTitle: 'Non-Founder Team Members',
     sectionId: 'non-founder-team-members',
+    firstField: 'nonFounderTeamMembers',
     fields: {
       nonFounderTeamMembers: {
         id: 'non-founder-team-members',
         type: FieldType.Dropdown,
         label: 'Presence of Non-Founder Team Members',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_team_members',
@@ -169,12 +179,14 @@ export const Ideation_Phase_FLow = {
   q6: {
     sectionTitle: 'Designated CEO',
     sectionId: 'designated-ceo',
+    firstField: 'designatedCeo',
     fields: {
       designatedCeo: {
         id: 'designated-ceo',
         type: FieldType.Dropdown,
         label: 'Does your startup have a designated CEO among the founders?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_ceo_assigned',
@@ -197,12 +209,14 @@ export const Ideation_Phase_FLow = {
   q7: {
     sectionTitle: 'Technical Background',
     sectionId: 'technical-background',
+    firstField: 'technicalBackground',
     fields: {
       technicalBackground: {
         id: 'technical-background',
         type: FieldType.Dropdown,
         label: 'Do the founders have a technical (development) background?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_technical_expertise',
@@ -225,12 +239,14 @@ export const Ideation_Phase_FLow = {
   q8: {
     sectionTitle: 'Organization Chart Upload',
     sectionId: 'organization-chart-upload',
+    firstField: 'organizationChartUpload',
     fields: {
       organizationChartUpload: {
         id: 'organization-chart-upload',
         type: FieldType.File,
         label: 'Upload your organization chart',
         required: false,
+        nextField: null,
         acceptedTypes: ['.pdf'],
       },
     },
@@ -240,6 +256,7 @@ export const Ideation_Phase_FLow = {
   q9: {
     sectionTitle: 'Financial Expertise',
     sectionId: 'financial-expertise',
+    firstField: 'financialExpertise',
     fields: {
       financialExpertise: {
         id: 'financial-expertise',
@@ -247,6 +264,7 @@ export const Ideation_Phase_FLow = {
         label:
           'Do you have a financial/accounting officer or expertise within the founding team?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_financial_expertise',
@@ -269,6 +287,7 @@ export const Ideation_Phase_FLow = {
   q10: {
     sectionTitle: 'Core Business Functions Assignment',
     sectionId: 'core-business-functions-assignment',
+    firstField: 'coreBusinessFunctionsAssignment',
     fields: {
       coreBusinessFunctionsAssignment: {
         id: 'core-business-functions-assignment',
@@ -276,6 +295,7 @@ export const Ideation_Phase_FLow = {
         label:
           'Have the core business functions been formally assigned to specific founders or team members?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_clear_roles_assigned',
@@ -300,6 +320,7 @@ export const Ideation_Phase_FLow = {
   q11: {
     sectionTitle: 'External Advisors and Mentors',
     sectionId: 'external-advisors-mentors',
+    firstField: 'externalAdvisorsMentors',
     fields: {
       externalAdvisorsMentors: {
         id: 'external-advisors-mentors',
@@ -307,6 +328,7 @@ export const Ideation_Phase_FLow = {
         label:
           'Are there any external advisors or mentors providing guidance in specialized areas (e.g., legal, finance, product development)?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_external_advisors',
@@ -330,6 +352,7 @@ export const Ideation_Phase_FLow = {
   q12: {
     sectionTitle: 'Internal Communication and Decision Making',
     sectionId: 'internal-communication-decision-making',
+    firstField: 'internalCommunicationDecisionMaking',
     fields: {
       internalCommunicationDecisionMaking: {
         id: 'internal-communication-decision-making',
@@ -337,6 +360,7 @@ export const Ideation_Phase_FLow = {
         label:
           'Have you defined internal communication and decision-making processes within the founding team?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_formal_process_ad_hoc',
@@ -361,12 +385,14 @@ export const Ideation_Phase_FLow = {
   q13: {
     sectionTitle: 'Company Registration',
     sectionId: 'company-registration',
+    firstField: 'companyRegistration',
     fields: {
       companyRegistration: {
         id: 'company-registration',
         type: FieldType.Dropdown,
         label: 'Have you officially registered your company?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_and_no_plans',
@@ -389,6 +415,7 @@ export const Ideation_Phase_FLow = {
   q14: {
     sectionTitle: 'Team Responsibilities Documentation',
     sectionId: 'team-responsibilities-documentation',
+    firstField: 'teamResponsibilitiesDocumentation',
     fields: {
       teamResponsibilitiesDocumentation: {
         id: 'team-responsibilities-documentation',
@@ -396,6 +423,7 @@ export const Ideation_Phase_FLow = {
         label:
           'Do you have an internal document outlining team responsibilities and department structures?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_formal_documentation',
@@ -418,6 +446,7 @@ export const Ideation_Phase_FLow = {
   q15: {
     sectionTitle: 'KPIs for Team Members',
     sectionId: 'kpis-team-members',
+    firstField: 'kpisTeamMembers',
     fields: {
       kpisTeamMembers: {
         id: 'kpis-team-members',
@@ -425,6 +454,7 @@ export const Ideation_Phase_FLow = {
         label:
           'Have you set KPIs (Key Performance Indicators) for each founder/team member?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_kpis',
@@ -447,6 +477,7 @@ export const Ideation_Phase_FLow = {
   q16: {
     sectionTitle: 'Decision Making Process',
     sectionId: 'decision-making-process',
+    firstField: 'decisionMakingProcess',
     fields: {
       decisionMakingProcess: {
         id: 'decision-making-process',
@@ -454,6 +485,7 @@ export const Ideation_Phase_FLow = {
         label:
           'Is there a structured decision-making process for major company decisions?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_structured_process',
@@ -476,6 +508,7 @@ export const Ideation_Phase_FLow = {
   q17: {
     sectionTitle: 'Team Meeting Frequency',
     sectionId: 'team-meeting-frequency',
+    firstField: 'teamMeetingFrequency',
     fields: {
       teamMeetingFrequency: {
         id: 'team-meeting-frequency',
@@ -483,6 +516,7 @@ export const Ideation_Phase_FLow = {
         label:
           'How often does your team formally meet to discuss progress and strategy?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_formal_meetings',
@@ -505,12 +539,14 @@ export const Ideation_Phase_FLow = {
   q18: {
     sectionTitle: 'Dedicated Workspace',
     sectionId: 'dedicated-workspace',
+    firstField: 'dedicatedWorkspace',
     fields: {
       dedicatedWorkspace: {
         id: 'dedicated-workspace',
         type: FieldType.Dropdown,
         label: 'Do you have a dedicated workspace for your team?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_dedicated_workspace',
@@ -534,6 +570,7 @@ export const Ideation_Phase_FLow = {
   q19: {
     sectionTitle: 'Ownership and Equity Distribution',
     sectionId: 'ownership-equity-distribution',
+    firstField: 'ownershipEquityDistribution',
     fields: {
       ownershipEquityDistribution: {
         id: 'ownership-equity-distribution',
@@ -541,6 +578,7 @@ export const Ideation_Phase_FLow = {
         label:
           'Have you legally defined ownership and equity distribution among founders?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_discussions_yet',
@@ -563,6 +601,7 @@ export const Ideation_Phase_FLow = {
   q20: {
     sectionTitle: 'External Partnerships',
     sectionId: 'external-partnerships',
+    firstField: 'externalPartnerships',
     fields: {
       externalPartnerships: {
         id: 'external-partnerships',
@@ -570,6 +609,7 @@ export const Ideation_Phase_FLow = {
         label:
           'Have you identified key external partnerships or suppliers essential to your business?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_external_partnerships_yet',
@@ -592,6 +632,7 @@ export const Ideation_Phase_FLow = {
   q21: {
     sectionTitle: 'Founder Contingency Plan',
     sectionId: 'founder-contingency-plan',
+    firstField: 'founderContingencyPlan',
     fields: {
       founderContingencyPlan: {
         id: 'founder-contingency-plan',
@@ -599,6 +640,7 @@ export const Ideation_Phase_FLow = {
         label:
           'Do you have a contingency plan in case a founder leaves or steps down?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_plan_in_place',

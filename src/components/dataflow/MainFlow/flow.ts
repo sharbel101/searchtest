@@ -27,6 +27,7 @@ export type FormField = {
   validation?: RegExp | ((value: any) => boolean); // Optional validation rule used to validate string inputs by testing if they match a specific pattern
   subFields?: { [key: string]: FormField };
   flowInjection?: { name: string; type: string };
+  nextField?: string | null;
 };
 
 // Type for flow sections, representing a group of fields
@@ -35,6 +36,7 @@ export type FlowSection = {
   sectionId: string; // Unique identifier for the section
   opened?: boolean;
   fields: { [key: string]: FormField }; // Object of fields for a section, defining all fields like companyType or socialMediaAccounts
+  firstField?: string;
   nextNode?: string | null; // ID of the next section in the flow, allowing null
 };
 
@@ -52,7 +54,7 @@ const chatFlow: ChatFlow = {
 
     // Unique identifier for this section
     sectionId: 'investmentStage',
-
+    firstField: 'IS',
     // Fields defined in this section
     fields: {
       IS: {
@@ -76,6 +78,7 @@ const chatFlow: ChatFlow = {
           name: 'investmentStageFlow',
           type: 'ChartForm',
         },
+        nextField: null,
       },
     },
 
@@ -87,6 +90,7 @@ const chatFlow: ChatFlow = {
   portfolio1: {
     sectionTitle: 'Portfolio',
     sectionId: 'portfolio',
+    firstField: 'industry',
     fields: {
       
       industry: {
@@ -100,16 +104,17 @@ const chatFlow: ChatFlow = {
         ],
         required: true,
         description: 'Select industry type (input details for "Other").',
+        nextField: null,
       },
     },
-    nextNode: 'foundingTeam',
+    nextNode: 'nda',
   },
 */
 
   nda: {
     sectionTitle: 'NDA',
     sectionId: 'nda',
-
+    firstField: 'companiesNDAForm',
     fields: {
       companiesNDAForm: {
         id: 'nda-form',
@@ -117,6 +122,7 @@ const chatFlow: ChatFlow = {
         label: 'Companies NDAs Form',
         description: 'Upload the signed NDA form (PDF format).',
         required: true,
+        nextField: null,
       },
     },
     nextNode: 'portfolio',
@@ -125,6 +131,7 @@ const chatFlow: ChatFlow = {
   departments1: {
     sectionTitle: 'Departments',
     sectionId: 'departments',
+    firstField: 'organizationChart'
     fields: {
       organizationChart: {
         id: 'org-chart',
@@ -132,6 +139,7 @@ const chatFlow: ChatFlow = {
         label: 'Organization Chart',
         description: 'Upload organization chart (PDF, Excel, CSV).',
         required: true,
+        nextField: 'fs_department',
       },
       fs_department: {
         id: 'dept-details',
@@ -143,6 +151,7 @@ const chatFlow: ChatFlow = {
           name: 'fs_department',
           type: 'OriginalSubFlow',
         },
+        nextField: null,
       },
     },
     nextNode: 'financials',
@@ -151,6 +160,7 @@ const chatFlow: ChatFlow = {
   portfolio: {
     sectionTitle: 'Portfolio',
     sectionId: 'portfolio',
+    firstField: 'companyType',
     fields: {
       companyType: {
         id: 'company-name',
@@ -159,6 +169,7 @@ const chatFlow: ChatFlow = {
         placeholder: 'Enter company name',
         required: true,
         description: 'Provide the full legal name of the company.',
+        nextField: 'logo',
       },
       logo: {
         id: 'company-logo',
@@ -166,6 +177,7 @@ const chatFlow: ChatFlow = {
         label: 'Logo',
         description: 'Upload the company logo (image file).',
         required: true,
+        nextField: 'industry',
       },
       industry: {
         id: 'industry-type',
@@ -178,6 +190,7 @@ const chatFlow: ChatFlow = {
         ],
         required: true,
         description: 'Select industry type (input details for "Other").',
+        nextField: 'description',
       },
       description: {
         id: 'company-description',
@@ -186,6 +199,7 @@ const chatFlow: ChatFlow = {
         placeholder: 'Enter a brief description',
         required: true,
         description: 'Provide a summary of the company.',
+        nextField: 'countryOfOperation',
       },
       countryOfOperation: {
         id: 'country-operation',
@@ -194,6 +208,7 @@ const chatFlow: ChatFlow = {
         options: [{ id: 'usa', value: 'USA' }],
         required: true,
         description: 'Select the primary country of operation.',
+        nextField: 'socialMediaAccounts',
       },
       socialMediaAccounts: {
         id: 'social-media-accounts',
@@ -238,6 +253,7 @@ const chatFlow: ChatFlow = {
             required: false,
           },
         },
+        nextField: 'mainWebsite',
       },
       mainWebsite: {
         id: 'main-url',
@@ -254,12 +270,14 @@ const chatFlow: ChatFlow = {
   foundingTeam: {
     sectionTitle: 'Founding Team',
     sectionId: 'foundingTeam',
+    firstField: 'teamMembersProfile',
     fields: {
       teamMembersProfile: {
         id: 'team-members',
         type: FieldType.Array,
         label: 'Team Members Profile',
         description: 'List team members with details.',
+        nextField: 'teamVideo',
         subFields: {
           fullName: {
             id: 'team-full-name',
@@ -293,6 +311,7 @@ const chatFlow: ChatFlow = {
         label: 'Team Video',
         description: 'Upload a team video (max 2 minutes).',
         required: false,
+        nextField: 'teamStandards',
       },
       teamStandards: {
         id: 'team-standards',
@@ -301,6 +320,7 @@ const chatFlow: ChatFlow = {
         placeholder: 'your motto, your culture etc...',
         required: false,
         description: 'Describe the team’s motto, culture...',
+        nextField: null,
       },
     },
     nextNode: 'productsAndServices',
@@ -308,12 +328,14 @@ const chatFlow: ChatFlow = {
   productsAndServices: {
     sectionTitle: 'Products & Services + Description',
     sectionId: 'productsAndServices',
+    firstField: 'products',
     fields: {
       products: {
         id: 'products-services',
         type: FieldType.Array,
         label: 'Products & Services',
         description: 'List products or services with details.',
+        nextField: null,
         subFields: {
           type: {
             id: 'product-type',
@@ -370,12 +392,14 @@ const chatFlow: ChatFlow = {
   patents: {
     sectionTitle: 'Patents',
     sectionId: 'patents',
+    firstField: 'patents',
     fields: {
       patents: {
         id: 'patents-list',
         type: FieldType.Array,
         label: 'Patents',
         description: 'List patents with details.',
+        nextField: null,
         subFields: {
           title: {
             id: 'patent-title',
@@ -403,12 +427,14 @@ const chatFlow: ChatFlow = {
   achievements: {
     sectionTitle: 'Achievements',
     sectionId: 'achievements',
+    firstField: 'awards',
     fields: {
       awards: {
         id: 'awards-list',
         type: FieldType.Array,
         label: 'Awards',
         description: 'List awards with details.',
+        nextField: null,
         subFields: {
           type: {
             id: 'award-name',
@@ -446,7 +472,7 @@ const chatFlow: ChatFlow = {
 
     // Unique identifier for this section
     sectionId: 'investmentStage',
-
+    firstField: 'IS',
     // Fields defined in this section
     fields: {
       IS: {
@@ -469,6 +495,7 @@ const chatFlow: ChatFlow = {
           name: 'investmentStageFlow',
           type: 'ChartForm',
         },
+        nextField: null,
       },
     },
 
@@ -478,6 +505,7 @@ const chatFlow: ChatFlow = {
   departments: {
     sectionTitle: 'Departments',
     sectionId: 'departments',
+    firstField: 'organizationChart',
     fields: {
       organizationChart: {
         id: 'org-chart',
@@ -485,6 +513,7 @@ const chatFlow: ChatFlow = {
         label: 'Organization Chart',
         description: 'Upload organization chart (PDF, Excel, CSV).',
         required: true,
+        nextField: 'fs_department',
       },
       fs_department: {
         id: 'dept-details',
@@ -497,6 +526,7 @@ const chatFlow: ChatFlow = {
           name: 'DepartmentFlows',
           type: 'OriginalSubFlow',
         },
+        nextField: null,
       },
     },
     nextNode: 'financials',
@@ -504,6 +534,7 @@ const chatFlow: ChatFlow = {
   financials: {
     sectionTitle: 'Financials',
     sectionId: 'financials',
+    firstField: 'valuation',
     fields: {
       valuation: {
         id: 'company-valuation',
@@ -512,6 +543,7 @@ const chatFlow: ChatFlow = {
         placeholder: 'Enter valuation amount',
         required: true,
         description: 'Provide company valuation.',
+        nextField: 'previousBalanceSheets',
       },
       previousBalanceSheets: {
         id: 'balance-sheets',
@@ -519,6 +551,7 @@ const chatFlow: ChatFlow = {
         label: 'Previous Balance Sheets',
         description: 'Upload previous balance sheets (PDF, Excel, CSV).',
         required: true,
+        nextField: 'previousPLStatements',
       },
       previousPLStatements: {
         id: 'pl-statements',
@@ -526,6 +559,7 @@ const chatFlow: ChatFlow = {
         label: 'Previous P&L Statements',
         description: 'Upload previous P&L statements (PDF, Excel, CSV).',
         required: true,
+        nextField: 'annualAuditReports',
       },
       annualAuditReports: {
         id: 'audit-reports',
@@ -533,6 +567,7 @@ const chatFlow: ChatFlow = {
         label: 'Annual Audit Reports',
         description: 'Upload annual audit reports (PDF, Excel, CSV).',
         required: true,
+        nextField: 'fs_financials',
       },
       fs_financials: {
         id: 'financial-details',
@@ -541,6 +576,7 @@ const chatFlow: ChatFlow = {
         description:
           'Upload financial details (check fs_financials excel sheet).',
         required: false,
+        nextField: null,
       },
     },
     nextNode: 'marketing',
@@ -548,6 +584,7 @@ const chatFlow: ChatFlow = {
   marketing: {
     sectionTitle: 'Marketing',
     sectionId: 'marketing',
+    firstField: 'customerSatisfactionRate',
     fields: {
       customerSatisfactionRate: {
         id: 'satisfaction-rate',
@@ -556,6 +593,7 @@ const chatFlow: ChatFlow = {
         placeholder: 'e.g., 95%',
         required: false,
         description: 'Enter customer satisfaction rate.',
+        nextField: 'customerRetentionRate',
       },
       customerRetentionRate: {
         id: 'retention-rate',
@@ -564,6 +602,7 @@ const chatFlow: ChatFlow = {
         placeholder: 'e.g., 90%',
         required: false,
         description: 'Enter customer retention rate.',
+        nextField: 'customerLifetimeValue',
       },
       customerLifetimeValue: {
         id: 'clv',
@@ -572,6 +611,7 @@ const chatFlow: ChatFlow = {
         placeholder: 'e.g., $500',
         required: false,
         description: 'Enter customer lifetime value.',
+        nextField: 'fs_marketing',
       },
       fs_marketing: {
         id: 'marketing-details',
@@ -580,6 +620,7 @@ const chatFlow: ChatFlow = {
         description:
           'Upload marketing details (check fs_marketing excel sheet).',
         required: false,
+        nextField: null,
       },
     },
     nextNode: 'strategy',
@@ -587,6 +628,7 @@ const chatFlow: ChatFlow = {
   strategy: {
     sectionTitle: 'Strategy',
     sectionId: 'strategy',
+    firstField: 'SWOT',
     fields: {
       SWOT: {
         id: 'swot-analysis',
@@ -594,6 +636,7 @@ const chatFlow: ChatFlow = {
         label: 'SWOT Analysis',
         description: 'Upload SWOT analysis (PDF) or chat with GPT.',
         required: false,
+        nextField: 'STR',
       },
       STR: {
         id: 'strategy-chart',
@@ -601,6 +644,7 @@ const chatFlow: ChatFlow = {
         label: 'Strategy Chart',
         description: 'Provide strategy details (chart form).',
         required: true,
+        nextField: null,
       },
     },
     nextNode: 'competition',
@@ -608,12 +652,14 @@ const chatFlow: ChatFlow = {
   competition: {
     sectionTitle: 'Competition',
     sectionId: 'competition',
+    firstField: 'competitors',
     fields: {
       competitors: {
         id: 'competitors-list',
         type: FieldType.Array,
         label: 'Competitors',
         description: 'List competitors with details.',
+        nextField: null,
         subFields: {
           name: {
             id: 'competitor-name',
@@ -641,6 +687,7 @@ const chatFlow: ChatFlow = {
   documents: {
     sectionTitle: 'Documents',
     sectionId: 'documents',
+    firstField: 'registrationDocuments',
     fields: {
       registrationDocuments: {
         id: 'reg-docs',
@@ -648,6 +695,7 @@ const chatFlow: ChatFlow = {
         label: 'Registration Documents',
         description: 'Upload multiple registration documents (PDF).',
         required: true,
+        nextField: null,
       },
     },
     nextNode: 'theAsk',
@@ -655,6 +703,7 @@ const chatFlow: ChatFlow = {
   theAsk: {
     sectionTitle: 'The Ask',
     sectionId: 'theAsk',
+    firstField: 'askVsValuation',
     fields: {
       askVsValuation: {
         id: 'ask-valuation',
@@ -663,6 +712,7 @@ const chatFlow: ChatFlow = {
         placeholder: 'e.g., 10%',
         required: true,
         description: 'Enter the percentage of ask vs valuation.',
+        nextField: 'typeOfInvestor',
       },
       typeOfInvestor: {
         id: 'investor-type',
@@ -671,6 +721,7 @@ const chatFlow: ChatFlow = {
         placeholder: 'e.g., Angel, VC',
         required: false,
         description: 'Specify the type of investor (optional).',
+        nextField: null,
       },
     },
     nextNode: null,

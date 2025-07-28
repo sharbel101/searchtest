@@ -2,7 +2,7 @@
 
 // import { Block } from 'react-chatbotify';
 import { chatFlow, FieldType } from './MainFlow/flow';
-import { useFlowStore } from './FlowStore';
+import { useFlowStore } from './FlowStore Combined';
 import { UploadFileHandler } from './UploadFileHandler';
 import {
   fetchAndSetChartFormSubFlow,
@@ -10,13 +10,23 @@ import {
 } from './SubFlows/FetchSubFlow';
 import MarkdownRenderer, { MarkdownRendererBlock } from '@/RCB_MarkDown';
 
+// Type definitions for better type safety
+export type PathParams = {
+  userInput?: string;
+};
+
+interface FileParams {
+  // Define file parameter types based on your UploadFileHandler expectations
+  [key: string]: any;
+}
+
 export const generateChatBotFlow = (): Record<
   string,
   MarkdownRendererBlock
 > => {
   return {
     start: {
-      message: () => {
+      message: (): string => {
         const { setSections } = useFlowStore.getState();
         const allSections = Object.values(chatFlow);
         setSections(allSections);
@@ -27,8 +37,8 @@ export const generateChatBotFlow = (): Record<
           return `**No section available!** \n\n_Error..._`;
         }
       },
-      renderMarkdown: ['BOT', 'USER'],
-      path: () => {
+      renderMarkdown: ['BOT', 'USER'] as const,
+      path: (): string => {
         const allSections = Object.values(chatFlow);
         return allSections.length !== 0 ? 'setup' : 'emptyFlow';
       },
@@ -37,31 +47,44 @@ export const generateChatBotFlow = (): Record<
     } as MarkdownRendererBlock,
 
     setup: {
-      message: () => {
-        const { setSections, currentSectionIndex, resetFieldIndex } =
-          useFlowStore.getState();
+      message: (): string => {
+        const {
+          setSections,
+          currentSectionIndex,
+          resetFieldIndex,
+          getCurrentSection,
+        } = useFlowStore.getState();
         const allSections = Object.values(chatFlow);
         setSections(allSections);
         resetFieldIndex();
-        const current = allSections[currentSectionIndex] || null;
+        const current = getCurrentSection();
 
         return current
           ? `**Starting section:** \n\n### ${current.sectionTitle}`
           : `**Starting section:** \n\n_Unknown_`;
       },
-      renderMarkdown: ['BOT', 'USER'],
-      path: () => {
-        const { getCurrentSection, advanceToNextSection } =
+      renderMarkdown: ['BOT', 'USER'] as const,
+      path: (): string => {
+        const { getCurrentSection, goToNextSection, resetFieldIndex } =
           useFlowStore.getState();
         const current = getCurrentSection();
+
         if (!current) return 'end';
 
         const fields = Object.values(current.fields);
+        console.log(
+          `Section "${current.sectionTitle}" has ${fields.length} fields`,
+        );
+
         if (fields.length === 0) {
-          advanceToNextSection();
+          // Skip empty sections
+          goToNextSection();
           const newSection = useFlowStore.getState().getCurrentSection();
           return newSection ? 'setup' : 'end';
         }
+
+        // Ensure field index is reset before entering loop
+        resetFieldIndex();
         return 'loop';
       },
       chatDisabled: true,
@@ -69,44 +92,51 @@ export const generateChatBotFlow = (): Record<
     } as MarkdownRendererBlock,
 
     loop: {
-      message: async () => {
+      message: async (): Promise<string> => {
         const {
           getCurrentField,
+          getCurrentSection,
           currentFlowController,
           isInFlowFunc,
           questionBody,
         } = useFlowStore.getState();
 
         const field = getCurrentField();
+        const section = getCurrentSection();
 
-        if (!field || !field.label) {
+        // Debug logging
+        console.log('Loop - Current section:', section?.sectionTitle);
+        console.log('Loop - Current field:', field?.label);
+
+        if (!field?.label) {
           return `**No more fields in this section...**\n\n_Send me anything to jump to the next section._`;
         }
 
-        // if (
-        //   field.type === FieldType.FlowFunc &&
-        //   isInFlowFunc &&
-        //   currentFlowController
-        // ) {
-        //   const answers = currentFlowController.getCurrentAnswers();
-        //   let body = questionBody; // This will already be set by fetchAndSetSubFlow or answerQuestion
+        // Handle FlowFunc with active flow controller
+        if (
+          field.type === FieldType.FlowFunc &&
+          isInFlowFunc &&
+          currentFlowController
+        ) {
+          const answers = currentFlowController.getCurrentAnswers();
+          let body = questionBody;
 
-        //   if (answers.length > 0) {
-        //     body += `\n\n**Please select one of the following options:**`;
-        //   }
-        //   return `**${field.label}**\n\n${body}`;
-        // }
+          if (answers.length > 0) {
+            body += '\n\n**Please select one of the following options:**';
+          }
+          return `**${field.label}**\n\n${body}`;
+        }
 
         // Default fallback for other field types
         return `**${field.label}**\n\n${field.description || `Please provide ${field.label}`}`;
       },
-      renderMarkdown: ['BOT', 'USER'],
-      path: async (params: { userInput?: string }) => {
+      renderMarkdown: ['BOT', 'USER'] as const,
+      path: async (params: PathParams): Promise<string> => {
         const {
           getCurrentSection,
           getCurrentField,
-          incrementField,
-          incrementSection,
+          goToNextField,
+          goToNextSection,
           resetFieldIndex,
           setCurrentFlowController,
           setIsInFlowFunc,
@@ -118,42 +148,51 @@ export const generateChatBotFlow = (): Record<
         } = useFlowStore.getState();
 
         const section = getCurrentSection();
+        const field = getCurrentField();
+
+        console.log('Loop path - Section:', section?.sectionTitle);
+        console.log('Loop path - Field:', field?.label);
+        console.log('Loop path - User input:', params?.userInput);
+
         if (!section) return 'end';
 
-        const field = getCurrentField();
         if (!field) {
-          incrementSection();
+          console.log(
+            'No more fields in current section, moving to next section',
+          );
+          goToNextSection();
           resetFieldIndex();
-          return getCurrentSection() ? 'setup' : 'end';
+          const nextSection = getCurrentSection();
+          return nextSection ? 'setup' : 'end';
         }
 
-        // Redirect to chartForm if field has flowInjection and not already in flow func
+        // Handle ChartForm flow injection
         if (
           field.type === FieldType.FlowFunc &&
           field.flowInjection &&
           field.flowInjection.type === 'ChartForm' &&
           !isInFlowFunc
         ) {
+          console.log('Entering ChartForm flow');
           await fetchAndSetChartFormSubFlow(field.flowInjection.name);
           return 'chartForm';
         }
 
+        // Handle OriginalSubFlow injection
         if (
           field.type === FieldType.FlowFunc &&
           field.flowInjection &&
           field.flowInjection.type === 'OriginalSubFlow' &&
           !isInFlowFunc &&
           stage != null &&
-          stage != ''
+          stage !== ''
         ) {
-          const flow = await fetchAndSetOriginalSubFlow(
-            field.flowInjection.name,
-            stage,
-          );
+          console.log('Entering OriginalSubFlow');
+          await fetchAndSetOriginalSubFlow(field.flowInjection.name, stage);
           return 'OriginalSubFlowLoop';
         }
 
-        // **ADD THIS CHECK**: If we're in an OriginalSubFlow, redirect back to it
+        // Redirect back to OriginalSubFlow if we're in one
         if (
           field.type === FieldType.FlowFunc &&
           field.flowInjection &&
@@ -163,12 +202,12 @@ export const generateChatBotFlow = (): Record<
           return 'OriginalSubFlowLoop';
         }
 
-        // Handle user input for other FlowFunc types (like ChartForm)
+        // Handle user input for active FlowFunc (non-OriginalSubFlow)
         if (
           field.type === FieldType.FlowFunc &&
           isInFlowFunc &&
           currentFlowController &&
-          field.flowInjection?.type !== 'OriginalSubFlow' // Exclude OriginalSubFlow from this block
+          field.flowInjection?.type !== 'OriginalSubFlow'
         ) {
           if (params?.userInput !== undefined) {
             currentFlowController.answerQuestion(params.userInput);
@@ -179,12 +218,12 @@ export const generateChatBotFlow = (): Record<
               setIsInFlowFunc(false);
               setCurrentFlowController(null);
 
-              incrementField();
+              goToNextField();
               const nextField = getCurrentField();
 
               if (!nextField) {
+                goToNextSection();
                 resetFieldIndex();
-                incrementSection();
                 const nextSection = getCurrentSection();
                 return nextSection ? 'setup' : 'end';
               }
@@ -196,56 +235,80 @@ export const generateChatBotFlow = (): Record<
           return 'loop';
         }
 
-        // Default: just move to the next field
-        incrementField();
-        const nextField = getCurrentField();
+        // Handle regular field types - only advance if user provided input or it's a non-input field
+        if (
+          params?.userInput !== undefined ||
+          field.type === FieldType.File ||
+          field.type === FieldType.Video ||
+          field.type === FieldType.Dropdown
+        ) {
+          console.log('Processing field and moving to next');
+          goToNextField();
+          const nextField = getCurrentField();
 
-        if (!nextField) {
-          resetFieldIndex();
-          incrementSection();
-          const nextSection = getCurrentSection();
-          return nextSection ? 'setup' : 'end';
+          if (!nextField) {
+            console.log('No more fields, moving to next section');
+            goToNextSection();
+            resetFieldIndex();
+            const nextSection = getCurrentSection();
+            return nextSection ? 'setup' : 'end';
+          }
+
+          return 'loop';
         }
 
+        // Stay in loop if no input provided for input fields
         return 'loop';
       },
 
-      file: async (params: any) => {
+      file: async (params: FileParams): Promise<void> => {
         const { getCurrentField } = useFlowStore.getState();
-        const f = getCurrentField();
-        if (f?.type === FieldType.Dropdown) {
-          return null;
+        const field = getCurrentField();
+
+        if (field?.type === FieldType.Dropdown) {
+          return;
         }
-        if (f?.type === FieldType.File || f?.type === FieldType.Video) {
+
+        if (field?.type === FieldType.File || field?.type === FieldType.Video) {
           await UploadFileHandler(params);
         }
       },
 
-      options: () => {
+      options: (): string[] => {
         const { getCurrentField, currentFlowController, isInFlowFunc } =
           useFlowStore.getState();
         const field = getCurrentField();
+
+        if (
+          field?.type === FieldType.FlowFunc &&
+          isInFlowFunc &&
+          currentFlowController
+        ) {
+          return currentFlowController.getCurrentAnswers();
+        }
+
         return field?.options?.map((o: { value: string }) => o.value) || [];
       },
 
-      chatDisabled: () => {
+      chatDisabled: (): boolean => {
         const { getCurrentField, currentFlowController, isInFlowFunc } =
           useFlowStore.getState();
-        const f = getCurrentField();
-        return (
-          f?.type === FieldType.File ||
-          f?.type === FieldType.Video ||
-          f?.type === FieldType.Dropdown ||
-          (f?.type === FieldType.FlowFunc &&
-            isInFlowFunc &&
-            currentFlowController) // Added isInFlowFunc check
+        const field = getCurrentField();
+
+        return Boolean(
+          field?.type === FieldType.File ||
+            field?.type === FieldType.Video ||
+            field?.type === FieldType.Dropdown ||
+            (field?.type === FieldType.FlowFunc &&
+              isInFlowFunc &&
+              currentFlowController),
         );
       },
     } as MarkdownRendererBlock,
 
-    // === New chartForm block dedicated for flowInjection
+    // === ChartForm block for flowInjection ===
     chartForm: {
-      message: () => {
+      message: (): string => {
         const {
           getCurrentField,
           currentFlowController,
@@ -255,34 +318,28 @@ export const generateChatBotFlow = (): Record<
 
         const field = getCurrentField();
 
-        if (!field || !field.label) {
-          // This case should ideally not be hit if before hook works as expected for a valid field.
+        if (!field?.label) {
           return `**No more subflow fields available.**`;
         }
 
-        // If isInFlowFunc is true, it means the subflow is active and questionBody is set.
         if (isInFlowFunc && currentFlowController) {
           const answers = currentFlowController.getCurrentAnswers();
-          let body = questionBody; // Use the stored questionBody
+          let body = questionBody;
 
           if (answers.length > 0) {
             body += '\n\n**Please select one of the following options:**';
-            // The options are also rendered by the `options` prop, but including here for clarity
           }
           return `**${field.label}**\n\n${body}`;
         }
 
-        // Fallback for unexpected scenarios, or if the field type somehow changed
-        // before the 'before' hook could correctly set isInFlowFunc.
         return `**${field.label}**\n\n${field.description || `Please provide ${field.label}`}`;
       },
-      renderMarkdown: ['BOT', 'USER'],
-      path: (params: { userInput?: string }) => {
+      renderMarkdown: ['BOT', 'USER'] as const,
+      path: (params: PathParams): string => {
         const {
           getCurrentField,
-          incrementField,
-          resetFieldIndex,
-          incrementSection,
+          goToNextField,
+          goToNextSection,
           getCurrentSection,
           setStage,
           setIsInFlowFunc,
@@ -290,20 +347,20 @@ export const generateChatBotFlow = (): Record<
           currentFlowController,
           isInFlowFunc,
           setQuestionBody,
+          resetFieldIndex,
         } = useFlowStore.getState();
 
         const field = getCurrentField();
 
-        // Safety check, though 'before' should ensure field is available
         if (!field) {
           setIsInFlowFunc(false);
           setCurrentFlowController(null);
+          goToNextSection();
           resetFieldIndex();
-          incrementSection();
           return getCurrentSection() ? 'setup' : 'end';
         }
 
-        // --- Core logic for handling user input in an active subflow ---
+        // Handle user input in active subflow
         if (
           isInFlowFunc &&
           currentFlowController &&
@@ -313,47 +370,40 @@ export const generateChatBotFlow = (): Record<
 
           const stageResult = currentFlowController.OnSuccess();
           if (stageResult !== 'Stage not available yet') {
-            // Subflow completed successfully
+            // Subflow completed
             setStage(stageResult);
             setIsInFlowFunc(false);
             setCurrentFlowController(null);
 
-            // Advance in the main flow
-            incrementField();
+            goToNextField();
             const nextField = getCurrentField();
 
             if (!nextField) {
+              goToNextSection();
               resetFieldIndex();
-              incrementSection();
               return getCurrentSection() ? 'setup' : 'end';
             }
-            return 'loop'; // Go back to the main 'loop' block
+            return 'loop';
           } else {
-            // Subflow is ongoing, update question and stay in chartForm
+            // Subflow ongoing
             setQuestionBody(currentFlowController.getCurrentQuestion());
             return 'chartForm';
           }
         }
 
-        // --- This is the key change for handling the initial display ---
-        // If we are in an active subflow (meaning 'before' has run and set it up),
-        // and there's NO user input yet for this turn, we simply stay on 'chartForm'
-        // to await user input. This prevents the immediate loop.
         if (isInFlowFunc && currentFlowController) {
           return 'chartForm';
         }
 
-        // Fallback for unexpected states. This should ideally not be hit if flow is correct.
-        // If 'before' failed or field is somehow not a flow func that routes here.
         console.warn("Unexpected state in chartForm path. Returning 'end'.", {
           field,
           isInFlowFunc,
           currentFlowController,
         });
-        return 'end'; // Or a more appropriate error state if desired
+        return 'end';
       },
 
-      options: () => {
+      options: (): string[] => {
         const { getCurrentField, currentFlowController, isInFlowFunc } =
           useFlowStore.getState();
 
@@ -370,47 +420,48 @@ export const generateChatBotFlow = (): Record<
         return field?.options?.map((o: { value: string }) => o.value) || [];
       },
 
-      chatDisabled: () => {
+      chatDisabled: (): boolean => {
         const { getCurrentField, currentFlowController, isInFlowFunc } =
           useFlowStore.getState();
-        const f = getCurrentField();
+        const field = getCurrentField();
 
-        return (
-          f?.type === FieldType.File ||
-          f?.type === FieldType.Video ||
-          f?.type === FieldType.Dropdown ||
-          (f?.type === FieldType.FlowFunc &&
-            isInFlowFunc &&
-            currentFlowController !== null)
+        return Boolean(
+          field?.type === FieldType.File ||
+            field?.type === FieldType.Video ||
+            field?.type === FieldType.Dropdown ||
+            (field?.type === FieldType.FlowFunc &&
+              isInFlowFunc &&
+              currentFlowController !== null),
         );
       },
 
-      file: async (params: any) => {
+      file: async (params: FileParams): Promise<void> => {
         const { getCurrentField } = useFlowStore.getState();
-        const f = getCurrentField();
+        const field = getCurrentField();
 
-        if (f?.type === FieldType.Dropdown) return null;
+        if (field?.type === FieldType.Dropdown) return;
 
-        if (f?.type === FieldType.File || f?.type === FieldType.Video) {
+        if (field?.type === FieldType.File || field?.type === FieldType.Video) {
           await UploadFileHandler(params);
         }
       },
     } as MarkdownRendererBlock,
 
     end: {
-      message: () => `🎉 **Thank you!** All sections completed.`,
-      renderMarkdown: ['BOT', 'USER'],
+      message: (): string => `🎉 **Thank you!** All sections completed.`,
+      renderMarkdown: ['BOT', 'USER'] as const,
       chatDisabled: true,
     } as MarkdownRendererBlock,
 
     emptyFlow: {
-      message: () => `**No section available.**\n\n_An error occurred._`,
-      renderMarkdown: ['BOT', 'USER'],
+      message: (): string =>
+        `**No section available.**\n\n_An error occurred._`,
+      renderMarkdown: ['BOT', 'USER'] as const,
       chatDisabled: true,
     } as MarkdownRendererBlock,
 
     OriginalSubFlowLoop: {
-      message: async () => {
+      message: async (): Promise<string> => {
         const {
           getCurrentSubFlowField,
           currentFlowController,
@@ -418,10 +469,10 @@ export const generateChatBotFlow = (): Record<
           questionBody,
         } = useFlowStore.getState();
 
-        const field = getCurrentSubFlowField(); // 3ende mechkle hone... l field is undefined
+        const field = getCurrentSubFlowField();
 
-        if (!field || !field.label) {
-          return `**No more fields in this section...**\n\n_Send me anything to jump to the next section._ HAHAHAHA`;
+        if (!field?.label) {
+          return `**No more fields in this section...**\n\n_Send me anything to jump to the next section._`;
         }
 
         if (
@@ -430,7 +481,7 @@ export const generateChatBotFlow = (): Record<
           currentFlowController
         ) {
           const answers = currentFlowController.getCurrentAnswers();
-          let body = questionBody; // This will already be set by fetchAndSetSubFlow or answerQuestion
+          let body = questionBody;
 
           if (answers.length > 0) {
             body += `\n\n**Please select one of the following options:**`;
@@ -438,99 +489,95 @@ export const generateChatBotFlow = (): Record<
           return `**${field.label}**\n\n${body}`;
         }
 
-        // Default fallback for other field types
         return `**${field.label}**\n\n${field.description || `Please provide ${field.label}`}`;
       },
-      renderMarkdown: ['BOT', 'USER'],
-      path: async (params: { userInput?: string }) => {
+      renderMarkdown: ['BOT', 'USER'] as const,
+      path: async (params: PathParams): Promise<string> => {
         const {
           getCurrentSubFlowSection,
           getCurrentSubFlowField,
-          incrementSubFlowField,
-          incrementSubFlowSection,
-          resetSubFlowFieldIndex,
+          goToNextSubFlowField,
+          goToNextSubFlowSection,
           getCurrentField,
-          incrementSection,
-          resetFieldIndex,
           getCurrentSection,
+          goToNextField,
+          goToNextSection,
           setCurrentFlowController,
           setIsInFlowFunc,
-          incrementField,
           currentFlowController,
           isInFlowFunc,
           setStage,
           stage,
           setQuestionBody,
+          resetFieldIndex,
         } = useFlowStore.getState();
 
         const SubFlowSections = getCurrentSubFlowSection();
-
-        //IF there is no SubFLowSection we return to the loop object (main flow) to a new field and if
-        // if (!SubFlowSections) {
-        //   const field = getCurrentField();
-        //   if (!field) {
-        //     incrementSection();
-        //     resetFieldIndex();
-        //     return getCurrentSection() ? 'setup' : 'end';
-        //   }
-        //   return 'loop';
-        // }
-
         const SubFlowfield = getCurrentSubFlowField();
+
         if (!SubFlowfield) {
-          incrementSubFlowSection();
-          resetSubFlowFieldIndex();
-          return getCurrentSubFlowSection() ? 'setup' : 'end';
+          goToNextSubFlowSection();
+          return getCurrentSubFlowSection()
+            ? 'OriginalSubFlowLoop'
+            : 'resumeMainFlow';
         }
 
-        // Default: just move to the next field
-        incrementSubFlowField();
-        const nextField = getCurrentSubFlowField();
+        // Process the field only if user provided input or it's a non-input field
+        if (
+          params?.userInput !== undefined ||
+          SubFlowfield.type === FieldType.File ||
+          SubFlowfield.type === FieldType.Video ||
+          SubFlowfield.type === FieldType.Dropdown
+        ) {
+          goToNextSubFlowField();
+          const nextField = getCurrentSubFlowField();
 
-        if (!nextField) {
-          resetSubFlowFieldIndex();
-          incrementSubFlowSection();
-          const nextSubFlowSection = getCurrentSubFlowSection();
+          if (!nextField) {
+            goToNextSubFlowSection();
+            const nextSubFlowSection = getCurrentSubFlowSection();
 
-          if (nextSubFlowSection) {
-            return 'OriginalSubFlowLoop';
-          } else {
-            // Subflow has finished. Now resume main flow
-            setIsInFlowFunc(false); // <- Make sure this signals you're done with the subflow
-            setCurrentFlowController(null); // optional: reset flow controller
+            if (nextSubFlowSection) {
+              return 'OriginalSubFlowLoop';
+            } else {
+              // Subflow finished, resume main flow
+              setIsInFlowFunc(false);
+              setCurrentFlowController(null);
 
-            const mainFlowField = incrementField();
-            if (mainFlowField === undefined || mainFlowField === null) {
-              const mainFlowNextSection = incrementSection();
-              resetFieldIndex();
-              if (
-                mainFlowNextSection === undefined ||
-                mainFlowNextSection === null ||
-                mainFlowNextSection === ''
-              ) {
-                return 'loop';
+              goToNextField();
+              const mainFlowField = getCurrentField();
+
+              if (!mainFlowField) {
+                goToNextSection();
+                resetFieldIndex();
+                const mainFlowNextSection = getCurrentSection();
+
+                if (!mainFlowNextSection) {
+                  return 'end';
+                }
+                return 'setup';
               }
               return 'loop';
             }
-            return 'loop'; // <- Resume main flow
           }
         }
 
         return 'OriginalSubFlowLoop';
       },
 
-      file: async (params: any) => {
+      file: async (params: FileParams): Promise<void> => {
         const { getCurrentSubFlowField } = useFlowStore.getState();
-        const f = getCurrentSubFlowField();
-        if (f?.type === FieldType.Dropdown) {
-          return null;
+        const field = getCurrentSubFlowField();
+
+        if (field?.type === FieldType.Dropdown) {
+          return;
         }
-        if (f?.type === FieldType.File || f?.type === FieldType.Video) {
+
+        if (field?.type === FieldType.File || field?.type === FieldType.Video) {
           await UploadFileHandler(params);
         }
       },
 
-      options: () => {
+      options: (): string[] => {
         const { getCurrentSubFlowField, currentFlowController, isInFlowFunc } =
           useFlowStore.getState();
         const field = getCurrentSubFlowField();
@@ -546,17 +593,18 @@ export const generateChatBotFlow = (): Record<
         return field?.options?.map((o: { value: string }) => o.value) || [];
       },
 
-      chatDisabled: () => {
+      chatDisabled: (): boolean => {
         const { getCurrentSubFlowField, currentFlowController, isInFlowFunc } =
           useFlowStore.getState();
-        const f = getCurrentSubFlowField();
-        return (
-          f?.type === FieldType.File ||
-          f?.type === FieldType.Video ||
-          f?.type === FieldType.Dropdown ||
-          (f?.type === FieldType.FlowFunc &&
-            isInFlowFunc &&
-            currentFlowController) // Added isInFlowFunc check
+        const field = getCurrentSubFlowField();
+
+        return Boolean(
+          field?.type === FieldType.File ||
+            field?.type === FieldType.Video ||
+            field?.type === FieldType.Dropdown ||
+            (field?.type === FieldType.FlowFunc &&
+              isInFlowFunc &&
+              currentFlowController),
         );
       },
     } as MarkdownRendererBlock,

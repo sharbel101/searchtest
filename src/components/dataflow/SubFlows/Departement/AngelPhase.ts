@@ -4,6 +4,7 @@ export const Angel_Phase_Flow = {
   q1: {
     sectionTitle: 'Founder Involvement',
     sectionId: 'founder-involvement',
+    firstField: 'founderInvolvement',
     fields: {
       founderInvolvement: {
         id: 'founder-involvement',
@@ -11,6 +12,7 @@ export const Angel_Phase_Flow = {
         label:
           'Are all original founders still actively involved in the company?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'major_departures',
@@ -37,12 +39,14 @@ export const Angel_Phase_Flow = {
   q2: {
     sectionTitle: 'Founder Role Evolution',
     sectionId: 'founder-role-evolution',
+    firstField: 'founderRoleEvolution',
     fields: {
       founderRoleEvolution: {
         id: 'founder-role-evolution',
         type: FieldType.Dropdown,
         label: "Have the founders' roles evolved from the ideation stage?",
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_changes',
@@ -66,12 +70,14 @@ export const Angel_Phase_Flow = {
   q3: {
     sectionTitle: 'CEO Leadership',
     sectionId: 'ceo-leadership',
+    firstField: 'ceoLeadership',
     fields: {
       ceoLeadership: {
         id: 'ceo-leadership',
         type: FieldType.Dropdown,
         label: 'Is there a designated CEO leading the company?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_ceo_confusion',
@@ -94,6 +100,7 @@ export const Angel_Phase_Flow = {
   q4: {
     sectionTitle: 'Founder Responsibilities Documentation',
     sectionId: 'founder-responsibilities-documentation',
+    firstField: 'founderResponsibilities',
     fields: {
       founderResponsibilities: {
         id: 'founder-responsibilities',
@@ -101,6 +108,7 @@ export const Angel_Phase_Flow = {
         label:
           "Are the founders' responsibilities documented and aligned with company needs?",
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_clear_distribution',
@@ -123,12 +131,14 @@ export const Angel_Phase_Flow = {
   q5: {
     sectionTitle: 'Investor and Advisor Engagement',
     sectionId: 'investor-advisor-engagement',
+    firstField: 'investorAdvisorEngagement',
     fields: {
       investorAdvisorEngagement: {
         id: 'investor-advisor-engagement',
         type: FieldType.Dropdown,
         label: 'Do the founders actively engage with investors and advisors?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_regular_communication',
@@ -151,6 +161,7 @@ export const Angel_Phase_Flow = {
   q6: {
     sectionTitle: 'External Leadership Attraction',
     sectionId: 'external-leadership-attraction',
+    firstField: 'externalLeadership',
     fields: {
       externalLeadership: {
         id: 'external-leadership',
@@ -158,6 +169,7 @@ export const Angel_Phase_Flow = {
         label:
           'Have the founders taken steps to attract experienced leadership outside their founding team?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_efforts',
@@ -180,12 +192,14 @@ export const Angel_Phase_Flow = {
   q7: {
     sectionTitle: 'Founder Compensation Structure',
     sectionId: 'founder-compensation-structure',
+    firstField: 'founderCompensation',
     fields: {
       founderCompensation: {
         id: 'founder-compensation',
         type: FieldType.Dropdown,
         label: 'Do all founders have a formal compensation structure?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_structured_compensation',
@@ -209,6 +223,7 @@ export const Angel_Phase_Flow = {
   q8: {
     sectionTitle: 'Departmental Structures',
     sectionId: 'departmental-structures',
+    firstField: 'departmentalStructures',
     fields: {
       departmentalStructures: {
         id: 'departmental-structures',
@@ -216,6 +231,7 @@ export const Angel_Phase_Flow = {
         label:
           'Has the company formally established departmental structures with defined leadership for each function?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_formal_departments',
@@ -241,6 +257,7 @@ export const Angel_Phase_Flow = {
   q9: {
     sectionTitle: 'Department Head Decision Making',
     sectionId: 'department-head-decision-making',
+    firstField: 'departmentHeadDecisions',
     fields: {
       departmentHeadDecisions: {
         id: 'department-head-decisions',
@@ -248,6 +265,7 @@ export const Angel_Phase_Flow = {
         label:
           'Are department heads or key function leaders involved in strategic decision-making alongside the founders?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_involvement',
@@ -271,6 +289,7 @@ export const Angel_Phase_Flow = {
   q10: {
     sectionTitle: 'Organizational Chart',
     sectionId: 'organizational-chart',
+    firstField: 'organizationalChart',
     fields: {
       organizationalChart: {
         id: 'organizational-chart',
@@ -278,6 +297,7 @@ export const Angel_Phase_Flow = {
         label:
           "Is there a documented organizational chart that reflects the company's current structure?",
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_org_chart',
@@ -300,6 +320,7 @@ export const Angel_Phase_Flow = {
   q11: {
     sectionTitle: 'Existing Departments',
     sectionId: 'existing-departments',
+    firstField: 'existingDepartments',
     fields: {
       existingDepartments: {
         id: 'existing-departments',
@@ -307,6 +328,7 @@ export const Angel_Phase_Flow = {
         label:
           'Which of the following departments currently exist in your company? (Select all that apply)',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'product_technology',
@@ -341,6 +363,7 @@ export const Angel_Phase_Flow = {
   q12: {
     sectionTitle: 'Dedicated Team Members',
     sectionId: 'dedicated-team-members',
+    firstField: 'dedicatedTeamMembers',
     fields: {
       dedicatedTeamMembers: {
         id: 'dedicated-team-members',
@@ -348,6 +371,7 @@ export const Angel_Phase_Flow = {
         label:
           'Do all key departments (finance, marketing, tech, operations) have at least one dedicated team member?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no',
@@ -370,6 +394,7 @@ export const Angel_Phase_Flow = {
   q13: {
     sectionTitle: 'Department Leaders Assignment',
     sectionId: 'department-leaders-assignment',
+    firstField: 'departmentLeadersAssignment',
     fields: {
       departmentLeadersAssignment: {
         id: 'department-leaders-assignment',
@@ -377,6 +402,7 @@ export const Angel_Phase_Flow = {
         label:
           'Have department leaders been officially assigned (beyond just the founders)?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no',
@@ -399,6 +425,7 @@ export const Angel_Phase_Flow = {
   q14: {
     sectionTitle: 'Department KPIs and Performance Tracking',
     sectionId: 'department-kpis-performance-tracking',
+    firstField: 'departmentKpis',
     fields: {
       departmentKpis: {
         id: 'department-kpis',
@@ -406,6 +433,7 @@ export const Angel_Phase_Flow = {
         label:
           'Do departments have clear KPIs and performance tracking in place?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no',
@@ -428,6 +456,7 @@ export const Angel_Phase_Flow = {
   q15: {
     sectionTitle: 'Cross-Department Communication',
     sectionId: 'cross-department-communication',
+    firstField: 'crossDepartmentCommunication',
     fields: {
       crossDepartmentCommunication: {
         id: 'cross-department-communication',
@@ -435,6 +464,7 @@ export const Angel_Phase_Flow = {
         label:
           'Is cross-department communication structured and efficient (e.g., meetings, reporting, tools)?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no',
@@ -457,12 +487,14 @@ export const Angel_Phase_Flow = {
   q16: {
     sectionTitle: 'Organization Chart Upload',
     sectionId: 'organization-chart-upload',
+    firstField: 'organizationChartUpload',
     fields: {
       organizationChartUpload: {
         id: 'organization-chart-upload',
         type: FieldType.File,
         label: 'Upload your organization chart',
         required: false,
+        nextField: null,
         acceptedTypes: ['.pdf'],
       },
     },
@@ -472,12 +504,14 @@ export const Angel_Phase_Flow = {
   q17: {
     sectionTitle: 'Product & Technology Responsibility',
     sectionId: 'product-technology-responsibility',
+    firstField: 'productTechResponsibility',
     fields: {
       productTechResponsibility: {
         id: 'product-tech-responsibility',
         type: FieldType.Dropdown,
         label: 'Who is responsible for product & technology development?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'founder_led',
@@ -500,12 +534,14 @@ export const Angel_Phase_Flow = {
   q18: {
     sectionTitle: 'Tech Lead Education Level',
     sectionId: 'tech-lead-education-level',
+    firstField: 'techLeadEducation',
     fields: {
       techLeadEducation: {
         id: 'tech-lead-education',
         type: FieldType.Dropdown,
         label: 'What is their highest level of education in a technical field?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_formal_tech_education',
@@ -528,6 +564,7 @@ export const Angel_Phase_Flow = {
   q19: {
     sectionTitle: 'Tech Lead Experience Years',
     sectionId: 'tech-lead-experience-years',
+    firstField: 'techLeadExperience',
     fields: {
       techLeadExperience: {
         id: 'tech-lead-experience',
@@ -535,6 +572,7 @@ export const Angel_Phase_Flow = {
         label:
           'How many years of experience do they have in software/product development?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'less_than_1_year',
@@ -561,12 +599,14 @@ export const Angel_Phase_Flow = {
   q20: {
     sectionTitle: 'Tech Lead Leadership Experience',
     sectionId: 'tech-lead-leadership-experience',
+    firstField: 'techLeadLeadership',
     fields: {
       techLeadLeadership: {
         id: 'tech-lead-leadership',
         type: FieldType.Dropdown,
         label: 'Have they led a tech/product team before?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_leadership_experience',
@@ -589,12 +629,14 @@ export const Angel_Phase_Flow = {
   q21: {
     sectionTitle: 'Marketing & Sales Responsibility',
     sectionId: 'marketing-sales-responsibility',
+    firstField: 'marketingSalesResponsibility',
     fields: {
       marketingSalesResponsibility: {
         id: 'marketing-sales-responsibility',
         type: FieldType.Dropdown,
         label: 'Who is responsible for marketing & sales strategy?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'founder_led',
@@ -617,6 +659,7 @@ export const Angel_Phase_Flow = {
   q22: {
     sectionTitle: 'Marketing Lead Education Level',
     sectionId: 'marketing-lead-education-level',
+    firstField: 'marketingLeadEducation',
     fields: {
       marketingLeadEducation: {
         id: 'marketing-lead-education',
@@ -624,6 +667,7 @@ export const Angel_Phase_Flow = {
         label:
           'What is their highest level of education in business/marketing?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_formal_education',
@@ -646,6 +690,7 @@ export const Angel_Phase_Flow = {
   q23: {
     sectionTitle: 'Marketing Lead Experience Years',
     sectionId: 'marketing-lead-experience-years',
+    firstField: 'marketingLeadExperience',
     fields: {
       marketingLeadExperience: {
         id: 'marketing-lead-experience',
@@ -653,6 +698,7 @@ export const Angel_Phase_Flow = {
         label:
           'How many years of experience do they have in sales, branding, or customer acquisition?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'less_than_1_year',
@@ -679,12 +725,14 @@ export const Angel_Phase_Flow = {
   q24: {
     sectionTitle: 'Marketing Lead Industry Experience',
     sectionId: 'marketing-lead-industry-experience',
+    firstField: 'marketingLeadIndustryExperience',
     fields: {
       marketingLeadIndustryExperience: {
         id: 'marketing-lead-industry-experience',
         type: FieldType.Dropdown,
         label: 'Have they worked in a similar industry before?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_industry_experience',
@@ -707,12 +755,14 @@ export const Angel_Phase_Flow = {
   q25: {
     sectionTitle: 'Finance Management Responsibility',
     sectionId: 'finance-management-responsibility',
+    firstField: 'financeManagementResponsibility',
     fields: {
       financeManagementResponsibility: {
         id: 'finance-management-responsibility',
         type: FieldType.Dropdown,
         label: 'Who manages company finances and investor relations?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'founder_led_no_expert',
@@ -735,12 +785,14 @@ export const Angel_Phase_Flow = {
   q26: {
     sectionTitle: 'Finance Lead Education Background',
     sectionId: 'finance-lead-education-background',
+    firstField: 'financeLeadEducation',
     fields: {
       financeLeadEducation: {
         id: 'finance-lead-education',
         type: FieldType.Dropdown,
         label: 'What is their educational background in finance/accounting?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_finance_background',
@@ -763,6 +815,7 @@ export const Angel_Phase_Flow = {
   q27: {
     sectionTitle: 'Finance Lead Prior Experience',
     sectionId: 'finance-lead-prior-experience',
+    firstField: 'financeLeadPriorExperience',
     fields: {
       financeLeadPriorExperience: {
         id: 'finance-lead-prior-experience',
@@ -770,6 +823,7 @@ export const Angel_Phase_Flow = {
         label:
           'Do they have prior experience in financial planning, budgeting, or fundraising?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'less_than_1_year',
@@ -796,6 +850,7 @@ export const Angel_Phase_Flow = {
   q28: {
     sectionTitle: 'Finance Lead Total Experience',
     sectionId: 'finance-lead-total-experience',
+    firstField: 'financeLeadTotalExperience',
     fields: {
       financeLeadTotalExperience: {
         id: 'finance-lead-total-experience',
@@ -803,6 +858,7 @@ export const Angel_Phase_Flow = {
         label:
           'How many years of experience do they have in finance/accounting/investment?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'less_than_1_year',
@@ -829,12 +885,14 @@ export const Angel_Phase_Flow = {
   q29: {
     sectionTitle: 'Operations & HR Responsibility',
     sectionId: 'operations-hr-responsibility',
+    firstField: 'operationsHrResponsibility',
     fields: {
       operationsHrResponsibility: {
         id: 'operations-hr-responsibility',
         type: FieldType.Dropdown,
         label: 'Who is responsible for company operations and HR?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'founder_led_no_ops_lead',
@@ -857,6 +915,7 @@ export const Angel_Phase_Flow = {
   q30: {
     sectionTitle: 'Operations Lead Background',
     sectionId: 'operations-lead-background',
+    firstField: 'operationsLeadBackground',
     fields: {
       operationsLeadBackground: {
         id: 'operations-lead-background',
@@ -864,6 +923,7 @@ export const Angel_Phase_Flow = {
         label:
           'What is their background in business operations, supply chain, or management?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_formal_background',
@@ -886,6 +946,7 @@ export const Angel_Phase_Flow = {
   q31: {
     sectionTitle: 'Operations Lead Prior Experience',
     sectionId: 'operations-lead-prior-experience',
+    firstField: 'operationsLeadPriorExperience',
     fields: {
       operationsLeadPriorExperience: {
         id: 'operations-lead-prior-experience',
@@ -893,6 +954,7 @@ export const Angel_Phase_Flow = {
         label:
           'Do they have prior experience in business operations, supply chain, or management?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'less_than_1_year',
@@ -919,6 +981,7 @@ export const Angel_Phase_Flow = {
   q32: {
     sectionTitle: 'Dedicated Full-Time Employees',
     sectionId: 'dedicated-full-time-employees',
+    firstField: 'dedicatedFullTimeEmployees',
     fields: {
       dedicatedFullTimeEmployees: {
         id: 'dedicated-full-time-employees',
@@ -926,6 +989,7 @@ export const Angel_Phase_Flow = {
         label:
           'Does each department have at least one dedicated full-time employee (excluding the founder-led roles)?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'founders_handle_most',
@@ -949,6 +1013,7 @@ export const Angel_Phase_Flow = {
   q33: {
     sectionTitle: 'Employee Count',
     sectionId: 'employee-count',
+    firstField: 'employeeCount',
     fields: {
       employeeCount: {
         id: 'employee-count',
@@ -956,6 +1021,7 @@ export const Angel_Phase_Flow = {
         label:
           'How many employees (excluding founders) are currently in the company?',
         required: true,
+        nextField: null,
         options: [
           {
             id: '1_to_3_employees',
@@ -978,6 +1044,7 @@ export const Angel_Phase_Flow = {
   q34: {
     sectionTitle: 'Employee Role Documentation',
     sectionId: 'employee-role-documentation',
+    firstField: 'employeeRoleDocumentation',
     fields: {
       employeeRoleDocumentation: {
         id: 'employee-role-documentation',
@@ -985,6 +1052,7 @@ export const Angel_Phase_Flow = {
         label:
           'Are employee roles and responsibilities formally documented for each department?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_formal_documentation',
@@ -1008,6 +1076,7 @@ export const Angel_Phase_Flow = {
   q35: {
     sectionTitle: 'Department Tools and Infrastructure',
     sectionId: 'department-tools-infrastructure',
+    firstField: 'departmentToolsInfrastructure',
     fields: {
       departmentToolsInfrastructure: {
         id: 'department-tools-infrastructure',
@@ -1015,6 +1084,7 @@ export const Angel_Phase_Flow = {
         label:
           'Is each department equipped with the necessary tools, software, or infrastructure to operate efficiently?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'basic_manual_processes',
@@ -1038,6 +1108,7 @@ export const Angel_Phase_Flow = {
   q36: {
     sectionTitle: 'Internal Processes and Workflows',
     sectionId: 'internal-processes-workflows',
+    firstField: 'internalProcessesWorkflows',
     fields: {
       internalProcessesWorkflows: {
         id: 'internal-processes-workflows',
@@ -1045,6 +1116,7 @@ export const Angel_Phase_Flow = {
         label:
           'Have departments developed internal processes and workflows to handle daily operations?',
         required: true,
+        nextField: null,
         options: [
           {
             id: 'no_clear_workflows',
@@ -1061,5 +1133,6 @@ export const Angel_Phase_Flow = {
         ],
       },
     },
+    nextNode: null,
   },
 };
