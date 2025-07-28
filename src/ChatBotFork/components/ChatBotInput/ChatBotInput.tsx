@@ -14,6 +14,7 @@ import { useBotStatesContext } from '../../context/BotStatesContext';
 import { useBotRefsContext } from '../../context/BotRefsContext';
 import { useSettingsContext } from '../../context/SettingsContext';
 import { useStylesContext } from '../../context/StylesContext';
+import FileAttachmentButton from '../Buttons/FileAttachmentButton/FileAttachmentButton';
 
 import './ChatBotInput.css';
 
@@ -51,18 +52,30 @@ const ChatBotInput = ({ buttons }: { buttons: React.ReactElement[] }) => {
   // tracks if text composition (like IME input) is in progress
   const [isComposing, setIsComposing] = useState<boolean>(false);
 
+  // tracks if file upload modal is open
+  const [showFileUploadModal, setShowFileUploadModal] = useState(false);
+
   // handles user input submission
   const { handleSubmitText } = useSubmitInputInternal();
 
   //handle textarea functionality
   const { setTextAreaValue } = useTextAreaInternal();
 
-  const fileAttachmentButton = buttons.find(
+  // Find the file attachment button and replace it with our controlled version
+  const fileAttachmentButtonIndex = buttons.findIndex(
     (button) => button.key === 'file-attachment',
   );
-  const otherButtons = buttons.filter(
-    (button) => button.key !== 'file-attachment',
-  );
+  let fileAttachmentButton = null;
+  let otherButtons = buttons;
+  if (fileAttachmentButtonIndex !== -1) {
+    fileAttachmentButton = (
+      <FileAttachmentButton
+        key="file-attachment"
+        onShowUploadModal={setShowFileUploadModal}
+      />
+    );
+    otherButtons = buttons.filter((button) => button.key !== 'file-attachment');
+  }
 
   // styles for text area
   const textAreaStyle: React.CSSProperties = {
@@ -174,6 +187,11 @@ const ChatBotInput = ({ buttons }: { buttons: React.ReactElement[] }) => {
       setInputLength(inputRef.current.value.length);
     }
   };
+
+  if (showFileUploadModal) {
+    // Only render the file attachment button, which will show the modal
+    return <div className="rcb-chat-input">{fileAttachmentButton}</div>;
+  }
 
   return (
     <div
