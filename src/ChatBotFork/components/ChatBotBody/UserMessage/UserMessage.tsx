@@ -175,7 +175,7 @@ const UserMessage = ({
                   />
                 ) : (
                   <span className="rcb-user-message-file-icon">
-                    {fileType === 'pdf' ? '📄' : '📎'}
+                    {fileType === 'pdf' ? '📄' : '📄'}
                   </span>
                 )}
               </div>
@@ -185,7 +185,7 @@ const UserMessage = ({
                 onClick={handlePreviewToggle}
                 title="Preview file"
               >
-                👁️
+                view
               </button>
             </div>
           ) : isStringContent ? (

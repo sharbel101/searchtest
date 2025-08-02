@@ -1,5 +1,4 @@
 import React, { ChangeEvent, useRef, useState, useEffect } from 'react';
-
 import { getMediaFileDetails } from '../../../utils/mediaFileParser';
 import { useToastsInternal } from '../../../hooks/internal/useToastsInternal';
 import { useChatWindowInternal } from '../../../hooks/internal/useChatWindowInternal';
@@ -417,34 +416,45 @@ const FileAttachmentButton = ({
             left: 0,
             width: '100vw',
             height: '100vh',
-            backgroundColor: 'rgba(0, 0, 0, 0.7)',
-            backdropFilter: 'blur(8px)',
-            WebkitBackdropFilter: 'blur(8px)',
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            backdropFilter: 'blur(12px)',
+            WebkitBackdropFilter: 'blur(12px)',
             zIndex: 99999,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            animation: 'fadeIn 0.2s ease-out',
+            animation: 'fadeIn 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+            overscrollBehavior: 'contain',
           }}
           onClick={closeDropModal}
         >
           <div
             style={{
-              background: '#2a2a2a',
-              padding: '60px 40px',
-              borderRadius: '16px',
-              minWidth: '420px',
-              minHeight: '280px',
+              background: 'linear-gradient(135deg, #2a2a2a 0%, #1f1f1f 100%)',
+              padding: window.innerWidth <= 600 ? '40px 24px' : '60px 50px',
+              borderRadius: '24px',
+              minWidth: window.innerWidth <= 600 ? '320px' : '450px',
+              minHeight: window.innerWidth <= 600 ? '280px' : '320px',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
               boxShadow:
-                '0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1)',
-              border: isDragOver ? '2px dashed #42b0c5' : '2px dashed #555555',
-              transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-              transform: isDragOver ? 'scale(1.02)' : 'scale(1)',
-              animation: 'slideUp 0.3s ease-out',
+                '0 32px 64px -12px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.08)',
+              border: isDragOver
+                ? '2px solid #42b0c5'
+                : '2px solid transparent',
+              transition: 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
+              transform: isDragOver
+                ? 'scale(1.05) translateY(-4px)'
+                : 'scale(1) translateY(0)',
+              animation: 'slideUpBounce 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)',
+              maxWidth: '90vw',
+              maxHeight: '85vh',
+              width: '100%',
+              boxSizing: 'border-box',
+              position: 'relative',
+              overflow: 'hidden',
             }}
             onClick={(e) => e.stopPropagation()}
             onDrop={handleDrop}
@@ -455,31 +465,58 @@ const FileAttachmentButton = ({
             onDragEnter={() => setIsDragOver(true)}
             onDragLeave={() => setIsDragOver(false)}
           >
+            {/* Animated background particles */}
+            <div
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                background: isDragOver
+                  ? 'radial-gradient(circle at 50% 50%, rgba(66, 176, 197, 0.1) 0%, transparent 70%)'
+                  : 'transparent',
+                transition: 'all 0.3s ease',
+                pointerEvents: 'none',
+              }}
+            />
+
             {/* Upload Icon */}
             <div
               style={{
-                width: '70px',
-                height: '70px',
+                width: window.innerWidth <= 600 ? '64px' : '80px',
+                height: window.innerWidth <= 600 ? '64px' : '80px',
                 borderRadius: '50%',
-                backgroundColor: isDragOver ? '#42b0c5' : '#3a3a3a',
+                background: isDragOver
+                  ? 'linear-gradient(135deg, #42b0c5 0%, #3a9fb4 100%)'
+                  : 'linear-gradient(135deg, #3a3a3a 0%, #2a2a2a 100%)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                marginBottom: '24px',
-                transition: 'all 0.3s ease',
-                transform: isDragOver ? 'rotate(10deg)' : 'rotate(0deg)',
-                border: `2px solid ${isDragOver ? '#42b0c5' : '#555555'}`,
+                marginBottom: window.innerWidth <= 600 ? '24px' : '32px',
+                transition: 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                transform: isDragOver
+                  ? 'rotate(360deg) scale(1.1)'
+                  : 'rotate(0deg) scale(1)',
+                border: `3px solid ${isDragOver ? '#42b0c5' : '#4a4a4a'}`,
+                boxShadow: isDragOver
+                  ? '0 20px 40px rgba(66, 176, 197, 0.3), 0 0 0 4px rgba(66, 176, 197, 0.2)'
+                  : '0 8px 16px rgba(0, 0, 0, 0.3)',
               }}
             >
               <svg
-                width="28"
-                height="28"
+                width={window.innerWidth <= 600 ? '28' : '36'}
+                height={window.innerWidth <= 600 ? '28' : '36'}
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke={isDragOver ? '#ffffff' : '#888888'}
-                strokeWidth="2"
+                strokeWidth="2.5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
+                style={{
+                  transition: 'all 0.3s ease',
+                  transform: isDragOver ? 'translateY(-2px)' : 'translateY(0)',
+                }}
               >
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
                 <polyline points="7,10 12,15 17,10" />
@@ -489,82 +526,91 @@ const FileAttachmentButton = ({
 
             <div
               style={{
-                fontSize: '22px',
-                fontWeight: '600',
+                fontSize: window.innerWidth <= 600 ? '20px' : '26px',
+                fontWeight: '700',
                 color: isDragOver ? '#42b0c5' : '#ffffff',
-                marginBottom: '12px',
+                marginBottom: window.innerWidth <= 600 ? '12px' : '16px',
                 textAlign: 'center',
-                transition: 'color 0.3s ease',
+                transition: 'all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                wordBreak: 'break-word',
+                letterSpacing: '-0.5px',
+                transform: isDragOver ? 'translateY(-2px)' : 'translateY(0)',
               }}
             >
-              {isDragOver ? 'Drop files here!' : 'Upload Your Files'}
+              {isDragOver ? '✨ Drop files here!' : 'Upload Your Files'}
             </div>
 
             <div
               style={{
-                fontSize: '15px',
-                color: '#888888',
-                marginBottom: '32px',
+                fontSize: window.innerWidth <= 600 ? '14px' : '16px',
+                color: '#aaaaaa',
+                marginBottom: window.innerWidth <= 600 ? '32px' : '40px',
                 textAlign: 'center',
-                lineHeight: '1.5',
+                lineHeight: '1.6',
+                wordBreak: 'break-word',
+                transition: 'all 0.3s ease',
+                opacity: isDragOver ? 0.8 : 1,
               }}
             >
               {isDragOver
-                ? 'Release to upload'
+                ? 'Release to upload instantly'
                 : 'Drag and drop files here or click to browse'}
             </div>
 
             <button
               style={{
-                padding: '12px 28px',
-                borderRadius: '8px',
-                border: '1px solid #42b0c5',
-                background: '#42b0c5',
+                padding: window.innerWidth <= 600 ? '14px 28px' : '16px 36px',
+                borderRadius: '16px',
+                border: 'none',
+                background: 'linear-gradient(135deg, #42b0c5 0%, #3a9fb4 100%)',
                 color: '#ffffff',
-                fontSize: '15px',
-                fontWeight: '500',
+                fontSize: window.innerWidth <= 600 ? '15px' : '16px',
+                fontWeight: '600',
                 cursor: 'pointer',
-                transition: 'all 0.2s ease',
-                marginBottom: '16px',
+                transition: 'all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                marginBottom: window.innerWidth <= 600 ? '16px' : '20px',
+                width: window.innerWidth <= 400 ? '100%' : 'auto',
+                maxWidth: '100%',
+                boxShadow: '0 8px 20px rgba(66, 176, 197, 0.3)',
+                letterSpacing: '0.5px',
+                minWidth: '140px',
               }}
               onClick={() => fileInputRef.current?.click()}
-              onMouseOver={(e) => {
-                e.currentTarget.style.backgroundColor = '#3a9fb4';
-                e.currentTarget.style.transform = 'translateY(-1px)';
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform =
+                  'translateY(-3px) scale(1.02)';
+                e.currentTarget.style.boxShadow =
+                  '0 12px 30px rgba(66, 176, 197, 0.4)';
               }}
-              onMouseOut={(e) => {
-                e.currentTarget.style.backgroundColor = '#42b0c5';
-                e.currentTarget.style.transform = 'translateY(0px)';
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                e.currentTarget.style.boxShadow =
+                  '0 8px 20px rgba(66, 176, 197, 0.3)';
+              }}
+              onMouseDown={(e) => {
+                e.currentTarget.style.transform =
+                  'translateY(-1px) scale(0.98)';
+              }}
+              onMouseUp={(e) => {
+                e.currentTarget.style.transform =
+                  'translateY(-3px) scale(1.02)';
               }}
             >
               Browse Files
             </button>
 
-            <button
+            {/* Subtle close hint */}
+            <div
               style={{
-                background: 'transparent',
-                border: '1px solid #555555',
-                color: '#888888',
-                cursor: 'pointer',
-                fontSize: '14px',
-                padding: '8px 20px',
-                borderRadius: '8px',
-                transition: 'all 0.2s ease',
-              }}
-              onClick={closeDropModal}
-              onMouseOver={(e) => {
-                e.currentTarget.style.backgroundColor = '#3a3a3a';
-                e.currentTarget.style.color = '#ffffff';
-                e.currentTarget.style.borderColor = '#666666';
-              }}
-              onMouseOut={(e) => {
-                e.currentTarget.style.backgroundColor = 'transparent';
-                e.currentTarget.style.color = '#888888';
-                e.currentTarget.style.borderColor = '#555555';
+                fontSize: '12px',
+                color: '#666666',
+                textAlign: 'center',
+                opacity: isDragOver ? 0 : 0.7,
+                transition: 'opacity 0.3s ease',
               }}
             >
-              Cancel
-            </button>
+              Click outside to close
+            </div>
           </div>
         </div>
       )}
@@ -578,188 +624,224 @@ const FileAttachmentButton = ({
             left: 0,
             width: '100vw',
             height: '100vh',
-            backgroundColor: 'rgba(0, 0, 0, 0.7)',
-            backdropFilter: 'blur(8px)',
-            WebkitBackdropFilter: 'blur(8px)',
+            backgroundColor: 'rgba(0, 0, 0, 0.85)',
+            backdropFilter: 'blur(16px)',
+            WebkitBackdropFilter: 'blur(16px)',
             zIndex: 99999,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
+            animation: 'fadeIn 0.2s ease-out',
           }}
         >
           <div
             style={{
-              background: '#2a2a2a',
-              padding: '40px',
-              borderRadius: '16px',
-              minWidth: '400px',
-              maxWidth: '600px',
+              background: 'linear-gradient(135deg, #2a2a2a 0%, #1f1f1f 100%)',
+              padding: window.innerWidth <= 600 ? '32px 24px' : '48px 40px',
+              borderRadius: '24px',
+              minWidth: window.innerWidth <= 600 ? '320px' : '450px',
+              maxWidth: '90vw',
               maxHeight: '80vh',
               overflow: 'auto',
-              boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
-              border: '1px solid #555555',
+              boxShadow:
+                '0 32px 64px -12px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.08)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              animation: 'slideUpBounce 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
             }}
           >
-            <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+            <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+              {/* iOS-style loading spinner */}
+              <div
+                style={{
+                  width: '32px',
+                  height: '32px',
+                  margin: '0 auto 20px',
+                  position: 'relative',
+                }}
+              >
+                <svg
+                  width="32"
+                  height="32"
+                  viewBox="0 0 32 32"
+                  style={{
+                    animation: 'iosSpinner 1s linear infinite',
+                  }}
+                >
+                  {[...Array(12)].map((_, i) => (
+                    <rect
+                      key={i}
+                      x="15"
+                      y="2"
+                      width="2"
+                      height="6"
+                      rx="1"
+                      fill="#42b0c5"
+                      style={{
+                        transformOrigin: '16px 16px',
+                        transform: `rotate(${i * 30}deg)`,
+                        opacity: 1 - i * 0.08,
+                      }}
+                    />
+                  ))}
+                </svg>
+              </div>
+
               <div
                 style={{
                   color: '#ffffff',
-                  fontSize: '20px',
-                  fontWeight: '600',
+                  fontSize: window.innerWidth <= 600 ? '20px' : '24px',
+                  fontWeight: '700',
                   marginBottom: '8px',
+                  letterSpacing: '-0.5px',
                 }}
               >
                 Uploading Files...
               </div>
-              <div style={{ color: '#888888', fontSize: '14px' }}>
+              <div
+                style={{
+                  color: '#42b0c5',
+                  fontSize: window.innerWidth <= 600 ? '15px' : '16px',
+                  fontWeight: '600',
+                }}
+              >
                 {Math.round(uploadProgress)}% Complete
               </div>
             </div>
 
-            {/* Progress Bar */}
+            {/* Enhanced Progress Bar */}
             <div
               style={{
                 width: '100%',
-                height: '8px',
-                backgroundColor: '#555555',
-                borderRadius: '4px',
-                marginBottom: '24px',
+                height: '12px',
+                backgroundColor: '#3a3a3a',
+                borderRadius: '8px',
+                marginBottom: '32px',
                 overflow: 'hidden',
+                position: 'relative',
+                boxShadow: 'inset 0 2px 4px rgba(0, 0, 0, 0.3)',
               }}
             >
               <div
                 style={{
                   width: `${uploadProgress}%`,
                   height: '100%',
-                  backgroundColor: '#42b0c5',
-                  transition: 'width 0.3s ease',
-                }}
-              />
-            </div>
-
-            {/* File List */}
-            {filesWithPreview.map(renderFilePreview)}
-          </div>
-        </div>
-      )}
-
-      {/* File Preview Modal */}
-      {showPreviewModal && currentPreviewFile && (
-        <div
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100vw',
-            height: '100vh',
-            backgroundColor: 'rgba(0, 0, 0, 0.9)',
-            backdropFilter: 'blur(8px)',
-            WebkitBackdropFilter: 'blur(8px)',
-            zIndex: 99999,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: '20px',
-          }}
-          onClick={closePreviewModal}
-        >
-          <div
-            style={{
-              background: '#2a2a2a',
-              borderRadius: '16px',
-              maxWidth: '90vw',
-              maxHeight: '90vh',
-              overflow: 'auto',
-              boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
-              border: '1px solid #555555',
-            }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Preview Header */}
-            <div
-              style={{
-                padding: '20px',
-                borderBottom: '1px solid #555555',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-              }}
-            >
-              <div>
-                <div
-                  style={{
-                    color: '#ffffff',
-                    fontSize: '18px',
-                    fontWeight: '600',
-                  }}
-                >
-                  {currentPreviewFile.file.name}
-                </div>
-                <div style={{ color: '#888888', fontSize: '14px' }}>
-                  {currentPreviewFile.file.type} •{' '}
-                  {(currentPreviewFile.file.size / 1024).toFixed(1)} KB
-                </div>
-              </div>
-              <button
-                onClick={closePreviewModal}
-                style={{
-                  background: 'transparent',
-                  border: '1px solid #555555',
-                  color: '#888888',
-                  padding: '8px 12px',
+                  background:
+                    'linear-gradient(90deg, #42b0c5 0%, #5bc0db 50%, #42b0c5 100%)',
+                  transition:
+                    'width 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
                   borderRadius: '8px',
-                  cursor: 'pointer',
+                  position: 'relative',
+                  boxShadow: '0 0 12px rgba(66, 176, 197, 0.5)',
                 }}
               >
-                Close
-              </button>
-            </div>
-
-            {/* Preview Content */}
-            <div style={{ padding: '20px', textAlign: 'center' }}>
-              {currentPreviewFile.file.type.startsWith('image/') &&
-              currentPreviewFile.previewUrl ? (
-                <img
-                  src={currentPreviewFile.previewUrl}
-                  alt={currentPreviewFile.file.name}
-                  style={{
-                    maxWidth: '100%',
-                    maxHeight: '70vh',
-                    objectFit: 'contain',
-                    borderRadius: '8px',
-                  }}
-                />
-              ) : (
+                {/* Animated shine effect */}
                 <div
                   style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: '-100%',
+                    width: '100%',
+                    height: '100%',
+                    background:
+                      'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent)',
+                    animation: 'shine 2s infinite',
+                  }}
+                />
+              </div>
+            </div>
+
+            {/* File List - Simple text only */}
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '8px',
+                fontSize: '14px',
+                color: '#aaaaaa',
+              }}
+            >
+              {filesWithPreview.map((fileData, index) => (
+                <div
+                  key={index}
+                  style={{
+                    padding: '8px 12px',
+                    background: '#333333',
+                    borderRadius: '8px',
                     display: 'flex',
-                    flexDirection: 'column',
                     alignItems: 'center',
-                    padding: '60px',
-                    color: '#888888',
+                    gap: '8px',
                   }}
                 >
-                  <svg
-                    width="64"
-                    height="64"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    style={{ marginBottom: '16px' }}
+                  <div
+                    style={{
+                      width: '6px',
+                      height: '6px',
+                      borderRadius: '50%',
+                      background: '#42b0c5',
+                      flexShrink: 0,
+                    }}
+                  />
+                  <span
+                    style={{
+                      color: '#ffffff',
+                      fontSize: '14px',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                    }}
                   >
-                    <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z" />
-                  </svg>
-                  <div style={{ fontSize: '18px', marginBottom: '8px' }}>
-                    Preview not available
-                  </div>
-                  <div style={{ fontSize: '14px' }}>
-                    This file type cannot be previewed in the browser
-                  </div>
+                    {fileData.file.name}
+                  </span>
                 </div>
-              )}
+              ))}
             </div>
           </div>
         </div>
       )}
+
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+
+        @keyframes slideUpBounce {
+          from {
+            opacity: 0;
+            transform: translateY(60px) scale(0.9);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+        }
+
+        @keyframes iosSpinner {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
+        }
+
+        @keyframes shine {
+          0% {
+            left: -100%;
+          }
+          100% {
+            left: 100%;
+          }
+        }
+        `,
+        }}
+      />
     </>
   );
 };

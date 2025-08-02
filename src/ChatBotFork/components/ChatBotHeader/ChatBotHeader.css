@@ -3,7 +3,6 @@
 .rcb-chat-header-container {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   padding: 0 15px;
   height: 60px;
 }
@@ -35,4 +34,15 @@
   height: 30px;
   border-radius: 50%;
   margin-right: 12px;
+}
+
+/* Move header to the right on mobile */
+@media (max-width: 600px) {
+  .rcb-chat-header-container {
+    justify-content: flex-end;
+  }
+
+  .rcb-chat-header {
+    margin-left: auto; /* Push it to the right */
+  }
 }

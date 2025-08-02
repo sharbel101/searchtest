@@ -1,5 +1,4 @@
-import React, { useCallback } from 'react';
-import type { JSX } from 'react';
+import React, { useCallback, type JSX } from 'react';
 
 import { saveChatHistory } from '../../services/ChatHistoryService';
 import { createMessage } from '../../utils/messageBuilder';

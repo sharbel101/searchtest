@@ -1,9 +1,18 @@
-//make it async add a timer and return a promise
-export const UploadFileHandler = (userInput: string) => {
-  console.log('File:' + userInput + ' have been uploaded!');
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve('Success!');
-    }, 2000);
-  });
-};
+/**
+ * Simulates uploading a File and returns a blob URL
+ * so your UI can instantly preview it.
+ */
+export async function UploadFileHandler(
+  file: File,
+): Promise<{ status: 'success'; previewUrl: string }> {
+  console.log(`Starting upload for: ${file.name}…`);
+
+  // Create a blob URL for preview
+  const previewUrl = URL.createObjectURL(file);
+
+  // Simulate a 2-second upload delay
+  await new Promise<void>((resolve) => setTimeout(resolve, 2000));
+
+  console.log(`File: ${file.name} has been uploaded!`);
+  return { status: 'success', previewUrl };
+}
