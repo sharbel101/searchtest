@@ -194,7 +194,20 @@ export const generateChatBotFlow = (): Record<
           return null;
         }
         if (f?.type === FieldType.File || f?.type === FieldType.Video) {
-          await UploadFileHandler(params);
+          // Handle multiple files if present
+          if (params.files && Array.isArray(params.files)) {
+            for (const file of params.files) {
+              // Validate file before processing
+              if (file && file instanceof File) {
+                await UploadFileHandler(file);
+              } else {
+                console.warn(
+                  'Invalid file object passed to file handler:',
+                  file,
+                );
+              }
+            }
+          }
         }
       },
 
@@ -378,7 +391,20 @@ export const generateChatBotFlow = (): Record<
         if (f?.type === FieldType.Dropdown) return null;
 
         if (f?.type === FieldType.File || f?.type === FieldType.Video) {
-          await UploadFileHandler(params);
+          // Handle multiple files if present
+          if (params.files && Array.isArray(params.files)) {
+            for (const file of params.files) {
+              // Validate file before processing
+              if (file && file instanceof File) {
+                await UploadFileHandler(file);
+              } else {
+                console.warn(
+                  'Invalid file object passed to file handler:',
+                  file,
+                );
+              }
+            }
+          }
         }
       },
     } as MarkdownRendererBlock,

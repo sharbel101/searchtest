@@ -101,16 +101,17 @@ const FileAttachmentButton = ({
     };
   }, [blockAllowsAttachment, onShowUploadModal]);
 
-  // Cleanup preview URLs on unmount
+  // Cleanup preview URLs on unmount only (not on filesWithPreview changes)
   useEffect(() => {
     return () => {
+      console.log('🧹 Cleaning up file preview URLs on component unmount');
       filesWithPreview.forEach((fileWithPreview) => {
         if (fileWithPreview.previewUrl) {
           URL.revokeObjectURL(fileWithPreview.previewUrl);
         }
       });
     };
-  }, [filesWithPreview]);
+  }, []); // Empty dependency array - only run on unmount
 
   const handleClick = () => {
     if (blockAllowsAttachment) {
@@ -156,20 +157,67 @@ const FileAttachmentButton = ({
   };
 
   const createFilePreview = (file: File): FileWithPreview => {
+    console.log('🎨 Creating file preview for:', file.name, file.type);
+
     const fileWithPreview: FileWithPreview = {
       file,
       id: Math.random().toString(36).substr(2, 9),
     };
 
-    // Create preview URL for images
-    if (file.type.startsWith('image/')) {
-      fileWithPreview.previewUrl = URL.createObjectURL(file);
+    // Create preview URL for various file types
+    const supportedTypes = [
+      'image/', // Images
+      'application/pdf', // PDFs
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // Excel .xlsx
+      'application/vnd.ms-excel', // Excel .xls
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // Word .docx
+      'application/msword', // Word .doc
+      'application/vnd.openxmlformats-officedocument.presentationml.presentation', // PowerPoint .pptx
+      'application/vnd.ms-powerpoint', // PowerPoint .ppt
+      'text/', // Text files
+      'application/json', // JSON files
+      'application/xml', // XML files
+      'text/csv', // CSV files
+    ];
+
+    const isSupported = supportedTypes.some(
+      (type) => file.type.startsWith(type) || file.type === type,
+    );
+
+    if (isSupported) {
+      try {
+        // Validate that the file is a valid Blob before creating object URL
+        if (file instanceof Blob) {
+          fileWithPreview.previewUrl = URL.createObjectURL(file);
+          console.log(
+            `🖼️ Created preview URL for ${file.type}:`,
+            fileWithPreview.previewUrl,
+          );
+        } else {
+          console.warn(
+            'File is not a valid Blob, skipping preview URL creation:',
+            file,
+          );
+        }
+      } catch (error) {
+        console.error('Error creating preview URL:', error);
+      }
+    } else {
+      console.log(
+        `📄 File type ${file.type} not supported for preview, no preview URL created`,
+      );
     }
 
+    console.log('📋 Final file preview object:', fileWithPreview);
     return fileWithPreview;
   };
 
   const handleFiles = async (files: File[]) => {
+    console.log('📁 Selected files:', files);
+    files.forEach((file) => {
+      console.log('📎 File info:', file.name, file.type, file.size);
+    });
+
     closeDropModal();
     setIsUploading(true);
     setUploadProgress(0);
@@ -199,9 +247,9 @@ const FileAttachmentButton = ({
       const fileHandler = block.file;
 
       if (fileHandler) {
-        const fileNames = [];
+        const fileNamesList = [];
         for (const file of files) {
-          fileNames.push(file.name);
+          fileNamesList.push(file.name);
           if (settings.fileAttachment?.showMediaDisplay) {
             const fileDetails = await getMediaFileDetails(file);
             if (fileDetails.fileType && fileDetails.fileUrl) {
@@ -209,10 +257,45 @@ const FileAttachmentButton = ({
             }
           }
         }
-        await handleSubmitText(
-          '📄 ' + fileNames.join(', '),
-          settings.fileAttachment?.sendFileName,
-        );
+        // Inject custom file messages directly
+        for (const fileWithPreview of newFilesWithPreview) {
+          console.log(
+            '📨 Injecting file message for:',
+            fileWithPreview.file.name,
+          );
+          console.log('📦 File preview data:', fileWithPreview);
+
+          // Create custom message object with file data
+          const fileMessage = {
+            id: Math.random().toString(36).substr(2, 9),
+            sender: 'USER',
+            type: 'file',
+            content: '📄 ' + fileWithPreview.file.name,
+            timestamp: new Date().toUTCString(),
+            fileData: {
+              name: fileWithPreview.file.name,
+              type: fileWithPreview.file.type,
+              size: fileWithPreview.file.size,
+              previewUrl: fileWithPreview.previewUrl,
+            },
+            attachment: {
+              url: fileWithPreview.previewUrl,
+              data: fileWithPreview.previewUrl,
+              type: fileWithPreview.file.type,
+              name: fileWithPreview.file.name,
+            },
+            tags: fileWithPreview.previewUrl
+              ? [fileWithPreview.previewUrl]
+              : [],
+          };
+
+          console.log('🧾 Custom file message:', fileMessage);
+
+          // Inject the custom message directly
+          await injectMessage(fileMessage as any, 'USER');
+        }
+
+        // Call file handler to process the files
         await fileHandler({
           userInput: inputRef.current?.value as string,
           prevPath: getPrevPath(),
@@ -229,6 +312,19 @@ const FileAttachmentButton = ({
           dismissToast,
           files,
         });
+
+        // Trigger bot response by sending a hidden message to continue the flow
+        console.log('🤖 Triggering bot response for file upload');
+        const uploadedFileNames = newFilesWithPreview
+          .map((fp) => fp.file.name)
+          .join(', ');
+        console.log(
+          '📝 Sending hidden message:',
+          `Uploaded files: ${uploadedFileNames}`,
+        );
+
+        // Use handleSubmitText to trigger the bot's response flow
+        await handleSubmitText(`Uploaded files: ${uploadedFileNames}`, false);
       }
     } catch (error) {
       console.error('Upload failed:', error);
@@ -236,10 +332,9 @@ const FileAttachmentButton = ({
     } finally {
       setIsUploading(false);
       setUploadProgress(0);
-      // Clear files after successful upload
-      setTimeout(() => {
-        setFilesWithPreview([]);
-      }, 2000);
+      // Don't clear files immediately - let them persist for preview
+      // The file data is now stored in the message objects
+      console.log('✅ File upload completed, file data stored in messages');
     }
   };
 
