@@ -30,7 +30,7 @@ export const Private_Equity_Flow = {
         ],
       },
     },
-    nextNode: 'q2',
+    nextNode: 'structure-review',
   },
   q2: {
     sectionTitle: 'Structure Review Frequency',
@@ -54,7 +54,7 @@ export const Private_Equity_Flow = {
         ],
       },
     },
-    nextNode: 'q3',
+    nextNode: 'management-layers',
   },
   q3: {
     sectionTitle: 'Management Layers',
@@ -81,7 +81,7 @@ export const Private_Equity_Flow = {
         ],
       },
     },
-    nextNode: 'q4',
+    nextNode: 'department-reporting',
   },
   q4: {
     sectionTitle: 'Department Reporting Structure',
@@ -108,7 +108,7 @@ export const Private_Equity_Flow = {
         ],
       },
     },
-    nextNode: 'q5',
+    nextNode: 'business-units',
   },
   q5: {
     sectionTitle: 'Business Units or Divisions',
@@ -138,7 +138,7 @@ export const Private_Equity_Flow = {
         ],
       },
     },
-    nextNode: 'q6',
+    nextNode: 'middle-management',
   },
   q6: {
     sectionTitle: 'Middle Management Layer',
@@ -168,7 +168,7 @@ export const Private_Equity_Flow = {
         ],
       },
     },
-    nextNode: 'q7',
+    nextNode: 'c-level-executives',
   },
   q7: {
     sectionTitle: 'C-Level Executives',
@@ -305,7 +305,7 @@ export const Private_Equity_Flow = {
         ],
       },
     },
-    nextNode: 'q8',
+    nextNode: 'established-departments',
   },
   q8: {
     sectionTitle: 'Established Departments',
@@ -342,7 +342,7 @@ export const Private_Equity_Flow = {
         ],
       },
     },
-    nextNode: 'q9',
+    nextNode: 'department-kpis',
   },
   q9: {
     sectionTitle: 'Departmental KPIs',
@@ -372,7 +372,7 @@ export const Private_Equity_Flow = {
         ],
       },
     },
-    nextNode: 'q10',
+    nextNode: 'internal-tools',
   },
   q10: {
     sectionTitle: 'Internal Collaboration Tools',
@@ -399,7 +399,7 @@ export const Private_Equity_Flow = {
         ],
       },
     },
-    nextNode: 'q11',
+    nextNode: 'reporting-system',
   },
   q11: {
     sectionTitle: 'Reporting System',
@@ -429,7 +429,7 @@ export const Private_Equity_Flow = {
         ],
       },
     },
-    nextNode: 'q12',
+    nextNode: 'scalability',
   },
   q12: {
     sectionTitle: 'Scalability Readiness',
@@ -460,7 +460,7 @@ export const Private_Equity_Flow = {
         ],
       },
     },
-    nextNode: 'q13',
+    nextNode: 'career-progression',
   },
   q13: {
     sectionTitle: 'Career Progression',
@@ -488,7 +488,7 @@ export const Private_Equity_Flow = {
         ],
       },
     },
-    nextNode: 'q14',
+    nextNode: 'leadership-hiring',
   },
   q14: {
     sectionTitle: 'Leadership Hiring Strategy',
@@ -519,7 +519,7 @@ export const Private_Equity_Flow = {
         ],
       },
     },
-    nextNode: 'q15',
+    nextNode: 'global-workflows',
   },
   q15: {
     sectionTitle: 'Global Workflow Optimization',
@@ -549,7 +549,7 @@ export const Private_Equity_Flow = {
         ],
       },
     },
-    nextNode: 'q16',
+    nextNode: 'compliance',
   },
   q16: {
     sectionTitle: 'Compliance and Risk',
@@ -576,7 +576,7 @@ export const Private_Equity_Flow = {
         ],
       },
     },
-    nextNode: 'q17',
+    nextNode: 'department-optimization',
   },
   q17: {
     sectionTitle: 'Department Optimization',

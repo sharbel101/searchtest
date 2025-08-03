@@ -61,70 +61,6 @@ export type ChatFlow = {
 
 // Defining the chat flow structure with sections and their fields
 const chatFlow: ChatFlow = {
-  /*
-  investmentStage: {
-    // Title of this section in the flow
-    sectionTitle: 'Investment Stage',
-
-    // Unique identifier for this section
-    sectionId: 'investmentStage',
-    firstField: 'IS',
-    // Fields defined in this section
-    fields: {
-      IS: {
-        // Unique field ID
-        id: 'investment-stage-chart',
-
-        // The field type is a functional flow interaction
-        type: FieldType.FlowFunc,
-
-        // Label shown in UI
-        label: 'Investment Stage',
-
-        // Description shown to the user
-        description: 'Answer questions to determine your investment stage',
-
-        // This field must be filled before progressing
-        required: true,
-
-        //rename to flowInjectionID
-        flowInjection: {
-          name: 'investmentStageFlow',
-          type: 'ChartForm',
-        },
-        nextField: null,
-      },
-    },
-
-    // Next node to navigate to in the flow after this section
-    nextNode: 'departments',
-  },
-
-  
-  portfolio1: {
-    sectionTitle: 'Portfolio',
-    sectionId: 'portfolio',
-    firstField: 'industry',
-    fields: {
-      
-      industry: {
-        id: 'industry-type',
-        type: FieldType.Dropdown,
-        label: 'Industry',
-        options: [
-          { id: 'general', value: 'General' },
-          { id: 'specific', value: 'Specific' },
-          { id: 'other', value: 'Other' },
-        ],
-        required: true,
-        description: 'Select industry type (input details for "Other").',
-        nextField: null,
-      },
-    },
-    nextNode: 'nda',
-  },
-*/
-
   nda: {
     sectionTitle: 'NDA',
     sectionId: 'nda',
@@ -141,36 +77,7 @@ const chatFlow: ChatFlow = {
     },
     nextNode: 'portfolio',
   },
-  /*
-  departments1: {
-    sectionTitle: 'Departments',
-    sectionId: 'departments',
-    firstField: 'organizationChart'
-    fields: {
-      organizationChart: {
-        id: 'org-chart',
-        type: FieldType.File,
-        label: 'Organization Chart',
-        description: 'Upload organization chart (PDF, Excel, CSV).',
-        required: true,
-        nextField: 'fs_department',
-      },
-      fs_department: {
-        id: 'dept-details',
-        type: FieldType.FlowFunc,
-        label: 'Department Details',
-        description: '',
-        required: false,
-        flowInjection: {
-          name: 'fs_department',
-          type: 'OriginalSubFlow',
-        },
-        nextField: null,
-      },
-    },
-    nextNode: 'financials',
-  },
-*/
+
   portfolio: {
     sectionTitle: 'Portfolio',
     sectionId: 'portfolio',
@@ -480,7 +387,7 @@ const chatFlow: ChatFlow = {
     nextNode: 'investmentStage',
   },
   // // Import the flowInjection function
-  investmentStage2: {
+  investmentStage: {
     // Title of this section in the flow
     sectionTitle: 'Investment Stage',
 
@@ -533,11 +440,10 @@ const chatFlow: ChatFlow = {
         id: 'dept-details',
         type: FieldType.File,
         label: 'Department Details',
-        description:
-          'Upload department details (check fs_department excel sheet).',
+        description: '',
         required: false,
         flowInjection: {
-          name: 'DepartmentFlows',
+          name: 'fs_department',
           type: 'OriginalSubFlow',
         },
         nextField: null,

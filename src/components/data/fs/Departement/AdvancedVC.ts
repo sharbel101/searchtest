@@ -27,10 +27,10 @@ export const Advanced_VC_Flow = {
             value: 'Yes, a fully structured and updated org chart exists',
           },
         ],
-        nextField: null, // Last field in section, will use nextNode
+        nextField: null,
       },
     },
-    nextNode: 'q2',
+    nextNode: 'organizational-structure-review',
   },
   q2: {
     sectionTitle: 'Organizational Structure Review',
@@ -54,7 +54,7 @@ export const Advanced_VC_Flow = {
         nextField: null,
       },
     },
-    nextNode: 'q3',
+    nextNode: 'management-layers',
   },
   q3: {
     sectionTitle: 'Management Layers',
@@ -81,7 +81,7 @@ export const Advanced_VC_Flow = {
         nextField: null,
       },
     },
-    nextNode: 'q4',
+    nextNode: 'department-reporting-structure',
   },
   q4: {
     sectionTitle: 'Department Reporting Structure',
@@ -111,7 +111,7 @@ export const Advanced_VC_Flow = {
         nextField: null,
       },
     },
-    nextNode: 'q5',
+    nextNode: 'business-units-expansion',
   },
   q5: {
     sectionTitle: 'Business Units Expansion',
@@ -141,7 +141,7 @@ export const Advanced_VC_Flow = {
         nextField: null,
       },
     },
-    nextNode: 'q6',
+    nextNode: 'middle-management-structure',
   },
   q6: {
     sectionTitle: 'Middle Management Structure',
@@ -171,7 +171,7 @@ export const Advanced_VC_Flow = {
         nextField: null,
       },
     },
-    nextNode: 'q7',
+    nextNode: 'c-level-executive-structure',
   },
   q7: {
     sectionTitle: 'C-Level Executive Structure',
@@ -213,7 +213,7 @@ export const Advanced_VC_Flow = {
         nextField: null,
       },
     },
-    nextNode: 'q8',
+    nextNode: 'c-level-executive-evaluation',
   },
   q8: {
     sectionTitle: 'C-Level Executive Evaluation',
@@ -334,7 +334,7 @@ export const Advanced_VC_Flow = {
         nextField: null,
       },
     },
-    nextNode: 'q9',
+    nextNode: 'department-structure-evaluation',
   },
   q9: {
     sectionTitle: 'Department Structure & Evaluation',
@@ -560,7 +560,7 @@ export const Advanced_VC_Flow = {
         nextField: null,
       },
     },
-    nextNode: 'q10',
+    nextNode: 'department-kpis-performance',
   },
   q10: {
     sectionTitle: 'Department KPIs & Performance',
@@ -590,7 +590,7 @@ export const Advanced_VC_Flow = {
         nextField: null,
       },
     },
-    nextNode: 'q11',
+    nextNode: 'internal-collaboration-tools',
   },
   q11: {
     sectionTitle: 'Internal Collaboration Tools',
@@ -620,7 +620,7 @@ export const Advanced_VC_Flow = {
         nextField: null,
       },
     },
-    nextNode: 'q12',
+    nextNode: 'department-reporting-system',
   },
   q12: {
     sectionTitle: 'Department Reporting System',
@@ -650,7 +650,7 @@ export const Advanced_VC_Flow = {
         nextField: null,
       },
     },
-    nextNode: 'q13',
+    nextNode: 'scalability-resilience',
   },
   q13: {
     sectionTitle: 'Scalability Resilience',
@@ -681,7 +681,7 @@ export const Advanced_VC_Flow = {
         nextField: null,
       },
     },
-    nextNode: 'q14',
+    nextNode: 'career-progression-paths',
   },
   q14: {
     sectionTitle: 'Career Progression Paths',
@@ -712,7 +712,7 @@ export const Advanced_VC_Flow = {
         nextField: null,
       },
     },
-    nextNode: 'q15',
+    nextNode: 'internal-vs-external-hires',
   },
   q15: {
     sectionTitle: 'Internal vs External Hires',
@@ -743,7 +743,7 @@ export const Advanced_VC_Flow = {
         nextField: null,
       },
     },
-    nextNode: 'q16',
+    nextNode: 'global-operations-optimization',
   },
   q16: {
     sectionTitle: 'Global Operations Optimization',
@@ -773,7 +773,7 @@ export const Advanced_VC_Flow = {
         nextField: null,
       },
     },
-    nextNode: 'q17',
+    nextNode: 'compliance-risk-management',
   },
   q17: {
     sectionTitle: 'Compliance & Risk Management',
@@ -803,7 +803,7 @@ export const Advanced_VC_Flow = {
         nextField: null,
       },
     },
-    nextNode: 'q18',
+    nextNode: 'department-restructuring-frequency',
   },
   q18: {
     sectionTitle: 'Department Restructuring Frequency',

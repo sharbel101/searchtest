@@ -2,14 +2,14 @@
 
 import { useState } from 'react';
 import { Menu } from 'lucide-react';
-import { useFlowStore } from '../../dataflow/SubFlows/backup/OriginalFlowStore';
+import { useFlowStore } from '@/components/data/ZustandStores/MainFlowStore';
 import QuestionDetails from '../Chatbot UI/QuestionDetails';
 
 interface SectionProps {
   section: any;
   index: number;
-  isAccessible: boolean;
-  isActive: boolean;
+  isAccessible?: boolean;
+  isActive?: boolean;
 }
 
 function SectionItem({ section, isAccessible, isActive }: SectionProps) {
@@ -52,11 +52,13 @@ function SectionItem({ section, isAccessible, isActive }: SectionProps) {
 export default function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const sections = useFlowStore((s) => s.sections);
-  const currentIdx = useFlowStore((s) => s.currentSectionIndex);
+  const currentIdx = useFlowStore((s) => s.currentSectionId);
 
   // Calculate progress percentage
-  const progressPercentage =
-    sections.length > 0 ? ((currentIdx + 1) / sections.length) * 100 : 0;
+  const currentSection = sections.find(
+    (section) => section.sectionId === currentIdx,
+  );
+  const currentSectionTitle = currentSection?.sectionTitle || 'getting started';
 
   return (
     <div
@@ -162,81 +164,6 @@ export default function Sidebar() {
         )}
       </div>
 
-      {/* Progress Bar */}
-      {!collapsed && (
-        <div
-          style={{
-            padding: '20px',
-            borderBottom: '1px solid #1F2937',
-            backgroundColor: '#111',
-          }}
-        >
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              marginBottom: 12,
-            }}
-          >
-            <span
-              style={{
-                fontSize: 12,
-                color: '#9CA3AF',
-                fontWeight: 500,
-                textTransform: 'uppercase',
-                letterSpacing: '0.5px',
-              }}
-            >
-              Progress
-            </span>
-            <span
-              style={{
-                fontSize: 12,
-                color: '#42B0C5',
-                fontWeight: 600,
-              }}
-            >
-              {currentIdx + 1} / {sections.length}
-            </span>
-          </div>
-
-          <div
-            style={{
-              width: '100%',
-              height: 6,
-              backgroundColor: '#1F2937',
-              borderRadius: 3,
-              overflow: 'hidden',
-              boxShadow: 'inset 0 1px 3px rgba(0, 0, 0, 0.3)',
-            }}
-          >
-            <div
-              style={{
-                width: `${progressPercentage}%`,
-                height: '100%',
-                background: 'linear-gradient(90deg, #FF6EC4, #42B0C5)',
-                borderRadius: 3,
-                transition: 'width 0.5s ease-in-out',
-                boxShadow: '0 0 10px rgba(66, 176, 197, 0.4)',
-              }}
-            />
-          </div>
-
-          <div
-            style={{
-              fontSize: 11,
-              color: '#6B7280',
-              textAlign: 'center',
-              marginTop: 8,
-              fontWeight: 500,
-            }}
-          >
-            {Math.round(progressPercentage)}% Complete
-          </div>
-        </div>
-      )}
-
       {/* Sections Navigation */}
       {!collapsed && (
         <nav
@@ -253,45 +180,11 @@ export default function Sidebar() {
               key={i}
               section={sec}
               index={i}
-              isAccessible={i <= currentIdx}
-              isActive={i === currentIdx}
+              // isAccessible={i <= currentIdx}
+              // isActive={i === currentIdx}
             />
           ))}
         </nav>
-      )}
-
-      {/* Collapsed State Indicator */}
-      {collapsed && (
-        <div
-          style={{
-            flex: 1,
-            padding: '20px 8px',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: 12,
-          }}
-        >
-          {sections.slice(0, Math.min(6, sections.length)).map((_, i) => (
-            <div
-              key={i}
-              style={{
-                width: 8,
-                height: 8,
-                borderRadius: '50%',
-                backgroundColor:
-                  i <= currentIdx
-                    ? i === currentIdx
-                      ? '#42B0C5'
-                      : '#374151'
-                    : '#1F2937',
-                transition: 'all 0.2s ease',
-                boxShadow:
-                  i === currentIdx ? '0 0 8px rgba(66, 176, 197, 0.6)' : 'none',
-              }}
-            />
-          ))}
-        </div>
       )}
     </div>
   );

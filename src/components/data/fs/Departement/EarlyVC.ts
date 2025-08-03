@@ -30,7 +30,7 @@ export const Early_VC_Flow = {
         ],
       },
     },
-    nextNode: 'q2',
+    nextNode: 'organizational-structure-review-frequency',
   },
 
   q2: {
@@ -61,7 +61,7 @@ export const Early_VC_Flow = {
         ],
       },
     },
-    nextNode: 'q3',
+    nextNode: 'management-layers',
   },
 
   q3: {
@@ -92,7 +92,7 @@ export const Early_VC_Flow = {
         ],
       },
     },
-    nextNode: 'q4',
+    nextNode: 'department-reporting-structure',
   },
 
   q4: {
@@ -123,7 +123,7 @@ export const Early_VC_Flow = {
         ],
       },
     },
-    nextNode: 'q5',
+    nextNode: 'c-level-executives-present',
   },
 
   q5: {
@@ -202,7 +202,7 @@ export const Early_VC_Flow = {
         ],
       },
     },
-    nextNode: 'q6',
+    nextNode: 'c-level-executive-education-level',
   },
 
   q6: {
@@ -236,7 +236,7 @@ export const Early_VC_Flow = {
         ],
       },
     },
-    nextNode: 'q7',
+    nextNode: 'c-level-executive-experience-years',
   },
 
   q7: {
@@ -271,7 +271,7 @@ export const Early_VC_Flow = {
         ],
       },
     },
-    nextNode: 'q8',
+    nextNode: 'c-level-executive-leadership-experience',
   },
 
   q8: {
@@ -302,7 +302,7 @@ export const Early_VC_Flow = {
         ],
       },
     },
-    nextNode: 'q9',
+    nextNode: 'c-level-executive-industry-experience',
   },
 
   q9: {
@@ -332,7 +332,7 @@ export const Early_VC_Flow = {
         ],
       },
     },
-    nextNode: 'q10',
+    nextNode: 'c-level-executive-investor-relations',
   },
 
   q10: {
@@ -363,7 +363,7 @@ export const Early_VC_Flow = {
         ],
       },
     },
-    nextNode: 'q11',
+    nextNode: 'c-level-executive-strategic-decision-making',
   },
 
   q11: {
@@ -393,7 +393,7 @@ export const Early_VC_Flow = {
         ],
       },
     },
-    nextNode: 'q12',
+    nextNode: 'organization-chart-upload',
   },
 
   q12: {
@@ -410,7 +410,7 @@ export const Early_VC_Flow = {
         acceptedTypes: ['.pdf'],
       },
     },
-    nextNode: 'q13',
+    nextNode: 'formally-established-departments',
   },
 
   q13: {
@@ -505,7 +505,7 @@ export const Early_VC_Flow = {
         ],
       },
     },
-    nextNode: 'q14',
+    nextNode: 'department-head-education-level',
   },
 
   q14: {
@@ -539,7 +539,7 @@ export const Early_VC_Flow = {
         ],
       },
     },
-    nextNode: 'q15',
+    nextNode: 'department-head-experience-years',
   },
 
   q15: {
@@ -574,7 +574,7 @@ export const Early_VC_Flow = {
         ],
       },
     },
-    nextNode: 'q16',
+    nextNode: 'department-head-startup-experience',
   },
 
   q16: {
@@ -605,7 +605,7 @@ export const Early_VC_Flow = {
         ],
       },
     },
-    nextNode: 'q17',
+    nextNode: 'department-employee-count',
   },
 
   q17: {
@@ -639,7 +639,7 @@ export const Early_VC_Flow = {
         ],
       },
     },
-    nextNode: 'q18',
+    nextNode: 'department-employee-experience-percentage',
   },
 
   q18: {
@@ -670,7 +670,7 @@ export const Early_VC_Flow = {
         ],
       },
     },
-    nextNode: 'q19',
+    nextNode: 'department-performance-review-frequency',
   },
 
   q19: {
@@ -705,7 +705,7 @@ export const Early_VC_Flow = {
         ],
       },
     },
-    nextNode: 'q20',
+    nextNode: 'department-tools-software',
   },
 
   q20: {
@@ -736,7 +736,7 @@ export const Early_VC_Flow = {
         ],
       },
     },
-    nextNode: 'q21',
+    nextNode: 'department-documented-processes',
   },
 
   q21: {
@@ -769,7 +769,7 @@ export const Early_VC_Flow = {
         ],
       },
     },
-    nextNode: 'q22',
+    nextNode: 'department-process-review-frequency',
   },
 
   q22: {
@@ -803,7 +803,7 @@ export const Early_VC_Flow = {
         ],
       },
     },
-    nextNode: 'q23',
+    nextNode: 'workflow-bottleneck-resolution',
   },
 
   q23: {
@@ -834,7 +834,7 @@ export const Early_VC_Flow = {
         ],
       },
     },
-    nextNode: 'q24',
+    nextNode: 'department-kpi-ownership',
   },
 
   q24: {
@@ -865,7 +865,7 @@ export const Early_VC_Flow = {
         ],
       },
     },
-    nextNode: 'q25',
+    nextNode: 'internal-collaboration-tools',
   },
 
   q25: {
@@ -896,7 +896,7 @@ export const Early_VC_Flow = {
         ],
       },
     },
-    nextNode: 'q26',
+    nextNode: 'department-head-reporting-requirements',
   },
 
   q26: {
@@ -927,7 +927,7 @@ export const Early_VC_Flow = {
         ],
       },
     },
-    nextNode: 'q27',
+    nextNode: 'department-structure-scalability',
   },
 
   q27: {

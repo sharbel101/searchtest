@@ -2,19 +2,18 @@
 
 import React from 'react';
 import { generateChatBotFlow } from '../../dataflow/constructor';
-import { useFlowStore } from '../../dataflow/SubFlows/backup/OriginalFlowStore';
+import { useFlowStore } from '@/components/data/ZustandStores/MainFlowStore';
 import ChatBotComponent, { Flow } from '@/ChatBotFork';
 import MarkdownRenderer, { MarkdownRendererBlock } from '@/RCB_MarkDown';
 import { styles } from './ChatStyles';
 import './scrollbar.css';
-import { Span } from 'next/dist/trace';
 
 export default function Chat() {
-  // ——————————————
+  // ——————————————`
   // 1) STORE HOOKS
   // ——————————————
   const sections = useFlowStore((s) => s.sections);
-  const currentIdx = useFlowStore((s) => s.currentSectionIndex);
+  const currentIdx = useFlowStore((s) => s.currentSectionId);
 
   console.log('sections:', sections, 'currentIdx:', currentIdx);
 
@@ -23,8 +22,10 @@ export default function Chat() {
   // ——————————————
   // Calculate the current section title based on the store data.
 
-  const currentSectionTitle =
-    sections[currentIdx]?.sectionTitle || 'getting started';
+  const currentSection = sections.find(
+    (section) => section.sectionId === currentIdx,
+  );
+  const currentSectionTitle = currentSection?.sectionTitle || 'getting started';
 
   // ——————————————
   // 3) PLUGINS
@@ -72,8 +73,8 @@ export default function Chat() {
     footer: {
       text: '',
     },
-    userBubble: { simulateStream: true, streamSpeed: 30 },
-    botBubble: { simulateStream: true, streamSpeed: 30 },
+    userBubble: { simulateStream: true, streamSpeed: 50 },
+    botBubble: { simulateStream: true, streamSpeed: 50 },
     simulateStream: true,
     isOpen: true,
     general: {

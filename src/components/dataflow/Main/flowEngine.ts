@@ -1,6 +1,9 @@
 'use client';
 import { StageSubFlow } from '@/components/data/fs/AllOriginalSubFlowsData';
 import { FormField } from '@/components/data/MainFlow/flow';
+import { ChartFormUseFlowStore } from '@/components/data/ZustandStores/ChartFormFlowStore';
+
+import { PathParams } from '../constructor';
 
 //these TYPES are for the createFlowController
 export type QuestionNode = {
@@ -31,7 +34,7 @@ export const createFlowController = (flow: FlowDefinition): FlowController => {
   let stage: string | null = null;
 
   const getCurrentQuestion = () => {
-    return flow[currentNodeId]?.question || '';
+    return flow[currentNodeId]?.question || "Can't provide the question ";
   };
 
   const getCurrentAnswers = () => {
@@ -40,12 +43,37 @@ export const createFlowController = (flow: FlowDefinition): FlowController => {
 
   const answerQuestion = (answer: string) => {
     const answerConfig = flow[currentNodeId]?.answers?.[answer];
+    const {
+      goToNextField,
+      setQuestionBody,
+      getCurrentAnswers,
+      getCurrentField,
+    } = ChartFormUseFlowStore.getState();
+
     if (!answerConfig) return;
 
     if (answerConfig.setStage) {
+      console.log('We reached the set stage phase:', answerConfig.setStage);
       stage = answerConfig.setStage;
-    } else if (answerConfig.next) {
+    }
+
+    if (answerConfig.next !== undefined && answerConfig.next !== '') {
+      console.log('Jumping to the next node:', answerConfig.next);
       currentNodeId = answerConfig.next;
+      goToNextField(answerConfig.next);
+
+      const Question = getCurrentQuestion();
+      const answers = getCurrentAnswers();
+
+      if (Question === undefined || Question === null) {
+        setQuestionBody("Can't provide questions");
+      } else {
+        setQuestionBody(Question);
+      }
+
+      if (answers === undefined || answers === null) {
+        console.warn("Can't provide answers");
+      }
     }
   };
 

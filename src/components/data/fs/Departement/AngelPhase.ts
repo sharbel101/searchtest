@@ -33,7 +33,7 @@ export const Angel_Phase_Flow = {
         ],
       },
     },
-    nextNode: 'q2',
+    nextNode: 'founder-role-evolution',
   },
 
   q2: {
@@ -64,7 +64,7 @@ export const Angel_Phase_Flow = {
         ],
       },
     },
-    nextNode: 'q3',
+    nextNode: 'ceo-leadership',
   },
 
   q3: {
@@ -94,7 +94,7 @@ export const Angel_Phase_Flow = {
         ],
       },
     },
-    nextNode: 'q4',
+    nextNode: 'founder-responsibilities-documentation',
   },
 
   q4: {
@@ -125,7 +125,7 @@ export const Angel_Phase_Flow = {
         ],
       },
     },
-    nextNode: 'q5',
+    nextNode: 'investor-advisor-engagement',
   },
 
   q5: {
@@ -155,7 +155,7 @@ export const Angel_Phase_Flow = {
         ],
       },
     },
-    nextNode: 'q6',
+    nextNode: 'external-leadership-attraction',
   },
 
   q6: {
@@ -186,7 +186,7 @@ export const Angel_Phase_Flow = {
         ],
       },
     },
-    nextNode: 'q7',
+    nextNode: 'founder-compensation-structure',
   },
 
   q7: {
@@ -217,7 +217,7 @@ export const Angel_Phase_Flow = {
         ],
       },
     },
-    nextNode: 'q8',
+    nextNode: 'departmental-structures',
   },
 
   q8: {
@@ -251,7 +251,7 @@ export const Angel_Phase_Flow = {
         ],
       },
     },
-    nextNode: 'q9',
+    nextNode: 'department-head-decision-making',
   },
 
   q9: {
@@ -283,7 +283,7 @@ export const Angel_Phase_Flow = {
         ],
       },
     },
-    nextNode: 'q10',
+    nextNode: 'organizational-chart',
   },
 
   q10: {
@@ -314,7 +314,7 @@ export const Angel_Phase_Flow = {
         ],
       },
     },
-    nextNode: 'q11',
+    nextNode: 'existing-departments',
   },
 
   q11: {
@@ -357,7 +357,7 @@ export const Angel_Phase_Flow = {
         ],
       },
     },
-    nextNode: 'q12',
+    nextNode: 'dedicated-team-members',
   },
 
   q12: {
@@ -388,7 +388,7 @@ export const Angel_Phase_Flow = {
         ],
       },
     },
-    nextNode: 'q13',
+    nextNode: 'department-leaders-assignment',
   },
 
   q13: {
@@ -419,7 +419,7 @@ export const Angel_Phase_Flow = {
         ],
       },
     },
-    nextNode: 'q14',
+    nextNode: 'department-kpis-performance-tracking',
   },
 
   q14: {
@@ -450,7 +450,7 @@ export const Angel_Phase_Flow = {
         ],
       },
     },
-    nextNode: 'q15',
+    nextNode: 'cross-department-communication',
   },
 
   q15: {
@@ -481,7 +481,7 @@ export const Angel_Phase_Flow = {
         ],
       },
     },
-    nextNode: 'q16',
+    nextNode: 'organization-chart-upload',
   },
 
   q16: {
@@ -498,7 +498,7 @@ export const Angel_Phase_Flow = {
         acceptedTypes: ['.pdf'],
       },
     },
-    nextNode: 'q17',
+    nextNode: 'product-technology-responsibility',
   },
 
   q17: {
@@ -528,7 +528,7 @@ export const Angel_Phase_Flow = {
         ],
       },
     },
-    nextNode: 'q18',
+    nextNode: 'tech-lead-education-level',
   },
 
   q18: {
@@ -558,7 +558,7 @@ export const Angel_Phase_Flow = {
         ],
       },
     },
-    nextNode: 'q19',
+    nextNode: 'tech-lead-experience-years',
   },
 
   q19: {
@@ -593,7 +593,7 @@ export const Angel_Phase_Flow = {
         ],
       },
     },
-    nextNode: 'q20',
+    nextNode: 'tech-lead-leadership-experience',
   },
 
   q20: {
@@ -623,7 +623,7 @@ export const Angel_Phase_Flow = {
         ],
       },
     },
-    nextNode: 'q21',
+    nextNode: 'marketing-sales-responsibility',
   },
 
   q21: {
@@ -653,7 +653,7 @@ export const Angel_Phase_Flow = {
         ],
       },
     },
-    nextNode: 'q22',
+    nextNode: 'marketing-lead-education-level',
   },
 
   q22: {
@@ -684,7 +684,7 @@ export const Angel_Phase_Flow = {
         ],
       },
     },
-    nextNode: 'q23',
+    nextNode: 'marketing-lead-experience-years',
   },
 
   q23: {
@@ -719,7 +719,7 @@ export const Angel_Phase_Flow = {
         ],
       },
     },
-    nextNode: 'q24',
+    nextNode: 'marketing-lead-industry-experience',
   },
 
   q24: {
@@ -749,7 +749,7 @@ export const Angel_Phase_Flow = {
         ],
       },
     },
-    nextNode: 'q25',
+    nextNode: 'finance-management-responsibility',
   },
 
   q25: {
@@ -779,7 +779,7 @@ export const Angel_Phase_Flow = {
         ],
       },
     },
-    nextNode: 'q26',
+    nextNode: 'finance-lead-education-background',
   },
 
   q26: {
@@ -809,7 +809,7 @@ export const Angel_Phase_Flow = {
         ],
       },
     },
-    nextNode: 'q27',
+    nextNode: 'finance-lead-prior-experience',
   },
 
   q27: {
@@ -844,7 +844,7 @@ export const Angel_Phase_Flow = {
         ],
       },
     },
-    nextNode: 'q28',
+    nextNode: 'finance-lead-total-experience',
   },
 
   q28: {
@@ -879,7 +879,7 @@ export const Angel_Phase_Flow = {
         ],
       },
     },
-    nextNode: 'q29',
+    nextNode: 'operations-hr-responsibility',
   },
 
   q29: {
@@ -909,7 +909,7 @@ export const Angel_Phase_Flow = {
         ],
       },
     },
-    nextNode: 'q30',
+    nextNode: 'operations-lead-background',
   },
 
   q30: {
@@ -940,7 +940,7 @@ export const Angel_Phase_Flow = {
         ],
       },
     },
-    nextNode: 'q31',
+    nextNode: 'operations-lead-prior-experience',
   },
 
   q31: {
@@ -975,7 +975,7 @@ export const Angel_Phase_Flow = {
         ],
       },
     },
-    nextNode: 'q32',
+    nextNode: 'dedicated-full-time-employees',
   },
 
   q32: {
@@ -1007,7 +1007,7 @@ export const Angel_Phase_Flow = {
         ],
       },
     },
-    nextNode: 'q33',
+    nextNode: 'employee-count',
   },
 
   q33: {
@@ -1038,7 +1038,7 @@ export const Angel_Phase_Flow = {
         ],
       },
     },
-    nextNode: 'q34',
+    nextNode: 'employee-role-documentation',
   },
 
   q34: {
@@ -1070,7 +1070,7 @@ export const Angel_Phase_Flow = {
         ],
       },
     },
-    nextNode: 'q35',
+    nextNode: 'department-tools-infrastructure',
   },
 
   q35: {
@@ -1102,7 +1102,7 @@ export const Angel_Phase_Flow = {
         ],
       },
     },
-    nextNode: 'q36',
+    nextNode: 'internal-processes-workflows',
   },
 
   q36: {

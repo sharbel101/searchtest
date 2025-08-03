@@ -2,13 +2,15 @@
 
 // import { Block } from 'react-chatbotify';
 import { chatFlow, FieldType } from '../data/MainFlow/flow';
-import { useFlowStore } from './MainFlowStore';
+import { useFlowStore } from '../data/ZustandStores/MainFlowStore';
 import { UploadFileHandler } from './UploadFileHandler';
+import { useSubFlowStore } from '../data/ZustandStores/InjectedFlowStore';
 import {
   fetchAndSetChartFormSubFlow,
   fetchAndSetOriginalSubFlow,
-} from './SubFlows/FetchSubFlow';
+} from './FetchSubFlow';
 import MarkdownRenderer, { MarkdownRendererBlock } from '@/RCB_MarkDown';
+import { ChartFormUseFlowStore } from '../data/ZustandStores/ChartFormFlowStore';
 
 // Type definitions for better type safety
 export type PathParams = {
@@ -48,15 +50,9 @@ export const generateChatBotFlow = (): Record<
 
     setup: {
       message: (): string => {
-        const {
-          setSections,
-          currentSectionIndex,
-          resetFieldIndex,
-          getCurrentSection,
-        } = useFlowStore.getState();
+        const { setSections, getCurrentSection } = useFlowStore.getState();
         const allSections = Object.values(chatFlow);
         setSections(allSections);
-        resetFieldIndex();
         const current = getCurrentSection();
 
         return current
@@ -65,8 +61,12 @@ export const generateChatBotFlow = (): Record<
       },
       renderMarkdown: ['BOT', 'USER'] as const,
       path: (): string => {
-        const { getCurrentSection, goToNextSection, resetFieldIndex } =
-          useFlowStore.getState();
+        const {
+          getCurrentSection,
+          goToNextSection,
+          isInFlowFunc,
+          currentFlowController,
+        } = useFlowStore.getState();
         const current = getCurrentSection();
 
         if (!current) return 'end';
@@ -78,13 +78,12 @@ export const generateChatBotFlow = (): Record<
 
         if (fields.length === 0) {
           // Skip empty sections
+          console.log('This section does not have fields in it...');
           goToNextSection();
           const newSection = useFlowStore.getState().getCurrentSection();
           return newSection ? 'setup' : 'end';
         }
 
-        // Ensure field index is reset before entering loop
-        resetFieldIndex();
         return 'loop';
       },
       chatDisabled: true,
@@ -137,7 +136,6 @@ export const generateChatBotFlow = (): Record<
           getCurrentField,
           goToNextField,
           goToNextSection,
-          resetFieldIndex,
           setCurrentFlowController,
           setIsInFlowFunc,
           currentFlowController,
@@ -147,23 +145,49 @@ export const generateChatBotFlow = (): Record<
           setQuestionBody,
         } = useFlowStore.getState();
 
+        // const {  } = ChartFormUseFlowStore.getState()
+
         const section = getCurrentSection();
         const field = getCurrentField();
 
         console.log('Loop path - Section:', section?.sectionTitle);
         console.log('Loop path - Field:', field?.label);
-        console.log('Loop path - User input:', params?.userInput);
+        // console.log('Loop path - User input:', params?.userInput);
 
         if (!section) return 'end';
 
-        if (!field) {
+        if (field?.nextField == null) {
+          if (field?.flowInjection?.type === 'ChartForm') {
+            console.log(
+              `In this Section: ${section} and this field: ${field} we have injection of type: ${field.flowInjection.type} `,
+            );
+            await fetchAndSetChartFormSubFlow(field.flowInjection.name);
+            return 'chartForm';
+          }
           console.log(
             'No more fields in current section, moving to next section',
           );
+
+          if (
+            field?.flowInjection?.type === 'OriginalSubFlow' &&
+            stage != null &&
+            stage !== ''
+          ) {
+            console.log(
+              `In this Section: ${section} and this field: ${field} we have injection of type: ${field.flowInjection.type} `,
+            );
+            await fetchAndSetOriginalSubFlow(field.flowInjection.name, stage);
+            return 'OriginalSubFlowLoop';
+          }
+          console.log(
+            'No more fields in current section, moving to next section',
+          );
+
+          //HONE I THINK IT WILL MAKE AN ERROR AT THE LAST NODE
+          //lezem ghayyer enno eza ma fi nextSection return false aw null w hott if statement hone la ta3mol return lal "end"
           goToNextSection();
-          resetFieldIndex();
-          const nextSection = getCurrentSection();
-          return nextSection ? 'setup' : 'end';
+
+          return 'setup';
         }
 
         // Handle ChartForm flow injection
@@ -223,7 +247,6 @@ export const generateChatBotFlow = (): Record<
 
               if (!nextField) {
                 goToNextSection();
-                resetFieldIndex();
                 const nextSection = getCurrentSection();
                 return nextSection ? 'setup' : 'end';
               }
@@ -249,7 +272,6 @@ export const generateChatBotFlow = (): Record<
           if (!nextField) {
             console.log('No more fields, moving to next section');
             goToNextSection();
-            resetFieldIndex();
             const nextSection = getCurrentSection();
             return nextSection ? 'setup' : 'end';
           }
@@ -309,12 +331,10 @@ export const generateChatBotFlow = (): Record<
     // === ChartForm block for flowInjection ===
     chartForm: {
       message: (): string => {
-        const {
-          getCurrentField,
-          currentFlowController,
-          isInFlowFunc,
-          questionBody,
-        } = useFlowStore.getState();
+        const { getCurrentField, currentFlowController, isInFlowFunc } =
+          useFlowStore.getState();
+
+        const { questionBody } = ChartFormUseFlowStore.getState();
 
         const field = getCurrentField();
 
@@ -337,8 +357,6 @@ export const generateChatBotFlow = (): Record<
       renderMarkdown: ['BOT', 'USER'] as const,
       path: (params: PathParams): string => {
         const {
-          getCurrentField,
-          goToNextField,
           goToNextSection,
           getCurrentSection,
           setStage,
@@ -346,19 +364,20 @@ export const generateChatBotFlow = (): Record<
           setCurrentFlowController,
           currentFlowController,
           isInFlowFunc,
-          setQuestionBody,
-          resetFieldIndex,
         } = useFlowStore.getState();
+
+        const { getCurrentField, goToNextField, setQuestionBody } =
+          ChartFormUseFlowStore.getState();
 
         const field = getCurrentField();
 
-        if (!field) {
-          setIsInFlowFunc(false);
-          setCurrentFlowController(null);
-          goToNextSection();
-          resetFieldIndex();
-          return getCurrentSection() ? 'setup' : 'end';
-        }
+        // if (!field) {
+        //   console.log('No more fields in the Injected Flow. Returning to the main flow.');
+        //   setIsInFlowFunc(false);
+        //   setCurrentFlowController(null);
+        //   goToNextSection();
+        //   return getCurrentSection() ? 'setup' : 'end';
+        // }
 
         // Handle user input in active subflow
         if (
@@ -374,13 +393,10 @@ export const generateChatBotFlow = (): Record<
             setStage(stageResult);
             setIsInFlowFunc(false);
             setCurrentFlowController(null);
-
-            goToNextField();
             const nextField = getCurrentField();
 
             if (!nextField) {
               goToNextSection();
-              resetFieldIndex();
               return getCurrentSection() ? 'setup' : 'end';
             }
             return 'loop';
@@ -462,12 +478,10 @@ export const generateChatBotFlow = (): Record<
 
     OriginalSubFlowLoop: {
       message: async (): Promise<string> => {
-        const {
-          getCurrentSubFlowField,
-          currentFlowController,
-          isInFlowFunc,
-          questionBody,
-        } = useFlowStore.getState();
+        const { currentFlowController, isInFlowFunc, questionBody } =
+          useFlowStore.getState();
+
+        const { getCurrentSubFlowField } = useSubFlowStore.getState();
 
         const field = getCurrentSubFlowField();
 
@@ -494,78 +508,66 @@ export const generateChatBotFlow = (): Record<
       renderMarkdown: ['BOT', 'USER'] as const,
       path: async (params: PathParams): Promise<string> => {
         const {
-          getCurrentSubFlowSection,
-          getCurrentSubFlowField,
-          goToNextSubFlowField,
-          goToNextSubFlowSection,
           getCurrentField,
           getCurrentSection,
           goToNextField,
           goToNextSection,
           setCurrentFlowController,
           setIsInFlowFunc,
-          currentFlowController,
-          isInFlowFunc,
-          setStage,
-          stage,
-          setQuestionBody,
-          resetFieldIndex,
         } = useFlowStore.getState();
 
-        const SubFlowSections = getCurrentSubFlowSection();
-        const SubFlowfield = getCurrentSubFlowField();
+        const {
+          getCurrentSubFlowSection,
+          getCurrentSubFlowField,
+          goToNextSubFlowField,
+          goToNextSubFlowSection,
+        } = useSubFlowStore.getState();
 
-        if (!SubFlowfield) {
-          goToNextSubFlowSection();
-          return getCurrentSubFlowSection()
-            ? 'OriginalSubFlowLoop'
-            : 'resumeMainFlow';
+        const subFlowField = getCurrentSubFlowField();
+
+        if (!subFlowField) {
+          console.log('No SubFlowField found — returning to main flow');
+
+          const mainField = goToNextField();
+          if (mainField === null || mainField === undefined) {
+            const mainSection = goToNextSection();
+            if (mainSection === null || mainSection === undefined) return 'end';
+          }
+
+          return 'loop';
         }
 
-        // Process the field only if user provided input or it's a non-input field
-        if (
-          params?.userInput !== undefined ||
-          SubFlowfield.type === FieldType.File ||
-          SubFlowfield.type === FieldType.Video ||
-          SubFlowfield.type === FieldType.Dropdown
-        ) {
+        // Handle sequential subflow fields
+        if (subFlowField.nextField) {
           goToNextSubFlowField();
-          const nextField = getCurrentSubFlowField();
+          return 'OriginalSubFlowLoop';
+        }
 
-          if (!nextField) {
-            goToNextSubFlowSection();
-            const nextSubFlowSection = getCurrentSubFlowSection();
+        // Reached end of a subflow section, try to go to next subflow section
+        const hasNextSubFlowSection = goToNextSubFlowSection();
+        if (
+          hasNextSubFlowSection === null ||
+          hasNextSubFlowSection === undefined
+        ) {
+          // Subflow is done, go back to main flow
+          setIsInFlowFunc(false);
+          setCurrentFlowController(null);
 
-            if (nextSubFlowSection) {
-              return 'OriginalSubFlowLoop';
-            } else {
-              // Subflow finished, resume main flow
-              setIsInFlowFunc(false);
-              setCurrentFlowController(null);
-
-              goToNextField();
-              const mainFlowField = getCurrentField();
-
-              if (!mainFlowField) {
-                goToNextSection();
-                resetFieldIndex();
-                const mainFlowNextSection = getCurrentSection();
-
-                if (!mainFlowNextSection) {
-                  return 'end';
-                }
-                return 'setup';
-              }
-              return 'loop';
-            }
+          let mainField = goToNextField();
+          if (mainField === null || mainField === undefined) {
+            const mainSection = goToNextSection();
+            if (mainSection === null || mainSection === undefined) return 'end';
+            return 'setup';
           }
+
+          return 'loop';
         }
 
         return 'OriginalSubFlowLoop';
       },
 
       file: async (params: FileParams): Promise<void> => {
-        const { getCurrentSubFlowField } = useFlowStore.getState();
+        const { getCurrentSubFlowField } = useSubFlowStore.getState();
         const field = getCurrentSubFlowField();
 
         if (field?.type === FieldType.Dropdown) {
@@ -578,8 +580,9 @@ export const generateChatBotFlow = (): Record<
       },
 
       options: (): string[] => {
-        const { getCurrentSubFlowField, currentFlowController, isInFlowFunc } =
-          useFlowStore.getState();
+        const { getCurrentSubFlowField } = useSubFlowStore.getState();
+
+        const { currentFlowController, isInFlowFunc } = useFlowStore.getState();
         const field = getCurrentSubFlowField();
 
         if (
@@ -594,8 +597,9 @@ export const generateChatBotFlow = (): Record<
       },
 
       chatDisabled: (): boolean => {
-        const { getCurrentSubFlowField, currentFlowController, isInFlowFunc } =
-          useFlowStore.getState();
+        const { getCurrentSubFlowField } = useSubFlowStore.getState();
+
+        const { currentFlowController, isInFlowFunc } = useFlowStore.getState();
         const field = getCurrentSubFlowField();
 
         return Boolean(

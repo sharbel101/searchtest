@@ -32,7 +32,7 @@ export const Ideation_Phase_FLow = {
         ],
       },
     },
-    nextNode: 'q2',
+    nextNode: 'founders-education-background',
   },
 
   q2: {
@@ -70,7 +70,7 @@ export const Ideation_Phase_FLow = {
         ],
       },
     },
-    nextNode: 'q3',
+    nextNode: 'founders-past-experience-skills',
   },
 
   q3: {
@@ -104,7 +104,7 @@ export const Ideation_Phase_FLow = {
         ],
       },
     },
-    nextNode: 'q4',
+    nextNode: 'founder-responsibilities',
   },
 
   q4: {
@@ -139,7 +139,7 @@ export const Ideation_Phase_FLow = {
         ],
       },
     },
-    nextNode: 'q5',
+    nextNode: 'non-founder-team-members',
   },
 
   q5: {
@@ -173,7 +173,7 @@ export const Ideation_Phase_FLow = {
         ],
       },
     },
-    nextNode: 'q6',
+    nextNode: 'designated-ceo',
   },
 
   q6: {
@@ -203,7 +203,7 @@ export const Ideation_Phase_FLow = {
         ],
       },
     },
-    nextNode: 'q7',
+    nextNode: 'technical-background',
   },
 
   q7: {
@@ -233,7 +233,7 @@ export const Ideation_Phase_FLow = {
         ],
       },
     },
-    nextNode: 'q8',
+    nextNode: 'organization-chart-upload',
   },
 
   q8: {
@@ -250,7 +250,7 @@ export const Ideation_Phase_FLow = {
         acceptedTypes: ['.pdf'],
       },
     },
-    nextNode: 'q9',
+    nextNode: 'financial-expertise',
   },
 
   q9: {
@@ -281,7 +281,7 @@ export const Ideation_Phase_FLow = {
         ],
       },
     },
-    nextNode: 'q10',
+    nextNode: 'core-business-functions-assignment',
   },
 
   q10: {
@@ -314,7 +314,7 @@ export const Ideation_Phase_FLow = {
         ],
       },
     },
-    nextNode: 'q11',
+    nextNode: 'external-advisors-mentors',
   },
 
   q11: {
@@ -346,7 +346,7 @@ export const Ideation_Phase_FLow = {
         ],
       },
     },
-    nextNode: 'q12',
+    nextNode: 'internal-communication-decision-making',
   },
 
   q12: {
@@ -379,7 +379,7 @@ export const Ideation_Phase_FLow = {
         ],
       },
     },
-    nextNode: 'q13',
+    nextNode: 'company-registration',
   },
 
   q13: {
@@ -409,7 +409,7 @@ export const Ideation_Phase_FLow = {
         ],
       },
     },
-    nextNode: 'q14',
+    nextNode: 'team-responsibilities-documentation',
   },
 
   q14: {
@@ -440,7 +440,7 @@ export const Ideation_Phase_FLow = {
         ],
       },
     },
-    nextNode: 'q15',
+    nextNode: 'kpis-team-members',
   },
 
   q15: {
@@ -471,7 +471,7 @@ export const Ideation_Phase_FLow = {
         ],
       },
     },
-    nextNode: 'q16',
+    nextNode: 'decision-making-process',
   },
 
   q16: {
@@ -502,7 +502,7 @@ export const Ideation_Phase_FLow = {
         ],
       },
     },
-    nextNode: 'q17',
+    nextNode: 'team-meeting-frequency',
   },
 
   q17: {
@@ -533,7 +533,7 @@ export const Ideation_Phase_FLow = {
         ],
       },
     },
-    nextNode: 'q18',
+    nextNode: 'dedicated-workspace',
   },
 
   q18: {
@@ -564,7 +564,7 @@ export const Ideation_Phase_FLow = {
         ],
       },
     },
-    nextNode: 'q19',
+    nextNode: 'ownership-equity-distribution',
   },
 
   q19: {
@@ -595,7 +595,7 @@ export const Ideation_Phase_FLow = {
         ],
       },
     },
-    nextNode: 'q20',
+    nextNode: 'external-partnerships',
   },
 
   q20: {
@@ -626,7 +626,7 @@ export const Ideation_Phase_FLow = {
         ],
       },
     },
-    nextNode: 'q21',
+    nextNode: 'founder-contingency-plan',
   },
 
   q21: {
