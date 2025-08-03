@@ -1,16 +1,10 @@
-import { CSSProperties } from 'react';
+import { CSSProperties, useState, useEffect } from 'react';
 import { useSettingsContext } from '../../../context/SettingsContext';
 import { useStylesContext } from '../../../context/StylesContext';
 import { Message } from '../../../types/Message';
 
 import './UserMessage.css';
 
-/**
- * Renders message from the user.
- *
- * @param message message to render
- * @param isNewSender whether this message is from a new sender
- */
 const UserMessage = ({
   message,
   isNewSender,
@@ -18,61 +12,272 @@ const UserMessage = ({
   message: Message;
   isNewSender: boolean;
 }) => {
-  // handles settings
   const { settings } = useSettingsContext();
-
-  // handles styles
   const { styles } = useStylesContext();
+  const [showPreview, setShowPreview] = useState(false);
 
-  // checks if content should be rendered as html
+  useEffect(() => {
+    console.log('UserMessage component mounted/updated');
+  });
+
   const isStringContent = typeof message.content === 'string';
-  const baseContent: React.ReactNode = message.content;
+  const content =
+    isStringContent && message.content != null
+      ? (message.content as string).trim()
+      : '';
 
-  // checks if content wrapper is defined to wrap around content
   const finalContent = message.contentWrapper ? (
-    <message.contentWrapper>{baseContent}</message.contentWrapper>
+    <message.contentWrapper>{message.content}</message.contentWrapper>
   ) : (
-    baseContent
+    message.content
   );
 
-  // styles for user bubble
+  const isFileMessage = (): boolean => {
+    const isFile =
+      typeof message.content === 'string' &&
+      (content.startsWith('📄') ||
+        /\.(pdf|png|jpe?g|gif|webp|docx?|xlsx?|pptx?|zip|txt|mp4|webm)$/i.test(
+          content,
+        ));
+    console.log(`[UserMessage] isFileMessage check: ${isFile}`);
+    return isFile;
+  };
+
+  const isFile = isFileMessage();
+
+  let fileName = '';
+  let fileUrl = '';
+  let fileType = '';
+
+  if (isFile) {
+    console.log('🟦 [UserMessage] Message object:', message);
+    const fileDataObj = (message as any).fileData;
+    fileName = fileDataObj?.name || (message as any).fileName || '';
+    fileUrl = fileDataObj?.previewUrl || (message as any).fileUrl || '';
+
+    console.log('🟦 [UserMessage] Extracted fileName:', fileName);
+    console.log('🟦 [UserMessage] Extracted fileUrl:', fileUrl);
+
+    const mimeType = fileDataObj?.type || '';
+    const ext = fileName.split('.').pop()?.toLowerCase() || '';
+
+    console.log('🟦 [UserMessage] MimeType:', mimeType);
+    console.log('🟦 [UserMessage] File extension:', ext);
+
+    if (
+      mimeType.startsWith('image/') ||
+      ['jpg', 'jpeg', 'png', 'webp', 'gif'].includes(ext)
+    ) {
+      fileType = 'image';
+    } else if (mimeType.startsWith('video/') || ['mp4', 'webm'].includes(ext)) {
+      fileType = 'video';
+    } else if (mimeType === 'application/pdf' || ext === 'pdf') {
+      fileType = 'pdf';
+    } else if (mimeType.includes('word') || ['doc', 'docx'].includes(ext)) {
+      fileType = 'word';
+    } else if (mimeType.includes('excel') || ['xls', 'xlsx'].includes(ext)) {
+      fileType = 'excel';
+    } else if (
+      mimeType.includes('powerpoint') ||
+      ['ppt', 'pptx'].includes(ext)
+    ) {
+      fileType = 'powerpoint';
+    } else if (
+      mimeType.startsWith('text/') ||
+      ['txt', 'json', 'xml', 'csv', 'md'].includes(ext)
+    ) {
+      fileType = 'text';
+    } else {
+      fileType = 'other';
+    }
+    console.log('🟦 [UserMessage] Determined fileType:', fileType);
+  }
+
+  const isValidUrl =
+    fileUrl.startsWith('http') ||
+    fileUrl.startsWith('data:') ||
+    fileUrl.startsWith('blob:');
+  console.log(`[UserMessage] isValidUrl check: ${isValidUrl}`);
+
+  const handlePreviewToggle = () => {
+    console.log(
+      `[UserMessage] Toggling preview from ${showPreview} to ${!showPreview}`,
+    );
+    setShowPreview(!showPreview);
+  };
+
   const userBubbleStyle: CSSProperties = {
-    backgroundColor: settings.general?.primaryColor,
-    color: '#fff',
+    backgroundColor: isFile
+      ? settings.general?.primaryColor || '#007bff'
+      : '#fff',
+    color: isFile ? '#fff' : '#000',
+    border: isFile ? '2px solid #00B4D8' : 'none',
     maxWidth: settings.userBubble?.showAvatar ? '65%' : '70%',
     ...styles.userBubbleStyle,
   };
+
   const userBubbleEntryStyle = settings.userBubble?.animate
     ? 'rcb-user-message-entry'
     : '';
-
-  // determines whether it's a new sender (affects avatar display and offset)
   const showAvatar = settings.userBubble?.showAvatar && isNewSender;
-  const offsetStyle = `rcb-user-message${
-    !isNewSender && settings.userBubble?.showAvatar
-      ? ' rcb-user-message-offset'
-      : ''
-  }`;
+  const offsetStyle = `rcb-user-message${!isNewSender && settings.userBubble?.showAvatar ? ' rcb-user-message-offset' : ''}`;
+
+  const renderFilePreview = () => {
+    if (!showPreview) {
+      console.log('❌ [UserMessage] Preview not shown. showPreview is false.');
+      return null;
+    }
+    console.log('✅ [UserMessage] Rendering file preview modal.');
+    console.log(
+      `[UserMessage] Preview for fileType: ${fileType}, fileUrl: ${fileUrl}, isValidUrl: ${isValidUrl}`,
+    );
+
+    const isOfficeDoc = ['word', 'excel', 'powerpoint'].includes(fileType);
+    const officeViewerUrl = `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(fileUrl)}`;
+
+    // Fallback for PDFs if the URL is not a data/blob URL
+    const pdfViewerUrl =
+      fileUrl.startsWith('blob:') || fileUrl.startsWith('data:')
+        ? fileUrl
+        : `https://docs.google.com/gview?url=${encodeURIComponent(fileUrl)}&embedded=true`;
+
+    const iframeSrc = isOfficeDoc
+      ? officeViewerUrl
+      : fileType === 'pdf'
+        ? pdfViewerUrl
+        : fileUrl;
+    console.log(`[UserMessage] Iframe source URL set to: ${iframeSrc}`);
+
+    return (
+      <div
+        className="rcb-file-preview-overlay"
+        onClick={() => setShowPreview(false)}
+      >
+        <div
+          className="rcb-file-preview-modal"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="rcb-file-preview-header">
+            <h3>{fileName || 'File Preview'}</h3>
+            <button
+              className="rcb-file-preview-close"
+              onClick={() => setShowPreview(false)}
+            >
+              ×
+            </button>
+          </div>
+          <div className="rcb-file-preview-body">
+            {isValidUrl ? (
+              fileType === 'image' ||
+              fileType === 'pdf' ||
+              isOfficeDoc ||
+              fileType === 'text' ? (
+                // Use a different approach for PDFs and office files
+                <iframe
+                  src={isOfficeDoc ? officeViewerUrl : fileUrl}
+                  title={fileName}
+                  className="rcb-file-preview-iframe"
+                  style={{ display: fileType === 'image' ? 'none' : 'block' }}
+                />
+              ) : fileType === 'image' ? (
+                <img
+                  src={fileUrl}
+                  alt={fileName}
+                  className="rcb-file-preview-image"
+                />
+              ) : fileType === 'video' ? (
+                <video
+                  controls
+                  src={fileUrl}
+                  className="rcb-file-preview-video"
+                />
+              ) : (
+                <div className="rcb-file-preview-unsupported">
+                  <span className="rcb-file-icon-large">❌</span>
+                  <p>Preview for this file type is unavailable</p>
+                  <p>Type: {fileType}</p>
+                </div>
+              )
+            ) : (
+              <div className="rcb-file-preview-unsupported">
+                <span className="rcb-file-icon-large">❌</span>
+                <p>Invalid or unsupported file URL for preview.</p>
+                <p>URL: {fileUrl}</p>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   return (
-    <div className="rcb-user-message-container">
-      {isStringContent ? (
-        <div
-          style={userBubbleStyle}
-          className={`${offsetStyle} ${userBubbleEntryStyle}`}
-        >
-          {finalContent}
+    <>
+      <div className="rcb-user-message-container">
+        <div className="rcb-user-message-wrapper">
+          {isFile ? (
+            <div
+              style={userBubbleStyle}
+              className={`${offsetStyle} ${userBubbleEntryStyle} rcb-user-message-file`}
+            >
+              <div className="rcb-user-message-file-preview">
+                {fileType === 'image' && isValidUrl ? (
+                  <img
+                    src={fileUrl}
+                    alt={fileName}
+                    className="rcb-user-message-file-thumb"
+                    style={{
+                      maxWidth: '40px',
+                      maxHeight: '40px',
+                      borderRadius: '4px',
+                    }}
+                  />
+                ) : (
+                  <span className="rcb-user-message-file-icon">
+                    {fileType === 'pdf'
+                      ? '📄'
+                      : fileType === 'word'
+                        ? '📝'
+                        : fileType === 'excel'
+                          ? '📊'
+                          : fileType === 'powerpoint'
+                            ? '📈'
+                            : fileType === 'video'
+                              ? '🎞️'
+                              : fileType === 'text'
+                                ? '📃'
+                                : '📎'}
+                  </span>
+                )}
+              </div>
+              <div className="rcb-user-message-file-name">{fileName}</div>
+              <button
+                className="rcb-file-preview-button"
+                onClick={handlePreviewToggle}
+              >
+                View
+              </button>
+            </div>
+          ) : isStringContent ? (
+            <div
+              style={userBubbleStyle}
+              className={`${offsetStyle} ${userBubbleEntryStyle}`}
+            >
+              {finalContent}
+            </div>
+          ) : (
+            <>{finalContent}</>
+          )}
         </div>
-      ) : (
-        <>{finalContent}</>
-      )}
-      {showAvatar && (
-        <div
-          style={{ backgroundImage: `url("${settings.userBubble?.avatar}")` }}
-          className="rcb-message-user-avatar"
-        />
-      )}
-    </div>
+        {showAvatar && (
+          <div
+            style={{ backgroundImage: `url("${settings.userBubble?.avatar}")` }}
+            className="rcb-message-user-avatar"
+          />
+        )}
+      </div>
+      {renderFilePreview()}
+    </>
   );
 };
 

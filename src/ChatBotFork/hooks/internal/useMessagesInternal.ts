@@ -1,5 +1,4 @@
-import React, { useCallback } from 'react';
-import type { JSX } from 'react';
+import React, { useCallback, type JSX } from 'react';
 
 import { saveChatHistory } from '../../services/ChatHistoryService';
 import { createMessage } from '../../utils/messageBuilder';
@@ -257,13 +256,70 @@ export const useMessagesInternal = () => {
    */
   const injectMessage = useCallback(
     async (
-      content: string | JSX.Element,
+      content: string | JSX.Element | Message,
       sender = 'BOT',
     ): Promise<Message | null> => {
       // always convert to uppercase for checks
       sender = sender.toUpperCase();
 
-      let message = createMessage(content, sender);
+      let message: Message;
+
+      // Check if content is already a Message object
+      if (
+        typeof content === 'object' &&
+        content !== null &&
+        'id' in content &&
+        'content' in content
+      ) {
+        // Content is already a Message object, use it directly
+        message = content as Message;
+        console.log('📨 Injecting custom message object:', message);
+      } else {
+        // Create new message from content
+        message = createMessage(content, sender);
+      }
+
+      // Check for global file data and attach it to the message (legacy support)
+      if (
+        sender === 'USER' &&
+        typeof content === 'string' &&
+        content.startsWith('📄')
+      ) {
+        console.log('🧠 Checking for legacy file data in message injection');
+        const globalFileData = (window as any).__currentFileData;
+        console.log('🌐 Global file data:', globalFileData);
+
+        if (
+          globalFileData &&
+          Array.isArray(globalFileData) &&
+          globalFileData.length > 0
+        ) {
+          const fileName = content.replace('📄 ', '').trim();
+          console.log('📝 Looking for file:', fileName);
+          const fileData = globalFileData.find(
+            (fd: any) => fd.name === fileName,
+          );
+          console.log('🔍 Found file data:', fileData);
+
+          if (fileData) {
+            console.log('🧾 Attaching file data to message');
+            (message as any).fileData = fileData.previewUrl;
+            (message as any).attachment = {
+              url: fileData.previewUrl,
+              data: fileData.previewUrl,
+              type: fileData.type,
+              name: fileData.name,
+            };
+            (message as any).tags = fileData.previewUrl
+              ? [fileData.previewUrl]
+              : [];
+            console.log('✅ Final message object:', message);
+          }
+        }
+        // Clear the global file data after use
+        delete (window as any).__currentFileData;
+      }
+
       if (settings.event?.rcbPreInjectMessage) {
         const event = await dispatchRcbEvent(RcbEvent.PRE_INJECT_MESSAGE, {
           message,

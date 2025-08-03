@@ -2,9 +2,23 @@
   "extends": "next/core-web-vitals",
   "rules": {
     "no-duplicate-imports": "warn",
-    "import/no-unresolved": "warn",
+    "import/no-unresolved": "off",
     "react/react-in-jsx-scope": "off",
-    "react/no-unknown-property": "error"
+    "react/no-unknown-property": "error",
+    "@next/next/no-img-element": "warn",
+    "react-hooks/exhaustive-deps": "warn"
+  },
+  "settings": {
+    "import/resolver": {
+      "typescript": {
+        "alwaysTryTypes": true,
+        "project": "./tsconfig.json"
+      },
+      "alias": {
+        "map": [["@", "./src"]],
+        "extensions": [".ts", ".tsx", ".js", ".jsx"]
+      }
+    }
   },
   "overrides": [
     {

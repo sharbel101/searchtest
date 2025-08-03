@@ -5,6 +5,7 @@ import React, {
   RefObject,
   MouseEvent,
   Fragment,
+  useRef,
 } from 'react';
 
 import { useSubmitInputInternal } from '../../hooks/internal/useSubmitInputInternal';
@@ -14,6 +15,8 @@ import { useBotStatesContext } from '../../context/BotStatesContext';
 import { useBotRefsContext } from '../../context/BotRefsContext';
 import { useSettingsContext } from '../../context/SettingsContext';
 import { useStylesContext } from '../../context/StylesContext';
+import FileAttachmentButton from '../Buttons/FileAttachmentButton/FileAttachmentButton';
+import { Message } from '../../types/Message';
 
 import './ChatBotInput.css';
 
@@ -51,18 +54,33 @@ const ChatBotInput = ({ buttons }: { buttons: React.ReactElement[] }) => {
   // tracks if text composition (like IME input) is in progress
   const [isComposing, setIsComposing] = useState<boolean>(false);
 
+  // tracks if file upload modal is open
+  const [showFileUploadModal, setShowFileUploadModal] = useState(false);
+
   // handles user input submission
   const { handleSubmitText } = useSubmitInputInternal();
 
   //handle textarea functionality
   const { setTextAreaValue } = useTextAreaInternal();
 
-  const fileAttachmentButton = buttons.find(
+  const [pendingFiles, setPendingFiles] = useState<any[]>([]); // FileWithPreview[]
+  const [previewFile, setPreviewFile] = useState<any | null>(null);
+
+  // Find the file attachment button and replace it with our controlled version
+  const fileAttachmentButtonIndex = buttons.findIndex(
     (button) => button.key === 'file-attachment',
   );
-  const otherButtons = buttons.filter(
-    (button) => button.key !== 'file-attachment',
-  );
+  let fileAttachmentButton = null;
+  let otherButtons = buttons;
+  if (fileAttachmentButtonIndex !== -1) {
+    fileAttachmentButton = (
+      <FileAttachmentButton
+        key="file-attachment"
+        onShowUploadModal={setShowFileUploadModal}
+      />
+    );
+    otherButtons = buttons.filter((button) => button.key !== 'file-attachment');
+  }
 
   // styles for text area
   const textAreaStyle: React.CSSProperties = {
@@ -175,6 +193,11 @@ const ChatBotInput = ({ buttons }: { buttons: React.ReactElement[] }) => {
     }
   };
 
+  if (showFileUploadModal) {
+    // Only render the file attachment button, which will show the modal
+    return <div className="rcb-chat-input">{fileAttachmentButton}</div>;
+  }
+
   return (
     <div
       aria-label={settings.ariaLabel?.inputTextArea ?? 'input text area'}
@@ -193,6 +216,163 @@ const ChatBotInput = ({ buttons }: { buttons: React.ReactElement[] }) => {
       className="rcb-chat-input"
     >
       {fileAttachmentButton}
+      {pendingFiles.length > 0 && (
+        <div className="input-file-preview-bar">
+          {pendingFiles.map((f) => (
+            <div key={f.id} className="input-file-preview">
+              {f.file.type.startsWith('image/') ? (
+                <img
+                  src={f.previewUrl}
+                  alt={f.file.name}
+                  style={{ maxWidth: 40, maxHeight: 40 }}
+                />
+              ) : (
+                <span>{f.file.name}</span>
+              )}
+              <button onClick={() => setPreviewFile(f)}>👁️</button>
+              <button
+                onClick={() =>
+                  setPendingFiles((prev) => prev.filter((pf) => pf.id !== f.id))
+                }
+              >
+                ❌
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+      {previewFile && (
+        <div>
+          {/* Reuse the renderFilePreview logic from UserMessage here */}
+          {/* Example: */}
+          <div
+            className="rcb-file-preview-overlay"
+            onClick={() => setPreviewFile(null)}
+          >
+            <div
+              className="rcb-file-preview-modal"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="rcb-file-preview-header">
+                <h3>{previewFile.file.name || 'File Preview'}</h3>
+                <button
+                  className="rcb-file-preview-close"
+                  onClick={() => setPreviewFile(null)}
+                >
+                  ×
+                </button>
+              </div>
+              <div className="rcb-file-preview-body">
+                {/* Use the same file type detection as in UserMessage */}
+                {(() => {
+                  const fileUrl = previewFile.previewUrl;
+                  const fileName = previewFile.file.name;
+                  const mimeType = previewFile.file.type;
+                  const ext = fileName.split('.').pop()?.toLowerCase() || '';
+                  let fileType = '';
+                  if (
+                    mimeType.startsWith('image/') ||
+                    ['jpg', 'jpeg', 'png', 'webp', 'gif'].includes(ext)
+                  ) {
+                    fileType = 'image';
+                  } else if (mimeType === 'application/pdf' || ext === 'pdf') {
+                    fileType = 'pdf';
+                  } else if (
+                    mimeType.includes('word') ||
+                    ['doc', 'docx'].includes(ext)
+                  ) {
+                    fileType = 'word';
+                  } else if (
+                    mimeType.includes('excel') ||
+                    ['xls', 'xlsx'].includes(ext)
+                  ) {
+                    fileType = 'excel';
+                  } else if (
+                    mimeType.includes('powerpoint') ||
+                    ['ppt', 'pptx'].includes(ext)
+                  ) {
+                    fileType = 'powerpoint';
+                  } else if (
+                    mimeType.startsWith('text/') ||
+                    ['txt', 'json', 'xml', 'csv', 'md'].includes(ext)
+                  ) {
+                    fileType = 'text';
+                  } else {
+                    fileType = 'other';
+                  }
+                  const isValidUrl =
+                    fileUrl.startsWith('http') ||
+                    fileUrl.startsWith('data:') ||
+                    fileUrl.startsWith('blob:');
+                  const embedOffice = `https://docs.google.com/gview?url=${encodeURIComponent(fileUrl)}&embedded=true`;
+                  if (fileType === 'image' && isValidUrl) {
+                    return (
+                      <img
+                        src={fileUrl}
+                        alt={fileName}
+                        className="rcb-file-preview-image"
+                      />
+                    );
+                  } else if (fileType === 'pdf' && isValidUrl) {
+                    return (
+                      <iframe
+                        src={fileUrl}
+                        title={fileName}
+                        className="rcb-file-preview-iframe"
+                      />
+                    );
+                  } else if (fileType === 'word' && isValidUrl) {
+                    return (
+                      <iframe
+                        src={embedOffice}
+                        title={fileName}
+                        className="rcb-file-preview-iframe"
+                      />
+                    );
+                  } else if (fileType === 'excel' && isValidUrl) {
+                    return (
+                      <iframe
+                        src={embedOffice}
+                        title={fileName}
+                        className="rcb-file-preview-iframe"
+                      />
+                    );
+                  } else if (fileType === 'powerpoint' && isValidUrl) {
+                    return (
+                      <iframe
+                        src={embedOffice}
+                        title={fileName}
+                        className="rcb-file-preview-iframe"
+                      />
+                    );
+                  } else if (fileType === 'text' && isValidUrl) {
+                    return (
+                      <iframe
+                        src={fileUrl}
+                        title={fileName}
+                        className="rcb-file-preview-iframe"
+                      />
+                    );
+                  } else {
+                    return (
+                      <div className="rcb-file-preview-unsupported">
+                        <span className="rcb-file-icon-large">❌</span>
+                        <p>File preview unavailable</p>
+                        <p>Type: {fileType}</p>
+                        <p>URL: {fileUrl}</p>
+                        <p>
+                          Supported formats: Images, PDF, Word, Excel,
+                          PowerPoint, Text files
+                        </p>
+                      </div>
+                    );
+                  }
+                })()}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       {/* textarea intentionally does not use the disabled property to prevent keyboard from closing on mobile */}
       {textAreaSensitiveMode && settings.sensitiveInput?.maskInTextArea ? (
         <input

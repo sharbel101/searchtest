@@ -256,87 +256,11 @@ export const styles: Styles = {
     borderRadius: 16,
     fontFamily: 'Inter, sans-serif',
     fontSize: 14,
-    border: '2px solid #00B4D8',
   },
 
   // Bot Options
   // Bot Options
-  botOptionStyle: {
-    backgroundColor: '#ffffff',
-    color: '#374151',
-    border: '1px solid #E5E7EB',
-    padding: '8px 12px',
-    borderRadius: 4,
-    cursor: 'pointer',
-    margin: '4px 0',
-    transition:
-      'background-color 0.6s ease, color 0.6s ease, transform 0.4s ease, box-shadow 0.6s ease',
-    transform: 'translateY(0) scale(1)',
-  },
-  botOptionHoveredStyle: {
-    backgroundColor: '#F9FAFB',
-    color: '#374151',
-    transform: 'translateY(-1px) scale(1.02)',
-    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
-  },
-  botOptionSelectedStyle: {
-    backgroundColor: '#F3F4F6',
-    color: '#374151',
-    transform: 'translateY(-1px) scale(1.02)',
-    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
-    fontWeight: '500',
-  },
 
-  // Bot Checkboxes
-  botCheckboxRowStyle: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 8,
-    margin: '4px 0',
-  },
-
-  botCheckboxNextStyle: {
-    backgroundColor: '#ffffff',
-    color: '#374151',
-    border: '1px solid #E5E7EB',
-    padding: '6px 10px',
-    fontWeight: 500,
-    borderRadius: 4,
-    cursor: 'pointer',
-    transition:
-      'background-color 0.6s ease, color 0.6s ease, transform 0.4s ease, box-shadow 0.6s ease',
-    transform: 'translateY(0) scale(1)',
-  },
-  botCheckboxNextHoveredStyle: {
-    backgroundColor: '#F9FAFB',
-    color: '#374151',
-    transform: 'translateY(-1px)',
-    boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)',
-  },
-
-  botCheckMarkStyle: {
-    width: 16,
-    height: 16,
-    border: '1px solid #D1D5DB',
-    borderRadius: 2,
-    backgroundColor: '#ffffff',
-    transition:
-      'border-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease, background-color 0.3s ease, color 0.3s ease',
-    transform: 'scale(1)',
-  },
-  botCheckMarkHoveredStyle: {
-    borderColor: '#9CA3AF',
-    transform: 'scale(1.05)',
-    boxShadow: '0 0 0 2px rgba(156, 163, 175, 0.2)',
-  },
-  botCheckMarkSelectedStyle: {
-    backgroundColor: '#374151',
-    color: '#ffffff',
-    borderColor: '#374151',
-    borderRadius: 2,
-    transform: 'scale(1.05)',
-    boxShadow: '0 0 0 2px rgba(55, 65, 81, 0.3)',
-  },
   // Typing Indicator
   rcbTypingIndicatorContainerStyle: {
     backgroundColor: '#2A2A2A',

@@ -1,5 +1,4 @@
-import React from 'react';
-import type { JSX } from 'react';
+import React, { type JSX } from 'react';
 import FileAttachmentButton from '../components/Buttons/FileAttachmentButton/FileAttachmentButton';
 import EmojiButton from '../components/Buttons/EmojiButton/EmojiButton';
 import AudioButton from '../components/Buttons/AudioButton/AudioButton';
