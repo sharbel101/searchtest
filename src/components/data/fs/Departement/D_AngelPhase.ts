@@ -1,6 +1,6 @@
 import { FieldType } from '@/components/data/MainFlow/flow';
 
-export const Angel_Phase_Flow = {
+export const D_Angel_Phase_Flow = {
   q1: {
     sectionTitle: 'Founder Involvement',
     sectionId: 'founder-involvement',

@@ -1,6 +1,6 @@
 import { FieldType } from '@/components/data/MainFlow/flow';
 
-export const Ideation_Phase_FLow = {
+export const D_Ideation_Phase_FLow = {
   q1: {
     sectionTitle: 'Number of Founders',
     sectionId: 'number-of-founders',

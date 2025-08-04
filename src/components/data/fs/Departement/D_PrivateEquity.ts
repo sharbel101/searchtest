@@ -1,6 +1,6 @@
 import { FieldType } from '@/components/data/MainFlow/flow';
 
-export const Private_Equity_Flow = {
+export const D_Private_Equity_Flow = {
   q1: {
     sectionTitle: 'Organizational Chart',
     sectionId: 'org-chart',

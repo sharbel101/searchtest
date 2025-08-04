@@ -491,11 +491,15 @@ const chatFlow: ChatFlow = {
       },
       fs_financials: {
         id: 'financial-details',
-        type: FieldType.File,
+        type: FieldType.FlowFunc,
         label: 'Financial Details',
         description:
           'Upload financial details (check fs_financials excel sheet).',
         required: false,
+        flowInjection: {
+          name: 'fs_financials',
+          type: 'OriginalSubFlow',
+        },
         nextField: null,
       },
     },
@@ -540,6 +544,10 @@ const chatFlow: ChatFlow = {
         description:
           'Upload marketing details (check fs_marketing excel sheet).',
         required: false,
+        flowInjection: {
+          name: 'fs_marketing',
+          type: 'OriginalSubFlow',
+        },
         nextField: null,
       },
     },

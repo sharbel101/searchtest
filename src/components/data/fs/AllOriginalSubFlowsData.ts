@@ -1,9 +1,25 @@
 import { FlowSection } from '@/components/data/MainFlow/flow';
-import { Advanced_VC_Flow } from './Departement/AdvancedVC';
-import { Angel_Phase_Flow } from './Departement/AngelPhase';
-import { Early_VC_Flow } from './Departement/EarlyVC';
-import { Ideation_Phase_FLow } from './Departement/IdeationPhase';
-import { Private_Equity_Flow } from './Departement/PrivateEquity';
+
+//Department Flows Imports
+import { D_Private_Equity_Flow } from '@/components/data/fs/Departement/D_PrivateEquity';
+import { D_Ideation_Phase_FLow } from '@/components/data/fs/Departement/D_IdeationPhase';
+import { D_Early_VC_Flow } from '@/components/data/fs/Departement/D_EarlyVC';
+import { D_Angel_Phase_Flow } from '@/components/data/fs/Departement/D_AngelPhase';
+import { D_Advanced_VC_Flow } from '@/components/data/fs/Departement/D_AdvancedVC';
+
+//Marketing Flows Imports
+import { M_Advanced_VC_Flow } from './Marketing/M_AdvancedVC';
+import { M_Angel_Phase_Flow } from './Marketing/M_AngelPhase';
+import { M_Early_VC_Flow } from './Marketing/M_EarlyVC';
+import { M_Ideation_Phase_FLow } from './Marketing/M_IdeationPhase';
+import { M_Private_Equity_Flow } from './Marketing/M_PrivateEquity';
+
+//Financials Flows Imports
+import { F_Advanced_VC_Flow } from './Financials/F_AdvancedVC';
+import { F_Private_Equity_Flow } from './Financials/F_PrivateEquity';
+import { F_Angel_Phase_Flow } from './Financials/F_AngelPhase';
+import { F_Early_VC_Flow } from './Financials/F_EarlyVC';
+import { F_Ideation_Phase_FLow } from './Financials/F_IdeationPhase';
 
 export const STAGES = {
   ADVANCED_VC: 'Advanced VC',
@@ -27,10 +43,26 @@ export type TypeOriginalSubFlowsContainer = {
 
 export const AllOriginalSubFlowsData: TypeOriginalSubFlowsContainer = {
   fs_department: {
-    AdvancedVC: Advanced_VC_Flow,
-    AngelPhase: Angel_Phase_Flow,
-    EarlyVC: Early_VC_Flow,
-    IdeationPhase: Ideation_Phase_FLow,
-    PrivateEquity: Private_Equity_Flow,
+    AdvancedVC: D_Advanced_VC_Flow,
+    AngelPhase: D_Angel_Phase_Flow,
+    EarlyVC: D_Early_VC_Flow,
+    IdeationPhase: D_Ideation_Phase_FLow,
+    PrivateEquity: D_Private_Equity_Flow,
+  },
+
+  fs_financials: {
+    AdvancedVC: F_Advanced_VC_Flow, //hayde fadye
+    PrivateEquity: F_Private_Equity_Flow, //hayde fadye
+    AngelPhase: F_Angel_Phase_Flow, //hayde fadye
+    EarlyVC: F_Early_VC_Flow, //hayde fadye
+    IdeationPhase: F_Ideation_Phase_FLow, //hayde fadye
+  },
+
+  fs_marketing: {
+    AdvancedVC: M_Advanced_VC_Flow,
+    PrivateEquity: M_Private_Equity_Flow,
+    AngelPhase: M_Angel_Phase_Flow,
+    EarlyVC: M_Early_VC_Flow, //hayde fadye
+    IdeationPhase: M_Ideation_Phase_FLow, //hayde fadye
   },
 };
