@@ -2,660 +2,848 @@ import { FieldType } from '@/components/data/MainFlow/flow';
 
 export const M_Ideation_Phase_FLow = {
   q1: {
-    sectionTitle: 'Number of Founders',
-    sectionId: 'number-of-founders',
-    firstField: 'numberOfFounders',
+    sectionTitle: 'CRM',
+    sectionId: 'crm',
+    firstField: 'targetCustomerSegments',
     fields: {
-      numberOfFounders: {
-        id: 'number-of-founders',
+      targetCustomerSegments: {
+        id: 'target-customer-segments',
         type: FieldType.Dropdown,
-        label: 'Number of Founders or Cofounders',
+        label:
+          'Have you identified the target customer segments for your product/service?',
+        required: true,
+        nextField: 'customerDataCollection',
+        options: [
+          { id: 'still_figuring_out', value: 'No, still figuring it out' },
+          { id: 'some_idea', value: 'Some idea, but not fully researched' },
+          {
+            id: 'clearly_defined',
+            value: 'Yes, clearly defined with research',
+          },
+        ],
+      },
+      customerDataCollection: {
+        id: 'customer-data-collection',
+        type: FieldType.Dropdown,
+        label:
+          'Have you planned how you will collect and store customer data once you acquire customers?',
+        required: true,
+        nextField: 'crmToolConsideration',
+        options: [
+          { id: 'not_thought_about', value: "No, we haven't thought about it" },
+          { id: 'some_ideas', value: 'Some ideas, but no clear process yet' },
+          {
+            id: 'structured_approach',
+            value: 'Yes, we have a structured approach',
+          },
+        ],
+      },
+      crmToolConsideration: {
+        id: 'crm-tool-consideration',
+        type: FieldType.Dropdown,
+        label:
+          'Have you considered which CRM tool or system you might use in the future?',
+        required: true,
+        nextField: 'customerCommunication',
+        options: [
+          {
+            id: 'not_thought_about_crm',
+            value: "No, we haven't thought about CRM systems yet",
+          },
+          {
+            id: 'need_but_not_chosen',
+            value: "We know we need a CRM but haven't chosen one",
+          },
+          {
+            id: 'researched_tools',
+            value: 'Yes, we have researched CRM tools',
+          },
+        ],
+      },
+      customerCommunication: {
+        id: 'customer-communication',
+        type: FieldType.Dropdown,
+        label:
+          'How do you plan to interact and communicate with your customers?',
         required: true,
         nextField: null,
         options: [
+          { id: 'no_plan', value: 'No plan yet' },
+          { id: 'some_ideas', value: 'Some ideas, but not fully planned' },
           {
-            id: '1_founder',
-            value: '1 founder',
-          },
-          {
-            id: '2_founders',
-            value: '2 founders',
-          },
-          {
-            id: '3_or_more_founders',
-            value: '3 or more founders',
-          },
-          {
-            id: 'array_of_founders',
-            value: 'Array of founders',
+            id: 'defined_strategy',
+            value: 'Defined strategy (email, social media, customer support)',
           },
         ],
       },
     },
-    nextNode: 'founders-education-background',
+    nextNode: 'customer-satisfaction',
   },
 
   q2: {
-    sectionTitle: 'Founders Education Background',
-    sectionId: 'founders-education-background',
-    firstField: 'foundersEducationBackground',
+    sectionTitle: 'Customer Satisfaction Rate',
+    sectionId: 'customer-satisfaction',
+    firstField: 'keySatisfactionFactors',
     fields: {
-      foundersEducationBackground: {
-        id: 'founders-education-background',
+      keySatisfactionFactors: {
+        id: 'key-satisfaction-factors',
         type: FieldType.Dropdown,
-        label: 'Education Background of Founders',
+        label:
+          'Have you identified key factors that will influence customer satisfaction for your product/service?',
+        required: true,
+        nextField: 'feedbackStrategy',
+        options: [
+          {
+            id: 'not_thought_about_yet',
+            value: "No, we haven't thought about it yet",
+          },
+          {
+            id: 'some_understanding',
+            value: "We have some understanding, but it's not detailed",
+          },
+          {
+            id: 'analyzed_expectations',
+            value: 'Yes, we have analyzed customer expectations',
+          },
+        ],
+      },
+      feedbackStrategy: {
+        id: 'feedback-strategy',
+        type: FieldType.Dropdown,
+        label:
+          'Do you have a strategy for collecting customer feedback once your product/service is live?',
+        required: true,
+        nextField: 'npsConsideration',
+        options: [
+          {
+            id: 'no_plan',
+            value: "No, we haven't planned customer feedback collection",
+          },
+          {
+            id: 'thought_about',
+            value: 'We have thought about it, but nothing structured',
+          },
+          {
+            id: 'planned_feedback',
+            value:
+              'Yes, we have planned surveys, reviews, or direct feedback loops',
+          },
+        ],
+      },
+      npsConsideration: {
+        id: 'nps-consideration',
+        type: FieldType.Dropdown,
+        label:
+          'Have you considered setting up a Net Promoter Score (NPS) or similar metric once you launch?',
+        required: true,
+        nextField: 'dedicatedFeedbackTeam',
+        options: [
+          {
+            id: 'not_thought_about_measuring',
+            value:
+              "No, we haven't thought about measuring customer satisfaction",
+          },
+          {
+            id: 'aware_but_not_planned',
+            value:
+              "We are aware of NPS but haven't planned to implement it yet",
+          },
+          {
+            id: 'plan_to_track',
+            value: 'Yes, we plan to track NPS or a similar satisfaction metric',
+          },
+        ],
+      },
+      dedicatedFeedbackTeam: {
+        id: 'dedicated-feedback-team',
+        type: FieldType.Dropdown,
+        label:
+          'Do you plan to have a dedicated person/team responsible for monitoring customer feedback?',
         required: true,
         nextField: null,
         options: [
+          { id: 'not_considered', value: "No, we haven't considered this yet" },
           {
-            id: 'no_formal_education',
-            value: 'No formal education',
+            id: 'important_but_not_assigned',
+            value: "We know it's important but haven't assigned responsibility",
           },
           {
-            id: 'some_university_not_completed',
-            value: 'Some university education (not completed)',
-          },
-          {
-            id: 'completed_bachelors',
-            value: "Completed Bachelor's degree",
-          },
-          {
-            id: 'masters_mba',
-            value: "Master's or MBA",
-          },
-          {
-            id: 'phd_specialized',
-            value: 'PhD or Specialized Certification',
+            id: 'will_have_role',
+            value: 'Yes, we will have a role dedicated to this',
           },
         ],
       },
     },
-    nextNode: 'founders-past-experience-skills',
+    nextNode: 'customer-retention',
   },
 
   q3: {
-    sectionTitle: 'Founders Past Experience and Skills',
-    sectionId: 'founders-past-experience-skills',
-    firstField: 'foundersPastExperienceSkills',
+    sectionTitle: 'Customer Retention Rate',
+    sectionId: 'customer-retention',
+    firstField: 'retentionStrategies',
     fields: {
-      foundersPastExperienceSkills: {
-        id: 'founders-past-experience-skills',
+      retentionStrategies: {
+        id: 'retention-strategies',
         type: FieldType.Dropdown,
-        label: 'Past Experience & Key Skills',
+        label:
+          'Have you considered strategies to retain customers once they start using your product/service?',
+        required: true,
+        nextField: 'engagementStrategy',
+        options: [
+          {
+            id: 'not_thought_about',
+            value: "No, we haven't thought about customer retention yet",
+          },
+          {
+            id: 'some_ideas',
+            value: 'We have some ideas, but nothing structured',
+          },
+          {
+            id: 'detailed_plan',
+            value: 'Yes, we have a detailed customer retention plan',
+          },
+        ],
+      },
+      engagementStrategy: {
+        id: 'engagement-strategy',
+        type: FieldType.Dropdown,
+        label:
+          'What will be your main strategy for keeping customers engaged after they purchase or subscribe?',
+        required: true,
+        nextField: 'churnFactors',
+        options: [
+          { id: 'no_clear_plan', value: 'No clear retention plan yet' },
+          {
+            id: 'basic_support',
+            value: 'Basic customer support and follow-ups',
+          },
+          {
+            id: 'loyalty_programs',
+            value:
+              'Loyalty programs, special offers, or engagement initiatives',
+          },
+        ],
+      },
+      churnFactors: {
+        id: 'churn-factors',
+        type: FieldType.Dropdown,
+        label:
+          'Have you identified what might cause customers to stop using your product/service?',
+        required: true,
+        nextField: 'followUpProcess',
+        options: [
+          {
+            id: 'not_thought_about_churn',
+            value: "No, we haven't thought about this yet",
+          },
+          {
+            id: 'some_assumptions',
+            value: 'We have some assumptions but no research',
+          },
+          {
+            id: 'researched_pain_points',
+            value: 'Yes, we have researched potential pain points',
+          },
+        ],
+      },
+      followUpProcess: {
+        id: 'follow-up-process',
+        type: FieldType.Dropdown,
+        label:
+          'Do you plan to have automated or manual processes for customer follow-ups after their first interaction?',
         required: true,
         nextField: null,
         options: [
+          { id: 'no_follow_up', value: 'No follow-up plan yet' },
           {
-            id: 'no_work_experience',
-            value: 'No work experience',
+            id: 'manual_follow_ups',
+            value: 'We will have manual follow-ups but no automation yet',
           },
           {
-            id: 'some_experience_0_2_years',
-            value: 'Some experience (0-2 years)',
-          },
-          {
-            id: '3_5_years_experience',
-            value: '3-5 years of experience',
-          },
-          {
-            id: '5_plus_years_relevant',
-            value: '5+ years in relevant industries',
+            id: 'automated_follow_ups',
+            value:
+              'Yes, we will have automated follow-ups (email, notifications, etc.)',
           },
         ],
       },
     },
-    nextNode: 'founder-responsibilities',
+    nextNode: 'customer-lifetime-value',
   },
 
   q4: {
-    sectionTitle: 'Founder Responsibilities',
-    sectionId: 'founder-responsibilities',
-    firstField: 'founderResponsibilities',
+    sectionTitle: 'Customer Lifetime Value (CLV)',
+    sectionId: 'customer-lifetime-value',
+    firstField: 'clvEstimation',
     fields: {
-      founderResponsibilities: {
-        id: 'founder-responsibilities',
+      clvEstimation: {
+        id: 'clv-estimation',
         type: FieldType.Dropdown,
-        label: 'Responsibilities of Each Founder',
+        label:
+          'Have you estimated how much a single customer will spend over their relationship with your business?',
+        required: true,
+        nextField: 'revenueMaximization',
+        options: [
+          { id: 'not_considered', value: "No, we haven't considered CLV yet" },
+          {
+            id: 'rough_estimates',
+            value: 'We have rough estimates but no structured calculation',
+          },
+          {
+            id: 'projected_clv',
+            value: 'Yes, we have projected CLV based on pricing models',
+          },
+        ],
+      },
+      revenueMaximization: {
+        id: 'revenue-maximization',
+        type: FieldType.Dropdown,
+        label:
+          'What strategies do you plan to use to maximize the revenue generated per customer?',
+        required: true,
+        nextField: 'loyaltyImpact',
+        options: [
+          { id: 'no_strategy', value: 'No strategy yet' },
+          {
+            id: 'basic_pricing',
+            value: 'Basic pricing strategy but no upsell/cross-sell plan',
+          },
+          {
+            id: 'upsell_cross_sell',
+            value: 'Upselling, cross-selling, or subscription models',
+          },
+        ],
+      },
+      loyaltyImpact: {
+        id: 'loyalty-impact',
+        type: FieldType.Dropdown,
+        label:
+          'Have you considered how customer loyalty and retention affect long-term profitability?',
+        required: true,
+        nextField: 'purchaseTracking',
+        options: [
+          {
+            id: 'not_thought_about',
+            value: "No, we haven't thought about this yet",
+          },
+          {
+            id: 'important_but_not_planned',
+            value: "We know it's important but haven't planned around it",
+          },
+          {
+            id: 'understand_impact',
+            value: 'Yes, we understand how retention impacts CLV',
+          },
+        ],
+      },
+      purchaseTracking: {
+        id: 'purchase-tracking',
+        type: FieldType.Dropdown,
+        label:
+          'Do you plan to track customer purchase behavior to adjust pricing and marketing strategies?',
         required: true,
         nextField: null,
         options: [
           {
-            id: 'no_clear_responsibilities',
-            value: 'No clear responsibilities',
+            id: 'not_thought_about_tracking',
+            value: "No, we haven't thought about tracking customer spending",
           },
           {
-            id: 'general_roles_overlapping',
-            value: 'General roles, but overlapping tasks',
+            id: 'collect_no_plan',
+            value: 'We will collect data but have no specific plan for it yet',
           },
           {
-            id: 'defined_roles_missing_functions',
-            value: 'Defined roles, but missing key business functions',
-          },
-          {
-            id: 'clearly_structured_responsibilities',
-            value:
-              'Clearly structured responsibilities covering business, tech, and finance',
+            id: 'analyze_patterns',
+            value: 'Yes, we plan to analyze customer spending patterns',
           },
         ],
       },
     },
-    nextNode: 'non-founder-team-members',
+    nextNode: 'conversion-rates',
   },
 
   q5: {
-    sectionTitle: 'Non-Founder Team Members',
-    sectionId: 'non-founder-team-members',
-    firstField: 'nonFounderTeamMembers',
+    sectionTitle: 'Conversion Rates',
+    sectionId: 'conversion-rates',
+    firstField: 'conversionGoals',
     fields: {
-      nonFounderTeamMembers: {
-        id: 'non-founder-team-members',
+      conversionGoals: {
+        id: 'conversion-goals',
         type: FieldType.Dropdown,
-        label: 'Presence of Non-Founder Team Members',
+        label:
+          'Do you know what your primary conversion goal will be (e.g., sign-ups, purchases, inquiries)?',
+        required: true,
+        nextField: 'conversionTracking',
+        options: [
+          {
+            id: 'not_considered',
+            value: "No, we haven't considered specific conversion goals",
+          },
+          {
+            id: 'general_idea',
+            value: "We have a general idea, but it's not well defined",
+          },
+          {
+            id: 'clearly_defined',
+            value: 'Yes, we have clearly defined conversion goals',
+          },
+        ],
+      },
+      conversionTracking: {
+        id: 'conversion-tracking',
+        type: FieldType.Dropdown,
+        label:
+          'Have you planned how you will track and measure conversion rates once your product/service is live?',
+        required: true,
+        nextField: 'conversionOptimization',
+        options: [
+          {
+            id: 'not_considered_tracking',
+            value: "No, we haven't considered conversion tracking",
+          },
+          {
+            id: 'thought_no_plan',
+            value: 'We have thought about it, but no clear plan yet',
+          },
+          {
+            id: 'use_tools',
+            value:
+              'Yes, we will use tracking tools (Google Analytics, CRM, heatmaps)',
+          },
+        ],
+      },
+      conversionOptimization: {
+        id: 'conversion-optimization',
+        type: FieldType.Dropdown,
+        label:
+          'What strategies do you plan to use to improve conversion rates?',
+        required: true,
+        nextField: 'conversionBenchmarks',
+        options: [
+          {
+            id: 'no_strategy',
+            value: 'No strategy for conversion optimization yet',
+          },
+          {
+            id: 'basic_marketing',
+            value:
+              'Basic marketing efforts but no specific conversion optimization',
+          },
+          {
+            id: 'optimization_planned',
+            value: 'Yes, we have planned conversion optimization strategies',
+          },
+        ],
+      },
+      conversionBenchmarks: {
+        id: 'conversion-benchmarks',
+        type: FieldType.Dropdown,
+        label:
+          'Have you researched industry benchmarks for expected conversion rates in your market?',
         required: true,
         nextField: null,
         options: [
           {
-            id: 'no_team_members',
-            value: 'No team members',
+            id: 'not_researched',
+            value: "No, we haven't looked into conversion rate benchmarks",
           },
           {
-            id: 'only_one_additional',
-            value: 'Only one additional team member',
+            id: 'general_expectations',
+            value: 'We have some general expectations but no detailed research',
           },
           {
-            id: '2_3_members_covering_gaps',
-            value: '2-3 team members covering tech/finance gaps',
-          },
-          {
-            id: 'more_than_3_specialized',
-            value: 'More than 3 early team members with specialized roles',
+            id: 'studied_benchmarks',
+            value: 'Yes, we have studied conversion rate benchmarks',
           },
         ],
       },
     },
-    nextNode: 'designated-ceo',
+    nextNode: 'marketing-budget',
   },
 
   q6: {
-    sectionTitle: 'Designated CEO',
-    sectionId: 'designated-ceo',
-    firstField: 'designatedCeo',
+    sectionTitle: 'Marketing Budget',
+    sectionId: 'marketing-budget',
+    firstField: 'budgetEstimation',
     fields: {
-      designatedCeo: {
-        id: 'designated-ceo',
+      budgetEstimation: {
+        id: 'budget-estimation',
         type: FieldType.Dropdown,
-        label: 'Does your startup have a designated CEO among the founders?',
+        label:
+          'Have you estimated a marketing budget for your first customer acquisition efforts?',
+        required: true,
+        nextField: 'marketingChannels',
+        options: [
+          {
+            id: 'no_budget',
+            value: "No, we haven't planned a marketing budget",
+          },
+          {
+            id: 'rough_estimate',
+            value: 'We have a rough estimate but no structured budget yet',
+          },
+          { id: 'clear_budget', value: 'Yes, we have a clear budget plan' },
+        ],
+      },
+      marketingChannels: {
+        id: 'marketing-channels',
+        type: FieldType.Dropdown,
+        label:
+          'What marketing channels will you prioritize based on your budget limitations?',
+        required: true,
+        nextField: 'fundingSource',
+        options: [
+          {
+            id: 'not_considered',
+            value: "No, we haven't considered marketing channels",
+          },
+          {
+            id: 'some_ideas',
+            value: 'We have some ideas but no clear marketing mix yet',
+          },
+          {
+            id: 'clear_strategy',
+            value:
+              'We have a clear channel strategy (social media, paid ads, SEO, etc.)',
+          },
+        ],
+      },
+      fundingSource: {
+        id: 'funding-source',
+        type: FieldType.Dropdown,
+        label: 'How do you plan to fund your initial marketing efforts?',
+        required: true,
+        nextField: 'lowCostStrategies',
+        options: [
+          { id: 'no_idea', value: 'No idea how we will fund marketing yet' },
+          {
+            id: 'investment_or_grants',
+            value: 'Through an angel investment or grants',
+          },
+          {
+            id: 'personal_funds',
+            value: 'From personal funds or bootstrapping',
+          },
+        ],
+      },
+      lowCostStrategies: {
+        id: 'low-cost-strategies',
+        type: FieldType.Dropdown,
+        label:
+          'Have you considered low-cost or free marketing strategies to gain initial traction?',
         required: true,
         nextField: null,
         options: [
           {
-            id: 'no_ceo_assigned',
-            value: 'No CEO assigned',
+            id: 'only_paid',
+            value: 'No, we are focusing only on paid marketing',
           },
+          { id: 'some_ideas', value: 'Some ideas, but no structured approach' },
           {
-            id: 'ceo_role_exists_unclear',
-            value: 'CEO role exists but responsibilities unclear',
-          },
-          {
-            id: 'clearly_designated_ceo',
-            value: 'Clearly designated CEO with defined leadership role',
+            id: 'planned_organic',
+            value:
+              'Yes, we have planned organic marketing (SEO, referrals, social media, etc.)',
           },
         ],
       },
     },
-    nextNode: 'technical-background',
+    nextNode: 'marketing-profitability',
   },
 
   q7: {
-    sectionTitle: 'Technical Background',
-    sectionId: 'technical-background',
-    firstField: 'technicalBackground',
+    sectionTitle: 'Marketing Profitability',
+    sectionId: 'marketing-profitability',
+    firstField: 'roiUnderstanding',
     fields: {
-      technicalBackground: {
-        id: 'technical-background',
+      roiUnderstanding: {
+        id: 'roi-understanding',
         type: FieldType.Dropdown,
-        label: 'Do the founders have a technical (development) background?',
+        label:
+          'Do you understand how to measure marketing ROI (Return on Investment) once you start acquiring customers?',
+        required: true,
+        nextField: 'marketingMetrics',
+        options: [
+          {
+            id: 'not_thought_about',
+            value:
+              "No, we haven't thought about how to measure marketing profitability",
+          },
+          {
+            id: 'basic_understanding',
+            value: 'We have a basic understanding but no clear tracking plan',
+          },
+          {
+            id: 'structured_plan',
+            value: 'Yes, we have a structured plan to track marketing ROI',
+          },
+        ],
+      },
+      marketingMetrics: {
+        id: 'marketing-metrics',
+        type: FieldType.Dropdown,
+        label:
+          'What key marketing metrics will you track to measure profitability?',
+        required: true,
+        nextField: 'cacConsideration',
+        options: [
+          {
+            id: 'not_considered',
+            value: "No, we haven't considered specific marketing metrics yet",
+          },
+          {
+            id: 'basic_metrics',
+            value:
+              "We will track some basic metrics, but we don't have a structured approach yet",
+          },
+          {
+            id: 'advanced_metrics',
+            value:
+              'CAC (Customer Acquisition Cost), CLV (Customer Lifetime Value), and ROAS (Return on Ad Spend)',
+          },
+        ],
+      },
+      cacConsideration: {
+        id: 'cac-consideration',
+        type: FieldType.Dropdown,
+        label:
+          'Have you considered what your ideal Customer Acquisition Cost (CAC) should be to remain profitable?',
+        required: true,
+        nextField: 'costReduction',
+        options: [
+          {
+            id: 'not_thought_about_cac',
+            value: "No, we haven't thought about CAC",
+          },
+          {
+            id: 'rough_idea',
+            value: "We have a rough idea but haven't calculated it yet",
+          },
+          {
+            id: 'estimated_cac',
+            value: 'Yes, we have an estimated CAC based on projections',
+          },
+        ],
+      },
+      costReduction: {
+        id: 'cost-reduction',
+        type: FieldType.Dropdown,
+        label:
+          'Have you planned strategies to reduce marketing costs while maintaining customer growth?',
         required: true,
         nextField: null,
         options: [
           {
-            id: 'no_technical_expertise',
-            value: 'No technical expertise at all',
+            id: 'not_considered',
+            value: "No, we haven't considered optimizing marketing costs yet",
           },
           {
-            id: 'no_technical_founder_external_dev',
-            value: 'No technical founder, but an external dev exists',
+            id: 'some_ideas',
+            value: 'We have some ideas, but no structured plan yet',
           },
           {
-            id: 'at_least_one_technical_founder',
-            value: 'At least one founder with a technical background',
+            id: 'cost_effective_strategies',
+            value: 'Yes, we have cost-effective marketing strategies',
           },
         ],
       },
     },
-    nextNode: 'organization-chart-upload',
+    nextNode: 'social-media-presence',
   },
 
   q8: {
-    sectionTitle: 'Organization Chart Upload',
-    sectionId: 'organization-chart-upload',
-    firstField: 'organizationChartUpload',
+    sectionTitle: 'Social Media Presence',
+    sectionId: 'social-media-presence',
+    firstField: 'socialAccounts',
     fields: {
-      organizationChartUpload: {
-        id: 'organization-chart-upload',
-        type: FieldType.File,
-        label: 'Upload your organization chart',
-        required: false,
+      socialAccounts: {
+        id: 'social-accounts',
+        type: FieldType.Dropdown,
+        label:
+          'Have you created official social media accounts for your brand?',
+        required: true,
+        nextField: 'platformStrategy',
+        options: [
+          {
+            id: 'no_accounts',
+            value: "No, we haven't created any accounts yet",
+          },
+          {
+            id: 'reserved_usernames',
+            value: "We have reserved usernames but haven't launched yet",
+          },
+          {
+            id: 'active_profiles',
+            value: 'Yes, we have active profiles on major platforms',
+          },
+        ],
+      },
+      platformStrategy: {
+        id: 'platform-strategy',
+        type: FieldType.Dropdown,
+        label:
+          'Have you defined your target audience and chosen the right social media platforms to reach them?',
+        required: true,
+        nextField: 'contentStrategy',
+        options: [
+          {
+            id: 'not_thought_about',
+            value: "No, we haven't thought about social media platforms yet",
+          },
+          {
+            id: 'rough_idea',
+            value: "We have a rough idea, but it's not structured yet",
+          },
+          {
+            id: 'clear_strategy',
+            value:
+              'Yes, we know where our customers are and have a platform strategy',
+          },
+        ],
+      },
+      contentStrategy: {
+        id: 'content-strategy',
+        type: FieldType.Dropdown,
+        label:
+          'What type of content do you plan to post to attract and engage your audience?',
+        required: true,
+        nextField: 'socialMediaFocus',
+        options: [
+          {
+            id: 'no_strategy',
+            value: "No, we haven't considered content strategy yet",
+          },
+          {
+            id: 'some_ideas',
+            value: 'We have some content ideas, but no structured plan',
+          },
+          {
+            id: 'planned_content',
+            value:
+              'We have a content strategy (videos, blogs, infographics, etc.)',
+          },
+        ],
+      },
+      socialMediaFocus: {
+        id: 'social-media-focus',
+        type: FieldType.Dropdown,
+        label:
+          'Do you plan to use social media as a primary channel for brand awareness and marketing?',
+        required: true,
         nextField: null,
-        acceptedTypes: ['.pdf'],
+        options: [
+          {
+            id: 'not_main_focus',
+            value: "No, we don't plan to focus on social media",
+          },
+          {
+            id: 'secondary_focus',
+            value: "We will use social media, but it's not our main focus",
+          },
+          {
+            id: 'core_part',
+            value: 'Yes, social media is a core part of our marketing plan',
+          },
+        ],
       },
     },
-    nextNode: 'financial-expertise',
+    nextNode: 'external-image',
   },
 
   q9: {
-    sectionTitle: 'Financial Expertise',
-    sectionId: 'financial-expertise',
-    firstField: 'financialExpertise',
+    sectionTitle: 'External Image & Reputation',
+    sectionId: 'external-image',
+    firstField: 'brandIdentity',
     fields: {
-      financialExpertise: {
-        id: 'financial-expertise',
+      brandIdentity: {
+        id: 'brand-identity',
         type: FieldType.Dropdown,
         label:
-          'Do you have a financial/accounting officer or expertise within the founding team?',
+          'Have you defined your brand identity (logo, colors, messaging, and values)?',
         required: true,
-        nextField: null,
+        nextField: 'credibilityBuilding',
         options: [
           {
-            id: 'no_financial_expertise',
-            value: 'No financial expertise at all',
+            id: 'not_developed',
+            value: "No, we haven't developed our brand yet",
           },
           {
-            id: 'no_financial_founder_external_expert',
-            value: 'No financial founder, but an external expert exists',
+            id: 'some_elements',
+            value: 'We have some branding elements but not a full identity',
           },
           {
-            id: 'at_least_one_financial_founder',
-            value: 'At least one founder with a financial background',
+            id: 'fully_developed',
+            value: 'Yes, we have a fully developed brand identity',
           },
         ],
       },
-    },
-    nextNode: 'core-business-functions-assignment',
-  },
-
-  q10: {
-    sectionTitle: 'Core Business Functions Assignment',
-    sectionId: 'core-business-functions-assignment',
-    firstField: 'coreBusinessFunctionsAssignment',
-    fields: {
-      coreBusinessFunctionsAssignment: {
-        id: 'core-business-functions-assignment',
+      credibilityBuilding: {
+        id: 'credibility-building',
         type: FieldType.Dropdown,
         label:
-          'Have the core business functions been formally assigned to specific founders or team members?',
+          'How do you plan to build credibility and trust with potential customers and investors?',
         required: true,
-        nextField: null,
+        nextField: 'reputationManagement',
         options: [
           {
-            id: 'no_clear_roles_assigned',
-            value: 'No clear roles assigned among founders',
+            id: 'no_strategy',
+            value: 'No credibility-building strategies planned',
           },
           {
-            id: 'informal_role_distributions_overlap',
+            id: 'some_strategies',
+            value: 'Some credibility strategies, but not structured yet',
+          },
+          {
+            id: 'structured_approach',
             value:
-              'Founders have informal role distributions, but overlap exists',
+              'Through testimonials, PR coverage, partnerships, or certifications',
+          },
+        ],
+      },
+      reputationManagement: {
+        id: 'reputation-management',
+        type: FieldType.Dropdown,
+        label:
+          'Have you planned how you will handle negative feedback or reputation risks?',
+        required: true,
+        nextField: 'externalMarketing',
+        options: [
+          {
+            id: 'not_considered',
+            value: "No, we haven't considered reputation management yet",
           },
           {
-            id: 'clearly_assigned_core_function',
+            id: 'aware_no_plan',
             value:
-              'Each founder has a clearly assigned core function (e.g., CEO, CTO, CFO)',
+              "We are aware of the risks but haven't planned a response strategy",
+          },
+          {
+            id: 'crisis_plan',
+            value: 'Yes, we have a crisis communication strategy',
           },
         ],
       },
-    },
-    nextNode: 'external-advisors-mentors',
-  },
-
-  q11: {
-    sectionTitle: 'External Advisors and Mentors',
-    sectionId: 'external-advisors-mentors',
-    firstField: 'externalAdvisorsMentors',
-    fields: {
-      externalAdvisorsMentors: {
-        id: 'external-advisors-mentors',
+      externalMarketing: {
+        id: 'external-marketing',
         type: FieldType.Dropdown,
         label:
-          'Are there any external advisors or mentors providing guidance in specialized areas (e.g., legal, finance, product development)?',
+          'Have you planned any external marketing efforts (PR, press releases, partnerships) to introduce your brand to the market?',
         required: true,
         nextField: null,
         options: [
           {
-            id: 'no_external_advisors',
-            value: 'No external advisors or mentors',
+            id: 'not_planned',
+            value: "No, we haven't planned for external marketing yet",
           },
           {
-            id: 'informal_advisors_occasional',
-            value: 'Informal advisor(s) providing occasional input',
+            id: 'some_ideas',
+            value: 'We have some ideas but nothing structured yet',
           },
           {
-            id: 'dedicated_advisors_actively_involved',
-            value:
-              'Dedicated advisors/mentors actively involved in decision-making',
+            id: 'structured_plan',
+            value: 'Yes, we have a structured PR and brand awareness plan',
           },
         ],
       },
     },
-    nextNode: 'internal-communication-decision-making',
-  },
-
-  q12: {
-    sectionTitle: 'Internal Communication and Decision Making',
-    sectionId: 'internal-communication-decision-making',
-    firstField: 'internalCommunicationDecisionMaking',
-    fields: {
-      internalCommunicationDecisionMaking: {
-        id: 'internal-communication-decision-making',
-        type: FieldType.Dropdown,
-        label:
-          'Have you defined internal communication and decision-making processes within the founding team?',
-        required: true,
-        nextField: null,
-        options: [
-          {
-            id: 'no_formal_process_ad_hoc',
-            value: 'No formal process; decisions are made ad hoc',
-          },
-          {
-            id: 'some_communication_no_clear_decision',
-            value:
-              'Some communication structure exists, but no clear decision-making process',
-          },
-          {
-            id: 'defined_internal_processes',
-            value:
-              'Defined internal processes exist (e.g., scheduled meetings, structured decision-making framework)',
-          },
-        ],
-      },
-    },
-    nextNode: 'company-registration',
-  },
-
-  q13: {
-    sectionTitle: 'Company Registration',
-    sectionId: 'company-registration',
-    firstField: 'companyRegistration',
-    fields: {
-      companyRegistration: {
-        id: 'company-registration',
-        type: FieldType.Dropdown,
-        label: 'Have you officially registered your company?',
-        required: true,
-        nextField: null,
-        options: [
-          {
-            id: 'no_and_no_plans',
-            value: 'No, and no plans yet',
-          },
-          {
-            id: 'no_but_in_progress',
-            value: 'No, but in progress',
-          },
-          {
-            id: 'yes',
-            value: 'Yes',
-          },
-        ],
-      },
-    },
-    nextNode: 'team-responsibilities-documentation',
-  },
-
-  q14: {
-    sectionTitle: 'Team Responsibilities Documentation',
-    sectionId: 'team-responsibilities-documentation',
-    firstField: 'teamResponsibilitiesDocumentation',
-    fields: {
-      teamResponsibilitiesDocumentation: {
-        id: 'team-responsibilities-documentation',
-        type: FieldType.Dropdown,
-        label:
-          'Do you have an internal document outlining team responsibilities and department structures?',
-        required: true,
-        nextField: null,
-        options: [
-          {
-            id: 'no_formal_documentation',
-            value: 'No formal documentation',
-          },
-          {
-            id: 'partially_structured_informal',
-            value: 'Partially structured but informal',
-          },
-          {
-            id: 'yes_documented',
-            value: 'Yes, documented',
-          },
-        ],
-      },
-    },
-    nextNode: 'kpis-team-members',
-  },
-
-  q15: {
-    sectionTitle: 'KPIs for Team Members',
-    sectionId: 'kpis-team-members',
-    firstField: 'kpisTeamMembers',
-    fields: {
-      kpisTeamMembers: {
-        id: 'kpis-team-members',
-        type: FieldType.Dropdown,
-        label:
-          'Have you set KPIs (Key Performance Indicators) for each founder/team member?',
-        required: true,
-        nextField: null,
-        options: [
-          {
-            id: 'no_kpis',
-            value: 'No KPIs',
-          },
-          {
-            id: 'kpis_exist_not_well_defined',
-            value: 'KPIs exist but not well-defined',
-          },
-          {
-            id: 'yes_structured_kpis',
-            value: 'Yes, structured KPIs exist',
-          },
-        ],
-      },
-    },
-    nextNode: 'decision-making-process',
-  },
-
-  q16: {
-    sectionTitle: 'Decision Making Process',
-    sectionId: 'decision-making-process',
-    firstField: 'decisionMakingProcess',
-    fields: {
-      decisionMakingProcess: {
-        id: 'decision-making-process',
-        type: FieldType.Dropdown,
-        label:
-          'Is there a structured decision-making process for major company decisions?',
-        required: true,
-        nextField: null,
-        options: [
-          {
-            id: 'no_structured_process',
-            value: 'No structured process',
-          },
-          {
-            id: 'informal_but_works',
-            value: 'Informal, but works',
-          },
-          {
-            id: 'yes_clearly_defined',
-            value: 'Yes, clearly defined',
-          },
-        ],
-      },
-    },
-    nextNode: 'team-meeting-frequency',
-  },
-
-  q17: {
-    sectionTitle: 'Team Meeting Frequency',
-    sectionId: 'team-meeting-frequency',
-    firstField: 'teamMeetingFrequency',
-    fields: {
-      teamMeetingFrequency: {
-        id: 'team-meeting-frequency',
-        type: FieldType.Dropdown,
-        label:
-          'How often does your team formally meet to discuss progress and strategy?',
-        required: true,
-        nextField: null,
-        options: [
-          {
-            id: 'no_formal_meetings',
-            value: 'No formal meetings',
-          },
-          {
-            id: 'monthly',
-            value: 'Monthly',
-          },
-          {
-            id: 'weekly_or_biweekly',
-            value: 'Weekly or biweekly',
-          },
-        ],
-      },
-    },
-    nextNode: 'dedicated-workspace',
-  },
-
-  q18: {
-    sectionTitle: 'Dedicated Workspace',
-    sectionId: 'dedicated-workspace',
-    firstField: 'dedicatedWorkspace',
-    fields: {
-      dedicatedWorkspace: {
-        id: 'dedicated-workspace',
-        type: FieldType.Dropdown,
-        label: 'Do you have a dedicated workspace for your team?',
-        required: true,
-        nextField: null,
-        options: [
-          {
-            id: 'no_dedicated_workspace',
-            value: 'No dedicated workspace',
-          },
-          {
-            id: 'remote_structured_workspace',
-            value:
-              'Remote but structured workspace (online tools, defined schedules)',
-          },
-          {
-            id: 'yes_physical_office',
-            value: 'Yes, a physical office or co-working space',
-          },
-        ],
-      },
-    },
-    nextNode: 'ownership-equity-distribution',
-  },
-
-  q19: {
-    sectionTitle: 'Ownership and Equity Distribution',
-    sectionId: 'ownership-equity-distribution',
-    firstField: 'ownershipEquityDistribution',
-    fields: {
-      ownershipEquityDistribution: {
-        id: 'ownership-equity-distribution',
-        type: FieldType.Dropdown,
-        label:
-          'Have you legally defined ownership and equity distribution among founders?',
-        required: true,
-        nextField: null,
-        options: [
-          {
-            id: 'no_discussions_yet',
-            value: 'No discussions yet',
-          },
-          {
-            id: 'verbally_agreed_not_documented',
-            value: 'Verbally agreed but not documented',
-          },
-          {
-            id: 'yes_legally_documented',
-            value: 'Yes, legally documented',
-          },
-        ],
-      },
-    },
-    nextNode: 'external-partnerships',
-  },
-
-  q20: {
-    sectionTitle: 'External Partnerships',
-    sectionId: 'external-partnerships',
-    firstField: 'externalPartnerships',
-    fields: {
-      externalPartnerships: {
-        id: 'external-partnerships',
-        type: FieldType.Dropdown,
-        label:
-          'Have you identified key external partnerships or suppliers essential to your business?',
-        required: true,
-        nextField: null,
-        options: [
-          {
-            id: 'no_external_partnerships_yet',
-            value: 'No external partnerships or suppliers yet',
-          },
-          {
-            id: 'potential_partnerships_identified',
-            value: 'Potential partnerships identified but not formalized',
-          },
-          {
-            id: 'yes_formal_agreements',
-            value: 'Yes, formal agreements or partnerships exist',
-          },
-        ],
-      },
-    },
-    nextNode: 'founder-contingency-plan',
-  },
-
-  q21: {
-    sectionTitle: 'Founder Contingency Plan',
-    sectionId: 'founder-contingency-plan',
-    firstField: 'founderContingencyPlan',
-    fields: {
-      founderContingencyPlan: {
-        id: 'founder-contingency-plan',
-        type: FieldType.Dropdown,
-        label:
-          'Do you have a contingency plan in case a founder leaves or steps down?',
-        required: true,
-        nextField: null,
-        options: [
-          {
-            id: 'no_plan_in_place',
-            value: 'No plan in place',
-          },
-          {
-            id: 'some_discussions_no_formal_plan',
-            value: 'Some discussions but no formal plan',
-          },
-          {
-            id: 'yes_structured_plan',
-            value: 'Yes, a structured plan exists',
-          },
-        ],
-      },
-    },
+    nextNode: null,
   },
 };

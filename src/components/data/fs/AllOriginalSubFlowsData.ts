@@ -51,18 +51,18 @@ export const AllOriginalSubFlowsData: TypeOriginalSubFlowsContainer = {
   },
 
   fs_financials: {
-    AdvancedVC: F_Advanced_VC_Flow, //hayde fadye
-    PrivateEquity: F_Private_Equity_Flow, //hayde fadye
-    AngelPhase: F_Angel_Phase_Flow, //hayde fadye
-    EarlyVC: F_Early_VC_Flow, //hayde fadye
-    IdeationPhase: F_Ideation_Phase_FLow, //hayde fadye
+    AdvancedVC: F_Advanced_VC_Flow,
+    PrivateEquity: F_Private_Equity_Flow,
+    AngelPhase: F_Angel_Phase_Flow,
+    EarlyVC: F_Early_VC_Flow,
+    IdeationPhase: F_Ideation_Phase_FLow,
   },
 
   fs_marketing: {
     AdvancedVC: M_Advanced_VC_Flow,
     PrivateEquity: M_Private_Equity_Flow,
     AngelPhase: M_Angel_Phase_Flow,
-    EarlyVC: M_Early_VC_Flow, //hayde fadye
-    IdeationPhase: M_Ideation_Phase_FLow, //hayde fadye
+    EarlyVC: M_Early_VC_Flow,
+    IdeationPhase: M_Ideation_Phase_FLow,
   },
 };
