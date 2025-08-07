@@ -18,7 +18,7 @@ interface FlowState {
 
   // Field navigation methods
   goToNextField: (answer: string) => void;
-  getCurrentField: () => FormField | null;
+  getCurrentChartFormField: () => FormField | null;
 
   // Question-answer navigation
   currentNodeId: string;
@@ -80,7 +80,7 @@ export const ChartFormUseFlowStore = create<FlowState>((set, get) => ({
     return null;
   },
 
-  getCurrentField: () => {
+  getCurrentChartFormField: () => {
     const { currentFieldId } = get();
     // This would need to be implemented based on how you store your fields
     // Since there's no section, you'll need a fields object at the root level

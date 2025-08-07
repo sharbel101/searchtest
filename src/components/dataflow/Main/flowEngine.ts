@@ -47,7 +47,7 @@ export const createFlowController = (flow: FlowDefinition): FlowController => {
       goToNextField,
       setQuestionBody,
       getCurrentAnswers,
-      getCurrentField,
+      getCurrentChartFormField,
     } = ChartFormUseFlowStore.getState();
 
     if (!answerConfig) return;
@@ -119,59 +119,63 @@ export const createOriginalSubFlowController = (flow: StageSubFlow) => {
     return firstField.options.map((option) => option.value); // or option.text, option.id, etc.
   };
 
-  const getCurrentSectionTitle = (): string => {
-    return flow[currentNodeId]?.sectionTitle || '';
-  };
+  /**
+   * I MADE THESE FUNCTIONS IN THE FLOW STORES. BUT I KEPT IT BECAUSE MAYBE WE WILL USE IT LATER.... JOE
+   */
 
-  const getCurrentSectionId = (): string => {
-    return flow[currentNodeId]?.sectionId || '';
-  };
+  // const getCurrentSectionTitle = (): string => {
+  //   return flow[currentNodeId]?.sectionTitle || '';
+  // };
 
-  const getCurrentFields = (): Record<string, FormField> => {
-    return flow[currentNodeId]?.fields || {};
-  };
+  // const getCurrentSectionId = (): string => {
+  //   return flow[currentNodeId]?.sectionId || '';
+  // };
 
-  const moveToNext = (): boolean => {
-    const currentNode = flow[currentNodeId];
-    if (!currentNode || !currentNode.nextNode) {
-      return false; // End of flow
-    }
+  // const getCurrentFields = (): Record<string, FormField> => {
+  //   return flow[currentNodeId]?.fields || {};
+  // };
 
-    currentNodeId = currentNode.nextNode;
-    return true;
-  };
+  // const moveToNext = (): boolean => {
+  //   const currentNode = flow[currentNodeId];
+  //   if (!currentNode || !currentNode.nextNode) {
+  //     return false; // End of flow
+  //   }
 
-  const getCurrentNodeId = (): string => {
-    return currentNodeId;
-  };
+  //   currentNodeId = currentNode.nextNode;
+  //   return true;
+  // };
 
-  const isAtEnd = (): boolean => {
-    const currentNode = flow[currentNodeId];
-    return !currentNode || currentNode.nextNode === null;
-  };
+  // const getCurrentNodeId = (): string => {
+  //   return currentNodeId;
+  // };
 
-  const goToNode = (nodeId: string): boolean => {
-    if (flow[nodeId]) {
-      currentNodeId = nodeId;
-      return true;
-    }
-    return false;
-  };
+  // const isAtEnd = (): boolean => {
+  //   const currentNode = flow[currentNodeId];
+  //   return !currentNode || currentNode.nextNode === null;
+  // };
 
-  const getAllNodes = (): string[] => {
-    return Object.keys(flow);
-  };
+  // const goToNode = (nodeId: string): boolean => {
+  //   if (flow[nodeId]) {
+  //     currentNodeId = nodeId;
+  //     return true;
+  //   }
+  //   return false;
+  // };
+
+  // const getAllNodes = (): string[] => {
+  //   return Object.keys(flow);
+  // };
 
   return {
     getCurrentQuestion,
     getCurrentAnswers,
-    getCurrentSectionTitle,
-    getCurrentSectionId,
-    getCurrentFields,
-    getCurrentNodeId,
-    moveToNext,
-    isAtEnd,
-    goToNode,
-    getAllNodes,
+    // getCurrentSectionTitle,
+    // getCurrentSectionId,
+    // getCurrentFields,
+    // getCurrentNodeId,
+    // moveToNext,
+    // isAtEnd,
+    // goToNode,
+    // getAllNodes,
   };
 };

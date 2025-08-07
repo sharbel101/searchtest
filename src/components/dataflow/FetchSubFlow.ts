@@ -15,7 +15,12 @@ export const fetchAndSetChartFormSubFlow = async (
   flowName: string,
   delayMs: number = 2000,
 ): Promise<boolean> => {
-  const { setCurrentFlowController, setIsInFlowFunc } = useFlowStore.getState();
+  const {
+    setCurrentFlowController,
+    setIsInFlowFunc,
+    setCurrentInjectionType,
+    getCurrentField,
+  } = useFlowStore.getState();
 
   const { setQuestionBody } = ChartFormUseFlowStore.getState();
 
@@ -27,6 +32,16 @@ export const fetchAndSetChartFormSubFlow = async (
   const flowController = createFlowController(subFlow);
   setCurrentFlowController(flowController);
   setIsInFlowFunc(true);
+
+  const field = getCurrentField();
+  if (!field) {
+    console.warn('No field provided to define the type of the injection.');
+  }
+  if (field?.flowInjection) {
+    setCurrentInjectionType(field?.flowInjection?.type);
+  } else {
+    setCurrentInjectionType('Unknown Injection Type.');
+  }
 
   const initialQuestion = flowController.getCurrentQuestion();
   setQuestionBody(initialQuestion);
@@ -44,12 +59,14 @@ export const fetchAndSetOriginalSubFlow = async (
   stage: string,
   delayMs: number = 2000,
 ): Promise<boolean> => {
+  const { setQuestionBody, setSubFlowSections } = useSubFlowStore.getState();
+
   const {
     setCurrentFlowController,
     setIsInFlowFunc,
-    setQuestionBody,
-    setSubFlowSections,
-  } = useSubFlowStore.getState();
+    setCurrentInjectionType,
+    getCurrentField,
+  } = useFlowStore.getState();
 
   const subFlow = AllOriginalSubFlowsData[flowName][stage];
   if (!subFlow) {
@@ -63,6 +80,16 @@ export const fetchAndSetOriginalSubFlow = async (
   //I need a map to map over the subflow sections and put it inside a container and setSubFlowSections(container).
   const sections = Object.values(subFlow);
   setSubFlowSections(sections);
+
+  const field = getCurrentField();
+  if (!field) {
+    console.warn('No field provided to define the type of the injection.');
+  }
+  if (field?.flowInjection) {
+    setCurrentInjectionType(field?.flowInjection?.type);
+  } else {
+    setCurrentInjectionType('Unknown Injection Type.');
+  }
 
   console.log('this  is the subflow sections in fetch functions:', sections);
 

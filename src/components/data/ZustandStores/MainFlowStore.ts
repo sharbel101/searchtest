@@ -29,6 +29,10 @@ interface FlowState {
 
   setCurrentFlowController: (controller: any) => void;
   setIsInFlowFunc: (val: boolean) => void;
+
+  CurrentInjectionType: string;
+  setCurrentInjectionType: (type: string) => void;
+
   setQuestionBody: (text: string) => void;
 }
 
@@ -36,6 +40,9 @@ interface FlowState {
 export const useFlowStore = create<FlowState>((set, get) => ({
   currentSectionId: 'nda',
   currentFieldId: 'companiesNDAForm',
+
+  CurrentInjectionType: '',
+
   sections: [],
 
   setSections: (sections) => set({ sections }),
@@ -117,4 +124,7 @@ export const useFlowStore = create<FlowState>((set, get) => ({
     set({ currentFlowController: controller }),
   setIsInFlowFunc: (val) => set({ isInFlowFunc: val }),
   setQuestionBody: (text) => set({ questionBody: text }),
+
+  setCurrentInjectionType: (type: string) =>
+    set({ CurrentInjectionType: type }),
 }));

@@ -16,6 +16,22 @@ import { Flow } from '../../types/Flow';
 import { RcbEvent } from '../../constants/RcbEvent';
 import { usePathsContext } from '../../context/PathsContext';
 
+import { validateUserInput } from '@/components/validations/validateInput';
+import { useFlowStore } from '@/components/data/ZustandStores/MainFlowStore';
+import { useSubFlowStore } from '@/components/data/ZustandStores/InjectedFlowStore';
+import { ChartFormUseFlowStore } from '@/components/data/ZustandStores/ChartFormFlowStore';
+import { file } from 'zod';
+import { FormField } from '@/components/data/MainFlow/flow';
+
+const {
+  getCurrentField,
+  isInFlowFunc,
+  currentFlowController,
+  CurrentInjectionType,
+} = useFlowStore.getState();
+const { getCurrentSubFlowField } = useSubFlowStore.getState();
+const { getCurrentChartFormField } = ChartFormUseFlowStore.getState();
+
 /**
  * Internal custom hook for managing user input submissions.
  */
@@ -129,62 +145,78 @@ export const useSubmitInputInternal = () => {
    * @param userInput input provided by the user
    * @param sendUserInput boolean indicating if user input should be sent as a message into the chat window
    */
+
+  //JOE MODIFYED HERE
   const handleActionInput = useCallback(
     async (userInput: string, sendUserInput = true) => {
       userInput = userInput.trim();
-      if (userInput === '') {
+      if (userInput === '') return;
+
+      // ⚠️ Step 1: Validation BEFORE sending message
+      const currPath = getCurrPath();
+      if (!currPath) return;
+
+      const block = (flowRef.current as Flow)[currPath];
+      if (!block) return;
+
+      // ✅ Select the correct field based on injection type
+      let field: FormField | undefined | null;
+
+      if (isInFlowFunc && currentFlowController) {
+        if (CurrentInjectionType === 'ChartForm') {
+          field = getCurrentChartFormField();
+        } else if (CurrentInjectionType === 'OriginalSubFlow') {
+          field = getCurrentSubFlowField();
+        }
+      } else {
+        field = getCurrentField();
+      }
+
+      if (!field) {
+        console.warn(`No field found for validation at path: ${currPath}`);
         return;
       }
 
-      // sends user message into chat body
+      // ✅ Validate user input before continuing
+      const validation = validateUserInput(userInput, field);
+
+      if (!validation.success) {
+        showToast(`Validation Error: ${validation.error}`);
+        return; // 🚫 Stop execution if validation fails
+      }
+
+      console.log('input validated successfully');
+      // ✅ Step 2: Send user message into chat body
       if (sendUserInput) {
         await handleSendUserInput(userInput);
       }
 
-      // if transition attribute was used, clear timeout
+      // ✅ Step 3: Clear timeout if transition used
       if (timeoutIdRef.current) {
         clearTimeout(timeoutIdRef.current);
       }
 
-      // clears input field
+      // ✅ Step 4: Clear input field
       if (inputRef.current) {
         setTextAreaValue('');
         setInputLength(0);
       }
 
       // ***** start of postprocessing logic *****
-
-      const currPath = getCurrPath();
-      if (!currPath) {
-        return;
-      }
-
-      let block = (flowRef.current as Flow)[currPath];
-      // fire event and use final block (if applicable)
-      // finalBlock is used because it's possible users update the block in the event
       const finalBlock = await firePostProcessBlockEvent(block);
+      if (!finalBlock) return;
 
-      // if no final block means event was prevented, so just return
-      if (!finalBlock) {
-        return;
-      }
-
-      // disables text area if block spam is true
       if (settings.chatInput?.blockSpam) {
         setSyncedTextAreaDisabled(true);
       }
 
-      // tracks if voice is to be kept on later
       keepVoiceOnRef.current = syncedVoiceToggledOnRef.current;
       syncVoice(false);
 
-      // shows bot typing indicator
       setTimeout(() => {
         setSyncedIsBotTyping(true);
       }, 400);
 
-      // after user sends input, set sensitive mode to false first (default)
-      // will be overriden if next block also has isSensitive attribute
       setSyncedTextAreaSensitiveMode(false);
 
       setTimeout(async () => {
@@ -203,9 +235,10 @@ export const useSubmitInputInternal = () => {
           showToast,
           dismissToast,
         };
+
         const currNumPaths = syncedPathsRef.current.length;
         await postProcessBlock(finalBlock, params);
-        // if same length, means post-processing did not path to a block and if so, reset to current block states
+
         if (syncedPathsRef.current.length === currNumPaths) {
           if ('chatDisabled' in block) {
             setSyncedTextAreaDisabled(!!block.chatDisabled);
@@ -218,7 +251,6 @@ export const useSubmitInputInternal = () => {
           setSyncedIsBotTyping(false);
         }
       }, settings.chatInput?.botDelay);
-
       // ***** end of postprocessing logic *****
     },
     [
@@ -242,8 +274,131 @@ export const useSubmitInputInternal = () => {
       showToast,
       dismissToast,
       flowRef,
+      isInFlowFunc,
+      currentFlowController,
+      CurrentInjectionType,
+      getCurrentField,
+      getCurrentChartFormField,
+      getCurrentSubFlowField,
+      validateUserInput,
     ],
   );
+
+  // const handleActionInput = useCallback(
+  //   async (userInput: string, sendUserInput = true) => {
+  //     userInput = userInput.trim();
+  //     if (userInput === '') {
+  //       return;
+  //     }
+
+  //     // sends user message into chat body
+  //     if (sendUserInput) {
+  //       await handleSendUserInput(userInput);
+  //     }
+
+  //     // if transition attribute was used, clear timeout
+  //     if (timeoutIdRef.current) {
+  //       clearTimeout(timeoutIdRef.current);
+  //     }
+
+  //     // clears input field
+  //     if (inputRef.current) {
+  //       setTextAreaValue('');
+  //       setInputLength(0);
+  //     }
+
+  //     // ***** start of postprocessing logic *****
+
+  //     const currPath = getCurrPath();
+  //     if (!currPath) {
+  //       return;
+  //     }
+
+  //     let block = (flowRef.current as Flow)[currPath];
+  //     // fire event and use final block (if applicable)
+  //     // finalBlock is used because it's possible users update the block in the event
+  //     const finalBlock = await firePostProcessBlockEvent(block);
+
+  //     // if no final block means event was prevented, so just return
+  //     if (!finalBlock) {
+  //       return;
+  //     }
+
+  //     // disables text area if block spam is true
+  //     if (settings.chatInput?.blockSpam) {
+  //       setSyncedTextAreaDisabled(true);
+  //     }
+
+  //     // tracks if voice is to be kept on later
+  //     keepVoiceOnRef.current = syncedVoiceToggledOnRef.current;
+  //     syncVoice(false);
+
+  //     // shows bot typing indicator
+  //     setTimeout(() => {
+  //       setSyncedIsBotTyping(true);
+  //     }, 400);
+
+  //     // after user sends input, set sensitive mode to false first (default)
+  //     // will be overriden if next block also has isSensitive attribute
+  //     setSyncedTextAreaSensitiveMode(false);
+
+  //     setTimeout(async () => {
+  //       const params = {
+  //         prevPath: getPrevPath(),
+  //         currPath: getCurrPath(),
+  //         goToPath,
+  //         setTextAreaValue,
+  //         userInput: paramsInputRef.current,
+  //         injectMessage,
+  //         simulateStreamMessage,
+  //         streamMessage,
+  //         removeMessage,
+  //         endStreamMessage,
+  //         toggleChatWindow,
+  //         showToast,
+  //         dismissToast,
+  //       };
+  //       const currNumPaths = syncedPathsRef.current.length;
+  //       await postProcessBlock(finalBlock, params);
+  //       // if same length, means post-processing did not path to a block and if so, reset to current block states
+  //       if (syncedPathsRef.current.length === currNumPaths) {
+  //         if ('chatDisabled' in block) {
+  //           setSyncedTextAreaDisabled(!!block.chatDisabled);
+  //         } else {
+  //           setSyncedTextAreaDisabled(!!settings.chatInput?.disabled);
+  //         }
+  //         processIsSensitive(block, params, setSyncedTextAreaSensitiveMode);
+  //         setBlockAllowsAttachment(typeof block.file === 'function');
+  //         syncVoice(keepVoiceOnRef.current);
+  //         setSyncedIsBotTyping(false);
+  //       }
+  //     }, settings.chatInput?.botDelay);
+
+  //     // ***** end of postprocessing logic *****
+  //   },
+  //   [
+  //     timeoutIdRef,
+  //     settings.chatInput?.blockSpam,
+  //     settings.chatInput?.botDelay,
+  //     settings.chatInput?.disabled,
+  //     keepVoiceOnRef,
+  //     syncedVoiceToggledOnRef,
+  //     syncVoice,
+  //     handleSendUserInput,
+  //     getPrevPath,
+  //     getCurrPath,
+  //     goToPath,
+  //     injectMessage,
+  //     simulateStreamMessage,
+  //     streamMessage,
+  //     removeMessage,
+  //     endStreamMessage,
+  //     toggleChatWindow,
+  //     showToast,
+  //     dismissToast,
+  //     flowRef,
+  //   ],
+  // );
 
   /**
    * Handles submission of user input via enter key or send button.

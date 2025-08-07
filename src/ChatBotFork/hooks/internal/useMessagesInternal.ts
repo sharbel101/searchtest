@@ -273,7 +273,7 @@ export const useMessagesInternal = () => {
       ) {
         // Content is already a Message object, use it directly
         message = content as Message;
-        console.log('📨 Injecting custom message object:', message);
+        // console.log('📨 Injecting custom message object:', message);
       } else {
         // Create new message from content
         message = createMessage(content, sender);
@@ -285,9 +285,9 @@ export const useMessagesInternal = () => {
         typeof content === 'string' &&
         content.startsWith('📄')
       ) {
-        console.log('🧠 Checking for legacy file data in message injection');
+        // console.log('🧠 Checking for legacy file data in message injection');
         const globalFileData = (window as any).__currentFileData;
-        console.log('🌐 Global file data:', globalFileData);
+        // console.log('🌐 Global file data:', globalFileData);
 
         if (
           globalFileData &&
@@ -295,14 +295,14 @@ export const useMessagesInternal = () => {
           globalFileData.length > 0
         ) {
           const fileName = content.replace('📄 ', '').trim();
-          console.log('📝 Looking for file:', fileName);
+          // console.log('📝 Looking for file:', fileName);
           const fileData = globalFileData.find(
             (fd: any) => fd.name === fileName,
           );
-          console.log('🔍 Found file data:', fileData);
+          // console.log('🔍 Found file data:', fileData);
 
           if (fileData) {
-            console.log('🧾 Attaching file data to message');
+            // console.log('🧾 Attaching file data to message');
             (message as any).fileData = fileData.previewUrl;
             (message as any).attachment = {
               url: fileData.previewUrl,
@@ -313,7 +313,7 @@ export const useMessagesInternal = () => {
             (message as any).tags = fileData.previewUrl
               ? [fileData.previewUrl]
               : [];
-            console.log('✅ Final message object:', message);
+            // console.log('✅ Final message object:', message);
           }
         }
         // Clear the global file data after use

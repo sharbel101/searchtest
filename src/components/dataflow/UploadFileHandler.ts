@@ -1,8 +1,8 @@
 export async function UploadFileHandler(
   file: File,
 ): Promise<{ status: 'success'; previewUrl: string }> {
-  console.log('📤 Received file for upload:', file);
-  console.log(`Starting upload for: ${file?.name}…`);
+  // console.log('📤 Received file for upload:', file);
+  // console.log(`Starting upload for: ${file?.name}…`);
 
   if (!file) {
     throw new Error('No file provided to UploadFileHandler.');
@@ -25,6 +25,6 @@ export async function UploadFileHandler(
 
   await new Promise<void>((resolve) => setTimeout(resolve, 2000));
 
-  console.log(`File: ${file.name} has been uploaded!`);
+  // console.log(`File: ${file.name} has been uploaded!`);
   return { status: 'success', previewUrl };
 }

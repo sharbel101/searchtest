@@ -104,7 +104,7 @@ const FileAttachmentButton = ({
   // Cleanup preview URLs on unmount only (not on filesWithPreview changes)
   useEffect(() => {
     return () => {
-      console.log('🧹 Cleaning up file preview URLs on component unmount');
+      // console.log('🧹 Cleaning up file preview URLs on component unmount');
       filesWithPreview.forEach((fileWithPreview) => {
         if (fileWithPreview.previewUrl) {
           URL.revokeObjectURL(fileWithPreview.previewUrl);
@@ -157,7 +157,7 @@ const FileAttachmentButton = ({
   };
 
   const createFilePreview = (file: File): FileWithPreview => {
-    console.log('🎨 Creating file preview for:', file.name, file.type);
+    // console.log('🎨 Creating file preview for:', file.name, file.type);
 
     const fileWithPreview: FileWithPreview = {
       file,
@@ -189,10 +189,10 @@ const FileAttachmentButton = ({
         // Validate that the file is a valid Blob before creating object URL
         if (file instanceof Blob) {
           fileWithPreview.previewUrl = URL.createObjectURL(file);
-          console.log(
-            `🖼️ Created preview URL for ${file.type}:`,
-            fileWithPreview.previewUrl,
-          );
+          // console.log(
+          //   `🖼️ Created preview URL for ${file.type}:`,
+          //   fileWithPreview.previewUrl,
+          // );
         } else {
           console.warn(
             'File is not a valid Blob, skipping preview URL creation:',
@@ -203,19 +203,19 @@ const FileAttachmentButton = ({
         console.error('Error creating preview URL:', error);
       }
     } else {
-      console.log(
-        `📄 File type ${file.type} not supported for preview, no preview URL created`,
-      );
+      // console.log(
+      //   `📄 File type ${file.type} not supported for preview, no preview URL created`,
+      // );
     }
 
-    console.log('📋 Final file preview object:', fileWithPreview);
+    // console.log('📋 Final file preview object:', fileWithPreview);
     return fileWithPreview;
   };
 
   const handleFiles = async (files: File[]) => {
-    console.log('📁 Selected files:', files);
+    // console.log('📁 Selected files:', files);
     files.forEach((file) => {
-      console.log('📎 File info:', file.name, file.type, file.size);
+      // console.log('📎 File info:', file.name, file.type, file.size);
     });
 
     closeDropModal();
@@ -259,11 +259,11 @@ const FileAttachmentButton = ({
         }
         // Inject custom file messages directly
         for (const fileWithPreview of newFilesWithPreview) {
-          console.log(
-            '📨 Injecting file message for:',
-            fileWithPreview.file.name,
-          );
-          console.log('📦 File preview data:', fileWithPreview);
+          // console.log(
+          //   '📨 Injecting file message for:',
+          //   fileWithPreview.file.name,
+          // );
+          // console.log('📦 File preview data:', fileWithPreview);
 
           // Create custom message object with file data
           const fileMessage = {
@@ -289,7 +289,7 @@ const FileAttachmentButton = ({
               : [],
           };
 
-          console.log('🧾 Custom file message:', fileMessage);
+          // console.log('🧾 Custom file message:', fileMessage);
 
           // Inject the custom message directly
           await injectMessage(fileMessage as any, 'USER');
@@ -314,14 +314,14 @@ const FileAttachmentButton = ({
         });
 
         // Trigger bot response by sending a hidden message to continue the flow
-        console.log('🤖 Triggering bot response for file upload');
+        // console.log('🤖 Triggering bot response for file upload');
         const uploadedFileNames = newFilesWithPreview
           .map((fp) => fp.file.name)
           .join(', ');
-        console.log(
-          '📝 Sending hidden message:',
-          `Uploaded files: ${uploadedFileNames}`,
-        );
+        // console.log(
+        //   '📝 Sending hidden message:',
+        //   `Uploaded files: ${uploadedFileNames}`,
+        // );
 
         // Use handleSubmitText to trigger the bot's response flow
         await handleSubmitText(`Uploaded files: ${uploadedFileNames}`, false);
@@ -334,7 +334,7 @@ const FileAttachmentButton = ({
       setUploadProgress(0);
       // Don't clear files immediately - let them persist for preview
       // The file data is now stored in the message objects
-      console.log('✅ File upload completed, file data stored in messages');
+      // console.log('✅ File upload completed, file data stored in messages');
     }
   };
 

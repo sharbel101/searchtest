@@ -17,7 +17,7 @@ const UserMessage = ({
   const [showPreview, setShowPreview] = useState(false);
 
   useEffect(() => {
-    console.log('UserMessage component mounted/updated');
+    // console.log('UserMessage component mounted/updated');
   });
 
   const isStringContent = typeof message.content === 'string';
@@ -39,7 +39,7 @@ const UserMessage = ({
         /\.(pdf|png|jpe?g|gif|webp|docx?|xlsx?|pptx?|zip|txt|mp4|webm)$/i.test(
           content,
         ));
-    console.log(`[UserMessage] isFileMessage check: ${isFile}`);
+    // console.log(`[UserMessage] isFileMessage check: ${isFile}`);
     return isFile;
   };
 
@@ -50,19 +50,19 @@ const UserMessage = ({
   let fileType = '';
 
   if (isFile) {
-    console.log('🟦 [UserMessage] Message object:', message);
+    // console.log('🟦 [UserMessage] Message object:', message);
     const fileDataObj = (message as any).fileData;
     fileName = fileDataObj?.name || (message as any).fileName || '';
     fileUrl = fileDataObj?.previewUrl || (message as any).fileUrl || '';
 
-    console.log('🟦 [UserMessage] Extracted fileName:', fileName);
-    console.log('🟦 [UserMessage] Extracted fileUrl:', fileUrl);
+    // console.log('🟦 [UserMessage] Extracted fileName:', fileName);
+    // console.log('🟦 [UserMessage] Extracted fileUrl:', fileUrl);
 
     const mimeType = fileDataObj?.type || '';
     const ext = fileName.split('.').pop()?.toLowerCase() || '';
 
-    console.log('🟦 [UserMessage] MimeType:', mimeType);
-    console.log('🟦 [UserMessage] File extension:', ext);
+    // console.log('🟦 [UserMessage] MimeType:', mimeType);
+    // console.log('🟦 [UserMessage] File extension:', ext);
 
     if (
       mimeType.startsWith('image/') ||
@@ -90,19 +90,19 @@ const UserMessage = ({
     } else {
       fileType = 'other';
     }
-    console.log('🟦 [UserMessage] Determined fileType:', fileType);
+    // console.log('🟦 [UserMessage] Determined fileType:', fileType);
   }
 
   const isValidUrl =
     fileUrl.startsWith('http') ||
     fileUrl.startsWith('data:') ||
     fileUrl.startsWith('blob:');
-  console.log(`[UserMessage] isValidUrl check: ${isValidUrl}`);
+  // console.log(`[UserMessage] isValidUrl check: ${isValidUrl}`);
 
   const handlePreviewToggle = () => {
-    console.log(
-      `[UserMessage] Toggling preview from ${showPreview} to ${!showPreview}`,
-    );
+    // console.log(
+    //   `[UserMessage] Toggling preview from ${showPreview} to ${!showPreview}`,
+    // );
     setShowPreview(!showPreview);
   };
 
@@ -124,13 +124,13 @@ const UserMessage = ({
 
   const renderFilePreview = () => {
     if (!showPreview) {
-      console.log('❌ [UserMessage] Preview not shown. showPreview is false.');
+      // console.log('❌ [UserMessage] Preview not shown. showPreview is false.');
       return null;
     }
-    console.log('✅ [UserMessage] Rendering file preview modal.');
-    console.log(
-      `[UserMessage] Preview for fileType: ${fileType}, fileUrl: ${fileUrl}, isValidUrl: ${isValidUrl}`,
-    );
+    // console.log('✅ [UserMessage] Rendering file preview modal.');
+    // console.log(
+    //   `[UserMessage] Preview for fileType: ${fileType}, fileUrl: ${fileUrl}, isValidUrl: ${isValidUrl}`,
+    // );
 
     const isOfficeDoc = ['word', 'excel', 'powerpoint'].includes(fileType);
     const officeViewerUrl = `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(fileUrl)}`;
@@ -146,7 +146,7 @@ const UserMessage = ({
       : fileType === 'pdf'
         ? pdfViewerUrl
         : fileUrl;
-    console.log(`[UserMessage] Iframe source URL set to: ${iframeSrc}`);
+    // console.log(`[UserMessage] Iframe source URL set to: ${iframeSrc}`);
 
     return (
       <div

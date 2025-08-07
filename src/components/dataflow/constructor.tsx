@@ -379,10 +379,10 @@ export const generateChatBotFlow = (): Record<
           isInFlowFunc,
         } = useFlowStore.getState();
 
-        const { getCurrentField, goToNextField, setQuestionBody } =
+        const { getCurrentChartFormField, goToNextField, setQuestionBody } =
           ChartFormUseFlowStore.getState();
 
-        const field = getCurrentField();
+        const field = getCurrentChartFormField();
 
         // if (!field) {
         //   console.log('No more fields in the Injected Flow. Returning to the main flow.');
@@ -406,7 +406,7 @@ export const generateChatBotFlow = (): Record<
             setStage(stageResult);
             setIsInFlowFunc(false);
             setCurrentFlowController(null);
-            const nextField = getCurrentField();
+            const nextField = getCurrentChartFormField();
 
             if (!nextField) {
               goToNextSection();

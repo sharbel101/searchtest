@@ -38,7 +38,7 @@ export type FormField = {
   required?: boolean; // Indicates if the field is mandatory
   options?: { id: string; value: string }[]; // Dropdown options
   opened?: boolean;
-  validation?: RegExp | ((value: any) => boolean); // Optional validation rule used to validate string inputs by testing if they match a specific pattern
+  validation?: string; // Optional validation rule used to validate string inputs by testing if they match a specific pattern
   subFields?: { [key: string]: FormField };
   flowInjection?: { name: string; type: string };
   nextField?: string | null; //todo remove the optional
@@ -72,6 +72,7 @@ const chatFlow: ChatFlow = {
         label: 'Companies NDAs Form',
         description: 'Upload the signed NDA form (PDF format).',
         required: true,
+        validation: '',
         nextField: null,
       },
     },
@@ -90,6 +91,7 @@ const chatFlow: ChatFlow = {
         placeholder: 'Enter company name',
         required: true,
         description: 'Provide the full legal name of the company.',
+        validation: '',
         nextField: 'logo',
       },
       logo: {
@@ -98,6 +100,7 @@ const chatFlow: ChatFlow = {
         label: 'Logo',
         description: 'Upload the company logo (image file).',
         required: true,
+        validation: '',
         nextField: 'industry',
       },
       industry: {
@@ -111,6 +114,7 @@ const chatFlow: ChatFlow = {
         ],
         required: true,
         description: 'Select industry type (input details for "Other").',
+        validation: '',
         nextField: 'description',
       },
       description: {
@@ -120,6 +124,7 @@ const chatFlow: ChatFlow = {
         placeholder: 'Enter a brief description',
         required: true,
         description: 'Provide a summary of the company.',
+        validation: '',
         nextField: 'countryOfOperation',
       },
       countryOfOperation: {
@@ -129,6 +134,7 @@ const chatFlow: ChatFlow = {
         options: [{ id: 'usa', value: 'USA' }],
         required: true,
         description: 'Select the primary country of operation.',
+        validation: '',
         nextField: 'socialMediaAccounts',
       },
       socialMediaAccounts: {
@@ -136,41 +142,48 @@ const chatFlow: ChatFlow = {
         type: FieldType.Array,
         label: 'Social Media Accounts',
         description: 'Provide URLs for social media profiles (all optional).',
+        validation: '',
         subFields: {
           tiktok: {
             id: 'tiktok-url',
             type: FieldType.Url,
             label: 'TikTok URL',
+            validation: '',
             required: false,
           },
           linkedin: {
             id: 'linkedin-url',
             type: FieldType.Url,
             label: 'LinkedIn URL',
+            validation: '',
             required: false,
           },
           facebook: {
             id: 'facebook-url',
             type: FieldType.Url,
             label: 'Facebook URL',
+            validation: '',
             required: false,
           },
           instagram: {
             id: 'instagram-url',
             type: FieldType.Url,
             label: 'Instagram URL',
+            validation: '',
             required: false,
           },
           teams: {
             id: 'x-url',
             type: FieldType.Url,
             label: 'X URL',
+            validation: '',
             required: false,
           },
           others: {
             id: 'other-url',
             type: FieldType.Url,
             label: 'Other URL',
+            validation: '',
             required: false,
           },
         },
@@ -183,7 +196,7 @@ const chatFlow: ChatFlow = {
         placeholder: 'https://example.com',
         required: false,
         description: 'Provide the company’s main website URL.',
-        validation: /^(https?:\/\/)?([\w\-]+\.)+[\w\-]+(\/[\w\-]*)*\/?$/,
+        validation: '',
       },
     },
     nextNode: 'foundingTeam',
@@ -198,30 +211,35 @@ const chatFlow: ChatFlow = {
         type: FieldType.Array,
         label: 'Team Members Profile',
         description: 'List team members with details.',
+        validation: '',
         nextField: 'teamVideo',
         subFields: {
           fullName: {
             id: 'team-full-name',
             type: FieldType.Text,
             label: 'Full Name',
+            validation: '',
             required: true,
           },
           roleTitle: {
             id: 'team-role',
             type: FieldType.Text,
             label: 'Role Title',
+            validation: '',
             required: true,
           },
           background: {
             id: 'team-background',
             type: FieldType.Text,
             label: 'Background',
+            validation: '',
             required: false,
           },
           expertise: {
             id: 'team-expertise',
             type: FieldType.Text,
             label: 'Expertise',
+            validation: '',
             required: false,
           },
         },
@@ -231,6 +249,7 @@ const chatFlow: ChatFlow = {
         type: FieldType.Video,
         label: 'Team Video',
         description: 'Upload a team video (max 2 minutes).',
+        validation: '',
         required: false,
         nextField: 'teamStandards',
       },
@@ -241,6 +260,7 @@ const chatFlow: ChatFlow = {
         placeholder: 'your motto, your culture etc...',
         required: false,
         description: 'Describe the team’s motto, culture...',
+        validation: '',
         nextField: null,
       },
     },
@@ -256,6 +276,7 @@ const chatFlow: ChatFlow = {
         type: FieldType.Array,
         label: 'Products & Services',
         description: 'List products or services with details.',
+        validation: '',
         nextField: null,
         subFields: {
           type: {
@@ -267,35 +288,41 @@ const chatFlow: ChatFlow = {
               { id: 'service', value: 'service' },
             ],
             required: true,
+            validation: '',
           },
           name: {
             id: 'product-name',
             type: FieldType.Text,
             label: 'Name',
+            validation: '',
             required: true,
           },
           desc: {
             id: 'product-desc',
             type: FieldType.Text,
             label: 'Description',
+            validation: '',
             required: true,
           },
           photos: {
             id: 'product-photos',
             type: FieldType.File,
             label: 'Photos',
+            validation: '',
             required: false,
           },
           ios_app_url: {
             id: 'ios-app-url',
             type: FieldType.Url,
             label: 'iOS App URL',
+            validation: '',
             required: false,
           },
           android_app_url: {
             id: 'android-app-url',
             type: FieldType.Url,
             label: 'Android App URL',
+            validation: '',
             required: false,
           },
           general_customer_feedback: {
@@ -303,6 +330,7 @@ const chatFlow: ChatFlow = {
             type: FieldType.Text,
             label: 'General Customer Feedback',
             placeholder: 'example: Loved by more than 500 happy customers',
+            validation: '',
             required: false,
           },
         },
@@ -320,6 +348,7 @@ const chatFlow: ChatFlow = {
         type: FieldType.Array,
         label: 'Patents',
         description: 'List patents with details.',
+        validation: '',
         nextField: null,
         subFields: {
           title: {
@@ -355,6 +384,7 @@ const chatFlow: ChatFlow = {
         type: FieldType.Array,
         label: 'Awards',
         description: 'List awards with details.',
+        validation: '',
         nextField: null,
         subFields: {
           type: {
@@ -362,24 +392,28 @@ const chatFlow: ChatFlow = {
             type: FieldType.Text,
             label: 'Name',
             required: true,
+            validation: '',
           },
           des: {
             id: 'award-desc',
             type: FieldType.Text,
             label: 'Description',
             required: true,
+            validation: '',
           },
           url: {
             id: 'award-url',
             type: FieldType.Url,
             label: 'URL',
             required: false,
+            validation: '',
           },
           image: {
             id: 'award-image',
             type: FieldType.File,
             label: 'Image',
             required: false,
+            validation: '',
           },
         },
       },
@@ -434,6 +468,7 @@ const chatFlow: ChatFlow = {
         label: 'Organization Chart',
         description: 'Upload organization chart (PDF, Excel, CSV).',
         required: true,
+        validation: '',
         nextField: 'fs_department',
       },
       fs_department: {
@@ -462,6 +497,7 @@ const chatFlow: ChatFlow = {
         label: 'Valuation',
         placeholder: 'Enter valuation amount',
         required: true,
+        validation: '',
         description: 'Provide company valuation.',
         nextField: 'previousBalanceSheets',
       },
@@ -471,6 +507,7 @@ const chatFlow: ChatFlow = {
         label: 'Previous Balance Sheets',
         description: 'Upload previous balance sheets (PDF, Excel, CSV).',
         required: true,
+        validation: '',
         nextField: 'previousPLStatements',
       },
       previousPLStatements: {
@@ -479,6 +516,7 @@ const chatFlow: ChatFlow = {
         label: 'Previous P&L Statements',
         description: 'Upload previous P&L statements (PDF, Excel, CSV).',
         required: true,
+        validation: '',
         nextField: 'annualAuditReports',
       },
       annualAuditReports: {
@@ -487,6 +525,7 @@ const chatFlow: ChatFlow = {
         label: 'Annual Audit Reports',
         description: 'Upload annual audit reports (PDF, Excel, CSV).',
         required: true,
+        validation: '',
         nextField: 'fs_financials',
       },
       fs_financials: {
@@ -516,6 +555,7 @@ const chatFlow: ChatFlow = {
         label: 'Customer Satisfaction Rate',
         placeholder: 'e.g., 95%',
         required: false,
+        validation: '',
         description: 'Enter customer satisfaction rate.',
         nextField: 'customerRetentionRate',
       },
@@ -525,6 +565,7 @@ const chatFlow: ChatFlow = {
         label: 'Customer Retention Rate',
         placeholder: 'e.g., 90%',
         required: false,
+        validation: '',
         description: 'Enter customer retention rate.',
         nextField: 'customerLifetimeValue',
       },
@@ -534,6 +575,7 @@ const chatFlow: ChatFlow = {
         label: 'Customer Lifetime Value (CLV)',
         placeholder: 'e.g., $500',
         required: false,
+        validation: '',
         description: 'Enter customer lifetime value.',
         nextField: 'fs_marketing',
       },
@@ -564,6 +606,7 @@ const chatFlow: ChatFlow = {
         label: 'SWOT Analysis',
         description: 'Upload SWOT analysis (PDF) or chat with GPT.',
         required: false,
+        // validation:"",
         nextField: 'STR',
       },
       STR: {
@@ -572,6 +615,7 @@ const chatFlow: ChatFlow = {
         label: 'Strategy Chart',
         description: 'Provide strategy details (chart form).',
         required: true,
+        // validation:"",
         nextField: null,
       },
     },
@@ -587,24 +631,28 @@ const chatFlow: ChatFlow = {
         type: FieldType.Array,
         label: 'Competitors',
         description: 'List competitors with details.',
+        // validation:"",
         nextField: null,
         subFields: {
           name: {
             id: 'competitor-name',
             type: FieldType.Text,
             label: 'Name',
+            // validation:"",
             required: true,
           },
           url: {
             id: 'competitor-url',
             type: FieldType.Url,
             label: 'URL',
+            // validation:"",
             required: false,
           },
           whatDoTheyDoDifferently: {
             id: 'competitor-diff',
             type: FieldType.Text,
             label: 'What Do They Do Differently',
+            // validation:"",
             required: true,
           },
         },
@@ -623,6 +671,7 @@ const chatFlow: ChatFlow = {
         label: 'Registration Documents',
         description: 'Upload multiple registration documents (PDF).',
         required: true,
+        validation: '',
         nextField: null,
       },
     },
@@ -639,6 +688,7 @@ const chatFlow: ChatFlow = {
         label: 'Ask vs Valuation',
         placeholder: 'e.g., 10%',
         required: true,
+        validation: '',
         description: 'Enter the percentage of ask vs valuation.',
         nextField: 'typeOfInvestor',
       },
@@ -648,6 +698,7 @@ const chatFlow: ChatFlow = {
         label: 'Type of Investor',
         placeholder: 'e.g., Angel, VC',
         required: false,
+        validation: '',
         description: 'Specify the type of investor (optional).',
         nextField: null,
       },
