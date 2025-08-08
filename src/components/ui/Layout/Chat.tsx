@@ -72,7 +72,6 @@ export default function Chat() {
     footer: {
       text: '',
     },
-    userBubble: { simulateStream: true, streamSpeed: 30 },
     botBubble: { simulateStream: true, streamSpeed: 30 },
     simulateStream: true,
     isOpen: true,

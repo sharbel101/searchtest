@@ -141,12 +141,7 @@ const UserMessage = ({
         ? fileUrl
         : `https://docs.google.com/gview?url=${encodeURIComponent(fileUrl)}&embedded=true`;
 
-    const iframeSrc = isOfficeDoc
-      ? officeViewerUrl
-      : fileType === 'pdf'
-        ? pdfViewerUrl
-        : fileUrl;
-    console.log(`[UserMessage] Iframe source URL set to: ${iframeSrc}`);
+    console.log(`[UserMessage] Processing preview for fileType: ${fileType}`);
 
     return (
       <div
@@ -167,42 +162,67 @@ const UserMessage = ({
             </button>
           </div>
           <div className="rcb-file-preview-body">
-            {isValidUrl ? (
-              fileType === 'image' ||
-              fileType === 'pdf' ||
-              isOfficeDoc ||
-              fileType === 'text' ? (
-                // Use a different approach for PDFs and office files
-                <iframe
-                  src={isOfficeDoc ? officeViewerUrl : fileUrl}
-                  title={fileName}
-                  className="rcb-file-preview-iframe"
-                  style={{ display: fileType === 'image' ? 'none' : 'block' }}
-                />
-              ) : fileType === 'image' ? (
-                <img
-                  src={fileUrl}
-                  alt={fileName}
-                  className="rcb-file-preview-image"
-                />
-              ) : fileType === 'video' ? (
-                <video
-                  controls
-                  src={fileUrl}
-                  className="rcb-file-preview-video"
-                />
-              ) : (
-                <div className="rcb-file-preview-unsupported">
-                  <span className="rcb-file-icon-large">❌</span>
-                  <p>Preview for this file type is unavailable</p>
-                  <p>Type: {fileType}</p>
-                </div>
-              )
-            ) : (
+            {!isValidUrl ? (
               <div className="rcb-file-preview-unsupported">
                 <span className="rcb-file-icon-large">❌</span>
                 <p>Invalid or unsupported file URL for preview.</p>
                 <p>URL: {fileUrl}</p>
+              </div>
+            ) : fileType === 'image' ? (
+              <img
+                src={fileUrl}
+                alt={fileName}
+                className="rcb-file-preview-image"
+                onLoad={() =>
+                  console.log('✅ [UserMessage] Image loaded successfully')
+                }
+                onError={(e) => {
+                  console.error('❌ [UserMessage] Image failed to load:', e);
+                  console.error('❌ [UserMessage] Failed URL:', fileUrl);
+                }}
+              />
+            ) : fileType === 'video' ? (
+              <video
+                controls
+                src={fileUrl}
+                className="rcb-file-preview-video"
+                onLoadedData={() =>
+                  console.log('✅ [UserMessage] Video loaded successfully')
+                }
+                onError={(e) =>
+                  console.error('❌ [UserMessage] Video failed to load:', e)
+                }
+              />
+            ) : fileType === 'pdf' ? (
+              <iframe
+                src={pdfViewerUrl}
+                title={fileName}
+                className="rcb-file-preview-iframe"
+                onLoad={() => console.log('✅ [UserMessage] PDF iframe loaded')}
+              />
+            ) : isOfficeDoc ? (
+              <iframe
+                src={officeViewerUrl}
+                title={fileName}
+                className="rcb-file-preview-iframe"
+                onLoad={() =>
+                  console.log('✅ [UserMessage] Office document iframe loaded')
+                }
+              />
+            ) : fileType === 'text' ? (
+              <iframe
+                src={fileUrl}
+                title={fileName}
+                className="rcb-file-preview-iframe"
+                onLoad={() =>
+                  console.log('✅ [UserMessage] Text file iframe loaded')
+                }
+              />
+            ) : (
+              <div className="rcb-file-preview-unsupported">
+                <span className="rcb-file-icon-large">❌</span>
+                <p>Preview for this file type is unavailable</p>
+                <p>Type: {fileType}</p>
               </div>
             )}
           </div>
@@ -230,6 +250,12 @@ const UserMessage = ({
                       maxWidth: '40px',
                       maxHeight: '40px',
                       borderRadius: '4px',
+                    }}
+                    onError={(e) => {
+                      console.error(
+                        '❌ [UserMessage] Thumbnail failed to load:',
+                        fileUrl,
+                      );
                     }}
                   />
                 ) : (
