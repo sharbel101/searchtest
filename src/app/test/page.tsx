@@ -48,7 +48,7 @@ export default function ZodParserTest() {
         Validate
       </button>
       {error && <p style={{ color: 'red' }}>{error}</p>}
-      {!error && value && <p style={{ color: 'green' }}>Valid!</p>}
+      <p>(Click on Valid to make sure)</p>
     </div>
   );
 }
