@@ -72,7 +72,8 @@ const chatFlow: ChatFlow = {
         label: 'Companies NDAs Form',
         description: 'Upload the signed NDA form (PDF format).',
         required: true,
-        validation: '',
+        validation:
+          'z.string("this needs to be a str").url().required("you need to add a signature witha vlaid url").max(1000, "File size exceeds 1MB"),',
         nextField: null,
       },
     },

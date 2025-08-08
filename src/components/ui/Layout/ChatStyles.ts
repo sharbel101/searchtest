@@ -111,9 +111,10 @@ export const styles: Styles = {
   // Input Area
   chatInputAreaStyle: {
     flex: 1,
-    backgroundColor: '#16181a',
-    color: '#F9FAFB',
-    border: '0.5px solid #fff',
+    backgroundColor: '#1b1b1b ', //to fix styling
+    color: '#f9fafb',
+
+    border: '0.5px solid #ffffff26',
     borderRadius: 8,
     outline: 'none',
     padding: '8px 12px',
