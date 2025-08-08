@@ -29,7 +29,7 @@ export const useToastsInternal = () => {
   const showToast = useCallback(
     async (
       content: string | React.JSX.Element,
-      timeout?: number,
+      timeout: number = 3000,
     ): Promise<string | null> => {
       let id = null;
       const currentToasts = syncedToastsRef.current;
@@ -51,8 +51,15 @@ export const useToastsInternal = () => {
           toast = event.data.toast;
         }
         setSyncedToasts((prevToasts) => [...prevToasts.slice(1), toast]);
+
+        // auto-dismiss after timeout
+        if (timeout) {
+          setTimeout(() => dismissToast(id!), timeout);
+        }
+
         return id;
       }
+
       id = generateSecureUUID();
       let toast = { id, content, timeout };
 
@@ -66,9 +73,15 @@ export const useToastsInternal = () => {
       }
 
       setSyncedToasts((prevToasts) => [...prevToasts, toast]);
+
+      // auto-dismiss after timeout
+      if (timeout) {
+        setTimeout(() => dismissToast(id!), timeout);
+      }
+
       return id;
     },
-    [settings, dispatchRcbEvent],
+    [settings, dispatchRcbEvent], //dismissToast  was added but i removed it to remove an error (JOE MODIFIED HERE).
   );
 
   /**

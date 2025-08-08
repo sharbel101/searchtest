@@ -71,10 +71,11 @@ const Toast = ({
     setIsHovered(false);
   };
 
+  //JOE MODIFIED HERE...  I don't want to change the Styling when hovered on...
   return typeof content === 'string' ? (
     <div
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      // onMouseEnter={handleMouseEnter}
+      // onMouseLeave={handleMouseLeave}
       style={
         isHovered ? toastPromptHoveredStyle : localizedStyles.toastPromptStyle
       }

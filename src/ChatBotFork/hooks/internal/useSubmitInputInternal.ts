@@ -146,20 +146,20 @@ export const useSubmitInputInternal = () => {
    * @param sendUserInput boolean indicating if user input should be sent as a message into the chat window
    */
 
-  //JOE MODIFYED HERE
+  // JOE MODIFYED HERE
   const handleActionInput = useCallback(
     async (userInput: string, sendUserInput = true) => {
       userInput = userInput.trim();
       if (userInput === '') return;
 
-      // ⚠️ Step 1: Validation BEFORE sending message
+      // Validation BEFORE sending message
       const currPath = getCurrPath();
       if (!currPath) return;
 
       const block = (flowRef.current as Flow)[currPath];
       if (!block) return;
 
-      // ✅ Select the correct field based on injection type
+      // Select the correct field based on injection type
       let field: FormField | undefined | null;
 
       if (isInFlowFunc && currentFlowController) {
@@ -177,7 +177,7 @@ export const useSubmitInputInternal = () => {
         return;
       }
 
-      // ✅ Validate user input before continuing
+      // Validate user input before continuing
       const validation = validateUserInput(userInput, field);
 
       if (!validation.success) {
@@ -186,17 +186,17 @@ export const useSubmitInputInternal = () => {
       }
 
       console.log('input validated successfully');
-      // ✅ Step 2: Send user message into chat body
+      // Send user message into chat body
       if (sendUserInput) {
         await handleSendUserInput(userInput);
       }
 
-      // ✅ Step 3: Clear timeout if transition used
+      // Clear timeout if transition used
       if (timeoutIdRef.current) {
         clearTimeout(timeoutIdRef.current);
       }
 
-      // ✅ Step 4: Clear input field
+      // Clear input field
       if (inputRef.current) {
         setTextAreaValue('');
         setInputLength(0);
