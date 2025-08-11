@@ -1,25 +1,73 @@
+import { z, ZodSchema } from 'zod';
+
+import { useFlowStore } from '@/components/data/ZustandStores/MainFlowStore';
+import { useSubFlowStore } from '@/components/data/ZustandStores/InjectedFlowStore';
+import { ChartFormUseFlowStore } from '@/components/data/ZustandStores/ChartFormFlowStore';
 import { FormField } from '../data/MainFlow/flow';
-import { buildZodSchemaForField } from './validationSchema';
+import { error } from 'console';
+
+const {
+  getCurrentField,
+  isInFlowFunc,
+  currentFlowController,
+  CurrentInjectionType,
+} = useFlowStore.getState();
+const { getCurrentSubFlowField } = useSubFlowStore.getState();
+const { getCurrentChartFormField } = ChartFormUseFlowStore.getState();
 
 /**
- * Validate user input against a field config
- * @param input - the user input (text, file, etc.)
- * @param field - the field definition (from flow)
- * @returns result: { success: boolean; error?: string }
+ * Parses a Zod schema from a string.
  */
-export const validateUserInput = (
-  input: unknown,
-  field: FormField,
-): { success: boolean; error?: string } => {
-  const schema = buildZodSchemaForField(field);
-  const result = schema.safeParse(input);
+export const parseValidation = (schemaString: string): ZodSchema => {
+  const fn = new Function('z', `return (${schemaString});`);
+  return fn(z);
+};
 
-  if (!result.success) {
-    return {
-      success: false,
-      error: result.error.issues[0]?.message ?? 'Invalid input',
-    };
+/**
+ * Returns a Zod schema from the given validation string.
+ */
+export const getValidationSchema = (
+  validationSchemaString: string,
+): ZodSchema => {
+  return parseValidation(validationSchemaString);
+};
+
+/**
+ * Validates user input against the current field's validation schema.
+ */
+export const handleValidate = (
+  userInput: any,
+): { success: boolean; error?: string } => {
+  let field: FormField | undefined | null;
+
+  if (isInFlowFunc && currentFlowController) {
+    if (CurrentInjectionType === 'ChartForm') {
+      field = getCurrentChartFormField();
+    } else if (CurrentInjectionType === 'OriginalSubFlow') {
+      field = getCurrentSubFlowField();
+    }
+  } else {
+    field = getCurrentField();
   }
 
-  return { success: true };
+  if (!field || !field.validation) {
+    return { success: false, error: 'No field found for validation' };
+  }
+
+  try {
+    const schema = getValidationSchema(field.validation);
+    const result = schema.safeParse(userInput);
+
+    if (!result.success) {
+      return {
+        success: false,
+        error: result.error.issues[0]?.message || 'Invalid',
+      };
+    } else {
+      console.log('Validated successfully!');
+      return { success: true };
+    }
+  } catch (err) {
+    return { success: false, error: 'Schema parsing failed' };
+  }
 };

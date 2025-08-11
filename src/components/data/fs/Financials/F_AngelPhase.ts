@@ -14,6 +14,7 @@ export const F_Angel_Phase_Flow = {
         required: true,
         nextField: 'capTable',
         placeholder: 'TBD',
+        validation: 'z.string().min(1, "Valuation bracket is required")',
       },
       capTable: {
         id: 'cap-table',
@@ -22,6 +23,8 @@ export const F_Angel_Phase_Flow = {
         required: true,
         nextField: null,
         acceptedFiles: ['pdf', 'xlsx', 'xls'],
+        validation:
+          'z.string().min(1, "Cap table is required").refine((val) => val.endsWith(".pdf") || val.endsWith(".xlsx") || val.endsWith(".xls"), "File must be PDF or Excel format")',
       },
     },
     nextNode: 'revenue-growth',
@@ -43,6 +46,8 @@ export const F_Angel_Phase_Flow = {
           { id: '40_to_70', value: '40-70%' },
           { id: 'over_70', value: '> 70%' },
         ],
+        validation:
+          'z.enum(["< 40%", "40-70%", "> 70%"], { required_error: "Revenue growth selection is required" })',
       },
     },
     nextNode: 'net-result',
@@ -65,6 +70,8 @@ export const F_Angel_Phase_Flow = {
           { id: '3_to_5_years', value: '3 to 5 Years' },
           { id: 'under_3_years', value: 'Less than 3 years' },
         ],
+        validation:
+          'z.enum(["More than 5 years", "3 to 5 Years", "Less than 3 years"], { required_error: "Profit timeline selection is required" })',
       },
       projectedResult: {
         id: 'projected-result',
@@ -78,6 +85,8 @@ export const F_Angel_Phase_Flow = {
           { id: 'loss_50_to_0', value: 'Loss between 50% and 0%' },
           { id: 'break_even_or_profit', value: 'Break-even or profit' },
         ],
+        validation:
+          'z.enum(["Loss greater than 50% of revenue", "Loss between 50% and 0%", "Break-even or profit"], { required_error: "Projected result selection is required" })',
       },
       plStatement: {
         id: 'pl-statement',
@@ -86,6 +95,8 @@ export const F_Angel_Phase_Flow = {
         required: true,
         nextField: null,
         acceptedFiles: ['pdf', 'xlsx', 'xls'],
+        validation:
+          'z.string().min(1, "P&L Statement is required").refine((val) => val.endsWith(".pdf") || val.endsWith(".xlsx") || val.endsWith(".xls"), "File must be PDF or Excel format")',
       },
     },
     nextNode: 'opex',
@@ -107,6 +118,8 @@ export const F_Angel_Phase_Flow = {
           { id: '60_to_90', value: '60-90% of revenue spent on OpEx' },
           { id: 'under_60', value: '< 60% of revenue spent on OpEx' },
         ],
+        validation:
+          'z.enum(["> 90% of revenue spent on OpEx", "60-90% of revenue spent on OpEx", "< 60% of revenue spent on OpEx"], { required_error: "OpEx ratio selection is required" })',
       },
       balanceSheet: {
         id: 'balance-sheet',
@@ -115,6 +128,8 @@ export const F_Angel_Phase_Flow = {
         required: true,
         nextField: null,
         acceptedFiles: ['pdf', 'xlsx', 'xls'],
+        validation:
+          'z.string().min(1, "Balance Sheet is required").refine((val) => val.endsWith(".pdf") || val.endsWith(".xlsx") || val.endsWith(".xls"), "File must be PDF or Excel format")',
       },
     },
     nextNode: 'burn-rate',
@@ -136,6 +151,8 @@ export const F_Angel_Phase_Flow = {
           { id: '9_to_14_months', value: '9-14 months of runway' },
           { id: 'over_14_months', value: '>14 months of runway' },
         ],
+        validation:
+          'z.enum(["<9 months of runway", "9-14 months of runway", ">14 months of runway"], { required_error: "Burn rate selection is required" })',
       },
     },
     nextNode: 'liquidity',
@@ -157,6 +174,8 @@ export const F_Angel_Phase_Flow = {
           { id: '1_to_1_5', value: '1.0 - 1.5' },
           { id: 'over_1_5', value: '> 1.5' },
         ],
+        validation:
+          'z.enum(["< 1.0", "1.0 - 1.5", "> 1.5"], { required_error: "Current ratio selection is required" })',
       },
       estimatedQuickRatio: {
         id: 'estimated-quick-ratio',
@@ -169,6 +188,8 @@ export const F_Angel_Phase_Flow = {
           { id: '0_8_to_1_2', value: '0.8 - 1.2' },
           { id: 'over_1_2', value: '> 1.2' },
         ],
+        validation:
+          'z.enum(["< 0.8", "0.8 - 1.2", "> 1.2"], { required_error: "Quick ratio selection is required" })',
       },
     },
     nextNode: 'cash-runway',
@@ -190,6 +211,8 @@ export const F_Angel_Phase_Flow = {
           { id: '6_to_12_months', value: '6 to 12 months' },
           { id: 'over_12_months', value: 'More than 12 months' },
         ],
+        validation:
+          'z.enum(["Less than 6 months", "6 to 12 months", "More than 12 months"], { required_error: "Cash runway selection is required" })',
       },
     },
     nextNode: 'debt-management',
@@ -212,6 +235,8 @@ export const F_Angel_Phase_Flow = {
           { id: 'both', value: 'Used both debt and equity' },
           { id: 'equity', value: 'Opted for equity financing' },
         ],
+        validation:
+          'z.enum(["No", "Opted for debt financing", "Used both debt and equity", "Opted for equity financing"], { required_error: "Financing history selection is required" })',
       },
     },
     nextNode: 'operational-efficiency',
@@ -242,6 +267,8 @@ export const F_Angel_Phase_Flow = {
             value: 'More than 6 times per year (Efficient collection)',
           },
         ],
+        validation:
+          'z.enum(["Less than 3 times per year (Slow collection)", "Between 3 and 6 times per year (Moderate collection)", "More than 6 times per year (Efficient collection)"], { required_error: "AR turnover selection is required" })',
       },
       auditReport: {
         id: 'audit-report',
@@ -250,6 +277,8 @@ export const F_Angel_Phase_Flow = {
         required: true,
         nextField: 'apTurnover',
         acceptedFiles: ['pdf'],
+        validation:
+          'z.string().min(1, "Audit report is required").refine((val) => val.endsWith(".pdf"), "File must be PDF format")',
       },
       apTurnover: {
         id: 'ap-turnover',
@@ -272,6 +301,8 @@ export const F_Angel_Phase_Flow = {
               'More than 6 times per year (Fast payments, possibly too aggressive)',
           },
         ],
+        validation:
+          'z.enum(["Less than 3 times per year (Slow payments)", "Between 3 and 6 times per year (Moderate payments)", "More than 6 times per year (Fast payments, possibly too aggressive)"], { required_error: "AP turnover selection is required" })',
       },
     },
     nextNode: 'tax-efficiency',
@@ -293,6 +324,8 @@ export const F_Angel_Phase_Flow = {
           { id: '10_to_20', value: 'Between 10% and 20%' },
           { id: 'over_20', value: 'More than 20%' },
         ],
+        validation:
+          'z.enum(["Less than 10%", "Between 10% and 20%", "More than 20%"], { required_error: "Tax rate selection is required" })',
       },
     },
     nextNode: null,

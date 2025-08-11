@@ -14,6 +14,7 @@ export const F_Private_Equity_Flow = {
         required: true,
         nextField: 'capTable',
         placeholder: 'TBD',
+        validation: 'z.string().min(1, "Valuation bracket is required")',
       },
       capTable: {
         id: 'cap-table',
@@ -22,6 +23,8 @@ export const F_Private_Equity_Flow = {
         required: true,
         nextField: null,
         acceptedFiles: ['pdf', 'xlsx', 'xls'],
+        validation:
+          'z.string().min(1, "Cap table is required").refine((val) => val.endsWith(".pdf") || val.endsWith(".xlsx") || val.endsWith(".xls"), "File must be PDF or Excel format")',
       },
     },
     nextNode: 'revenue-growth',
@@ -43,6 +46,8 @@ export const F_Private_Equity_Flow = {
           { id: '10_to_25', value: '10-25%' },
           { id: 'over_25', value: '> 25%' },
         ],
+        validation:
+          'z.enum(["< 10%", "10-25%", "> 25%"], { required_error: "YoY growth selection is required" })',
       },
     },
     nextNode: 'net-result',
@@ -64,6 +69,8 @@ export const F_Private_Equity_Flow = {
           { id: 'no', value: 'No' },
           { id: 'yes', value: 'Yes' },
         ],
+        validation:
+          'z.enum(["No", "Yes"], { required_error: "Profit status selection is required" })',
       },
       plStatement: {
         id: 'pl-statement',
@@ -72,6 +79,8 @@ export const F_Private_Equity_Flow = {
         required: true,
         nextField: 'netResult',
         acceptedFiles: ['pdf', 'xlsx', 'xls'],
+        validation:
+          'z.string().min(1, "P&L statement is required").refine((val) => val.endsWith(".pdf") || val.endsWith(".xlsx") || val.endsWith(".xls"), "File must be PDF or Excel format")',
       },
       netResult: {
         id: 'net-result',
@@ -85,6 +94,8 @@ export const F_Private_Equity_Flow = {
           { id: 'break_even', value: 'Break-even or profit <15%' },
           { id: 'profit_over_15', value: 'Profit > 15%' },
         ],
+        validation:
+          'z.enum(["Loss greater than 10% of revenue", "Loss between 10% and 0%", "Break-even or profit <15%", "Profit > 15%"], { required_error: "Net result selection is required" })',
       },
     },
     nextNode: 'opex',
@@ -106,6 +117,8 @@ export const F_Private_Equity_Flow = {
           { id: '30_to_60', value: '30-60% of revenue spent on OpEx' },
           { id: 'under_30', value: '< 30% of revenue spent on OpEx' },
         ],
+        validation:
+          'z.enum(["> 60% of revenue spent on OpEx", "30-60% of revenue spent on OpEx", "< 30% of revenue spent on OpEx"], { required_error: "OpEx ratio selection is required" })',
       },
       balanceSheet: {
         id: 'balance-sheet',
@@ -114,6 +127,8 @@ export const F_Private_Equity_Flow = {
         required: true,
         nextField: null,
         acceptedFiles: ['pdf', 'xlsx', 'xls'],
+        validation:
+          'z.string().min(1, "Balance sheet is required").refine((val) => val.endsWith(".pdf") || val.endsWith(".xlsx") || val.endsWith(".xls"), "File must be PDF or Excel format")',
       },
     },
     nextNode: 'burn-rate',
@@ -135,6 +150,8 @@ export const F_Private_Equity_Flow = {
           { id: '40_to_80', value: '40%-80% of revenue' },
           { id: 'under_40', value: '<40% of revenue' },
         ],
+        validation:
+          'z.enum([">80% of revenue", "40%-80% of revenue", "<40% of revenue"], { required_error: "Burn rate selection is required" })',
       },
     },
     nextNode: 'liquidity',
@@ -156,6 +173,8 @@ export const F_Private_Equity_Flow = {
           { id: '1_8_to_2_5', value: '1.8 - 2.5' },
           { id: 'over_2_5', value: '> 2.5' },
         ],
+        validation:
+          'z.enum(["< 1.8", "1.8 - 2.5", "> 2.5"], { required_error: "Current ratio selection is required" })',
       },
       quickRatio: {
         id: 'quick-ratio',
@@ -168,6 +187,8 @@ export const F_Private_Equity_Flow = {
           { id: '1_2_to_2', value: '1.2 - 2.0' },
           { id: 'over_2', value: '> 2.0' },
         ],
+        validation:
+          'z.enum(["< 1.2", "1.2 - 2.0", "> 2.0"], { required_error: "Quick ratio selection is required" })',
       },
     },
     nextNode: 'cash-runway',
@@ -190,6 +211,8 @@ export const F_Private_Equity_Flow = {
           { id: '12_to_18', value: '12-18 months' },
           { id: 'over_18', value: 'More than 18 months' },
         ],
+        validation:
+          'z.enum(["Less than 6 months", "6 to 12 months", "12-18 months", "More than 18 months"], { required_error: "Runway time selection is required" })',
       },
     },
     nextNode: 'debt-management',
@@ -211,6 +234,8 @@ export const F_Private_Equity_Flow = {
           { id: 'both', value: 'Used both debt and equity' },
           { id: 'debt', value: 'Opted for debt financing' },
         ],
+        validation:
+          'z.enum(["Opted for equity financing", "Used both debt and equity", "Opted for debt financing"], { required_error: "Financing type selection is required" })',
       },
       debtEquityRatio: {
         id: 'debt-equity-ratio',
@@ -223,6 +248,8 @@ export const F_Private_Equity_Flow = {
           { id: 'moderate_debt', value: 'Between 0.5 and 1 (Moderate debt)' },
           { id: 'low_debt', value: 'Less than 0.5 (Low debt)' },
         ],
+        validation:
+          'z.enum(["More than 1 (High debt)", "Between 0.5 and 1 (Moderate debt)", "Less than 0.5 (Low debt)"], { required_error: "Debt-to-equity ratio selection is required" })',
       },
     },
     nextNode: 'operational-efficiency',
@@ -253,6 +280,8 @@ export const F_Private_Equity_Flow = {
             value: 'More than 6 times per year (Efficient collection)',
           },
         ],
+        validation:
+          'z.enum(["Less than 3 times per year (Slow collection)", "Between 3 and 6 times per year (Moderate collection", "More than 6 times per year (Efficient collection)"], { required_error: "AR turnover selection is required" })',
       },
       auditReport: {
         id: 'audit-report',
@@ -261,6 +290,8 @@ export const F_Private_Equity_Flow = {
         required: true,
         nextField: 'apTurnover',
         acceptedFiles: ['pdf'],
+        validation:
+          'z.string().min(1, "Audit report is required").refine((val) => val.endsWith(".pdf"), "File must be PDF format")',
       },
       apTurnover: {
         id: 'ap-turnover',
@@ -283,6 +314,8 @@ export const F_Private_Equity_Flow = {
               'More than 6 times per year (Fast payments, possibly too aggressive)',
           },
         ],
+        validation:
+          'z.enum(["Less than 3 times per year (Slow payments)", "Between 3 and 6 times per year (Moderate payments)", "More than 6 times per year (Fast payments, possibly too aggressive)"], { required_error: "AP turnover selection is required" })',
       },
     },
     nextNode: 'tax-efficiency',
@@ -304,6 +337,8 @@ export const F_Private_Equity_Flow = {
           { id: '10_to_20', value: 'Between 10% and 20%' },
           { id: 'over_20', value: 'More than 20%' },
         ],
+        validation:
+          'z.enum(["Less than 10%", "Between 10% and 20%", "More than 20%"], { required_error: "Tax rate selection is required" })',
       },
     },
     nextNode: null,

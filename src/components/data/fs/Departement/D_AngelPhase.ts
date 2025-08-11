@@ -12,6 +12,7 @@ export const D_Angel_Phase_Flow = {
         label:
           'Are all original founders still actively involved in the company?',
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: null,
         options: [
           {
@@ -46,6 +47,7 @@ export const D_Angel_Phase_Flow = {
         type: FieldType.Dropdown,
         label: "Have the founders' roles evolved from the ideation stage?",
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: null,
         options: [
           {
@@ -77,6 +79,7 @@ export const D_Angel_Phase_Flow = {
         type: FieldType.Dropdown,
         label: 'Is there a designated CEO leading the company?',
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: null,
         options: [
           {
@@ -108,6 +111,7 @@ export const D_Angel_Phase_Flow = {
         label:
           "Are the founders' responsibilities documented and aligned with company needs?",
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: null,
         options: [
           {
@@ -138,6 +142,7 @@ export const D_Angel_Phase_Flow = {
         type: FieldType.Dropdown,
         label: 'Do the founders actively engage with investors and advisors?',
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: null,
         options: [
           {
@@ -169,6 +174,7 @@ export const D_Angel_Phase_Flow = {
         label:
           'Have the founders taken steps to attract experienced leadership outside their founding team?',
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: null,
         options: [
           {
@@ -199,6 +205,7 @@ export const D_Angel_Phase_Flow = {
         type: FieldType.Dropdown,
         label: 'Do all founders have a formal compensation structure?',
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: null,
         options: [
           {
@@ -231,6 +238,7 @@ export const D_Angel_Phase_Flow = {
         label:
           'Has the company formally established departmental structures with defined leadership for each function?',
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: null,
         options: [
           {
@@ -265,6 +273,7 @@ export const D_Angel_Phase_Flow = {
         label:
           'Are department heads or key function leaders involved in strategic decision-making alongside the founders?',
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: null,
         options: [
           {
@@ -297,6 +306,7 @@ export const D_Angel_Phase_Flow = {
         label:
           "Is there a documented organizational chart that reflects the company's current structure?",
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: null,
         options: [
           {
@@ -328,6 +338,7 @@ export const D_Angel_Phase_Flow = {
         label:
           'Which of the following departments currently exist in your company? (Select all that apply)',
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: null,
         options: [
           {
@@ -371,6 +382,7 @@ export const D_Angel_Phase_Flow = {
         label:
           'Do all key departments (finance, marketing, tech, operations) have at least one dedicated team member?',
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: null,
         options: [
           {
@@ -402,6 +414,7 @@ export const D_Angel_Phase_Flow = {
         label:
           'Have department leaders been officially assigned (beyond just the founders)?',
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: null,
         options: [
           {
@@ -433,6 +446,7 @@ export const D_Angel_Phase_Flow = {
         label:
           'Do departments have clear KPIs and performance tracking in place?',
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: null,
         options: [
           {
@@ -464,6 +478,7 @@ export const D_Angel_Phase_Flow = {
         label:
           'Is cross-department communication structured and efficient (e.g., meetings, reporting, tools)?',
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: null,
         options: [
           {
@@ -494,6 +509,8 @@ export const D_Angel_Phase_Flow = {
         type: FieldType.File,
         label: 'Upload your organization chart',
         required: false,
+        validation:
+          'z.string().optional().refine((val) => !val || val.endsWith(".pdf"), "File must be a PDF format")',
         nextField: null,
         acceptedTypes: ['.pdf'],
       },
@@ -511,6 +528,7 @@ export const D_Angel_Phase_Flow = {
         type: FieldType.Dropdown,
         label: 'Who is responsible for product & technology development?',
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: null,
         options: [
           {
@@ -541,6 +559,7 @@ export const D_Angel_Phase_Flow = {
         type: FieldType.Dropdown,
         label: 'What is their highest level of education in a technical field?',
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: null,
         options: [
           {
@@ -572,6 +591,7 @@ export const D_Angel_Phase_Flow = {
         label:
           'How many years of experience do they have in software/product development?',
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: null,
         options: [
           {
@@ -606,6 +626,7 @@ export const D_Angel_Phase_Flow = {
         type: FieldType.Dropdown,
         label: 'Have they led a tech/product team before?',
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: null,
         options: [
           {
@@ -636,6 +657,7 @@ export const D_Angel_Phase_Flow = {
         type: FieldType.Dropdown,
         label: 'Who is responsible for marketing & sales strategy?',
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: null,
         options: [
           {
@@ -667,6 +689,7 @@ export const D_Angel_Phase_Flow = {
         label:
           'What is their highest level of education in business/marketing?',
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: null,
         options: [
           {
@@ -698,6 +721,7 @@ export const D_Angel_Phase_Flow = {
         label:
           'How many years of experience do they have in sales, branding, or customer acquisition?',
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: null,
         options: [
           {
@@ -732,6 +756,7 @@ export const D_Angel_Phase_Flow = {
         type: FieldType.Dropdown,
         label: 'Have they worked in a similar industry before?',
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: null,
         options: [
           {
@@ -762,6 +787,7 @@ export const D_Angel_Phase_Flow = {
         type: FieldType.Dropdown,
         label: 'Who manages company finances and investor relations?',
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: null,
         options: [
           {
@@ -792,6 +818,7 @@ export const D_Angel_Phase_Flow = {
         type: FieldType.Dropdown,
         label: 'What is their educational background in finance/accounting?',
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: null,
         options: [
           {
@@ -823,6 +850,7 @@ export const D_Angel_Phase_Flow = {
         label:
           'Do they have prior experience in financial planning, budgeting, or fundraising?',
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: null,
         options: [
           {
@@ -858,6 +886,7 @@ export const D_Angel_Phase_Flow = {
         label:
           'How many years of experience do they have in finance/accounting/investment?',
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: null,
         options: [
           {
@@ -892,6 +921,7 @@ export const D_Angel_Phase_Flow = {
         type: FieldType.Dropdown,
         label: 'Who is responsible for company operations and HR?',
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: null,
         options: [
           {
@@ -923,6 +953,7 @@ export const D_Angel_Phase_Flow = {
         label:
           'What is their background in business operations, supply chain, or management?',
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: null,
         options: [
           {
@@ -954,6 +985,7 @@ export const D_Angel_Phase_Flow = {
         label:
           'Do they have prior experience in business operations, supply chain, or management?',
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: null,
         options: [
           {
@@ -989,6 +1021,7 @@ export const D_Angel_Phase_Flow = {
         label:
           'Does each department have at least one dedicated full-time employee (excluding the founder-led roles)?',
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: null,
         options: [
           {
@@ -1021,6 +1054,7 @@ export const D_Angel_Phase_Flow = {
         label:
           'How many employees (excluding founders) are currently in the company?',
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: null,
         options: [
           {
@@ -1052,6 +1086,7 @@ export const D_Angel_Phase_Flow = {
         label:
           'Are employee roles and responsibilities formally documented for each department?',
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: null,
         options: [
           {
@@ -1084,6 +1119,7 @@ export const D_Angel_Phase_Flow = {
         label:
           'Is each department equipped with the necessary tools, software, or infrastructure to operate efficiently?',
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: null,
         options: [
           {
@@ -1116,6 +1152,7 @@ export const D_Angel_Phase_Flow = {
         label:
           'Have departments developed internal processes and workflows to handle daily operations?',
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: null,
         options: [
           {

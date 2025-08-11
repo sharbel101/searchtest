@@ -12,6 +12,7 @@ export const D_Private_Equity_Flow = {
         label:
           'Does the company have a formal and documented organizational chart?',
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: null,
         options: [
           {
@@ -43,6 +44,7 @@ export const D_Private_Equity_Flow = {
         label:
           'How often is the organizational structure reviewed and updated?',
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: null,
         options: [
           { id: 'no_review', value: 'No structured review process' },
@@ -67,6 +69,7 @@ export const D_Private_Equity_Flow = {
         label:
           'How many management layers exist between entry-level employees and the CEO?',
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: null,
         options: [
           {
@@ -94,6 +97,7 @@ export const D_Private_Equity_Flow = {
         label:
           'Does each department report directly to its respective C-level executive?',
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: null,
         options: [
           { id: 'no_structure', value: 'No clear reporting structure' },
@@ -121,6 +125,7 @@ export const D_Private_Equity_Flow = {
         label:
           'Has the company expanded into multiple business units or divisions?',
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: null,
         options: [
           {
@@ -151,6 +156,7 @@ export const D_Private_Equity_Flow = {
         label:
           'Does each department have a middle management layer separate from senior leadership?',
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: null,
         options: [
           {
@@ -181,6 +187,7 @@ export const D_Private_Equity_Flow = {
         label:
           'Which of the following C-level executives are present in the company?',
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: 'education',
         options: [
           { id: 'ceo', value: 'Chief Executive Officer (CEO)' },
@@ -205,6 +212,7 @@ export const D_Private_Equity_Flow = {
         type: FieldType.Dropdown,
         label: 'What is their highest level of education?',
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: 'experienceYears',
         options: [
           { id: 'no_degree', value: 'No formal degree' },
@@ -222,6 +230,7 @@ export const D_Private_Equity_Flow = {
         label:
           'How many years of experience does this C-level executive have in their respective field?',
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: 'leadershipStartup',
         options: [
           { id: 'lt3', value: 'Less than 3 years' },
@@ -236,6 +245,7 @@ export const D_Private_Equity_Flow = {
         label:
           'Has this executive previously held a leadership role in a startup or high-growth company?',
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: 'industryExperience',
         options: [
           { id: 'no_leadership', value: 'No prior leadership experience' },
@@ -254,6 +264,7 @@ export const D_Private_Equity_Flow = {
         type: FieldType.Dropdown,
         label: 'What is their industry experience?',
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: 'investorParticipation',
         options: [
           { id: 'no_experience', value: 'No relevant industry experience' },
@@ -270,6 +281,7 @@ export const D_Private_Equity_Flow = {
         label:
           'Does this executive participate in investor relations and board meetings?',
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: 'strategicInvolvement',
         options: [
           {
@@ -291,6 +303,7 @@ export const D_Private_Equity_Flow = {
         type: FieldType.Dropdown,
         label: 'How involved is this executive in strategic decision-making?',
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: null,
         options: [
           { id: 'minimal', value: 'Minimal involvement, execution-focused' },
@@ -318,6 +331,7 @@ export const D_Private_Equity_Flow = {
         label:
           'Which of the following departments are formally established in your company?',
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: null,
         options: [
           { id: 'marketing', value: 'Marketing & Growth' },
@@ -355,6 +369,7 @@ export const D_Private_Equity_Flow = {
         label:
           'Does each department have clear ownership of KPIs and performance metrics?',
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: null,
         options: [
           {
@@ -384,6 +399,7 @@ export const D_Private_Equity_Flow = {
         type: FieldType.Dropdown,
         label: 'What tools or platforms are used for internal collaboration?',
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: null,
         options: [
           { id: 'no_tools', value: 'No tools, communication is unstructured' },
@@ -412,6 +428,7 @@ export const D_Private_Equity_Flow = {
         label:
           'Are all department heads required to submit periodic reports on performance and progress?',
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: null,
         options: [
           {
@@ -442,6 +459,7 @@ export const D_Private_Equity_Flow = {
         label:
           'How resilient is the company s department structure in handling rapid scaling?',
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: null,
         options: [
           {
@@ -473,6 +491,7 @@ export const D_Private_Equity_Flow = {
         label:
           'How well-defined are the career progression paths within each department?',
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: null,
         options: [
           { id: 'no_structure', value: 'No structured career growth plans' },
@@ -501,6 +520,7 @@ export const D_Private_Equity_Flow = {
         label:
           'How frequently are internal promotions vs. external hires made for leadership roles?',
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: null,
         options: [
           {
@@ -532,6 +552,7 @@ export const D_Private_Equity_Flow = {
         label:
           'Are interdepartmental workflows optimized for multi-location or global operations?',
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: null,
         options: [
           {
@@ -562,6 +583,7 @@ export const D_Private_Equity_Flow = {
         label:
           'Does the company have a dedicated compliance or risk management department?',
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: null,
         options: [
           { id: 'no_compliance', value: 'No structured compliance process' },
@@ -589,6 +611,7 @@ export const D_Private_Equity_Flow = {
         label:
           'How frequently does the company restructure or optimize its departments?',
         required: true,
+        validation: 'z.string().min(1, "This field is required")',
         nextField: null,
         options: [
           {

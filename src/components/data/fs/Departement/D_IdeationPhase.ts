@@ -12,6 +12,7 @@ export const D_Ideation_Phase_FLow = {
         label: 'Number of Founders or Cofounders',
         required: true,
         nextField: null,
+        validation: 'z.string().min(1, "Number of founders is required")',
         options: [
           {
             id: '1_founder',
@@ -46,6 +47,7 @@ export const D_Ideation_Phase_FLow = {
         label: 'Education Background of Founders',
         required: true,
         nextField: null,
+        validation: 'z.string().min(1, "Education background is required")',
         options: [
           {
             id: 'no_formal_education',
@@ -84,6 +86,7 @@ export const D_Ideation_Phase_FLow = {
         label: 'Past Experience & Key Skills',
         required: true,
         nextField: null,
+        validation: 'z.string().min(1, "Past experience is required")',
         options: [
           {
             id: 'no_work_experience',
@@ -118,6 +121,8 @@ export const D_Ideation_Phase_FLow = {
         label: 'Responsibilities of Each Founder',
         required: true,
         nextField: null,
+        validation:
+          'z.string().min(1, "Founder responsibilities are required")',
         options: [
           {
             id: 'no_clear_responsibilities',
@@ -153,6 +158,7 @@ export const D_Ideation_Phase_FLow = {
         label: 'Presence of Non-Founder Team Members',
         required: true,
         nextField: null,
+        validation: 'z.string().min(1, "Team members information is required")',
         options: [
           {
             id: 'no_team_members',
@@ -187,6 +193,7 @@ export const D_Ideation_Phase_FLow = {
         label: 'Does your startup have a designated CEO among the founders?',
         required: true,
         nextField: null,
+        validation: 'z.string().min(1, "CEO designation is required")',
         options: [
           {
             id: 'no_ceo_assigned',
@@ -217,6 +224,8 @@ export const D_Ideation_Phase_FLow = {
         label: 'Do the founders have a technical (development) background?',
         required: true,
         nextField: null,
+        validation:
+          'z.string().min(1, "Technical background information is required")',
         options: [
           {
             id: 'no_technical_expertise',
@@ -247,6 +256,8 @@ export const D_Ideation_Phase_FLow = {
         label: 'Upload your organization chart',
         required: false,
         nextField: null,
+        validation:
+          'z.string().optional().refine((val) => !val || val.endsWith(".pdf") || val.includes("pdf"), "File must be a PDF format")',
         acceptedTypes: ['.pdf'],
       },
     },
@@ -265,6 +276,8 @@ export const D_Ideation_Phase_FLow = {
           'Do you have a financial/accounting officer or expertise within the founding team?',
         required: true,
         nextField: null,
+        validation:
+          'z.string().min(1, "Financial expertise information is required")',
         options: [
           {
             id: 'no_financial_expertise',
@@ -296,6 +309,8 @@ export const D_Ideation_Phase_FLow = {
           'Have the core business functions been formally assigned to specific founders or team members?',
         required: true,
         nextField: null,
+        validation:
+          'z.string().min(1, "Core business functions assignment is required")',
         options: [
           {
             id: 'no_clear_roles_assigned',
@@ -329,6 +344,8 @@ export const D_Ideation_Phase_FLow = {
           'Are there any external advisors or mentors providing guidance in specialized areas (e.g., legal, finance, product development)?',
         required: true,
         nextField: null,
+        validation:
+          'z.string().min(1, "External advisors information is required")',
         options: [
           {
             id: 'no_external_advisors',
@@ -361,6 +378,8 @@ export const D_Ideation_Phase_FLow = {
           'Have you defined internal communication and decision-making processes within the founding team?',
         required: true,
         nextField: null,
+        validation:
+          'z.string().min(1, "Communication process information is required")',
         options: [
           {
             id: 'no_formal_process_ad_hoc',
@@ -393,6 +412,8 @@ export const D_Ideation_Phase_FLow = {
         label: 'Have you officially registered your company?',
         required: true,
         nextField: null,
+        validation:
+          'z.string().min(1, "Company registration information is required")',
         options: [
           {
             id: 'no_and_no_plans',
@@ -424,6 +445,8 @@ export const D_Ideation_Phase_FLow = {
           'Do you have an internal document outlining team responsibilities and department structures?',
         required: true,
         nextField: null,
+        validation:
+          'z.string().min(1, "Team responsibilities information is required")',
         options: [
           {
             id: 'no_formal_documentation',
@@ -455,6 +478,7 @@ export const D_Ideation_Phase_FLow = {
           'Have you set KPIs (Key Performance Indicators) for each founder/team member?',
         required: true,
         nextField: null,
+        validation: 'z.string().min(1, "KPIs information is required")',
         options: [
           {
             id: 'no_kpis',
@@ -486,6 +510,8 @@ export const D_Ideation_Phase_FLow = {
           'Is there a structured decision-making process for major company decisions?',
         required: true,
         nextField: null,
+        validation:
+          'z.string().min(1, "Decision making process information is required")',
         options: [
           {
             id: 'no_structured_process',
@@ -517,6 +543,8 @@ export const D_Ideation_Phase_FLow = {
           'How often does your team formally meet to discuss progress and strategy?',
         required: true,
         nextField: null,
+        validation:
+          'z.string().min(1, "Meeting frequency information is required")',
         options: [
           {
             id: 'no_formal_meetings',
@@ -547,6 +575,7 @@ export const D_Ideation_Phase_FLow = {
         label: 'Do you have a dedicated workspace for your team?',
         required: true,
         nextField: null,
+        validation: 'z.string().min(1, "Workspace information is required")',
         options: [
           {
             id: 'no_dedicated_workspace',
@@ -579,6 +608,7 @@ export const D_Ideation_Phase_FLow = {
           'Have you legally defined ownership and equity distribution among founders?',
         required: true,
         nextField: null,
+        validation: 'z.string().min(1, "Ownership information is required")',
         options: [
           {
             id: 'no_discussions_yet',
@@ -610,6 +640,7 @@ export const D_Ideation_Phase_FLow = {
           'Have you identified key external partnerships or suppliers essential to your business?',
         required: true,
         nextField: null,
+        validation: 'z.string().min(1, "Partnerships information is required")',
         options: [
           {
             id: 'no_external_partnerships_yet',
@@ -641,6 +672,8 @@ export const D_Ideation_Phase_FLow = {
           'Do you have a contingency plan in case a founder leaves or steps down?',
         required: true,
         nextField: null,
+        validation:
+          'z.string().min(1, "Contingency plan information is required")',
         options: [
           {
             id: 'no_plan_in_place',

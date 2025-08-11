@@ -13,6 +13,7 @@ export const D_Early_VC_Flow = {
           'Does the company have a formal and documented organizational chart?',
         required: true,
         nextField: null,
+        validation: 'z.string().min(1, "This field is required")',
         options: [
           {
             id: 'no_formal_chart',
@@ -45,6 +46,7 @@ export const D_Early_VC_Flow = {
           'How often is the organizational structure reviewed and updated?',
         required: true,
         nextField: null,
+        validation: 'z.string().min(1, "This field is required")',
         options: [
           {
             id: 'no_structured_review',
@@ -76,6 +78,7 @@ export const D_Early_VC_Flow = {
           'How many management layers exist between entry-level employees and the CEO?',
         required: true,
         nextField: null,
+        validation: 'z.string().min(1, "This field is required")',
         options: [
           {
             id: '5_plus_layers',
@@ -107,6 +110,7 @@ export const D_Early_VC_Flow = {
           'Does each department report directly to its respective C-level executive?',
         required: true,
         nextField: null,
+        validation: 'z.string().min(1, "This field is required")',
         options: [
           {
             id: 'no_clear_reporting',
@@ -138,6 +142,7 @@ export const D_Early_VC_Flow = {
           'Which of the following C-level executives are present in the company? (Select all that apply)',
         required: true,
         nextField: null,
+        validation: 'z.string().min(1, "This field is required")',
         options: [
           {
             id: 'ceo',
@@ -216,6 +221,7 @@ export const D_Early_VC_Flow = {
         label: 'What is their highest level of education?',
         required: true,
         nextField: null,
+        validation: 'z.string().min(1, "This field is required")',
         options: [
           {
             id: 'no_formal_degree',
@@ -251,6 +257,7 @@ export const D_Early_VC_Flow = {
           'How many years of experience does this C-level executive have in their respective field?',
         required: true,
         nextField: null,
+        validation: 'z.string().min(1, "This field is required")',
         options: [
           {
             id: 'less_than_3_years',
@@ -286,6 +293,7 @@ export const D_Early_VC_Flow = {
           'Has this executive previously held a leadership role in a startup or high-growth company?',
         required: true,
         nextField: null,
+        validation: 'z.string().min(1, "This field is required")',
         options: [
           {
             id: 'no_prior_leadership',
@@ -316,6 +324,7 @@ export const D_Early_VC_Flow = {
         label: 'What is their industry experience?',
         required: true,
         nextField: null,
+        validation: 'z.string().min(1, "This field is required")',
         options: [
           {
             id: 'no_relevant_industry',
@@ -347,6 +356,7 @@ export const D_Early_VC_Flow = {
           'Does this executive participate in investor relations and board meetings?',
         required: true,
         nextField: null,
+        validation: 'z.string().min(1, "This field is required")',
         options: [
           {
             id: 'only_ceo_interacts',
@@ -377,6 +387,7 @@ export const D_Early_VC_Flow = {
         label: 'How involved is this executive in strategic decision-making?',
         required: true,
         nextField: null,
+        validation: 'z.string().min(1, "This field is required")',
         options: [
           {
             id: 'minimal_involvement',
@@ -408,6 +419,8 @@ export const D_Early_VC_Flow = {
         required: false,
         nextField: null,
         acceptedTypes: ['.pdf'],
+        validation:
+          'z.string().optional().refine((val) => !val || val.endsWith(".pdf") || val.includes("pdf"), "File must be a PDF format")',
       },
     },
     nextNode: 'formally-established-departments',
@@ -425,6 +438,7 @@ export const D_Early_VC_Flow = {
           'Which of the following departments are formally established in your company? (Select all that apply)',
         required: true,
         nextField: null,
+        validation: 'z.string().min(1, "This field is required")',
         options: [
           {
             id: 'marketing_growth',
@@ -519,6 +533,7 @@ export const D_Early_VC_Flow = {
         label: 'What is their highest level of education?',
         required: true,
         nextField: null,
+        validation: 'z.string().min(1, "This field is required")',
         options: [
           {
             id: 'no_formal_degree',
@@ -554,6 +569,7 @@ export const D_Early_VC_Flow = {
           'How many years of experience does the department head have in this function?',
         required: true,
         nextField: null,
+        validation: 'z.string().min(1, "This field is required")',
         options: [
           {
             id: 'less_than_3_years',
@@ -589,6 +605,7 @@ export const D_Early_VC_Flow = {
           'Has this department head previously worked in a startup or high-growth company?',
         required: true,
         nextField: null,
+        validation: 'z.string().min(1, "This field is required")',
         options: [
           {
             id: 'no_prior_startup',
@@ -619,6 +636,7 @@ export const D_Early_VC_Flow = {
         label: 'How many employees currently work in this department?',
         required: true,
         nextField: null,
+        validation: 'z.string().min(1, "This field is required")',
         options: [
           {
             id: '1_to_3_employees',
@@ -654,6 +672,7 @@ export const D_Early_VC_Flow = {
           'What percentage of employees in this department have 5+ years of experience in their field?',
         required: true,
         nextField: null,
+        validation: 'z.string().min(1, "This field is required")',
         options: [
           {
             id: 'less_than_20_percent',
@@ -685,6 +704,7 @@ export const D_Early_VC_Flow = {
           'How frequently does this department conduct performance reviews?',
         required: true,
         nextField: null,
+        validation: 'z.string().min(1, "This field is required")',
         options: [
           {
             id: 'no_structured_evaluation',
@@ -720,6 +740,7 @@ export const D_Early_VC_Flow = {
           'Does this department use dedicated tools/software to manage workflows?',
         required: true,
         nextField: null,
+        validation: 'z.string().min(1, "This field is required")',
         options: [
           {
             id: 'no_specialized_tools',
@@ -751,6 +772,7 @@ export const D_Early_VC_Flow = {
           'Does this department have documented processes for its core functions?',
         required: true,
         nextField: null,
+        validation: 'z.string().min(1, "This field is required")',
         options: [
           {
             id: 'no_formal_documentation',
@@ -783,6 +805,7 @@ export const D_Early_VC_Flow = {
         label: 'How often are departmental processes reviewed and updated?',
         required: true,
         nextField: null,
+        validation: 'z.string().min(1, "This field is required")',
         options: [
           {
             id: 'never_informally',
@@ -818,6 +841,7 @@ export const D_Early_VC_Flow = {
           'How are bottlenecks in workflows typically identified and resolved?',
         required: true,
         nextField: null,
+        validation: 'z.string().min(1, "This field is required")',
         options: [
           {
             id: 'no_structured_method',
@@ -849,6 +873,7 @@ export const D_Early_VC_Flow = {
           'Does each department have clear ownership of KPIs and performance metrics?',
         required: true,
         nextField: null,
+        validation: 'z.string().min(1, "This field is required")',
         options: [
           {
             id: 'no_clear_kpis',
@@ -879,6 +904,7 @@ export const D_Early_VC_Flow = {
         label: 'What tools or platforms are used for internal collaboration?',
         required: true,
         nextField: null,
+        validation: 'z.string().min(1, "This field is required")',
         options: [
           {
             id: 'no_tools_unstructured',
@@ -911,6 +937,7 @@ export const D_Early_VC_Flow = {
           'Are all department heads required to submit periodic reports on performance and progress?',
         required: true,
         nextField: null,
+        validation: 'z.string().min(1, "This field is required")',
         options: [
           {
             id: 'no_formal_reporting',
@@ -942,6 +969,7 @@ export const D_Early_VC_Flow = {
           "How resilient is the company's department structure in handling rapid scaling?",
         required: true,
         nextField: null,
+        validation: 'z.string().min(1, "This field is required")',
         options: [
           {
             id: 'not_prepared_growth',

@@ -12,6 +12,8 @@ export const D_Advanced_VC_Flow = {
         label:
           'Does the company have a formal and documented organizational chart?',
         required: true,
+        validation:
+          'z.enum(["no_formal_chart", "partial_chart", "full_chart"], { required_error: "Please select an organizational chart status" })',
         options: [
           {
             id: 'no_formal_chart',
@@ -43,6 +45,8 @@ export const D_Advanced_VC_Flow = {
         label:
           'How often is the organizational structure reviewed and updated?',
         required: true,
+        validation:
+          'z.enum(["no_review", "yearly", "quarterly"], { required_error: "Please select review frequency" })',
         options: [
           { id: 'no_review', value: 'No structured review process' },
           { id: 'yearly', value: 'Once a year' },
@@ -67,6 +71,8 @@ export const D_Advanced_VC_Flow = {
         label:
           'How many management layers exist between entry-level employees and the CEO?',
         required: true,
+        validation:
+          'z.enum(["5_plus_layers", "3_to_4_layers", "1_to_2_layers"], { required_error: "Please select number of management layers" })',
         options: [
           {
             id: '5_plus_layers',
@@ -94,6 +100,8 @@ export const D_Advanced_VC_Flow = {
         label:
           'Does each department report directly to its respective C-level executive?',
         required: true,
+        validation:
+          'z.enum(["no_clear_reporting", "mixed_reporting", "direct_reporting"], { required_error: "Please select reporting structure" })',
         options: [
           {
             id: 'no_clear_reporting',
@@ -124,6 +132,8 @@ export const D_Advanced_VC_Flow = {
         label:
           'Has the company expanded into multiple business units or divisions?',
         required: true,
+        validation:
+          'z.enum(["single_entity", "partial_divisions", "clear_separation"], { required_error: "Please select business units expansion status" })',
         options: [
           {
             id: 'single_entity',
@@ -154,6 +164,8 @@ export const D_Advanced_VC_Flow = {
         label:
           'Does each department have a middle management layer separate from senior leadership?',
         required: true,
+        validation:
+          'z.enum(["no_middle_management", "some_middle_management", "structured_middle_management"], { required_error: "Please select middle management structure" })',
         options: [
           {
             id: 'no_middle_management',
@@ -184,6 +196,8 @@ export const D_Advanced_VC_Flow = {
         label:
           'Which of the following C-level executives are present in the company? (Select all that apply)',
         required: true,
+        validation:
+          'z.array(z.enum(["ceo", "coo", "cfo", "cto", "cmo", "cpo", "cro", "chro", "clo", "other"])).min(1, "Please select at least one C-level executive")',
         options: [
           { id: 'ceo', value: 'Chief Executive Officer (CEO)' },
           { id: 'coo', value: 'Chief Operating Officer (COO)' },
@@ -203,6 +217,8 @@ export const D_Advanced_VC_Flow = {
         type: FieldType.Dropdown,
         label: 'How many C-level executives are present in the company?',
         required: true,
+        validation:
+          'z.enum(["no_c_level", "1_to_2", "3_to_5", "6_to_8", "9_plus"], { required_error: "Please select number of C-level executives" })',
         options: [
           { id: 'no_c_level', value: 'No formal C-level structure yet' },
           { id: '1_to_2', value: '1-2 C-level executives' },
@@ -225,6 +241,8 @@ export const D_Advanced_VC_Flow = {
         type: FieldType.Dropdown,
         label: 'What is their highest level of education?',
         required: true,
+        validation:
+          'z.enum(["no_degree", "bachelors", "masters", "phd"], { required_error: "Please select education level" })',
         options: [
           { id: 'no_degree', value: 'No formal degree' },
           { id: 'bachelors', value: "Bachelor's degree" },
@@ -239,6 +257,8 @@ export const D_Advanced_VC_Flow = {
         label:
           'How many years of experience does this C-level executive have in their respective field?',
         required: true,
+        validation:
+          'z.enum(["less_than_3_years", "3_to_5_years", "6_to_10_years", "10_plus_years"], { required_error: "Please select years of experience" })',
         options: [
           { id: 'less_than_3_years', value: 'Less than 3 years' },
           { id: '3_to_5_years', value: '3-5 years' },
@@ -253,6 +273,8 @@ export const D_Advanced_VC_Flow = {
         label:
           'Has this executive previously held a leadership role in a startup or high-growth company?',
         required: true,
+        validation:
+          'z.enum(["no_prior_leadership", "some_leadership_exposure", "previous_leadership_role"], { required_error: "Please select startup leadership experience" })',
         options: [
           {
             id: 'no_prior_leadership',
@@ -274,6 +296,8 @@ export const D_Advanced_VC_Flow = {
         type: FieldType.Dropdown,
         label: 'What is their industry experience?',
         required: true,
+        validation:
+          'z.enum(["no_relevant_experience", "some_industry_exposure", "5_plus_years_experience"], { required_error: "Please select industry experience level" })',
         options: [
           {
             id: 'no_relevant_experience',
@@ -296,6 +320,8 @@ export const D_Advanced_VC_Flow = {
         label:
           'Does this executive participate in investor relations and board meetings?',
         required: true,
+        validation:
+          'z.enum(["no_investor_interaction", "occasional_involvement", "regularly_engages"], { required_error: "Please select investor relations participation level" })',
         options: [
           {
             id: 'no_investor_interaction',
@@ -317,6 +343,8 @@ export const D_Advanced_VC_Flow = {
         type: FieldType.Dropdown,
         label: 'How involved is this executive in strategic decision-making?',
         required: true,
+        validation:
+          'z.enum(["minimal_involvement", "some_input", "fully_engaged"], { required_error: "Please select strategic decision involvement level" })',
         options: [
           {
             id: 'minimal_involvement',
@@ -347,6 +375,8 @@ export const D_Advanced_VC_Flow = {
         label:
           'Which of the following departments are formally established in your company? (Select all that apply)',
         required: true,
+        validation:
+          'z.array(z.enum(["marketing_growth", "sales_dev", "finance_accounting", "procurement_supply_chain", "legal_compliance", "hr", "data_analytics", "customer_support", "tech_it", "product_management", "software_dev", "ops_logistics", "r_and_d", "other"])).min(1, "Please select at least one established department")',
         options: [
           { id: 'marketing_growth', value: 'Marketing & Growth' },
           { id: 'sales_dev', value: 'Sales & Business Development' },
@@ -376,6 +406,8 @@ export const D_Advanced_VC_Flow = {
         type: FieldType.Dropdown,
         label: 'How many departments are formally established?',
         required: true,
+        validation:
+          'z.enum(["less_than_3", "3_to_4", "5_to_6", "7_to_9", "10_plus"], { required_error: "Please select number of departments" })',
         options: [
           { id: 'less_than_3', value: 'Less than 3 departments' },
           { id: '3_to_4', value: '3-4 departments' },
@@ -391,6 +423,8 @@ export const D_Advanced_VC_Flow = {
         label:
           'What is the highest level of education for the department head?',
         required: true,
+        validation:
+          'z.enum(["no_degree", "bachelors", "masters", "phd"], { required_error: "Please select department head education level" })',
         options: [
           { id: 'no_degree', value: 'No formal degree' },
           { id: 'bachelors', value: "Bachelor's degree" },
@@ -405,6 +439,8 @@ export const D_Advanced_VC_Flow = {
         label:
           'How many years of experience does the department head have in this function?',
         required: true,
+        validation:
+          'z.enum(["less_than_3_years", "3_to_5_years", "6_to_10_years", "10_plus_years"], { required_error: "Please select department head experience level" })',
         options: [
           { id: 'less_than_3_years', value: 'Less than 3 years' },
           { id: '3_to_5_years', value: '3-5 years' },
@@ -419,6 +455,8 @@ export const D_Advanced_VC_Flow = {
         label:
           'Has this department head previously worked in a startup or high-growth company?',
         required: true,
+        validation:
+          'z.enum(["no_startup_experience", "some_exposure", "extensive_startup_experience"], { required_error: "Please select department head startup experience" })',
         options: [
           {
             id: 'no_startup_experience',
@@ -440,6 +478,8 @@ export const D_Advanced_VC_Flow = {
         type: FieldType.Dropdown,
         label: 'How many employees currently work in this department?',
         required: true,
+        validation:
+          'z.enum(["1_to_3_employees", "4_to_7_employees", "8_to_12_employees", "13_plus_employees"], { required_error: "Please select department team size" })',
         options: [
           { id: '1_to_3_employees', value: '1-3 employees' },
           { id: '4_to_7_employees', value: '4-7 employees' },
@@ -454,6 +494,8 @@ export const D_Advanced_VC_Flow = {
         label:
           'What percentage of employees in this department have 5+ years of experience in their field?',
         required: true,
+        validation:
+          'z.enum(["less_than_20_percent", "20_to_50_percent", "more_than_50_percent"], { required_error: "Please select experienced employees percentage" })',
         options: [
           { id: 'less_than_20_percent', value: 'Less than 20%' },
           { id: '20_to_50_percent', value: '20-50%' },
@@ -467,6 +509,8 @@ export const D_Advanced_VC_Flow = {
         label:
           'How frequently does this department conduct performance reviews?',
         required: true,
+        validation:
+          'z.enum(["no_reviews", "yearly", "bi_annually", "quarterly"], { required_error: "Please select performance review frequency" })',
         options: [
           {
             id: 'no_reviews',
@@ -484,6 +528,8 @@ export const D_Advanced_VC_Flow = {
         label:
           'Does this department use dedicated tools/software to manage workflows?',
         required: true,
+        validation:
+          'z.enum(["no_tools", "some_tools", "fully_equipped"], { required_error: "Please select workflow tools usage level" })',
         options: [
           {
             id: 'no_tools',
@@ -506,6 +552,8 @@ export const D_Advanced_VC_Flow = {
         label:
           'Does this department have documented processes for its core functions?',
         required: true,
+        validation:
+          'z.enum(["no_documentation", "some_documentation", "fully_documented"], { required_error: "Please select process documentation level" })',
         options: [
           {
             id: 'no_documentation',
@@ -529,6 +577,8 @@ export const D_Advanced_VC_Flow = {
         type: FieldType.Dropdown,
         label: 'How often are departmental processes reviewed and updated?',
         required: true,
+        validation:
+          'z.enum(["never", "yearly", "bi_annually", "quarterly"], { required_error: "Please select process review frequency" })',
         options: [
           { id: 'never', value: 'Never or informally reviewed' },
           { id: 'yearly', value: 'Once a year' },
@@ -543,6 +593,8 @@ export const D_Advanced_VC_Flow = {
         label:
           'How are bottlenecks in workflows typically identified and resolved?',
         required: true,
+        validation:
+          'z.enum(["no_method", "informal_discussions", "data_driven"], { required_error: "Please select bottleneck resolution method" })',
         options: [
           {
             id: 'no_method',
@@ -573,6 +625,8 @@ export const D_Advanced_VC_Flow = {
         label:
           'Does each department have clear ownership of KPIs and performance metrics?',
         required: true,
+        validation:
+          'z.enum(["no_kpis", "some_kpis", "clear_kpis"], { required_error: "Please select KPIs ownership level" })',
         options: [
           {
             id: 'no_kpis',
@@ -602,6 +656,8 @@ export const D_Advanced_VC_Flow = {
         type: FieldType.Dropdown,
         label: 'What tools or platforms are used for internal collaboration?',
         required: true,
+        validation:
+          'z.enum(["no_tools", "some_tools", "centralized_tools"], { required_error: "Please select collaboration tools level" })',
         options: [
           {
             id: 'no_tools',
@@ -633,6 +689,8 @@ export const D_Advanced_VC_Flow = {
         label:
           'Are all department heads required to submit periodic reports on performance and progress?',
         required: true,
+        validation:
+          'z.enum(["no_reporting", "some_reporting", "structured_reporting"], { required_error: "Please select reporting system level" })',
         options: [
           {
             id: 'no_reporting',
@@ -663,6 +721,8 @@ export const D_Advanced_VC_Flow = {
         label:
           "How resilient is the company's department structure in handling rapid scaling?",
         required: true,
+        validation:
+          'z.enum(["not_prepared", "partially_scalable", "structured_for_scalability"], { required_error: "Please select scalability resilience level" })',
         options: [
           {
             id: 'not_prepared',
@@ -694,6 +754,8 @@ export const D_Advanced_VC_Flow = {
         label:
           'How well-defined are the career progression paths within each department?',
         required: true,
+        validation:
+          'z.enum(["no_growth_plans", "some_structure", "clear_paths"], { required_error: "Please select career progression structure level" })',
         options: [
           {
             id: 'no_growth_plans',
@@ -725,6 +787,8 @@ export const D_Advanced_VC_Flow = {
         label:
           'How frequently are internal promotions vs. external hires made for leadership roles?',
         required: true,
+        validation:
+          'z.enum(["mostly_external", "mix_internal_external", "mostly_internal"], { required_error: "Please select hiring pattern" })',
         options: [
           {
             id: 'mostly_external',
@@ -756,6 +820,8 @@ export const D_Advanced_VC_Flow = {
         label:
           'Are interdepartmental workflows optimized for multi-location or global operations?',
         required: true,
+        validation:
+          'z.enum(["no_global_ops", "some_structure", "fully_structured"], { required_error: "Please select global operations optimization level" })',
         options: [
           {
             id: 'no_global_ops',
@@ -786,6 +852,8 @@ export const D_Advanced_VC_Flow = {
         label:
           'Does the company have a dedicated compliance or risk management department?',
         required: true,
+        validation:
+          'z.enum(["no_compliance", "some_oversight", "dedicated_team"], { required_error: "Please select compliance and risk management level" })',
         options: [
           {
             id: 'no_compliance',
@@ -816,6 +884,8 @@ export const D_Advanced_VC_Flow = {
         label:
           'How frequently does the company restructure or optimize its departments?',
         required: true,
+        validation:
+          'z.enum(["no_review", "occasionally", "every_6_to_12_months"], { required_error: "Please select restructuring frequency" })',
         options: [
           {
             id: 'no_review',
@@ -833,5 +903,6 @@ export const D_Advanced_VC_Flow = {
         nextField: null,
       },
     },
+    nextNode: null,
   },
 };

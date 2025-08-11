@@ -16,12 +16,12 @@ import { Flow } from '../../types/Flow';
 import { RcbEvent } from '../../constants/RcbEvent';
 import { usePathsContext } from '../../context/PathsContext';
 
-import { validateUserInput } from '@/components/validations/validateInput';
 import { useFlowStore } from '@/components/data/ZustandStores/MainFlowStore';
 import { useSubFlowStore } from '@/components/data/ZustandStores/InjectedFlowStore';
 import { ChartFormUseFlowStore } from '@/components/data/ZustandStores/ChartFormFlowStore';
-import { file } from 'zod';
+
 import { FormField } from '@/components/data/MainFlow/flow';
+import { handleValidate } from '@/components/validations/validateInput';
 
 const {
   getCurrentField,
@@ -159,7 +159,7 @@ export const useSubmitInputInternal = () => {
       const block = (flowRef.current as Flow)[currPath];
       if (!block) return;
 
-      // Select the correct field based on injection type
+      //check if the node have any validation object... if not don't validate... just send input to chat.
       let field: FormField | undefined | null;
 
       if (isInFlowFunc && currentFlowController) {
@@ -172,20 +172,16 @@ export const useSubmitInputInternal = () => {
         field = getCurrentField();
       }
 
-      if (!field) {
-        console.warn(`No field found for validation at path: ${currPath}`);
-        return;
+      // Run validation and stop if invalid
+      if (field?.validation) {
+        const isValid = handleValidate(userInput);
+        if (!isValid.success) {
+          showToast(`Validation Error: ${isValid.error}`);
+          console.warn('Validation failed. Message not sent.');
+          return;
+        }
       }
 
-      // Validate user input before continuing
-      const validation = validateUserInput(userInput, field);
-
-      if (!validation.success) {
-        showToast(`Validation Error: ${validation.error}`);
-        return; // 🚫 Stop execution if validation fails
-      }
-
-      console.log('input validated successfully');
       // Send user message into chat body
       if (sendUserInput) {
         await handleSendUserInput(userInput);
@@ -280,7 +276,6 @@ export const useSubmitInputInternal = () => {
       getCurrentField,
       getCurrentChartFormField,
       getCurrentSubFlowField,
-      validateUserInput,
     ],
   );
 
