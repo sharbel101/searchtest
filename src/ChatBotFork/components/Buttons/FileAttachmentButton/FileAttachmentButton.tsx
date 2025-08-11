@@ -253,6 +253,7 @@ const FileAttachmentButton = ({
           if (settings.fileAttachment?.showMediaDisplay) {
             const fileDetails = await getMediaFileDetails(file);
             if (fileDetails.fileType && fileDetails.fileUrl) {
+              //TODO, if validairon failed it should neither if client side, upload nor inject, or upload then delete
               await injectMessage(<div />, 'USER');
             }
           }

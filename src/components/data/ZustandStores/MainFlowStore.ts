@@ -38,8 +38,8 @@ interface FlowState {
 
 //useMainFlowStore
 export const useFlowStore = create<FlowState>((set, get) => ({
-  currentSectionId: 'nda',
-  currentFieldId: 'companiesNDAForm',
+  currentSectionId: 'portfolio', // 'nda',
+  currentFieldId: 'industry',
 
   CurrentInjectionType: '',
 

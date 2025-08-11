@@ -93,13 +93,13 @@ const chatFlow: ChatFlow = {
         nextField: 'industry',
       },
       industry: {
-        id: 'industry-type',
+        id: 'industry',
         type: FieldType.Dropdown,
         label: 'Industry',
         options: [
-          { id: 'general', value: 'General' },
-          { id: 'specific', value: 'Specific' },
-          { id: 'other', value: 'Other' },
+          { id: 'general', value: 'general' },
+          { id: 'specific', value: 'specific' },
+          { id: 'other', value: 'other' },
         ],
         required: true,
         description: 'Select industry type (input details for "Other").',

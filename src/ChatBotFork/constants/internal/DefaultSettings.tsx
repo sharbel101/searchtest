@@ -175,7 +175,7 @@ export const DefaultSettings: Settings = {
   fileAttachment: {
     disabled: false,
     multiple: true,
-    accept: '.png',
+    accept: '.png, .jpg, .jpeg, .gif, .pdf, .docx, .xlsx, .txt',
     icon: '/attach-svgrepo-com.svg',
     iconDisabled: '/attach-off-svgrepo-com.svg',
     sendFileName: true,

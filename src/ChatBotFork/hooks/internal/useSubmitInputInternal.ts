@@ -159,27 +159,13 @@ export const useSubmitInputInternal = () => {
       const block = (flowRef.current as Flow)[currPath];
       if (!block) return;
 
-      //check if the node have any validation object... if not don't validate... just send input to chat.
-      let field: FormField | undefined | null;
-
-      if (isInFlowFunc && currentFlowController) {
-        if (CurrentInjectionType === 'ChartForm') {
-          field = getCurrentChartFormField();
-        } else if (CurrentInjectionType === 'OriginalSubFlow') {
-          field = getCurrentSubFlowField();
-        }
-      } else {
-        field = getCurrentField();
-      }
-
       // Run validation and stop if invalid
-      if (field?.validation) {
-        const isValid = handleValidate(userInput);
-        if (!isValid.success) {
-          showToast(`Validation Error: ${isValid.error}`);
-          console.warn('Validation failed. Message not sent.');
-          return;
-        }
+      console.log('Validating user input:', userInput);
+      const isValid = handleValidate(userInput);
+      if (!isValid.success) {
+        showToast(`Validation Error: ${isValid.error}`);
+        console.warn('Validation failed. Message not sent.');
+        return;
       }
 
       // Send user message into chat body
