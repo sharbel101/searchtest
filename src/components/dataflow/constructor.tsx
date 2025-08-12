@@ -1,11 +1,11 @@
 'use client';
 
-// import { Block } from 'react-chatbotify';
 import { chatFlow, FieldType } from './flow';
 import { useFlowStore } from './FlowStore';
 import { UploadFileHandler } from './UploadFileHandler';
 import { fetchAndSetSubFlow } from '../dataflow/dummy/FetchSubFlow';
-import MarkdownRenderer, { MarkdownRendererBlock } from '@/RCB_MarkDown';
+import { MarkdownRendererBlock } from '@/RCB_MarkDown';
+import { getDynamicText } from './openai';
 
 export const generateChatBotFlow = (): Record<
   string,
@@ -20,9 +20,8 @@ export const generateChatBotFlow = (): Record<
 
         if (allSections.length !== 0) {
           return `**Hi!** We're setting things up! _Loading..._`;
-        } else {
-          return `**No section available!** \n\n_Error..._`;
         }
+        return `**No section available!** \n\n_Error..._`;
       },
       renderMarkdown: ['BOT', 'USER'],
       path: () => {
@@ -86,7 +85,7 @@ export const generateChatBotFlow = (): Record<
           currentFlowController
         ) {
           const answers = currentFlowController.getCurrentAnswers();
-          let body = questionBody; // This will already be set by fetchAndSetSubFlow or answerQuestion
+          let body = questionBody;
 
           if (answers.length > 0) {
             body += `\n\n**Please select one of the following options:**`;
@@ -98,7 +97,10 @@ export const generateChatBotFlow = (): Record<
         }
 
         // Default fallback for other field types
-        return `**${field.label}**\n\n${field.description || `Please provide ${field.label}`}`;
+        const dynamicDescription = await getDynamicText(
+          field.description || `Please provide ${field.label}`,
+        );
+        return `**${field.label}**\n\n${dynamicDescription}`;
       },
       renderMarkdown: ['BOT', 'USER'],
       path: async (params: { userInput?: string }) => {
@@ -126,8 +128,6 @@ export const generateChatBotFlow = (): Record<
           return getCurrentSection() ? 'setup' : 'end';
         }
 
-        // Redirect to chartForm if field has flowInjection and not already in flow func
-        // We need to fetch the sub flow before redirecting to chartform
         if (
           field.type === FieldType.FlowFunc &&
           field.flowInjection &&
@@ -138,10 +138,6 @@ export const generateChatBotFlow = (): Record<
           return 'chartForm';
         }
 
-        //HERE WE CAN ADD THE REDIRECTION FOR SOME OTHER TYPES OF FLOW INJECTIONS
-
-        // Handle user input for an active FlowFunc within the 'loop' if not using a dedicated block
-        // (This block is for generic FlowFunc handling, if it's not a ChartForm type injection)
         if (
           field.type === FieldType.FlowFunc &&
           isInFlowFunc &&
@@ -173,7 +169,6 @@ export const generateChatBotFlow = (): Record<
           return 'loop';
         }
 
-        // Default: just move to the next field
         incrementField();
         const nextField = getCurrentField();
 
@@ -190,14 +185,11 @@ export const generateChatBotFlow = (): Record<
       file: async (params: any) => {
         const { getCurrentField } = useFlowStore.getState();
         const f = getCurrentField();
-        if (f?.type === FieldType.Dropdown) {
-          return null;
-        }
+        if (f?.type === FieldType.Dropdown) return null;
+
         if (f?.type === FieldType.File || f?.type === FieldType.Video) {
-          // Handle multiple files if present
           if (params.files && Array.isArray(params.files)) {
             for (const file of params.files) {
-              // Validate file before processing
               if (file && file instanceof File) {
                 await UploadFileHandler(file);
               } else {
@@ -223,7 +215,6 @@ export const generateChatBotFlow = (): Record<
         ) {
           return currentFlowController.getCurrentAnswers();
         }
-
         return field?.options?.map((o: { value: string }) => o.value) || [];
       },
 
@@ -237,12 +228,11 @@ export const generateChatBotFlow = (): Record<
           f?.type === FieldType.Dropdown ||
           (f?.type === FieldType.FlowFunc &&
             isInFlowFunc &&
-            currentFlowController) // Added isInFlowFunc check
+            currentFlowController)
         );
       },
     } as MarkdownRendererBlock,
 
-    // === New chartForm block dedicated for flowInjection
     chartForm: {
       message: () => {
         const {
@@ -255,25 +245,22 @@ export const generateChatBotFlow = (): Record<
         const field = getCurrentField();
 
         if (!field || !field.label) {
-          // This case should ideally not be hit if before hook works as expected for a valid field.
           return `**No more subflow fields available.**`;
         }
 
-        // If isInFlowFunc is true, it means the subflow is active and questionBody is set.
         if (isInFlowFunc && currentFlowController) {
           const answers = currentFlowController.getCurrentAnswers();
-          let body = questionBody; // Use the stored questionBody
+          let body = questionBody;
 
           if (answers.length > 0) {
             body += '\n\n**Please select one of the following options:**';
-            // The options are also rendered by the `options` prop, but including here for clarity
           }
           return `**${field.label}**\n\n${body}`;
         }
 
-        // Fallback for unexpected scenarios, or if the field type somehow changed
-        // before the 'before' hook could correctly set isInFlowFunc.
-        return `**${field.label}**\n\n${field.description || `Please provide ${field.label}`}`;
+        return `**${field.label}**\n\n${
+          field.description || `Please provide ${field.label}`
+        }`;
       },
       renderMarkdown: ['BOT', 'USER'],
       path: (params: { userInput?: string }) => {
@@ -293,7 +280,6 @@ export const generateChatBotFlow = (): Record<
 
         const field = getCurrentField();
 
-        // Safety check, though 'before' should ensure field is available
         if (!field) {
           setIsInFlowFunc(false);
           setCurrentFlowController(null);
@@ -302,7 +288,6 @@ export const generateChatBotFlow = (): Record<
           return getCurrentSection() ? 'setup' : 'end';
         }
 
-        // --- Core logic for handling user input in an active subflow ---
         if (
           isInFlowFunc &&
           currentFlowController &&
@@ -312,12 +297,10 @@ export const generateChatBotFlow = (): Record<
 
           const stageResult = currentFlowController.OnSuccess();
           if (stageResult !== 'Stage not available yet') {
-            // Subflow completed successfully
             setStage(stageResult);
             setIsInFlowFunc(false);
             setCurrentFlowController(null);
 
-            // Advance in the main flow
             incrementField();
             const nextField = getCurrentField();
 
@@ -326,36 +309,28 @@ export const generateChatBotFlow = (): Record<
               incrementSection();
               return getCurrentSection() ? 'setup' : 'end';
             }
-            return 'loop'; // Go back to the main 'loop' block
+            return 'loop';
           } else {
-            // Subflow is ongoing, update question and stay in chartForm
             setQuestionBody(currentFlowController.getCurrentQuestion());
             return 'chartForm';
           }
         }
 
-        // --- This is the key change for handling the initial display ---
-        // If we are in an active subflow (meaning 'before' has run and set it up),
-        // and there's NO user input yet for this turn, we simply stay on 'chartForm'
-        // to await user input. This prevents the immediate loop.
         if (isInFlowFunc && currentFlowController) {
           return 'chartForm';
         }
 
-        // Fallback for unexpected states. This should ideally not be hit if flow is correct.
-        // If 'before' failed or field is somehow not a flow func that routes here.
-        console.warn("Unexpected state in chartForm path. Returning 'end'.", {
+        console.warn('Unexpected state in chartForm path. Returning end.', {
           field,
           isInFlowFunc,
           currentFlowController,
         });
-        return 'end'; // Or a more appropriate error state if desired
+        return 'end';
       },
 
       options: () => {
         const { getCurrentField, currentFlowController, isInFlowFunc } =
           useFlowStore.getState();
-
         const field = getCurrentField();
 
         if (
@@ -365,7 +340,6 @@ export const generateChatBotFlow = (): Record<
         ) {
           return currentFlowController.getCurrentAnswers();
         }
-
         return field?.options?.map((o: { value: string }) => o.value) || [];
       },
 
@@ -391,10 +365,8 @@ export const generateChatBotFlow = (): Record<
         if (f?.type === FieldType.Dropdown) return null;
 
         if (f?.type === FieldType.File || f?.type === FieldType.Video) {
-          // Handle multiple files if present
           if (params.files && Array.isArray(params.files)) {
             for (const file of params.files) {
-              // Validate file before processing
               if (file && file instanceof File) {
                 await UploadFileHandler(file);
               } else {
