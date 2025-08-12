@@ -2,6 +2,7 @@ import { CSSProperties, useState, useEffect } from 'react';
 import { useSettingsContext } from '../../../context/SettingsContext';
 import { useStylesContext } from '../../../context/StylesContext';
 import { Message } from '../../../types/Message';
+import { extractKeyInfo } from '../../../../components/dataflow/openai';
 
 import './UserMessage.css';
 
@@ -15,9 +16,10 @@ const UserMessage = ({
   const { settings } = useSettingsContext();
   const { styles } = useStylesContext();
   const [showPreview, setShowPreview] = useState(false);
+  const [extractedInfo, setExtractedInfo] = useState<string>('');
 
   useEffect(() => {
-    console.log('UserMessage component mounted/updated');
+    // Component mounted/updated
   });
 
   const isStringContent = typeof message.content === 'string';
@@ -39,30 +41,48 @@ const UserMessage = ({
         /\.(pdf|png|jpe?g|gif|webp|docx?|xlsx?|pptx?|zip|txt|mp4|webm)$/i.test(
           content,
         ));
-    console.log(`[UserMessage] isFileMessage check: ${isFile}`);
     return isFile;
   };
 
   const isFile = isFileMessage();
+
+  // AI Text Extraction Logic
+  useEffect(() => {
+    const handleTextExtraction = async () => {
+      // Only process text messages (not file messages)
+      if (isStringContent && !isFile && content.length > 0) {
+        try {
+          // Log the original text
+          console.log(`📝 Original text is: ${content}`);
+
+          // Extract company name from the text
+          const extracted = await extractKeyInfo(content, 'company name');
+
+          // Log the extracted information
+          console.log(`✨ Extracted text is: ${extracted}`);
+
+          // Store in state
+          setExtractedInfo(extracted);
+        } catch (error) {
+          console.error('Error during text extraction:', error);
+        }
+      }
+    };
+
+    handleTextExtraction();
+  }, [content, isStringContent, isFile]);
 
   let fileName = '';
   let fileUrl = '';
   let fileType = '';
 
   if (isFile) {
-    console.log('🟦 [UserMessage] Message object:', message);
     const fileDataObj = (message as any).fileData;
     fileName = fileDataObj?.name || (message as any).fileName || '';
     fileUrl = fileDataObj?.previewUrl || (message as any).fileUrl || '';
 
-    console.log('🟦 [UserMessage] Extracted fileName:', fileName);
-    console.log('🟦 [UserMessage] Extracted fileUrl:', fileUrl);
-
     const mimeType = fileDataObj?.type || '';
     const ext = fileName.split('.').pop()?.toLowerCase() || '';
-
-    console.log('🟦 [UserMessage] MimeType:', mimeType);
-    console.log('🟦 [UserMessage] File extension:', ext);
 
     if (
       mimeType.startsWith('image/') ||
@@ -90,19 +110,14 @@ const UserMessage = ({
     } else {
       fileType = 'other';
     }
-    console.log('🟦 [UserMessage] Determined fileType:', fileType);
   }
 
   const isValidUrl =
     fileUrl.startsWith('http') ||
     fileUrl.startsWith('data:') ||
     fileUrl.startsWith('blob:');
-  console.log(`[UserMessage] isValidUrl check: ${isValidUrl}`);
 
   const handlePreviewToggle = () => {
-    console.log(
-      `[UserMessage] Toggling preview from ${showPreview} to ${!showPreview}`,
-    );
     setShowPreview(!showPreview);
   };
 
@@ -124,13 +139,8 @@ const UserMessage = ({
 
   const renderFilePreview = () => {
     if (!showPreview) {
-      console.log('❌ [UserMessage] Preview not shown. showPreview is false.');
       return null;
     }
-    console.log('✅ [UserMessage] Rendering file preview modal.');
-    console.log(
-      `[UserMessage] Preview for fileType: ${fileType}, fileUrl: ${fileUrl}, isValidUrl: ${isValidUrl}`,
-    );
 
     const isOfficeDoc = ['word', 'excel', 'powerpoint'].includes(fileType);
     const officeViewerUrl = `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(fileUrl)}`;
@@ -140,8 +150,6 @@ const UserMessage = ({
       fileUrl.startsWith('blob:') || fileUrl.startsWith('data:')
         ? fileUrl
         : `https://docs.google.com/gview?url=${encodeURIComponent(fileUrl)}&embedded=true`;
-
-    console.log(`[UserMessage] Processing preview for fileType: ${fileType}`);
 
     return (
       <div
@@ -173,50 +181,30 @@ const UserMessage = ({
                 src={fileUrl}
                 alt={fileName}
                 className="rcb-file-preview-image"
-                onLoad={() =>
-                  console.log('✅ [UserMessage] Image loaded successfully')
-                }
-                onError={(e) => {
-                  console.error('❌ [UserMessage] Image failed to load:', e);
-                  console.error('❌ [UserMessage] Failed URL:', fileUrl);
-                }}
               />
             ) : fileType === 'video' ? (
               <video
                 controls
                 src={fileUrl}
                 className="rcb-file-preview-video"
-                onLoadedData={() =>
-                  console.log('✅ [UserMessage] Video loaded successfully')
-                }
-                onError={(e) =>
-                  console.error('❌ [UserMessage] Video failed to load:', e)
-                }
               />
             ) : fileType === 'pdf' ? (
               <iframe
                 src={pdfViewerUrl}
                 title={fileName}
                 className="rcb-file-preview-iframe"
-                onLoad={() => console.log('✅ [UserMessage] PDF iframe loaded')}
               />
             ) : isOfficeDoc ? (
               <iframe
                 src={officeViewerUrl}
                 title={fileName}
                 className="rcb-file-preview-iframe"
-                onLoad={() =>
-                  console.log('✅ [UserMessage] Office document iframe loaded')
-                }
               />
             ) : fileType === 'text' ? (
               <iframe
                 src={fileUrl}
                 title={fileName}
                 className="rcb-file-preview-iframe"
-                onLoad={() =>
-                  console.log('✅ [UserMessage] Text file iframe loaded')
-                }
               />
             ) : (
               <div className="rcb-file-preview-unsupported">
@@ -252,10 +240,7 @@ const UserMessage = ({
                       borderRadius: '4px',
                     }}
                     onError={(e) => {
-                      console.error(
-                        '❌ [UserMessage] Thumbnail failed to load:',
-                        fileUrl,
-                      );
+                      // Thumbnail failed to load
                     }}
                   />
                 ) : (
