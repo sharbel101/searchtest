@@ -97,9 +97,9 @@ const chatFlow: ChatFlow = {
         type: FieldType.Dropdown,
         label: 'Industry',
         options: [
-          { id: 'general', value: 'general' },
-          { id: 'specific', value: 'specific' },
-          { id: 'other', value: 'other' },
+          { id: 'general', value: 'General' },
+          { id: 'specific', value: 'Specific' },
+          { id: 'other', value: 'Other' },
         ],
         required: true,
         description: 'Select industry type (input details for "Other").',
@@ -125,7 +125,7 @@ const chatFlow: ChatFlow = {
         options: [{ id: 'usa', value: 'USA' }],
         required: true,
         description: 'Select the primary country of operation.',
-        validation: 'z.string().min(1, "Country of operation is required")',
+        validation: 'c',
         nextField: 'socialMediaAccounts',
       },
       socialMediaAccounts: {
@@ -133,7 +133,7 @@ const chatFlow: ChatFlow = {
         type: FieldType.Array,
         label: 'Social Media Accounts',
         description: 'Provide URLs for social media profiles (all optional).',
-        validation: 'z.object({}).optional()',
+        validation: 'z.string().optional()',
         subFields: {
           tiktok: {
             id: 'tiktok-url',

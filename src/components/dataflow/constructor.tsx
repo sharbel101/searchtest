@@ -2,15 +2,18 @@
 
 // import { Block } from 'react-chatbotify';
 import { chatFlow, FieldType } from '../data/MainFlow/flow';
-import { useFlowStore } from '../data/ZustandStores/MainFlowStore';
+
 import { UploadFileHandler } from './UploadFileHandler';
-import { useSubFlowStore } from '../data/ZustandStores/InjectedFlowStore';
+
 import {
   fetchAndSetChartFormSubFlow,
   fetchAndSetOriginalSubFlow,
 } from './FetchSubFlow';
 import MarkdownRenderer, { MarkdownRendererBlock } from '@/RCB_MarkDown';
+
+import { useFlowStore } from '../data/ZustandStores/MainFlowStore';
 import { ChartFormUseFlowStore } from '../data/ZustandStores/ChartFormFlowStore';
+import { useSubFlowStore } from '../data/ZustandStores/InjectedFlowStore';
 
 // Type definitions for better type safety
 export type PathParams = {
@@ -287,7 +290,12 @@ export const generateChatBotFlow = (): Record<
         const { getCurrentField } = useFlowStore.getState();
         const field = getCurrentField();
 
-        if (field?.type === FieldType.Dropdown) {
+        if (
+          field?.type === FieldType.Dropdown ||
+          field?.type === FieldType.Text ||
+          field?.type === FieldType.Url ||
+          field?.type === FieldType.FlowFunc
+        ) {
           return;
         }
 
@@ -468,7 +476,14 @@ export const generateChatBotFlow = (): Record<
         const { getCurrentField } = useFlowStore.getState();
         const field = getCurrentField();
 
-        if (field?.type === FieldType.Dropdown) return;
+        if (
+          field?.type === FieldType.Dropdown ||
+          field?.type === FieldType.Text ||
+          field?.type === FieldType.Url ||
+          field?.type === FieldType.FlowFunc
+        ) {
+          return;
+        }
 
         if (field?.type === FieldType.File || field?.type === FieldType.Video) {
           // Handle multiple files if present
@@ -596,7 +611,12 @@ export const generateChatBotFlow = (): Record<
         const { getCurrentSubFlowField } = useSubFlowStore.getState();
         const field = getCurrentSubFlowField();
 
-        if (field?.type === FieldType.Dropdown) {
+        if (
+          field?.type === FieldType.Dropdown ||
+          field?.type === FieldType.Text ||
+          field?.type === FieldType.Url ||
+          field?.type === FieldType.FlowFunc
+        ) {
           return;
         }
 

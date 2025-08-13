@@ -27,7 +27,28 @@ export type Block = {
         items: Array<string>;
         sendOutput?: boolean;
         reusable?: boolean;
+      }>)
+
+    //JOE MODIFYED HERE
+    | Array<{ id: string; value: string }>
+    | ((params: Params) => Array<{ id: string; value: string }>)
+    | ((params: Params) => Promise<Array<{ id: string; value: string }>>)
+    | {
+        items: Array<{ id: string; value: string }>;
+        sendOutput?: boolean;
+        reusable?: boolean;
+      }
+    | ((params: Params) => {
+        items: Array<{ id: string; value: string }>;
+        sendOutput?: boolean;
+        reusable?: boolean;
+      })
+    | ((params: Params) => Promise<{
+        items: Array<{ id: string; value: string }>;
+        sendOutput?: boolean;
+        reusable?: boolean;
       }>);
+
   checkboxes?:
     | Array<string>
     | ((params: Params) => Array<string>)

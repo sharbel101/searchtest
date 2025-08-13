@@ -18,7 +18,11 @@ const UserOptions = ({
   options,
   path,
 }: {
-  options: { items: Array<string>; sendOutput?: boolean; reusable?: boolean };
+  options: {
+    items: Array<string> | Array<{ id: string; value: string }>;
+    sendOutput?: boolean;
+    reusable?: boolean;
+  };
   path: keyof Flow;
 }) => {
   // handles settings
@@ -90,10 +94,16 @@ const UserOptions = ({
 
   return (
     <div
-      className={`rcb-options-container ${settings.botBubble?.showAvatar ? 'rcb-options-offset' : ''}`}
+      className={`rcb-options-container ${
+        settings.botBubble?.showAvatar ? 'rcb-options-offset' : ''
+      }`}
     >
-      {options.items.map((key, index) => {
+      {options.items.map((item, index) => {
         const isHovered = hoveredElements[index] && !disabled;
+
+        // Normalize key and display value
+        const key = typeof item === 'string' ? item : item.id;
+        const displayValue = typeof item === 'string' ? item : item.value;
 
         return (
           <div
@@ -104,20 +114,19 @@ const UserOptions = ({
             onMouseLeave={() => handleMouseLeave(index)}
             onMouseDown={(event: MouseEvent) => {
               event.preventDefault();
-              if (disabled) {
-                return;
-              }
-              setDisabled(!options.reusable as boolean);
-              let sendInChat: boolean;
-              if (options.sendOutput != null) {
-                sendInChat = options.sendOutput;
-              } else {
-                sendInChat = settings.chatInput?.sendOptionOutput ?? true;
-              }
-              handleSubmitText(key, sendInChat);
+              if (disabled) return;
+
+              setDisabled(!options.reusable);
+
+              const sendInChat =
+                options.sendOutput ??
+                settings.chatInput?.sendOptionOutput ??
+                true;
+
+              handleSubmitText(displayValue, sendInChat);
             }}
           >
-            {key}
+            {displayValue}
           </div>
         );
       })}

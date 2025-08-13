@@ -20,6 +20,34 @@ import { Message } from '../../types/Message';
 
 import './ChatBotInput.css';
 
+import { useFlowStore } from '@/components/data/ZustandStores/MainFlowStore';
+import { useSubFlowStore } from '@/components/data/ZustandStores/InjectedFlowStore';
+import { ChartFormUseFlowStore } from '@/components/data/ZustandStores/ChartFormFlowStore';
+
+import { FieldType, FormField } from '@/components/data/MainFlow/flow';
+
+const {
+  getCurrentField,
+  isInFlowFunc,
+  currentFlowController,
+  CurrentInjectionType,
+} = useFlowStore.getState();
+const { getCurrentSubFlowField } = useSubFlowStore.getState();
+const { getCurrentChartFormField } = ChartFormUseFlowStore.getState();
+
+//JOE MODIFIED HERE
+function getField(): FormField | undefined | null {
+  if (isInFlowFunc && currentFlowController) {
+    if (CurrentInjectionType === 'ChartForm') {
+      return getCurrentChartFormField();
+    } else if (CurrentInjectionType === 'OriginalSubFlow') {
+      return getCurrentSubFlowField();
+    }
+  } else {
+    return getCurrentField();
+  }
+}
+
 /**
  * Contains chat input field for user to enter messages.
  *
@@ -72,7 +100,14 @@ const ChatBotInput = ({ buttons }: { buttons: React.ReactElement[] }) => {
   );
   let fileAttachmentButton = null;
   let otherButtons = buttons;
-  if (fileAttachmentButtonIndex !== -1) {
+
+  //JOE MODIFIED HERE
+  const currentField = getField();
+  if (
+    fileAttachmentButtonIndex !== -1 &&
+    (currentField?.type === FieldType.File ||
+      currentField?.type === FieldType.Video)
+  ) {
     fileAttachmentButton = (
       <FileAttachmentButton
         key="file-attachment"
@@ -80,6 +115,9 @@ const ChatBotInput = ({ buttons }: { buttons: React.ReactElement[] }) => {
       />
     );
     otherButtons = buttons.filter((button) => button.key !== 'file-attachment');
+  } else {
+    otherButtons = buttons;
+    fileAttachmentButton = null;
   }
 
   // styles for text area

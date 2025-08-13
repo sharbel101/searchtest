@@ -61,7 +61,7 @@ export const getValidationSchema = (
  * Helper to read the current FormField from the correct store/injection.
  * Extracted to avoid duplicating branching logic.
  */
-function readCurrentField(): FormField | undefined | null {
+export default function readCurrentField(): FormField | undefined | null {
   if (isInFlowFunc && currentFlowController) {
     if (CurrentInjectionType === 'ChartForm') {
       return getCurrentChartFormField();
@@ -93,14 +93,68 @@ export const handleValidate = (
     return { success: false, error: 'No field found for validation' };
   }
 
+  //This is for the input that was entered by the Input text area...
+  if (Array.isArray(field.options)) {
+    // Ensure options are of object type { id: string; value: string }
+    const validValues = field.options
+      .map((opt) => {
+        if (opt && typeof opt === 'object' && 'id' in opt && 'value' in opt) {
+          return { id: opt.id, value: opt.value };
+        }
+        return null;
+      })
+      .filter(
+        (opt): opt is { id: string; value: string } =>
+          opt !== null && !!opt.id && !!opt.value,
+      );
+
+    // Find matching option by value (user sees this on screen)
+    const matchedOption = validValues.find((opt) => opt.value === userInput);
+    //console.log("matched option: ", matchedOption);
+
+    if (!matchedOption) {
+      return {
+        success: false,
+        error: `Invalid option selected. Valid options: ${validValues
+          .map((v) => v.value)
+          .join(', ')}`,
+      };
+    }
+    try {
+      const schema = getValidationSchema(field.validation);
+      const result = schema.safeParse(matchedOption.id);
+      if (!result.success) {
+        const errorBody = result.error.issues
+          .map((issue) => issue.message)
+          .join('\n');
+
+        return {
+          success: false,
+          error: errorBody || 'Invalid',
+        };
+      } else {
+        console.log('Validated successfully!');
+        return { success: true };
+      }
+    } catch (err: any) {
+      // keep the same return shape as original but provide a slightly clearer message
+      return { success: false, error: 'Schema parsing failed' };
+    }
+  }
+
+  //This is for the input that was entered by the Input text area...
   try {
     const schema = getValidationSchema(field.validation);
     const result = schema.safeParse(userInput);
 
     if (!result.success) {
+      const errorBody = result.error.issues
+        .map((issue) => issue.message)
+        .join('\n');
+
       return {
         success: false,
-        error: result.error.issues[0]?.message || 'Invalid',
+        error: errorBody || 'Invalid',
       };
     } else {
       console.log('Validated successfully!');
