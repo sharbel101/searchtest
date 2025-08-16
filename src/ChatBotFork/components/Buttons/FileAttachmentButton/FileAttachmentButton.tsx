@@ -14,6 +14,9 @@ import { Flow } from '../../../types/Flow';
 import { RcbEvent } from '../../../constants/RcbEvent';
 
 import './FileAttachmentButton.css';
+import { handleValidate } from '@/components/validations/validateInput';
+import { FieldType } from '@/components/data/MainFlow/flow';
+import { Message } from 'react-chatbotify';
 
 interface FileWithPreview {
   file: File;
@@ -253,8 +256,21 @@ const FileAttachmentButton = ({
           if (settings.fileAttachment?.showMediaDisplay) {
             const fileDetails = await getMediaFileDetails(file);
             if (fileDetails.fileType && fileDetails.fileUrl) {
-              //TODO, if validairon failed it should neither if client side, upload nor inject, or upload then delete
-              await injectMessage(<div />, 'USER');
+              //
+              //
+              // JOE MODIFIED HERE
+              //if validairon failed it should neither if client side, upload nor inject, or upload then delete
+              const validated = handleValidate(fileDetails);
+              if (validated.success) {
+                const message: Message = {
+                  id: crypto.randomUUID(), // or however you generate IDs
+                  type: FieldType.File, // use your enum, not a string
+                  content: file, // can be a File here
+                  sender: 'USER',
+                  timestamp: Date.now().toString(),
+                };
+                await injectMessage(message, 'USER');
+              }
             }
           }
         }
@@ -289,11 +305,25 @@ const FileAttachmentButton = ({
               ? [fileWithPreview.previewUrl]
               : [],
           };
-
+          //
+          //
+          //
+          //JOE MODIFIED HERE
           // console.log('🧾 Custom file message:', fileMessage);
-
+          const validated = handleValidate(fileMessage);
+          if (validated.success) {
+            const message: Message = {
+              id: crypto.randomUUID(), // or however you generate IDs
+              type: FieldType.File, // use your enum, not a string
+              content: fileMessage, // can be a File here
+              sender: 'USER',
+              timestamp: Date.now().toString(),
+            };
+            console.log('this is the file message: ', message);
+            await injectMessage(message, 'USER');
+          }
           // Inject the custom message directly
-          await injectMessage(fileMessage as any, 'USER');
+          // await injectMessage(fileMessage as any, 'USER');
         }
 
         // Call file handler to process the files

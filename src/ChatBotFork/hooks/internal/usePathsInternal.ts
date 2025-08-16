@@ -14,6 +14,11 @@ import { useToastsInternal } from './useToastsInternal';
 import { preProcessBlock } from '../../services/BlockService/BlockService';
 import { useDispatchRcbEventInternal } from './useDispatchRcbEventInternal';
 import { Block } from '../../types/Block';
+import { useFlowStore } from '@/components/data/ZustandStores/MainFlowStore';
+import { ChartFormUseFlowStore } from '@/components/data/ZustandStores/ChartFormFlowStore';
+import { useSubFlowStore } from '@/components/data/ZustandStores/InjectedFlowStore';
+import readCurrentField from '@/components/validations/validateInput';
+import { FieldType } from '@/components/data/MainFlow/flow';
 
 /**
  * Internal custom hook to handle paths in the chatbot conversation flow.
@@ -161,7 +166,14 @@ export const usePathsInternal = () => {
         setSyncedTextAreaSensitiveMode(false);
       }
 
-      setBlockAllowsAttachment(typeof block.file === 'function');
+      //JOE MODIFIED HERE.
+      const field = readCurrentField();
+      const allowAttachment =
+        (field?.type === FieldType.File ||
+          field?.type === FieldType.Video ||
+          field?.type === FieldType.Signature) &&
+        typeof block.file === 'function';
+      setBlockAllowsAttachment(allowAttachment);
       updateTextAreaFocus(currPath);
       syncVoice(keepVoiceOnRef.current && !block.chatDisabled);
 
