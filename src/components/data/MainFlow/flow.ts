@@ -125,7 +125,8 @@ const chatFlow: ChatFlow = {
         options: [{ id: 'usa', value: 'USA' }],
         required: true,
         description: 'Select the primary country of operation.',
-        validation: 'c',
+        validation:
+          'z.enum(["usa"], { required_error: "Please select an industry type" })',
         nextField: 'socialMediaAccounts',
       },
       socialMediaAccounts: {

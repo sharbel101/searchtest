@@ -3,7 +3,7 @@ import { z, ZodSchema } from 'zod';
 import { useFlowStore } from '@/components/data/ZustandStores/MainFlowStore';
 import { useSubFlowStore } from '@/components/data/ZustandStores/InjectedFlowStore';
 import { ChartFormUseFlowStore } from '@/components/data/ZustandStores/ChartFormFlowStore';
-import { FormField } from '../data/MainFlow/flow';
+import { FieldType, FormField } from '../data/MainFlow/flow';
 import { error } from 'console';
 
 const {
@@ -83,85 +83,94 @@ export default function readCurrentField(): FormField | undefined | null {
 export const handleValidate = (
   userInput: any,
 ): { success: boolean; error?: string } => {
-  // First fetch — used by original code to check for existence of validation
   const field = readCurrentField();
 
-  // if the node have any validation object... if not don't validate... just send input to chat.
-  if (!field?.validation) return { success: true };
+  if (!field) return { success: false, error: 'No field found for validation' };
+  if (!field.validation) return { success: true }; // no validation → always pass
 
-  if (!field || !field.validation) {
-    return { success: false, error: 'No field found for validation' };
-  }
-
-  //This is for the input that was entered by the Input text area...
-  if (Array.isArray(field.options)) {
-    // Ensure options are of object type { id: string; value: string }
-    const validValues = field.options
-      .map((opt) => {
-        if (opt && typeof opt === 'object' && 'id' in opt && 'value' in opt) {
-          return { id: opt.id, value: opt.value };
-        }
-        return null;
-      })
-      .filter(
-        (opt): opt is { id: string; value: string } =>
-          opt !== null && !!opt.id && !!opt.value,
-      );
-
-    // Find matching option by value (user sees this on screen)
-    const matchedOption = validValues.find((opt) => opt.value === userInput);
-    //console.log("matched option: ", matchedOption);
-
-    if (!matchedOption) {
-      return {
-        success: false,
-        error: `Invalid option selected. Valid options: ${validValues
-          .map((v) => v.value)
-          .join(', ')}`,
-      };
-    }
-    try {
-      const schema = getValidationSchema(field.validation);
-      const result = schema.safeParse(matchedOption.id);
-      if (!result.success) {
-        const errorBody = result.error.issues
-          .map((issue) => issue.message)
-          .join('\n');
-
-        return {
-          success: false,
-          error: errorBody || 'Invalid',
-        };
-      } else {
-        console.log('Validated successfully!');
-        return { success: true };
-      }
-    } catch (err: any) {
-      // keep the same return shape as original but provide a slightly clearer message
-      return { success: false, error: 'Schema parsing failed' };
-    }
-  }
-
-  //This is for the input that was entered by the Input text area...
   try {
     const schema = getValidationSchema(field.validation);
-    const result = schema.safeParse(userInput);
 
-    if (!result.success) {
-      const errorBody = result.error.issues
-        .map((issue) => issue.message)
-        .join('\n');
+    if (
+      Array.isArray(field.options) &&
+      field.options.length !== 0 &&
+      field.type === FieldType.Dropdown
+    ) {
+      console.log('validateInput - inside the options validation');
+      const validValues = field.options
+        .map((opt) =>
+          opt && typeof opt === 'object' && 'id' in opt && 'value' in opt
+            ? { id: opt.id, value: opt.value }
+            : null,
+        )
+        .filter(
+          (opt): opt is { id: string; value: string } =>
+            !!opt?.id && !!opt.value,
+        );
 
-      return {
-        success: false,
-        error: errorBody || 'Invalid',
-      };
-    } else {
-      console.log('Validated successfully!');
+      const matchedOption = validValues.find((opt) => opt.value === userInput);
+      if (!matchedOption) {
+        return {
+          success: false,
+          error: `Invalid option selected. Valid options: ${validValues
+            .map((v) => v.value)
+            .join(', ')}`,
+        };
+      }
+
+      const result = schema.safeParse(matchedOption.id);
+      if (!result.success) {
+        return {
+          success: false,
+          error:
+            result.error.issues.map((issue) => issue.message).join('\n') ||
+            'Invalid',
+        };
+      }
       return { success: true };
     }
-  } catch (err: any) {
-    // keep the same return shape as original but provide a slightly clearer message
+
+    // File Validation here
+    if (field.type === FieldType.File) {
+      console.log('validateInput - inside the File validation');
+      let fileName: string;
+
+      if (typeof userInput === 'string') {
+        fileName = userInput;
+        console.log(
+          'validateInput - this is the file name (string): ',
+          fileName,
+        );
+      } else if (userInput instanceof File) {
+        fileName = userInput.name;
+        console.log('validateInput - this is the file name (File): ', fileName);
+      } else {
+        return { success: false, error: 'Invalid file input' };
+      }
+
+      const result = schema.safeParse(fileName);
+      if (!result.success) {
+        return {
+          success: false,
+          error:
+            result.error.issues.map((issue) => issue.message).join('\n') ||
+            'Invalid',
+        };
+      }
+      return { success: true };
+    }
+
+    // Free-text input validation (covers the case where field.options is not an array)
+    console.log('validateInput - inside the regular input validation');
+    const result = schema.safeParse(userInput);
+    if (!result.success) {
+      return {
+        success: false,
+        error: result.error.issues.map((issue) => issue.message).join('\n'),
+      };
+    }
+    return { success: true };
+  } catch {
     return { success: false, error: 'Schema parsing failed' };
   }
 };

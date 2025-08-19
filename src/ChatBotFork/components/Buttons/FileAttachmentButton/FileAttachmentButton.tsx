@@ -260,6 +260,10 @@ const FileAttachmentButton = ({
               //
               // JOE MODIFIED HERE
               //if validairon failed it should neither if client side, upload nor inject, or upload then delete
+              console.log(
+                'attachmentButton - this is the file Details',
+                fileDetails,
+              );
               const validated = handleValidate(fileDetails);
               if (validated.success) {
                 const message: Message = {
@@ -270,6 +274,7 @@ const FileAttachmentButton = ({
                   timestamp: Date.now().toString(),
                 };
                 await injectMessage(message, 'USER');
+                // await injectMessage("Hello-this is the file injected", 'USER');
               }
             }
           }
@@ -309,17 +314,40 @@ const FileAttachmentButton = ({
           //
           //
           //JOE MODIFIED HERE
-          // console.log('🧾 Custom file message:', fileMessage);
-          const validated = handleValidate(fileMessage);
+          console.log('AttachButton - Custom file message:', fileMessage);
+          const validated = handleValidate(fileMessage.content);
+          console.log('func right after handleValidate: ', validated.success);
           if (validated.success) {
-            const message: Message = {
-              id: crypto.randomUUID(), // or however you generate IDs
-              type: FieldType.File, // use your enum, not a string
-              content: fileMessage, // can be a File here
+            console.log(
+              'func right after handleValidate inside if success  ',
+              validated.success,
+            );
+            const message = {
+              id: Math.random().toString(36).substr(2, 9),
               sender: 'USER',
-              timestamp: Date.now().toString(),
+              type: 'file',
+              content: '📄 ' + fileWithPreview.file.name,
+              timestamp: new Date().toUTCString(),
+              fileData: {
+                name: fileWithPreview.file.name,
+                type: fileWithPreview.file.type,
+                size: fileWithPreview.file.size,
+                previewUrl: fileWithPreview.previewUrl,
+              },
+              attachment: {
+                url: fileWithPreview.previewUrl,
+                data: fileWithPreview.previewUrl,
+                type: fileWithPreview.file.type,
+                name: fileWithPreview.file.name,
+              },
+              tags: fileWithPreview.previewUrl
+                ? [fileWithPreview.previewUrl]
+                : [],
             };
-            console.log('this is the file message: ', message);
+            console.log(
+              'func right after message inside if success: ',
+              message,
+            );
             await injectMessage(message, 'USER');
           }
           // Inject the custom message directly
