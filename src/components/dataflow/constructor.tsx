@@ -14,6 +14,9 @@ import MarkdownRenderer, { MarkdownRendererBlock } from '@/RCB_MarkDown';
 import { useFlowStore } from '../data/ZustandStores/MainFlowStore';
 import { ChartFormUseFlowStore } from '../data/ZustandStores/ChartFormFlowStore';
 import { useSubFlowStore } from '../data/ZustandStores/InjectedFlowStore';
+import { getDynamicText } from './openai';
+import Sidebar from '../ui/Layout/SideBar';
+import { SidebarFlowStore } from '../data/ZustandStores/SideBarFlowStore';
 
 // Type definitions for better type safety
 export type PathParams = {
@@ -32,15 +35,14 @@ export const generateChatBotFlow = (): Record<
   return {
     start: {
       message: (): string => {
-        const { setSections } = useFlowStore.getState();
+        const { setSideBarSections } = SidebarFlowStore.getState();
         const allSections = Object.values(chatFlow);
-        setSections(allSections);
+        setSideBarSections(allSections);
 
         if (allSections.length !== 0) {
           return `**Hi!** We're setting things up! _Loading..._`;
-        } else {
-          return `**No section available!** \n\n_Error..._`;
         }
+        return `**No section available!** \n\n_Error..._`;
       },
       renderMarkdown: ['BOT', 'USER'] as const,
       path: (): string => {
@@ -130,7 +132,10 @@ export const generateChatBotFlow = (): Record<
         }
 
         // Default fallback for other field types
-        return `**${field.label}**\n\n${field.description || `Please provide ${field.label}`}`;
+        const dynamicDescription = await getDynamicText(
+          field.description || `Please provide ${field.label}`,
+        );
+        return `**${field.label}**\n\n${dynamicDescription}`;
       },
       renderMarkdown: ['BOT', 'USER'] as const,
       path: async (params: PathParams): Promise<string> => {
@@ -288,6 +293,7 @@ export const generateChatBotFlow = (): Record<
 
       file: async (params: FileParams): Promise<void> => {
         const { getCurrentField } = useFlowStore.getState();
+
         const field = getCurrentField();
 
         if (
@@ -301,9 +307,9 @@ export const generateChatBotFlow = (): Record<
 
         if (field?.type === FieldType.File || field?.type === FieldType.Video) {
           // Handle multiple files if present
+
           if (params.files && Array.isArray(params.files)) {
             for (const file of params.files) {
-              // Validate file before processing
               if (file && file instanceof File) {
                 await UploadFileHandler(file);
               } else {
@@ -329,13 +335,13 @@ export const generateChatBotFlow = (): Record<
         ) {
           return currentFlowController.getCurrentAnswers();
         }
-
         return field?.options?.map((o: { value: string }) => o.value) || [];
       },
 
       chatDisabled: (): boolean => {
         const { getCurrentField, currentFlowController, isInFlowFunc } =
           useFlowStore.getState();
+
         const field = getCurrentField();
 
         return Boolean(
@@ -401,6 +407,7 @@ export const generateChatBotFlow = (): Record<
         // }
 
         // Handle user input in active subflow
+
         if (
           isInFlowFunc &&
           currentFlowController &&
@@ -443,7 +450,6 @@ export const generateChatBotFlow = (): Record<
       options: (): string[] => {
         const { getCurrentField, currentFlowController, isInFlowFunc } =
           useFlowStore.getState();
-
         const field = getCurrentField();
 
         if (
@@ -453,7 +459,6 @@ export const generateChatBotFlow = (): Record<
         ) {
           return currentFlowController.getCurrentAnswers();
         }
-
         return field?.options?.map((o: { value: string }) => o.value) || [];
       },
 
@@ -489,7 +494,6 @@ export const generateChatBotFlow = (): Record<
           // Handle multiple files if present
           if (params.files && Array.isArray(params.files)) {
             for (const file of params.files) {
-              // Validate file before processing
               if (file && file instanceof File) {
                 await UploadFileHandler(file);
               } else {

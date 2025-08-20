@@ -1,181 +1,174 @@
-/* Package Globals */
-
+/* === GLOBAL CHATBOT CONTAINER (Flex Layout) === */
 .rcb-chatbot-global {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 1.5;
   z-index: 9999;
+  font-family: 'Inter', system-ui, sans-serif;
 }
 
-/* Chat Window */
-
-.rcb-chat-window {
+/* === LAYOUT: Sidebar + Chat Window (Desktop) === */
+.rcb-app-container {
   position: fixed;
   right: 20px;
   bottom: 20px;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  background-color: #fff;
-  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  border-radius: 14px;
   overflow: hidden;
+  box-shadow:
+    0 4px 24px rgba(16, 30, 54, 0.16),
+    0 1.5px 0 rgba(255, 255, 255, 0.09) inset;
+  background: #fff;
+  z-index: 9999;
+  width: 700px;
+  max-width: 98vw;
+  height: 570px;
+  max-height: 88vh;
+  min-width: 340px;
+  transition:
+    box-shadow 0.3s,
+    transform 0.25s;
+}
+
+/* === SIDEBAR === */
+.rcb-sidebar {
+  width: 240px;
+  background: linear-gradient(130deg, #f1f5fa 75%, #e7eaf0 100%);
+  border-right: 1px solid #e0e7ef;
+  box-shadow: 2px 0 8px rgba(16, 30, 54, 0.02);
   display: flex;
   flex-direction: column;
-  width: 375px;
-  height: 550px;
+  justify-content: flex-start;
+  padding: 18px 0;
+  transition: width 0.25s;
+  min-width: 200px;
+  max-width: 260px;
 }
 
-.rcb-window-embedded .rcb-chat-window {
+.rcb-sidebar-header {
+  font-weight: 700;
+  font-size: 18px;
+  color: #344256;
+  margin-bottom: 14px;
+  padding-left: 22px;
+}
+
+.rcb-sidebar-item {
+  padding: 11px 22px;
+  font-size: 16px;
+  color: #3b4151;
+  border-left: 3px solid transparent;
+  background: none;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    border-color 0.2s;
+}
+.rcb-sidebar-item:hover,
+.rcb-sidebar-item.active {
+  background: linear-gradient(90deg, #e0e7ef 70%, #e3ebfa 100%);
+  border-left: 3px solid #6366f1;
+  color: #22244a;
+}
+
+/* === MAIN CHAT WINDOW (with sidebar present) === */
+.rcb-chat-window {
+  flex: 1 1 auto;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  min-width: 290px;
+  max-width: 100vw;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 0 12px 12px 0;
+  box-shadow: none;
+}
+
+/* === EMBEDDED CHAT, if needed === */
+.rcb-window-embedded .rcb-app-container {
   position: relative;
-  opacity: 1;
-  visibility: visible;
+  box-shadow: none;
+  border-radius: 0;
   right: auto;
   bottom: auto;
+  width: 100vw;
+  max-width: 100vw;
+  height: 100vh;
+  max-height: 100vh;
 }
 
+/* === ANIMATION STATES (unchanged) === */
+.rcb-window-open .rcb-app-container,
 .rcb-window-open .rcb-chat-window {
   opacity: 1;
   visibility: visible;
   animation: rcb-animation-expand 0.3s ease-in-out forwards;
 }
-
+.rcb-window-close .rcb-app-container,
 .rcb-window-close .rcb-chat-window {
   opacity: 0;
   visibility: hidden;
   animation: rcb-animation-collapse 0.3s ease-in-out forwards;
 }
+/* (Animations code omitted for brevity, keep from previous version) */
 
-/* Animations used throughout the entire chatbot */
+/* === PREVENT MOBILE ZOOM ON INPUTS === */
+input,
+textarea,
+select,
+button {
+  font-size: 16px !important;
+}
 
-@keyframes rcb-animation-expand {
-  0% {
-    transform: translate(100%, 100%) scale(0);
-    opacity: 0;
+/* === MOBILE: Responsive (Sidebar collapses) === */
+@media (max-width: 700px) {
+  .rcb-app-container {
+    position: fixed !important;
+    inset: 0 !important;
+    left: 0 !important;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    height: 100dvh !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    max-width: 100vw !important;
+    max-height: 100dvh !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    flex-direction: column;
+    transition: none !important;
+    z-index: 10001 !important;
+    -webkit-overflow-scrolling: touch;
+    background: #fff;
   }
-  100% {
-    transform: translate(0, 0) scale(1);
-    opacity: 1;
+  .rcb-sidebar {
+    display: none !important;
+    width: 0 !important;
+    min-width: 0 !important;
+    max-width: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+  .rcb-chat-window {
+    width: 100vw !important;
+    height: 100dvh !important;
+    min-width: 0 !important;
+    max-width: 100vw !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    background: #fff;
   }
 }
 
-@keyframes rcb-animation-collapse {
-  0% {
-    transform: translate(0, 0) scale(1);
-    opacity: 1;
-  }
-  100% {
-    transform: translate(100%, 100%) scale(0);
-    opacity: 0;
-  }
-}
+/* === SIDEBAR AS OVERLAY (OPTIONAL MOBILE DRAWER, IF NEEDED) === */
+/* For advanced: create a .rcb-sidebar-mobile class, show as overlay on mobile when menu button tapped. */
 
-@keyframes rcb-animation-ping {
-  0% {
-    filter: brightness(100%);
-    opacity: 1;
-  }
-  50% {
-    filter: brightness(50%);
-    opacity: 0.8;
-  }
-}
-
-@keyframes rcb-animation-bot-message-entry {
-  0% {
-    transform: translate(-100%, 50%) scale(0);
-    opacity: 0;
-  }
-  100% {
-    transform: translate(0, 0) scale(1);
-    opacity: 1;
-  }
-}
-
-@keyframes rcb-animation-user-message-entry {
-  0% {
-    transform: translate(100%, 50%) scale(0);
-    opacity: 0;
-  }
-  100% {
-    transform: translate(0, 0) scale(1);
-    opacity: 1;
-  }
-}
-
-@keyframes rcb-animation-bot-typing {
-  0% {
-    opacity: 0.4;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0.4;
-  }
-}
-
-@keyframes rcb-animation-pop-in {
-  0% {
-    transform: scale(0.8);
-    opacity: 0;
-  }
-  70% {
-    transform: scale(1.1);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-@keyframes rcb-animations-checkboxes-entry {
-  0% {
-    transform: translateX(-100%);
-    opacity: 0;
-  }
-  100% {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-@keyframes rcb-animation-options-entry {
-  0% {
-    transform: scale(0);
-    opacity: 0;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-@keyframes rcb-animation-tooltip-in {
-  0% {
-    opacity: 0;
-    transform: translateY(-5px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes rcb-animation-tooltip-out {
-  0% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(-5px);
-  }
-}
-
-@keyframes rcb-animation-spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
+/* === OPTIONAL: Keyboard-aware adjustment for iOS/Android === */
+/* You can use a little JS to set the .rcb-app-container or .rcb-chat-window height to window.visualViewport.height for bulletproof keyboard behavior. */

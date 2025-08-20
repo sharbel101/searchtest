@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { FlowSection, FormField } from '../MainFlow/flow';
+import { SidebarFlowStore } from './SideBarFlowStore';
 
 interface FlowState {
   //for the main flow
@@ -78,6 +79,7 @@ export const useFlowStore = create<FlowState>((set, get) => ({
 
   goToNextSection: () => {
     const { sections, getCurrentSection } = get();
+    const { goToNextSideBarSection } = SidebarFlowStore.getState();
     const currentSection = getCurrentSection();
 
     if (!currentSection || !currentSection.nextNode) return 'end';
@@ -89,6 +91,7 @@ export const useFlowStore = create<FlowState>((set, get) => ({
     );
 
     if (nextSection) {
+      goToNextSideBarSection();
       set({
         currentSectionId: nextSection.sectionId,
         currentFieldId: nextSection.firstField,

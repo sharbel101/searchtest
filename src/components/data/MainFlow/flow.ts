@@ -63,7 +63,7 @@ const chatFlow: ChatFlow = {
         nextField: null,
       },
     },
-    nextNode: 'portfolio',
+    nextNode: 'investmentStage', //portfolio
   },
 
   portfolio: {
@@ -455,8 +455,6 @@ const chatFlow: ChatFlow = {
         label: 'Investment Stage',
         description: 'Answer questions to determine your investment stage',
         required: true,
-        validation:
-          'z.any().refine((val) => val !== undefined && val !== null, "Investment stage selection is required")',
         flowInjection: {
           name: 'investmentStageFlow',
           type: 'ChartForm',
