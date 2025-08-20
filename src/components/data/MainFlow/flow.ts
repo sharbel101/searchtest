@@ -63,7 +63,7 @@ const chatFlow: ChatFlow = {
         nextField: null,
       },
     },
-    nextNode: 'investmentStage', //portfolio
+    nextNode: 'portfolio', // investmentStage (for testing chart forms  replace portfolio with this)
   },
 
   portfolio: {

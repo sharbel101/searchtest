@@ -353,6 +353,14 @@ export const generateChatBotFlow = (): Record<
               currentFlowController),
         );
       },
+      transition: () => {
+        const { getCurrentField } = useFlowStore.getState();
+
+        const field = getCurrentField();
+        if (field?.type === FieldType.FlowFunc) {
+          return 750;
+        } else return null;
+      },
     } as MarkdownRendererBlock,
 
     // === ChartForm block for flowInjection ===
