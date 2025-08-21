@@ -5,7 +5,8 @@ import { useFlowStore } from './FlowStore';
 import { UploadFileHandler } from './UploadFileHandler';
 import { fetchAndSetSubFlow } from '../dataflow/dummy/FetchSubFlow';
 import { MarkdownRendererBlock } from '@/RCB_MarkDown';
-import { getDynamicText } from './openai';
+import { getDynamicText, extractKeyInfo } from './openai';
+import { saveQuestionAnswer } from './databaseService';
 
 export const generateChatBotFlow = (): Record<
   string,
@@ -126,6 +127,25 @@ export const generateChatBotFlow = (): Record<
           incrementSection();
           resetFieldIndex();
           return getCurrentSection() ? 'setup' : 'end';
+        }
+
+        // If we have user input, save it against the current question.
+        if (params.userInput !== undefined) {
+          let answerToSave = params.userInput; // Default to raw input
+
+          // If extractionType is defined for this field, extract the info
+          if (field.extractionType) {
+            answerToSave = await extractKeyInfo(
+              params.userInput,
+              field.extractionType,
+            );
+          }
+
+          // The `flowEngine` already saves the data for FlowFunc types,
+          // so we only need to save it for other types.
+          if (field.type !== FieldType.FlowFunc) {
+            saveQuestionAnswer(field.label, answerToSave); // MODIFIED: Use answerToSave
+          }
         }
 
         if (

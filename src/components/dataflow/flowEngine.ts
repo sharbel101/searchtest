@@ -1,5 +1,7 @@
 'use client';
 
+import { saveQuestionAnswer } from './databaseService';
+
 export type QuestionNode = {
   id: string;
   question: string;
@@ -28,6 +30,12 @@ export const createFlowController = (flow: FlowDefinition): FlowController => {
   };
 
   const answerQuestion = (answer: string) => {
+    const question = flow[currentNodeId]?.question;
+    if (!question) return;
+
+    // Save the question and answer to the database.
+    saveQuestionAnswer(question, answer);
+
     const answerConfig = flow[currentNodeId]?.answers?.[answer];
     if (!answerConfig) return;
 

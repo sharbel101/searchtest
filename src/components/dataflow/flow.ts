@@ -27,6 +27,7 @@ export type FormField = {
   validation?: RegExp | ((value: any) => boolean); // Optional validation rule used to validate string inputs by testing if they match a specific pattern
   subFields?: { [key: string]: FormField };
   flowInjection?: { name: string; type: string };
+  extractionType?: string; // ADDED: Optional type for AI extraction
 };
 
 // Type for flow sections, representing a group of fields
@@ -133,6 +134,7 @@ const chatFlow: ChatFlow = {
         placeholder: 'Enter company name',
         required: true,
         description: 'Provide the full legal name of the company.',
+        extractionType: 'company name',
       },
       logo: {
         id: 'company-logo',
