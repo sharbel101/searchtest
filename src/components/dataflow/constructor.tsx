@@ -14,9 +14,10 @@ import MarkdownRenderer, { MarkdownRendererBlock } from '@/RCB_MarkDown';
 import { useFlowStore } from '../data/ZustandStores/MainFlowStore';
 import { ChartFormUseFlowStore } from '../data/ZustandStores/ChartFormFlowStore';
 import { useSubFlowStore } from '../data/ZustandStores/InjectedFlowStore';
-import { getDynamicText } from './openai';
-import Sidebar from '../ui/Layout/SideBar';
+import { getDynamicText, extractKeyInfo } from './openai';
 import { SidebarFlowStore } from '../data/ZustandStores/SideBarFlowStore';
+
+import saveQuestionAnswer from './Main/UploadeAnswers';
 
 // Type definitions for better type safety
 export type PathParams = {
@@ -55,9 +56,14 @@ export const generateChatBotFlow = (): Record<
 
     setup: {
       message: (): string => {
-        const { setSections, getCurrentSection } = useFlowStore.getState();
+        const { setSections, getCurrentSection, setAllSections } =
+          useFlowStore.getState();
         const allSections = Object.values(chatFlow);
         setSections(allSections);
+        const DBsections = setAllSections();
+
+        console.log('THese are the DATABASE sections ', DBsections);
+
         const current = getCurrentSection();
 
         return current
@@ -77,13 +83,13 @@ export const generateChatBotFlow = (): Record<
         if (!current) return 'end';
 
         const fields = Object.values(current.fields);
-        console.log(
-          `Section "${current.sectionTitle}" has ${fields.length} fields`,
-        );
+        // console.log(
+        //   `Section "${current.sectionTitle}" has ${fields.length} fields`,
+        // );
 
         if (fields.length === 0) {
           // Skip empty sections
-          console.log('This section does not have fields in it...');
+          // console.log('This section does not have fields in it...');
           goToNextSection();
           const newSection = useFlowStore.getState().getCurrentSection();
           return newSection ? 'setup' : 'end';
@@ -109,8 +115,8 @@ export const generateChatBotFlow = (): Record<
         const section = getCurrentSection();
 
         // Debug logging
-        console.log('Loop - Current section:', section?.sectionTitle);
-        console.log('Loop - Current field:', field?.label);
+        // console.log('Loop - Current section:', section?.sectionTitle);
+        // console.log('Loop - Current field:', field?.label);
 
         if (!field?.label) {
           return `**No more fields in this section...**\n\n_Send me anything to jump to the next section._`;
@@ -158,38 +164,38 @@ export const generateChatBotFlow = (): Record<
         const section = getCurrentSection();
         const field = getCurrentField();
 
-        console.log('Loop path - Section:', section?.sectionTitle);
-        console.log('Loop path - Field:', field?.label);
+        // console.log('Loop path - Section:', section?.sectionTitle);
+        // console.log('Loop path - Field:', field?.label);
         // console.log('Loop path - User input:', params?.userInput);
 
         if (!section) return 'end';
 
         if (field?.nextField == null) {
           if (field?.flowInjection?.type === 'ChartForm') {
-            console.log(
-              `In this Section: ${section} and this field: ${field} we have injection of type: ${field.flowInjection.type} `,
-            );
+            // console.log(
+            //   `In this Section: ${section} and this field: ${field} we have injection of type: ${field.flowInjection.type} `,
+            // );
             await fetchAndSetChartFormSubFlow(field.flowInjection.name);
             return 'chartForm';
           }
-          console.log(
-            'No more fields in current section, moving to next section',
-          );
+          // console.log(
+          //   'No more fields in current section, moving to next section',
+          // );
 
           if (
             field?.flowInjection?.type === 'OriginalSubFlow' &&
             stage != null &&
             stage !== ''
           ) {
-            console.log(
-              `In this Section: ${section} and this field: ${field} we have injection of type: ${field.flowInjection.type} `,
-            );
+            // console.log(
+            //   `In this Section: ${section} and this field: ${field} we have injection of type: ${field.flowInjection.type} `,
+            // );
             await fetchAndSetOriginalSubFlow(field.flowInjection.name, stage);
             return 'OriginalSubFlowLoop';
           }
-          console.log(
-            'No more fields in current section, moving to next section',
-          );
+          // console.log(
+          //   'No more fields in current section, moving to next section',
+          // );
 
           //HONE I THINK IT WILL MAKE AN ERROR AT THE LAST NODE
           //lezem ghayyer enno eza ma fi nextSection return false aw null w hott if statement hone la ta3mol return lal "end"
@@ -198,14 +204,33 @@ export const generateChatBotFlow = (): Record<
           return 'setup';
         }
 
-        // Handle ChartForm flow injection
+        // If we have user input, save it against the current question.
+        if (params.userInput !== undefined) {
+          let answerToSave = params.userInput; // Default to raw input
+
+          // If extractionType is defined for this field, extract the info
+          if (field.extractionType) {
+            answerToSave = await extractKeyInfo(
+              params.userInput,
+              field.extractionType,
+            );
+          }
+
+          // The `flowEngine` already saves the data for FlowFunc types,
+          // so we only need to save it for other types.
+          if (field.type !== FieldType.FlowFunc) {
+            // console.log("This is the save Question and Answer in the constructor");
+            saveQuestionAnswer(field.label, answerToSave); // MODIFIED: Use answerToSave
+          }
+        }
+
         if (
           field.type === FieldType.FlowFunc &&
           field.flowInjection &&
           field.flowInjection.type === 'ChartForm' &&
           !isInFlowFunc
         ) {
-          console.log('Entering ChartForm flow');
+          // console.log('Entering ChartForm flow');
           await fetchAndSetChartFormSubFlow(field.flowInjection.name);
           return 'chartForm';
         }
@@ -219,7 +244,7 @@ export const generateChatBotFlow = (): Record<
           stage != null &&
           stage !== ''
         ) {
-          console.log('Entering OriginalSubFlow');
+          // console.log('Entering OriginalSubFlow');
           await fetchAndSetOriginalSubFlow(field.flowInjection.name, stage);
           return 'OriginalSubFlowLoop';
         }
@@ -273,12 +298,12 @@ export const generateChatBotFlow = (): Record<
           field.type === FieldType.Video ||
           field.type === FieldType.Dropdown
         ) {
-          console.log('Processing field and moving to next');
+          // console.log('Processing field and moving to next');
           goToNextField();
           const nextField = getCurrentField();
 
           if (!nextField) {
-            console.log('No more fields, moving to next section');
+            // console.log('No more fields, moving to next section');
             goToNextSection();
             const nextSection = getCurrentSection();
             return nextSection ? 'setup' : 'end';
@@ -579,7 +604,7 @@ export const generateChatBotFlow = (): Record<
         const subFlowField = getCurrentSubFlowField();
 
         if (!subFlowField) {
-          console.log('No SubFlowField found — returning to main flow');
+          // console.log('No SubFlowField found — returning to main flow');
 
           const mainField = goToNextField();
           if (mainField === null || mainField === undefined) {

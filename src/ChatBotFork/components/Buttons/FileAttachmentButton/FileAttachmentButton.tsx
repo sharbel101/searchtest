@@ -260,10 +260,10 @@ const FileAttachmentButton = ({
               //
               // JOE MODIFIED HERE
               //if validairon failed it should neither if client side, upload nor inject, or upload then delete
-              console.log(
-                'attachmentButton - this is the file Details',
-                fileDetails,
-              );
+              // console.log(
+              //   'attachmentButton - this is the file Details',
+              //   fileDetails,
+              // );
               const validated = handleValidate(fileDetails);
               if (validated.success) {
                 const message: Message = {
@@ -314,14 +314,14 @@ const FileAttachmentButton = ({
           //
           //
           //JOE MODIFIED HERE
-          console.log('AttachButton - Custom file message:', fileMessage);
+          // console.log('AttachButton - Custom file message:', fileMessage);
           const validated = handleValidate(fileMessage.content);
-          console.log('func right after handleValidate: ', validated.success);
+          // console.log('func right after handleValidate: ', validated.success);
           if (validated.success) {
-            console.log(
-              'func right after handleValidate inside if success  ',
-              validated.success,
-            );
+            // console.log(
+            //   'func right after handleValidate inside if success  ',
+            //   validated.success,
+            // );
             const message = {
               id: Math.random().toString(36).substr(2, 9),
               sender: 'USER',
@@ -344,10 +344,10 @@ const FileAttachmentButton = ({
                 ? [fileWithPreview.previewUrl]
                 : [],
             };
-            console.log(
-              'func right after message inside if success: ',
-              message,
-            );
+            // console.log(
+            //   'func right after message inside if success: ',
+            //   message,
+            //);
             await injectMessage(message, 'USER');
           }
           // Inject the custom message directly

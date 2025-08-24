@@ -28,13 +28,13 @@ export type FormField = {
   subFields?: { [key: string]: FormField };
   flowInjection?: { name: string; type: string };
   nextField?: string | null; //todo remove the optional
+  extractionType?: string; // ADDED: Optional type for AI extraction
 };
 
 // Type for flow sections, representing a group of fields
 export type FlowSection = {
   sectionTitle: string; // Title of the section
   sectionId: string; // Unique identifier for the section
-  opened?: boolean;
   fields: { [key: string]: FormField }; // Object of fields for a section, defining all fields like companyType or socialMediaAccounts
   firstField?: string;
   nextNode?: string | null; // ID of the next section in the flow, allowing null //todo remove the optional
@@ -81,6 +81,7 @@ const chatFlow: ChatFlow = {
         validation:
           'z.string().min(2, "Company name must be at least 2 characters").max(100, "Company name must be less than 100 characters").regex(/^[a-zA-Z0-9\\s&.,\\-\']+$/, "Company name contains invalid characters")',
         nextField: 'logo',
+        extractionType: 'company name',
       },
       logo: {
         id: 'company-logo',
@@ -127,64 +128,6 @@ const chatFlow: ChatFlow = {
         description: 'Select the primary country of operation.',
         validation:
           'z.enum(["usa"], { required_error: "Please select an industry type" })',
-        nextField: 'socialMediaAccounts',
-      },
-      socialMediaAccounts: {
-        id: 'social-media-accounts',
-        type: FieldType.Array,
-        label: 'Social Media Accounts',
-        description: 'Provide URLs for social media profiles (all optional).',
-        validation: 'z.string().optional()',
-        subFields: {
-          tiktok: {
-            id: 'tiktok-url',
-            type: FieldType.Url,
-            label: 'TikTok URL',
-            validation:
-              'z.string().url("Invalid TikTok URL").refine((val) => val.includes("tiktok.com"), "Must be a valid TikTok URL").optional().or(z.literal(""))',
-            required: false,
-          },
-          linkedin: {
-            id: 'linkedin-url',
-            type: FieldType.Url,
-            label: 'LinkedIn URL',
-            validation:
-              'z.string().url("Invalid LinkedIn URL").refine((val) => val.includes("linkedin.com"), "Must be a valid LinkedIn URL").optional().or(z.literal(""))',
-            required: false,
-          },
-          facebook: {
-            id: 'facebook-url',
-            type: FieldType.Url,
-            label: 'Facebook URL',
-            validation:
-              'z.string().url("Invalid Facebook URL").refine((val) => val.includes("facebook.com"), "Must be a valid Facebook URL").optional().or(z.literal(""))',
-            required: false,
-          },
-          instagram: {
-            id: 'instagram-url',
-            type: FieldType.Url,
-            label: 'Instagram URL',
-            validation:
-              'z.string().url("Invalid Instagram URL").refine((val) => val.includes("instagram.com"), "Must be a valid Instagram URL").optional().or(z.literal(""))',
-            required: false,
-          },
-          teams: {
-            id: 'x-url',
-            type: FieldType.Url,
-            label: 'X URL',
-            validation:
-              'z.string().url("Invalid X URL").refine((val) => val.includes("x.com") || val.includes("twitter.com"), "Must be a valid X/Twitter URL").optional().or(z.literal(""))',
-            required: false,
-          },
-          others: {
-            id: 'other-url',
-            type: FieldType.Url,
-            label: 'Other URL',
-            validation:
-              'z.string().url("Invalid URL format").optional().or(z.literal(""))',
-            required: false,
-          },
-        },
         nextField: 'mainWebsite',
       },
       mainWebsite: {
@@ -198,8 +141,65 @@ const chatFlow: ChatFlow = {
           'z.string().url("Invalid website URL").optional().or(z.literal(""))',
       },
     },
+    nextNode: 'socialMedia',
+  },
+  socialMedia: {
+    sectionTitle: 'Social Media Accounts',
+    sectionId: 'social-media-accounts',
+    firstField: 'tiktok',
+    fields: {
+      tiktok: {
+        id: 'tiktok-url',
+        type: FieldType.Url,
+        label: 'TikTok URL',
+        validation:
+          'z.string().url("Invalid TikTok URL").refine((val) => val.includes("tiktok.com"), "Must be a valid TikTok URL").optional().or(z.literal(""))',
+        required: false,
+      },
+      linkedin: {
+        id: 'linkedin-url',
+        type: FieldType.Url,
+        label: 'LinkedIn URL',
+        validation:
+          'z.string().url("Invalid LinkedIn URL").refine((val) => val.includes("linkedin.com"), "Must be a valid LinkedIn URL").optional().or(z.literal(""))',
+        required: false,
+      },
+      facebook: {
+        id: 'facebook-url',
+        type: FieldType.Url,
+        label: 'Facebook URL',
+        validation:
+          'z.string().url("Invalid Facebook URL").refine((val) => val.includes("facebook.com"), "Must be a valid Facebook URL").optional().or(z.literal(""))',
+        required: false,
+      },
+      instagram: {
+        id: 'instagram-url',
+        type: FieldType.Url,
+        label: 'Instagram URL',
+        validation:
+          'z.string().url("Invalid Instagram URL").refine((val) => val.includes("instagram.com"), "Must be a valid Instagram URL").optional().or(z.literal(""))',
+        required: false,
+      },
+      teams: {
+        id: 'x-url',
+        type: FieldType.Url,
+        label: 'X URL',
+        validation:
+          'z.string().url("Invalid X URL").refine((val) => val.includes("x.com") || val.includes("twitter.com"), "Must be a valid X/Twitter URL").optional().or(z.literal(""))',
+        required: false,
+      },
+      others: {
+        id: 'other-url',
+        type: FieldType.Url,
+        label: 'Other URL',
+        validation:
+          'z.string().url("Invalid URL format").optional().or(z.literal(""))',
+        required: false,
+      },
+    },
     nextNode: 'foundingTeam',
   },
+
   foundingTeam: {
     sectionTitle: 'Founding Team',
     sectionId: 'foundingTeam',

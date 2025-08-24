@@ -96,7 +96,7 @@ export const handleValidate = (
       field.options.length !== 0 &&
       field.type === FieldType.Dropdown
     ) {
-      console.log('validateInput - inside the options validation');
+      //console.log('validateInput - inside the options validation');
       const validValues = field.options
         .map((opt) =>
           opt && typeof opt === 'object' && 'id' in opt && 'value' in opt
@@ -132,18 +132,18 @@ export const handleValidate = (
 
     // File Validation here
     if (field.type === FieldType.File) {
-      console.log('validateInput - inside the File validation');
+      //console.log('validateInput - inside the File validation');
       let fileName: string;
 
       if (typeof userInput === 'string') {
         fileName = userInput;
-        console.log(
-          'validateInput - this is the file name (string): ',
-          fileName,
-        );
+        // console.log(
+        //   'validateInput - this is the file name (string): ',
+        //   fileName,
+        // );
       } else if (userInput instanceof File) {
         fileName = userInput.name;
-        console.log('validateInput - this is the file name (File): ', fileName);
+        //console.log('validateInput - this is the file name (File): ', fileName);
       } else {
         return { success: false, error: 'Invalid file input' };
       }
@@ -161,7 +161,7 @@ export const handleValidate = (
     }
 
     // Free-text input validation (covers the case where field.options is not an array)
-    console.log('validateInput - inside the regular input validation');
+    // console.log('validateInput - inside the regular input validation');
     const result = schema.safeParse(userInput);
     if (!result.success) {
       return {

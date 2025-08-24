@@ -2,7 +2,6 @@ import { CSSProperties, useState, useEffect } from 'react';
 import { useSettingsContext } from '../../../context/SettingsContext';
 import { useStylesContext } from '../../../context/StylesContext';
 import { Message } from '../../../types/Message';
-import { extractKeyInfo } from '../../../../components/dataflow/openai';
 
 import './UserMessage.css';
 
@@ -16,7 +15,6 @@ const UserMessage = ({
   const { settings } = useSettingsContext();
   const { styles } = useStylesContext();
   const [showPreview, setShowPreview] = useState(false);
-  const [extractedInfo, setExtractedInfo] = useState<string>('');
 
   useEffect(() => {
     // console.log('UserMessage component mounted/updated');
@@ -47,32 +45,6 @@ const UserMessage = ({
   };
 
   const isFile = isFileMessage();
-
-  // AI Text Extraction Logic
-  useEffect(() => {
-    const handleTextExtraction = async () => {
-      // Only process text messages (not file messages)
-      if (isStringContent && !isFile && content.length > 0) {
-        try {
-          // Log the original text
-          console.log(`📝 Original text is: ${content}`);
-
-          // Extract company name from the text
-          const extracted = await extractKeyInfo(content, 'company name');
-
-          // Log the extracted information
-          console.log(`✨ Extracted text is: ${extracted}`);
-
-          // Store in state
-          setExtractedInfo(extracted);
-        } catch (error) {
-          console.error('Error during text extraction:', error);
-        }
-      }
-    };
-
-    handleTextExtraction();
-  }, [content, isStringContent, isFile]);
 
   let fileName = '';
   let fileUrl = '';
@@ -247,6 +219,8 @@ const UserMessage = ({
     );
   };
 
+  // Remove inline styles to let CSS handle the layout
+
   return (
     <>
       <div className="rcb-user-message-container">
@@ -258,21 +232,22 @@ const UserMessage = ({
             >
               <div className="rcb-user-message-file-preview">
                 {fileType === 'image' && isValidUrl ? (
-                  <img
-                    src={fileUrl}
-                    alt={fileName}
-                    className="rcb-user-message-file-thumb"
-                    style={{
-                      maxWidth: '40px',
-                      maxHeight: '40px',
-                      borderRadius: '4px',
-                    }}
-                    onError={(e) => {
-                      // Thumbnail failed to load
-                    }}
-                  />
+                  <div className="rcb-user-message-file-thumb">
+                    <img
+                      src={fileUrl}
+                      alt={fileName}
+                      style={{
+                        maxWidth: '40px',
+                        maxHeight: '40px',
+                        borderRadius: '4px',
+                      }}
+                      onError={(e) => {
+                        // Thumbnail failed to load
+                      }}
+                    />
+                  </div>
                 ) : (
-                  <span className="rcb-user-message-file-icon">
+                  <div className="rcb-user-message-file-thumb">
                     {fileType === 'pdf'
                       ? '📄'
                       : fileType === 'word'
@@ -286,16 +261,18 @@ const UserMessage = ({
                               : fileType === 'text'
                                 ? '📃'
                                 : '📎'}
-                  </span>
+                  </div>
                 )}
+                <div className="rcb-user-message-file-info">
+                  <div className="rcb-user-message-file-name">{fileName}</div>
+                </div>
+                <button
+                  className="rcb-file-preview-button"
+                  onClick={handlePreviewToggle}
+                >
+                  View
+                </button>
               </div>
-              <div className="rcb-user-message-file-name">{fileName}</div>
-              <button
-                className="rcb-file-preview-button"
-                onClick={handlePreviewToggle}
-              >
-                View
-              </button>
             </div>
           ) : isStringContent ? (
             <div
@@ -307,13 +284,15 @@ const UserMessage = ({
           ) : (
             <>{finalContent}</>
           )}
+          {showAvatar && (
+            <div
+              style={{
+                backgroundImage: `url("${settings.userBubble?.avatar}")`,
+              }}
+              className="rcb-message-user-avatar"
+            />
+          )}
         </div>
-        {showAvatar && (
-          <div
-            style={{ backgroundImage: `url("${settings.userBubble?.avatar}")` }}
-            className="rcb-message-user-avatar"
-          />
-        )}
       </div>
       {renderFilePreview()}
     </>
