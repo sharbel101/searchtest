@@ -15,7 +15,7 @@
 
   /* Added for vertical control */
   position: relative;
-  top: -44px; /* Adjust this value to move higher or lower */
+  top: -39px; /* Adjust this value to move higher or lower */
 }
 
 .rcb-file-attachment-button:hover:not(:disabled) {

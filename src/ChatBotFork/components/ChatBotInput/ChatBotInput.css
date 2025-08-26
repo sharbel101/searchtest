@@ -2,33 +2,109 @@
   display: flex;
   align-items: center;
   width: 100%;
-  padding-left: 8px; /* Optional: add left padding to the whole input area */
+  padding-left: 8px;
 }
 
 .rcb-chat-input-textarea {
   flex: 1;
-  padding: 8px;
-  border: none;
-  border-radius: 4px;
-  outline: none;
-  font-size: 16px;
-  resize: none;
-  height: auto;
-  min-height: 38px;
-  overflow: hidden; /* Hide scrollbars completely */
   font-family: inherit;
+  font-size: 14px; /* smaller font */
+  line-height: 1.2; /* tighter line spacing */
+  padding: 4px 8px; /* less padding */
+  margin-left: 60px;
+  width: calc(100% - 100px);
+
+  border: none;
+  border-radius: 6px;
+  outline: none;
+  resize: none;
+
+  min-height: 28px; /* shorter initial height */
+  max-height: 80px; /* lower max height */
+  overflow-y: hidden;
+
   background-color: #fff;
   color: #000;
-  touch-action: none;
-  margin-left: 60px; /* This moves it slightly away from the left */
+
+  transition: all 0.2s ease;
 }
 
-/* Scrollbar hidden – cross-browser */
+/* Scrollbar styles */
 .rcb-chat-input-textarea::-webkit-scrollbar {
-  display: none;
+  width: 4px;
+}
+.rcb-chat-input-textarea::-webkit-scrollbar-track {
+  background: transparent;
+}
+.rcb-chat-input-textarea::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+}
+.rcb-chat-input-textarea::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
 }
 
+.rcb-mic-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 5px; /* Move button 5px to the right */
+}
+
+.rcb-mic-button img {
+  width: 27px;
+  height: 27px;
+  filter: brightness(0) invert(1); /* White mic */
+  transition: filter 0.3s ease;
+}
+
+.rcb-mic-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Recording state – glowing red mic icon with pulsing animation */
+.rcb-mic-button.recording {
+  animation: pulse-glow 1.5s infinite;
+}
+
+.rcb-mic-button.recording img {
+  filter: brightness(0) invert(1) drop-shadow(0 0 8px rgba(255, 50, 50, 0.9));
+  animation: glow-pulse 1.5s infinite;
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    background-color: rgba(255, 50, 50, 0.1);
+  }
+  50% {
+    background-color: rgba(255, 50, 50, 0.3);
+  }
+}
+
+@keyframes glow-pulse {
+  0%,
+  100% {
+    filter: brightness(0) invert(1) drop-shadow(0 0 8px rgba(255, 50, 50, 0.9));
+  }
+  50% {
+    filter: brightness(0) invert(1) drop-shadow(0 0 12px rgba(255, 50, 50, 1));
+  }
+}
 .rcb-chat-input-textarea {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  font-size: 14px !important;
+  line-height: 1.2 !important;
+  padding: 4px 8px !important;
+  height: 40px !important;
+  min-height: 32px !important;
+  max-height: 72px !important;
+  box-sizing: border-box !important;
+  overflow-y: auto !important;
 }
