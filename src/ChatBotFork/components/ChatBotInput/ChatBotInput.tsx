@@ -20,11 +20,14 @@ import { Message } from '../../types/Message';
 
 import './ChatBotInput.css';
 
-import { useFlowStore } from '@/components/data/ZustandStores/MainFlowStore';
-import { useSubFlowStore } from '@/components/data/ZustandStores/InjectedFlowStore';
-import { ChartFormUseFlowStore } from '@/components/data/ZustandStores/ChartFormFlowStore';
+import { useFlowStore } from '@/components/Zustand store data/ZustandStores/MainFlowStore';
+import { useSubFlowStore } from '@/components/Zustand store data/ZustandStores/InjectedFlowStore';
+import { ChartFormUseFlowStore } from '@/components/Zustand store data/ZustandStores/ChartFormFlowStore';
 
-import { FieldType, FormField } from '@/components/data/MainFlow/flow';
+import {
+  FieldType,
+  FormField,
+} from '@/components/Zustand store data/MainFlow/flow';
 
 const {
   getCurrentField,

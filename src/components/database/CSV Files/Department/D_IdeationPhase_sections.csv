@@ -1,0 +1,22 @@
+sectionid,sectiontitle,firstfield,nextnode
+number-of-founders,number of founders,numberOfFounders,founders-education-background
+founders-education-background,founders education background,foundersEducationBackground,founders-past-experience-skills
+founders-past-experience-skills,founders past experience and skills,foundersPastExperienceSkills,founder-responsibilities
+founder-responsibilities,founder responsibilities,founderResponsibilities,non-founder-team-members
+non-founder-team-members,non-founder team members,nonFounderTeamMembers,designated-ceo
+designated-ceo,designated ceo,designatedCeo,technical-background
+technical-background,technical background,technicalBackground,organization-chart-upload
+organization-chart-upload,organization chart upload,organizationChartUpload,financial-expertise
+financial-expertise,financial expertise,financialExpertise,core-business-functions-assignment
+core-business-functions-assignment,core business functions assignment,coreBusinessFunctionsAssignment,external-advisors-mentors
+external-advisors-mentors,external advisors and mentors,externalAdvisorsMentors,internal-communication-decision-making
+internal-communication-decision-making,internal communication and decision making,internalCommunicationDecisionMaking,company-registration
+company-registration,company registration,companyRegistration,team-responsibilities-documentation
+team-responsibilities-documentation,team responsibilities documentation,teamResponsibilitiesDocumentation,kpis-team-members
+kpis-team-members,kpis for team members,kpisTeamMembers,decision-making-process
+decision-making-process,decision making process,decisionMakingProcess,team-meeting-frequency
+team-meeting-frequency,team meeting frequency,teamMeetingFrequency,dedicated-workspace
+dedicated-workspace,dedicated workspace,dedicatedWorkspace,ownership-equity-distribution
+ownership-equity-distribution,ownership and equity distribution,ownershipEquityDistribution,external-partnerships
+external-partnerships,external partnerships,externalPartnerships,founder-contingency-plan
+founder-contingency-plan,founder contingency plan,founderContingencyPlan,

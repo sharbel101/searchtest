@@ -1,0 +1,37 @@
+sectionid,sectiontitle,firstfield,nextnode
+founder-involvement,founder involvement,founderInvolvement,founder-role-evolution
+founder-role-evolution,founder role evolution,founderRoleEvolution,ceo-leadership
+ceo-leadership,ceo leadership,ceoLeadership,founder-responsibilities-documentation
+founder-responsibilities-documentation,founder responsibilities documentation,founderResponsibilities,investor-advisor-engagement
+investor-advisor-engagement,investor and advisor engagement,investorAdvisorEngagement,external-leadership-attraction
+external-leadership-attraction,external leadership attraction,externalLeadership,founder-compensation-structure
+founder-compensation-structure,founder compensation structure,founderCompensation,departmental-structures
+departmental-structures,departmental structures,departmentalStructures,department-head-decision-making
+department-head-decision-making,department head decision making,departmentHeadDecisions,organizational-chart
+organizational-chart,organizational chart,organizationalChart,existing-departments
+existing-departments,existing departments,existingDepartments,dedicated-team-members
+dedicated-team-members,dedicated team members,dedicatedTeamMembers,department-leaders-assignment
+department-leaders-assignment,department leaders assignment,departmentLeadersAssignment,department-kpis-performance-tracking
+department-kpis-performance-tracking,department kpis and performance tracking,departmentKpis,cross-department-communication
+cross-department-communication,cross-department communication,crossDepartmentCommunication,organization-chart-upload
+organization-chart-upload,organization chart upload,organizationChartUpload,product-technology-responsibility
+product-technology-responsibility,product & technology responsibility,productTechResponsibility,tech-lead-education-level
+tech-lead-education-level,tech lead education level,techLeadEducation,tech-lead-experience-years
+tech-lead-experience-years,tech lead experience years,techLeadExperience,tech-lead-leadership-experience
+tech-lead-leadership-experience,tech lead leadership experience,techLeadLeadership,marketing-sales-responsibility
+marketing-sales-responsibility,marketing & sales responsibility,marketingSalesResponsibility,marketing-lead-education-level
+marketing-lead-education-level,marketing lead education level,marketingLeadEducation,marketing-lead-experience-years
+marketing-lead-experience-years,marketing lead experience years,marketingLeadExperience,marketing-lead-industry-experience
+marketing-lead-industry-experience,marketing lead industry experience,marketingLeadIndustryExperience,finance-management-responsibility
+finance-management-responsibility,finance management responsibility,financeManagementResponsibility,finance-lead-education-background
+finance-lead-education-background,finance lead education background,financeLeadEducation,finance-lead-prior-experience
+finance-lead-prior-experience,finance lead prior experience,financeLeadPriorExperience,finance-lead-total-experience
+finance-lead-total-experience,finance lead total experience,financeLeadTotalExperience,operations-hr-responsibility
+operations-hr-responsibility,operations & hr responsibility,operationsHrResponsibility,operations-lead-background
+operations-lead-background,operations lead background,operationsLeadBackground,operations-lead-prior-experience
+operations-lead-prior-experience,operations lead prior experience,operationsLeadPriorExperience,dedicated-full-time-employees
+dedicated-full-time-employees,dedicated full-time employees,dedicatedFullTimeEmployees,employee-count
+employee-count,employee count,employeeCount,employee-role-documentation
+employee-role-documentation,employee role documentation,employeeRoleDocumentation,department-tools-infrastructure
+department-tools-infrastructure,department tools and infrastructure,departmentToolsInfrastructure,internal-processes-workflows
+internal-processes-workflows,internal processes and workflows,internalProcessesWorkflows,

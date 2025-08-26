@@ -14,11 +14,11 @@ import { useToastsInternal } from './useToastsInternal';
 import { preProcessBlock } from '../../services/BlockService/BlockService';
 import { useDispatchRcbEventInternal } from './useDispatchRcbEventInternal';
 import { Block } from '../../types/Block';
-import { useFlowStore } from '@/components/data/ZustandStores/MainFlowStore';
-import { ChartFormUseFlowStore } from '@/components/data/ZustandStores/ChartFormFlowStore';
-import { useSubFlowStore } from '@/components/data/ZustandStores/InjectedFlowStore';
+import { useFlowStore } from '@/components/Zustand store data/ZustandStores/MainFlowStore';
+import { ChartFormUseFlowStore } from '@/components/Zustand store data/ZustandStores/ChartFormFlowStore';
+import { useSubFlowStore } from '@/components/Zustand store data/ZustandStores/InjectedFlowStore';
 import readCurrentField from '@/components/validations/validateInput';
-import { FieldType } from '@/components/data/MainFlow/flow';
+import { FieldType } from '@/components/Zustand store data/MainFlow/flow';
 
 /**
  * Internal custom hook to handle paths in the chatbot conversation flow.

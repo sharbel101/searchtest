@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 
 import { useSettingsContext } from '../../context/SettingsContext';
 import { useStylesContext } from '../../context/StylesContext';
-import { useFlowStore } from '@/components/data/ZustandStores/MainFlowStore';
+import { useFlowStore } from '@/components/Zustand store data/ZustandStores/MainFlowStore';
 import './ChatBotHeader.css';
 
 /**

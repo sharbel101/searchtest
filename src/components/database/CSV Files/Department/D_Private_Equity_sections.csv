@@ -1,0 +1,18 @@
+sectionid,sectiontitle,firstfield,nextnode
+org-chart,organizational chart,orgChartStatus,structure-review
+structure-review,structure review frequency,structureReview,management-layers
+management-layers,management layers,managementLayers,department-reporting
+department-reporting,department reporting structure,departmentReporting,business-units
+business-units,business units or divisions,businessUnits,middle-management
+middle-management,middle management layer,middleManagement,c-level-executives
+c-level-executives,c-level executives,cLevelRoles,established-departments
+established-departments,established departments,departments,department-kpis
+department-kpis,departmental kpis,departmentKpis,internal-tools
+internal-tools,internal collaboration tools,internalTools,reporting-system
+reporting-system,reporting system,reportingSystem,scalability
+scalability,scalability readiness,scalability,career-progression
+career-progression,career progression,careerPaths,leadership-hiring
+leadership-hiring,leadership hiring strategy,leadershipHiring,global-workflows
+global-workflows,global workflow optimization,globalWorkflow,compliance
+compliance,compliance and risk,complianceDept,department-optimization
+department-optimization,department optimization,departmentReview,

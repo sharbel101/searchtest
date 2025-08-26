@@ -1,0 +1,19 @@
+sectionid,sectiontitle,firstfield,nextnode
+organizational-chart,organizational chart,organizationalChart,organizational-structure-review
+organizational-structure-review,organizational structure review,structureReview,management-layers
+management-layers,management layers,managementLayers,department-reporting-structure
+department-reporting-structure,department reporting structure,departmentReporting,business-units-expansion
+business-units-expansion,business units expansion,businessUnits,middle-management-structure
+middle-management-structure,middle management structure,middleManagement,c-level-executive-structure
+c-level-executive-structure,c-level executive structure,cLevelRolesPresent,c-level-executive-evaluation
+c-level-executive-evaluation,c-level executive evaluation,educationLevel,department-structure-evaluation
+department-structure-evaluation,department structure & evaluation,departmentsEstablished,department-kpis-performance
+department-kpis-performance,department kpis & performance,departmentKpis,internal-collaboration-tools
+internal-collaboration-tools,internal collaboration tools,collaborationTools,department-reporting-system
+department-reporting-system,department reporting system,periodicReports,scalability-resilience
+scalability-resilience,scalability resilience,scalabilityResilience,career-progression-paths
+career-progression-paths,career progression paths,careerProgression,internal-vs-external-hires
+internal-vs-external-hires,internal vs external hires,hiringPattern,global-operations-optimization
+global-operations-optimization,global operations optimization,globalOperations,compliance-risk-management
+compliance-risk-management,compliance & risk management,complianceRisk,department-restructuring-frequency
+department-restructuring-frequency,department restructuring frequency,restructuringFrequency,

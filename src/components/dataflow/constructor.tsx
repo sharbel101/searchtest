@@ -1,7 +1,7 @@
 'use client';
 
 // import { Block } from 'react-chatbotify';
-import { chatFlow, FieldType } from '../data/MainFlow/flow';
+import { chatFlow, FieldType } from '../Zustand store data/MainFlow/flow';
 
 import { UploadFileHandler } from './UploadFileHandler';
 
@@ -11,13 +11,13 @@ import {
 } from './FetchSubFlow';
 import MarkdownRenderer, { MarkdownRendererBlock } from '@/RCB_MarkDown';
 
-import { useFlowStore } from '../data/ZustandStores/MainFlowStore';
-import { ChartFormUseFlowStore } from '../data/ZustandStores/ChartFormFlowStore';
-import { useSubFlowStore } from '../data/ZustandStores/InjectedFlowStore';
-import { getDynamicText, extractKeyInfo } from './openai';
-import { SidebarFlowStore } from '../data/ZustandStores/SideBarFlowStore';
+import { useFlowStore } from '../Zustand store data/ZustandStores/MainFlowStore';
+import { ChartFormUseFlowStore } from '../Zustand store data/ZustandStores/ChartFormFlowStore';
+import { useSubFlowStore } from '../Zustand store data/ZustandStores/InjectedFlowStore';
+import { getDynamicText, extractKeyInfo } from '../AI features/openai';
+import { SidebarFlowStore } from '../Zustand store data/ZustandStores/SideBarFlowStore';
 
-import saveQuestionAnswer from './Main/UploadeAnswers';
+import saveQuestionAnswer from '../database/UploadeAnswers';
 
 // Type definitions for better type safety
 export type PathParams = {

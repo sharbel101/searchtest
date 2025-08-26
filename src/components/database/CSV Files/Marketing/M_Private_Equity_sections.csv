@@ -1,0 +1,56 @@
+sectionid,sectiontitle,firstfield,nextnode
+crm-system-level,crm system level,crmSystemLevel,crm-integration
+crm-integration,crm integration,crmIntegration,ai-driven-customer-intelligence
+ai-driven-customer-intelligence,ai-driven customer intelligence,aiDrivenCustomerIntelligence,clv-tracking
+clv-tracking,clv tracking,clvTracking,existing-customer-revenue
+existing-customer-revenue,existing customer revenue,existingCustomerRevenue,customer-satisfaction-methods
+customer-satisfaction-methods,customer satisfaction methods,customerSatisfactionMethods,net-promoter-score
+net-promoter-score,net promoter score,netPromoterScore,feedback-collection-analysis
+feedback-collection-analysis,feedback collection analysis,feedbackCollectionAnalysis,feedback-implementation-frequency
+feedback-implementation-frequency,feedback implementation frequency,feedbackImplementationFrequency,dissatisfied-customer-management
+dissatisfied-customer-management,dissatisfied customer management,dissatisfiedCustomerManagement,customer-retention-rate
+customer-retention-rate,customer retention rate,customerRetentionRate,customer-churn-rate
+customer-churn-rate,customer churn rate,customerChurnRate,ai-churn-prediction
+ai-churn-prediction,ai churn prediction,aiChurnPrediction,customer-segmentation-retention
+customer-segmentation-retention,customer segmentation retention,customerSegmentationRetention,retention-strategies
+retention-strategies,retention strategies,retentionStrategies,repeat-customer-revenue
+repeat-customer-revenue,repeat customer revenue,repeatCustomerRevenue,estimated-clv
+estimated-clv,estimated clv,estimatedClv,clv-vs-cac
+clv-vs-cac,clv vs cac,clvVsCac,ai-clv-forecasting
+ai-clv-forecasting,ai clv forecasting,aiClvForecasting,clv-customer-segmentation
+clv-customer-segmentation,clv customer segmentation,clvCustomerSegmentation,clv-increase-strategies
+clv-increase-strategies,clv increase strategies,clvIncreaseStrategies,high-clv-revenue-percentage
+high-clv-revenue-percentage,high clv revenue percentage,highClvRevenuePercentage,lead-conversion-rate
+lead-conversion-rate,lead conversion rate,leadConversionRate,website-conversion-rate
+website-conversion-rate,website conversion rate,websiteConversionRate,ai-conversion-optimization
+ai-conversion-optimization,ai conversion optimization,aiConversionOptimization,paid-vs-organic-conversions
+paid-vs-organic-conversions,paid vs organic conversions,paidVsOrganicConversions,abandoned-cart-rate
+abandoned-cart-rate,abandoned cart rate,abandonedCartRate,conversion-optimization-strategies
+conversion-optimization-strategies,conversion optimization strategies,conversionOptimizationStrategies,monthly-marketing-budget
+monthly-marketing-budget,monthly marketing budget,monthlyMarketingBudget,marketing-budget-percentage
+marketing-budget-percentage,marketing budget percentage,marketingBudgetPercentage,marketing-budget-distribution
+marketing-budget-distribution,marketing budget distribution,marketingBudgetDistribution,dynamic-budget-adjustment
+dynamic-budget-adjustment,dynamic budget adjustment,dynamicBudgetAdjustment,cost-per-acquisition-channel
+cost-per-acquisition-channel,cost per acquisition channel,costPerAcquisitionChannel,budget-reallocation-frequency
+budget-reallocation-frequency,budget reallocation frequency,budgetReallocationFrequency,marketing-budget-ebitda-impact
+marketing-budget-ebitda-impact,marketing budget ebitda impact,marketingBudgetEbitdaImpact,customer-acquisition-cost
+customer-acquisition-cost,customer acquisition cost,customerAcquisitionCost,return-on-ad-spend
+return-on-ad-spend,return on ad spend,returnOnAdSpend,revenue-attribution-marketing
+revenue-attribution-marketing,revenue attribution marketing,revenueAttributionMarketing,marketing-efficiency-ratio
+marketing-efficiency-ratio,marketing efficiency ratio,marketingEfficiencyRatio,marketing-spend-optimization
+marketing-spend-optimization,marketing spend optimization,marketingSpendOptimization,marketing-profitability-ebitda
+marketing-profitability-ebitda,marketing profitability ebitda,marketingProfitabilityEbitda,social-media-follower-count
+social-media-follower-count,social media follower count,socialMediaFollowerCount,social-media-engagement-rate
+social-media-engagement-rate,social media engagement rate,socialMediaEngagementRate,content-posting-frequency
+content-posting-frequency,content posting frequency,contentPostingFrequency,influencer-partnerships-social
+influencer-partnerships-social,influencer partnerships social,influencerPartnershipsSocial,social-media-campaign-effectiveness
+social-media-campaign-effectiveness,social media campaign effectiveness,socialMediaCampaignEffectiveness,social-media-investor-relations
+social-media-investor-relations,social media investor relations,socialMediaInvestorRelations,social-media-traffic-leads
+social-media-traffic-leads,social media traffic leads,socialMediaTrafficLeads,media-coverage-recognition
+media-coverage-recognition,media coverage recognition,mediaCoverageRecognition,brand-sentiment-reputation-tracking
+brand-sentiment-reputation-tracking,brand sentiment reputation tracking,brandSentimentReputationTracking,positive-feedback-percentage
+positive-feedback-percentage,positive feedback percentage,positiveFeedbackPercentage,crisis-communication-strategy
+crisis-communication-strategy,crisis communication strategy,crisisCommunicationStrategy,global-partnerships
+global-partnerships,global partnerships,globalPartnerships,industry-events-participation
+industry-events-participation,industry events participation,industryEventsParticipation,negative-pr-management
+negative-pr-management,negative pr management,negativePrManagement,

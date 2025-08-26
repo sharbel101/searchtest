@@ -15,7 +15,7 @@ import { RcbEvent } from '../../../constants/RcbEvent';
 
 import './FileAttachmentButton.css';
 import { handleValidate } from '@/components/validations/validateInput';
-import { FieldType } from '@/components/data/MainFlow/flow';
+import { FieldType } from '@/components/Zustand store data/MainFlow/flow';
 import { Message } from 'react-chatbotify';
 
 interface FileWithPreview {

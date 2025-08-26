@@ -1,0 +1,51 @@
+sectionid,sectiontitle,firstfield,nextnode
+crm-system-level,crm system level,crmSystemLevel,crm-automation-level
+crm-automation-level,crm automation level,crmAutomationLevel,crm-integration-level
+crm-integration-level,crm integration level,crmIntegrationLevel,global-crm-strategy
+global-crm-strategy,global crm strategy,globalCrmStrategy,customer-satisfaction-measurement
+customer-satisfaction-measurement,customer satisfaction measurement,customerSatisfactionMeasurement,current-nps-score
+current-nps-score,current nps score,currentNpsScore,feedback-collection-analysis
+feedback-collection-analysis,feedback collection and analysis,feedbackCollectionAnalysis,customer-satisfaction-rate-input
+customer-satisfaction-rate-input,customer satisfaction rate input,customerSatisfactionRateInput,feedback-implementation-frequency
+feedback-implementation-frequency,feedback implementation frequency,feedbackImplementationFrequency,dissatisfied-customer-handling
+dissatisfied-customer-handling,dissatisfied customer handling,dissatisfiedCustomerHandling,customer-retention-rate
+customer-retention-rate,customer retention rate,customerRetentionRate,monthly-churn-rate
+monthly-churn-rate,monthly churn rate,monthlyChurnRate,ai-churn-prediction
+ai-churn-prediction,ai churn prediction,aiChurnPrediction,retention-customer-segmentation
+retention-customer-segmentation,retention customer segmentation,retentionCustomerSegmentation,retention-strategies
+retention-strategies,retention strategies,retentionStrategies,customer-retention-rate-input
+customer-retention-rate-input,customer retention rate input,customerRetentionRateInput,current-clv-estimate
+current-clv-estimate,current clv estimate,currentClvEstimate,clv-vs-cac-ratio
+clv-vs-cac-ratio,clv vs cac ratio,clvVsCacRatio,ai-clv-forecasting
+ai-clv-forecasting,ai clv forecasting,aiClvForecasting,clv-customer-segmentation
+clv-customer-segmentation,clv customer segmentation,clvCustomerSegmentation,clv-optimization-strategies
+clv-optimization-strategies,clv optimization strategies,clvOptimizationStrategies,customer-lifetime-value-input
+customer-lifetime-value-input,customer lifetime value input,customerLifetimeValueInput,repeat-customer-revenue-percentage
+repeat-customer-revenue-percentage,repeat customer revenue percentage,repeatCustomerRevenuePercentage,lead-to-customer-conversion
+lead-to-customer-conversion,lead to customer conversion,leadToCustomerConversion,website-conversion-rate
+website-conversion-rate,website conversion rate,websiteConversionRate,ai-conversion-optimization
+ai-conversion-optimization,ai conversion optimization,aiConversionOptimization,paid-vs-organic-conversions
+paid-vs-organic-conversions,paid vs organic conversions,paidVsOrganicConversions,abandoned-cart-rate
+abandoned-cart-rate,abandoned cart rate,abandonedCartRate,conversion-optimization-strategies
+conversion-optimization-strategies,conversion optimization strategies,conversionOptimizationStrategies,monthly-marketing-budget
+budget-optimization,budget optimization,budgetOptimization,cost-per-acquisition
+cost-per-acquisition,cost per acquisition,costPerAcquisition,budget-reallocation-frequency
+budget-reallocation-frequency,budget reallocation frequency,budgetReallocationFrequency,customer-acquisition-cost
+customer-acquisition-cost,customer acquisition cost,customerAcquisitionCost,return-on-ad-spend
+return-on-ad-spend,return on ad spend,returnOnAdSpend,revenue-attribution
+revenue-attribution,revenue attribution,revenueAttribution,marketing-efficiency-ratio
+marketing-efficiency-ratio,marketing efficiency ratio,marketingEfficiencyRatio,ai-driven-profitability
+ai-driven-profitability,ai-driven profitability models,aiDrivenProfitability,spend-optimization
+spend-optimization,spend optimization,spendOptimization,social-media-followers
+social-media-followers,social media followers,socialMediaFollowers,engagement-rate
+engagement-rate,engagement rate,engagementRate,content-posting-frequency
+content-posting-frequency,content posting frequency,contentPostingFrequency,influencer-partnerships
+influencer-partnerships,influencer partnerships,influencerPartnerships,social-media-effectiveness
+social-media-effectiveness,social media effectiveness,socialMediaEffectiveness,social-media-integration
+social-media-integration,social media integration,socialMediaIntegration,media-coverage
+media-coverage,media coverage,mediaCoverage,brand-sentiment-tracking
+brand-sentiment-tracking,brand sentiment tracking,brandSentimentTracking,positive-feedback-percentage
+positive-feedback-percentage,positive feedback percentage,positiveFeedbackPercentage,crisis-communication-strategy
+crisis-communication-strategy,crisis communication strategy,crisisCommunicationStrategy,global-partnerships
+global-partnerships,global partnerships,globalPartnerships,industry-events-participation
+industry-events-participation,industry events participation,industryEventsParticipation,

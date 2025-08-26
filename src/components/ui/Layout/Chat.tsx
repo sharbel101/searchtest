@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { generateChatBotFlow } from '../../dataflow/constructor';
-import { useFlowStore } from '@/components/data/ZustandStores/MainFlowStore';
+import { useFlowStore } from '@/components/Zustand store data/ZustandStores/MainFlowStore';
 import ChatBotComponent, { Flow } from '@/ChatBotFork';
 import MarkdownRenderer, { MarkdownRendererBlock } from '@/RCB_MarkDown';
 import { styles } from './ChatStyles';

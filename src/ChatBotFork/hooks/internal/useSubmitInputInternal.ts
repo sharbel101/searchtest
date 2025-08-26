@@ -16,11 +16,11 @@ import { Flow } from '../../types/Flow';
 import { RcbEvent } from '../../constants/RcbEvent';
 import { usePathsContext } from '../../context/PathsContext';
 
-import { useFlowStore } from '@/components/data/ZustandStores/MainFlowStore';
-import { useSubFlowStore } from '@/components/data/ZustandStores/InjectedFlowStore';
-import { ChartFormUseFlowStore } from '@/components/data/ZustandStores/ChartFormFlowStore';
+import { useFlowStore } from '@/components/Zustand store data/ZustandStores/MainFlowStore';
+import { useSubFlowStore } from '@/components/Zustand store data/ZustandStores/InjectedFlowStore';
+import { ChartFormUseFlowStore } from '@/components/Zustand store data/ZustandStores/ChartFormFlowStore';
 
-import { FormField } from '@/components/data/MainFlow/flow';
+import { FormField } from '@/components/Zustand store data/MainFlow/flow';
 import { handleValidate } from '@/components/validations/validateInput';
 
 const {

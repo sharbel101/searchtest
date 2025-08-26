@@ -1,9 +1,9 @@
 import { z, ZodSchema } from 'zod';
 
-import { useFlowStore } from '@/components/data/ZustandStores/MainFlowStore';
-import { useSubFlowStore } from '@/components/data/ZustandStores/InjectedFlowStore';
-import { ChartFormUseFlowStore } from '@/components/data/ZustandStores/ChartFormFlowStore';
-import { FieldType, FormField } from '../data/MainFlow/flow';
+import { useFlowStore } from '@/components/Zustand store data/ZustandStores/MainFlowStore';
+import { useSubFlowStore } from '@/components/Zustand store data/ZustandStores/InjectedFlowStore';
+import { ChartFormUseFlowStore } from '@/components/Zustand store data/ZustandStores/ChartFormFlowStore';
+import { FieldType, FormField } from '../Zustand store data/MainFlow/flow';
 import { error } from 'console';
 
 const {

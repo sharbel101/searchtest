@@ -4,11 +4,11 @@ import {
   createFlowController,
   createOriginalSubFlowController,
 } from '@/components/dataflow/Main/flowEngine';
-import { useFlowStore } from '@/components/data/ZustandStores/MainFlowStore';
-import { useSubFlowStore } from '@/components/data/ZustandStores/InjectedFlowStore';
-import { allSubFlows } from '@/components/data/ChartForm/AllSubFlowsData';
-import { AllOriginalSubFlowsData } from '@/components/data/fs/AllOriginalSubFlowsData';
-import { ChartFormUseFlowStore } from '../data/ZustandStores/ChartFormFlowStore';
+import { useFlowStore } from '@/components/Zustand store data/ZustandStores/MainFlowStore';
+import { useSubFlowStore } from '@/components/Zustand store data/ZustandStores/InjectedFlowStore';
+import { allSubFlows } from '@/components/Zustand store data/ChartForm/AllSubFlowsData';
+import { AllOriginalSubFlowsData } from '@/components/Zustand store data/fs/AllOriginalSubFlowsData';
+import { ChartFormUseFlowStore } from '../Zustand store data/ZustandStores/ChartFormFlowStore';
 
 //IS
 export const fetchAndSetChartFormSubFlow = async (

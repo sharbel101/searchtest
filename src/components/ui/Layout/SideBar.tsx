@@ -1,6 +1,6 @@
 'use client';
 
-import { SidebarFlowStore } from '@/components/data/ZustandStores/SideBarFlowStore';
+import { SidebarFlowStore } from '@/components/Zustand store data/ZustandStores/SideBarFlowStore';
 import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import QuestionDetails from '../Chatbot UI/QuestionDetails';

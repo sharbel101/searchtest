@@ -1,6 +1,6 @@
 'use client';
 
-import { saveQuestionAnswer } from './databaseService';
+import { saveQuestionAnswer } from '../database/databaseService';
 
 export type QuestionNode = {
   id: string;
