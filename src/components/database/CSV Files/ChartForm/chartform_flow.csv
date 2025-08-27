@@ -1,6 +1,0 @@
-"question","answers","questionid"
-"Have you ever closed an investment round?","{""No"":{""next"":""q2""},""Yes"":{""next"":""q3""}}","q1"
-"Do you have sales going for more than a year?","{""No"":{""setStage"":""IdeationPhase""},""Yes"":{""setStage"":""AngelPhase""}}","q2"
-"How many investment rounds did you close?","{""1"":{""setStage"":""AngelPhase""},""More than 1"":{""next"":""q4""}}","q3"
-"Involve any VC investment series?","{""No"":{""setStage"":""AngelPhase""},""Yes"":{""next"":""q5""}}","q4"
-"Which series have you completed?","{""Series A Only"":{""setStage"":""EarlyVC""},""Series A & B"":{""setStage"":""AdvancedVC""},""Series A B C"":{""setStage"":""AdvancedVC""},""More than 4 series"":{""setStage"":""PE Stages""}}","q5"

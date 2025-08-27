@@ -1,0 +1,56 @@
+id,sectiontitle,firstfield,nextnode
+70577ed9-1ab1-4860-aac6-a3ded40ee307,CRM System Level,afec734f-8d9c-466b-b57b-4dac435d6a5f,8825c168-4328-439e-af85-df3183c3488c
+8825c168-4328-439e-af85-df3183c3488c,CRM Integration,14f51ecf-eb3b-44cf-b216-b8134fbb81b5,f0107cfa-537b-49bf-b5d0-93d999ed9d8a
+f0107cfa-537b-49bf-b5d0-93d999ed9d8a,AI-Driven Customer Intelligence,cdf25c71-014d-464d-88bb-b89c040adfd2,f6cc8bdc-8444-47d9-bdc2-86691e857a35
+f6cc8bdc-8444-47d9-bdc2-86691e857a35,CLV Tracking,39299ac4-1d9e-4408-8463-3305c67dd79e,614552ad-d223-4508-821b-b2816cc0b997
+614552ad-d223-4508-821b-b2816cc0b997,Existing Customer Revenue,919c5f72-2832-4d9a-9b58-1c8fc1b4bdb8,639e3b65-0561-4592-8ddd-650fa0589b54
+639e3b65-0561-4592-8ddd-650fa0589b54,Customer Satisfaction Methods,d7e9a88f-1371-4b3f-b595-761d3090912c,feda0e67-d978-4a63-8232-3d6ab088c13e
+feda0e67-d978-4a63-8232-3d6ab088c13e,Net Promoter Score,79360a86-ac84-446a-8573-df1dd8443484,8cb26bb1-381f-42ae-8d2a-5f5036e5a532
+8cb26bb1-381f-42ae-8d2a-5f5036e5a532,Feedback Collection Analysis,6fdc8f0c-9fe0-44c0-8136-720e7c6d92f9,23c3683c-c546-4286-ab4b-17479ee636d6
+23c3683c-c546-4286-ab4b-17479ee636d6,Feedback Implementation Frequency,f83ed9e4-fb81-414c-9a78-8ff352c28dcc,d86949f0-b853-489f-a552-dfe8832661d5
+d86949f0-b853-489f-a552-dfe8832661d5,Dissatisfied Customer Management,b7ad178b-b907-4268-9a01-c9f2ccd87b6f,b3dbe66e-2be8-49c7-9d27-bb951fea1daf
+b3dbe66e-2be8-49c7-9d27-bb951fea1daf,Customer Retention Rate,a0aa9d05-2435-431d-b8e5-38f6ab8d7ad3,5aad04fc-9f34-46e8-8bc1-43afa74ac53d
+5aad04fc-9f34-46e8-8bc1-43afa74ac53d,Customer Churn Rate,b0fd721a-9afa-43e0-92ea-2f647a93b3ce,de915991-2678-4eec-8195-55e1b41e1e86
+de915991-2678-4eec-8195-55e1b41e1e86,AI Churn Prediction,35ddabf5-b207-4063-999e-f2bb715a44f4,1854e77f-9c62-4920-b99c-5d27a2baf384
+1854e77f-9c62-4920-b99c-5d27a2baf384,Customer Segmentation Retention,d2e9e8f5-a5ca-4dee-add5-e549442e764b,a56c59a8-aa79-48c2-80a6-f16f2f6b2450
+a56c59a8-aa79-48c2-80a6-f16f2f6b2450,Retention Strategies,99256885-870d-4155-a62a-a1e8ca64ae80,47845e4e-f024-4cb1-b614-b4f49fbaf3d4
+47845e4e-f024-4cb1-b614-b4f49fbaf3d4,Repeat Customer Revenue,66ca496c-7ceb-45a5-bd9e-e7d8d985e729,6f344f34-e2d9-4ec2-891f-a09f9b3dcf25
+6f344f34-e2d9-4ec2-891f-a09f9b3dcf25,Estimated CLV,d62236ca-edbd-45cb-9624-83ed012db8ad,2e833bb8-f42e-4f9b-980c-dec0ecb41d57
+2e833bb8-f42e-4f9b-980c-dec0ecb41d57,CLV vs CAC,54e9035f-40d2-4c67-a917-1aa086a46aaa,24292e97-2feb-487d-a221-c02e4b1df95a
+24292e97-2feb-487d-a221-c02e4b1df95a,AI CLV Forecasting,7f2366a3-7562-4be2-8e6b-b77b8af5b654,4abd8a8b-0e16-4fbd-baa2-72edf83d3b13
+4abd8a8b-0e16-4fbd-baa2-72edf83d3b13,CLV Customer Segmentation,e6704a3c-6089-4c18-8eeb-65203e2f42e0,fe8f1708-191d-4e2e-bcac-15edadc2247d
+fe8f1708-191d-4e2e-bcac-15edadc2247d,CLV Increase Strategies,3ac00a0a-8496-4357-bdcc-4afab1ab158d,1bcf91dd-fdcf-42e5-af56-46aa87085010
+1bcf91dd-fdcf-42e5-af56-46aa87085010,High CLV Revenue Percentage,0f1719d1-13a7-49d5-b6d4-575fa31a3443,b08bb1d4-ee66-494f-86a3-9a16abd737d1
+b08bb1d4-ee66-494f-86a3-9a16abd737d1,Lead Conversion Rate,49ce43ea-581f-4c70-8d66-f8faba3026b3,6e239a70-d452-4bc8-8e34-46c28c80ba2e
+6e239a70-d452-4bc8-8e34-46c28c80ba2e,Website Conversion Rate,a1e7253f-0e10-4eaf-a9b5-7f60cc6b99ef,81f8efd7-a2cf-47ed-8212-5e0d35a31ab1
+81f8efd7-a2cf-47ed-8212-5e0d35a31ab1,AI Conversion Optimization,56d0a36a-bfb9-4af3-8a6c-bfe1b4d6851b,99d1bd9a-139e-4b91-ad56-76768de5a7f5
+99d1bd9a-139e-4b91-ad56-76768de5a7f5,Paid vs Organic Conversions,235b3ffc-2e54-4ba4-ad02-ab82b6f6e414,8207e19d-85de-450d-8006-067ded77f453
+8207e19d-85de-450d-8006-067ded77f453,Abandoned Cart Rate,79eb3c02-b421-4995-86a3-0aea6aea1edd,e3be792b-3f6e-4dce-ba45-163e83343f23
+e3be792b-3f6e-4dce-ba45-163e83343f23,Conversion Optimization Strategies,247c54c7-09c7-4659-b4cd-eba93e71666a,1bfec9a4-f4d0-4c66-9a66-92aea7553dee
+1bfec9a4-f4d0-4c66-9a66-92aea7553dee,Monthly Marketing Budget,c622f1b4-3730-4f47-86ca-34a097741e98,c3beac6c-4d3d-45e1-9226-549a563c0922
+c3beac6c-4d3d-45e1-9226-549a563c0922,Marketing Budget Percentage,4452ab7f-33cd-4681-a449-24c6194d6f7e,74bf66c9-734d-4a7b-a13c-f838382d7d03
+74bf66c9-734d-4a7b-a13c-f838382d7d03,Marketing Budget Distribution,c82c046e-71d3-4ac9-ad5c-4bde59434833,960a53a4-498c-4d44-9546-7db7e6e817aa
+960a53a4-498c-4d44-9546-7db7e6e817aa,Dynamic Budget Adjustment,20149472-f6a6-4edf-88b2-b9ca00db6ead,cc58df69-8d28-428e-9167-65ba757561fd
+cc58df69-8d28-428e-9167-65ba757561fd,Cost Per Acquisition Channel,c128f709-1392-40a9-a406-cddcc5b83a08,44de6beb-2e02-4416-9425-80e4bd360551
+44de6beb-2e02-4416-9425-80e4bd360551,Budget Reallocation Frequency,93fd7305-5e1b-4e72-aaea-876441e67b1a,aef09916-25cc-4d26-9fba-62c1515b0338
+aef09916-25cc-4d26-9fba-62c1515b0338,Marketing Budget EBITDA Impact,18184b25-7e27-4db4-8b28-a86c776f22ba,244c5d69-e74e-4b6f-b5bb-357fc226620e
+244c5d69-e74e-4b6f-b5bb-357fc226620e,Customer Acquisition Cost,435f59d9-8166-4019-9972-ba41436bc010,bfec063f-047d-48d2-bf06-4df50463826c
+bfec063f-047d-48d2-bf06-4df50463826c,Return on Ad Spend,0c31374f-459d-4d08-8f86-401ffdfddf7e,7ab240d5-ca2a-4224-9d77-0dacb901097e
+7ab240d5-ca2a-4224-9d77-0dacb901097e,Revenue Attribution Marketing,771445d6-05d2-41de-ab44-b1c415d075fc,2b8e8516-c451-492c-bdcb-1e941e306316
+2b8e8516-c451-492c-bdcb-1e941e306316,Marketing Efficiency Ratio,b97acbe4-ae5e-4b94-b6dc-3f76d451bc1f,0c9be347-fc5b-4797-893a-a884a4a1e535
+0c9be347-fc5b-4797-893a-a884a4a1e535,Marketing Spend Optimization,c6d243af-d388-4d54-8d1e-a3272dbfc9fd,afe0f77c-8b94-4541-8332-7b0f3e70e6bd
+afe0f77c-8b94-4541-8332-7b0f3e70e6bd,Marketing Profitability EBITDA,0b7a85ea-da3f-47e6-bad9-8067e95887a5,e1f7445c-2ab0-4868-90a7-966f9f2522e8
+e1f7445c-2ab0-4868-90a7-966f9f2522e8,Social Media Follower Count,21ccda11-e045-4818-ab20-69124bfc5e55,bd590c2a-49c1-4893-b471-157cb3e973c3
+bd590c2a-49c1-4893-b471-157cb3e973c3,Social Media Engagement Rate,1a93f74e-b0cc-4457-8ad8-b2f7ffaf687d,cfcb59f2-3b6a-4c74-8390-d27a65f84549
+cfcb59f2-3b6a-4c74-8390-d27a65f84549,Content Posting Frequency,1064198c-1944-41c7-bd51-01a83192fcfa,788e82c9-535d-4ae8-9720-3e0b6983bb82
+788e82c9-535d-4ae8-9720-3e0b6983bb82,Influencer Partnerships Social,f56e5029-efcf-4254-ac46-d04ec82aaee4,5b80fae0-da3b-4b65-9be7-03c5469d82dd
+5b80fae0-da3b-4b65-9be7-03c5469d82dd,Social Media Campaign Effectiveness,c564e0a7-651f-4a1a-b7a5-8d5e891777e0,29d24a96-1ccd-4e20-bf74-89e046cef510
+29d24a96-1ccd-4e20-bf74-89e046cef510,Social Media Investor Relations,b7a5a643-f542-4c62-86e3-b07b276bf46e,b7ddb100-b9a0-4c50-b335-7fe63f734f2d
+b7ddb100-b9a0-4c50-b335-7fe63f734f2d,Social Media Traffic Leads,3d48b5c9-794d-4451-8809-5fdfd7630e58,3e3088ef-ccc5-40dc-b495-4ba30c29375d
+3e3088ef-ccc5-40dc-b495-4ba30c29375d,Media Coverage Recognition,e7badfcc-7aaf-4238-b97e-aa64e68e402b,99361967-943a-4b20-9f33-0b0566e9b517
+99361967-943a-4b20-9f33-0b0566e9b517,Brand Sentiment Reputation Tracking,36cebae3-6e77-4327-87c9-47d12684fe2b,da81eea2-7416-4a13-ae66-f510ded60e1e
+da81eea2-7416-4a13-ae66-f510ded60e1e,Positive Feedback Percentage,4f73e364-2e9b-44bf-8261-ca786892bf4c,b0c194ee-0aa9-4a52-ac29-5fd63c42d6f1
+b0c194ee-0aa9-4a52-ac29-5fd63c42d6f1,Crisis Communication Strategy,1d3bcc4e-bd36-4b2c-bea3-29be174fee6d,0733787e-29ab-4ad9-8835-4da9b80d4f32
+0733787e-29ab-4ad9-8835-4da9b80d4f32,Global Partnerships,735ebeb9-ca5e-45dc-b213-c23d293582e6,f206e94a-ff75-49cd-9fe9-df9325fd6eaa
+f206e94a-ff75-49cd-9fe9-df9325fd6eaa,Industry Events Participation,1216243b-3d2b-45c5-8487-f24811d4f0aa,72cee4ec-5755-4b53-867b-0824a1d71687
+72cee4ec-5755-4b53-867b-0824a1d71687,Negative PR Management,63378d0a-fe99-4315-a9c6-6bba472890bf,
