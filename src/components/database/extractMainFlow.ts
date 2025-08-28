@@ -1,4 +1,5 @@
 import { createClient } from '@/utils/supabase/client';
+import { UUID } from 'crypto';
 
 // Initialize Supabase client
 const supabaseUrl = 'https://ebobswoijxoostgzdpse.supabase.co';
@@ -15,14 +16,62 @@ export type DBFlowSection = {
 };
 
 // Function to fetch all sections
-export async function getAllSections(): Promise<DBFlowSection[]> {
-  const { data, error } = await supabase.from('flow_sections').select('*');
+export async function getAllMainSections(): Promise<DBFlowSection[]> {
+  const { data, error } = await supabase.from('main_flow_sections').select('*');
 
   if (error) {
-    console.error('Error fetching sections:', error.message);
+    console.error('Error fetching fields:', error.message);
     return [];
   }
 
-  console.log('this is the sections extracted: ', data);
+  console.log('this is the sections extracted main sections: ', data);
+  return data || [];
+}
+
+export async function getAllMainFields(): Promise<DBFlowSection[]> {
+  const { data, error } = await supabase.from('main_flow_fields').select('*');
+
+  if (error) {
+    console.error('Error fetching main fields:', error.message);
+    return [];
+  }
+
+  console.log('this is the sections extracted main fields: ', data);
+  return data || [];
+}
+
+export async function getSpecificMainField(
+  sectionId: string,
+  fieldId: string,
+): Promise<DBFlowSection[]> {
+  const { data, error } = await supabase
+    .from('main_flow_fields')
+    .select('*')
+    .eq('sectionId', sectionId)
+    .eq('fieldId', fieldId);
+
+  if (error) {
+    console.error('Error fetching main fields:', error.message);
+    return [];
+  }
+
+  console.log('this is the sections extracted main fields:', data);
+  return data || [];
+}
+
+export async function getSpecificMainSection(
+  sectionId: string,
+): Promise<DBFlowSection[]> {
+  const { data, error } = await supabase
+    .from('main_flow_sections')
+    .select('*')
+    .eq('sectionId', sectionId);
+
+  if (error) {
+    console.error('Error fetching main section:', error.message);
+    return [];
+  }
+
+  console.log('this is the sections extracted main section:', data);
   return data || [];
 }

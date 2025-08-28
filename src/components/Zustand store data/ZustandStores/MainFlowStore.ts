@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { FlowSection, FormField } from '../MainFlow/flow';
 import { SidebarFlowStore } from './SideBarFlowStore';
 
-import { getAllSections } from '@/components/database/extractMainFlow';
+import { getAllMainSections } from '@/components/database/extractMainFlow';
 import { DBFlowSection } from '@/components/database/extractMainFlow';
 
 interface FlowState {
@@ -58,7 +58,7 @@ export const useFlowStore = create<FlowState>((set, get) => ({
   DBsections: [],
   setAllSections: async () => {
     try {
-      const DBsections = await getAllSections(); // await the async call
+      const DBsections = await getAllMainSections(); // await the async call
       set({ DBsections }); // update the Zustand state
       return DBsections; // return fetched sections if needed
     } catch (error) {

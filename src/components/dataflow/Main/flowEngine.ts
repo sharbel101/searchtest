@@ -27,7 +27,7 @@ export type TypeOriginalSubFlowsOptions = {
 
 //  createFlowController
 export const createFlowController = (flow: FlowDefinition): FlowController => {
-  let currentNodeId = 'q1';
+  let currentNodeId = 'q1'; //hone lezem a3mol supabase lal currentChartFormFieldId li hiye by default awwal field bel injected flow w msayyave bel table taba3 l progress;
   let stage: string | null = null;
 
   const getCurrentQuestion = () => {
@@ -89,7 +89,7 @@ export const createFlowController = (flow: FlowDefinition): FlowController => {
 //   createOriginalSubFlowController
 
 export const createOriginalSubFlowController = (flow: StageSubFlow) => {
-  let currentNodeId = 'q1';
+  let currentNodeId = 'q1'; //hone lezem a3mol supabase lal currentInjectedFieldId li hiye by default awwal field bel injected flow w msayyave bel table taba3 l progress;
 
   const getCurrentQuestion = (): string => {
     const currentNode = flow[currentNodeId];
