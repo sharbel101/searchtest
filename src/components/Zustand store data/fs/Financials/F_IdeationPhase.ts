@@ -9,7 +9,7 @@ const financialQuestionnaire = {
     fields: {
       valuationBracket: {
         id: 'valuation-bracket',
-        type: FieldType.Text,
+        type: FieldType.text,
         label:
           "What is your company's estimated valuation brackets? (Insert estimated bracket - lower + upper bounds in USD)",
         required: true,
@@ -19,7 +19,7 @@ const financialQuestionnaire = {
       },
       capTable: {
         id: 'cap-table',
-        type: FieldType.File,
+        type: FieldType.file,
         label: 'Cap table - Upload PDF or excel file (no csv)',
         required: true,
         nextField: null,
@@ -38,7 +38,7 @@ const financialQuestionnaire = {
     fields: {
       revenueStarted: {
         id: 'revenue-started',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'Have you started generating revenue?',
         required: true,
         nextField: 'expectedGrowth',
@@ -51,7 +51,7 @@ const financialQuestionnaire = {
       },
       expectedGrowth: {
         id: 'expected-growth',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is your expected revenue growth one year after launching?',
         required: true,
         nextField: 'plStatement',
@@ -65,7 +65,7 @@ const financialQuestionnaire = {
       },
       plStatement: {
         id: 'pl-statement',
-        type: FieldType.File,
+        type: FieldType.file,
         label: 'Upload P&L Statement (PDF or excel file, no csv)',
         required: true,
         nextField: null,
@@ -84,7 +84,7 @@ const financialQuestionnaire = {
     fields: {
       breakEvenTime: {
         id: 'break-even-time',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'How many years do you expect are needed to break-even?',
         required: true,
         nextField: 'projectedResult',
@@ -98,7 +98,7 @@ const financialQuestionnaire = {
       },
       projectedResult: {
         id: 'projected-result',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What is your projected net result (profit or loss) one year after launching?',
         required: true,
@@ -122,7 +122,7 @@ const financialQuestionnaire = {
     fields: {
       projectedOpex: {
         id: 'projected-opex',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is your projected OpEx ratio one year after launch?',
         required: true,
         nextField: 'balanceSheet',
@@ -136,7 +136,7 @@ const financialQuestionnaire = {
       },
       balanceSheet: {
         id: 'balance-sheet',
-        type: FieldType.File,
+        type: FieldType.file,
         label: 'Upload Balance Sheet statement (PDF or excel file, no csv)',
         required: true,
         nextField: null,
@@ -155,7 +155,7 @@ const financialQuestionnaire = {
     fields: {
       runwayBurnRate: {
         id: 'runway-burn-rate',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is your current monthly cash burn rate? (Time-Based)',
         required: true,
         nextField: null,
@@ -178,7 +178,7 @@ const financialQuestionnaire = {
     fields: {
       projectedCurrentRatio: {
         id: 'projected-current-ratio',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is your projected liquidity ratio 1 year after launching?',
         required: true,
         nextField: 'projectedQuickRatio',
@@ -192,7 +192,7 @@ const financialQuestionnaire = {
       },
       projectedQuickRatio: {
         id: 'projected-quick-ratio',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What is your projected quick liquidity ratio 1 year after launching?',
         required: true,
@@ -216,7 +216,7 @@ const financialQuestionnaire = {
     fields: {
       projectedRunway: {
         id: 'projected-runway',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is your projected cash runway time after launching?',
         required: true,
         nextField: null,
@@ -239,7 +239,7 @@ const financialQuestionnaire = {
     fields: {
       financingHistory: {
         id: 'financing-history',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'Did the company previously opt for debt or equity financing?',
         required: true,
         nextField: 'auditReport',
@@ -254,7 +254,7 @@ const financialQuestionnaire = {
       },
       auditReport: {
         id: 'audit-report',
-        type: FieldType.File,
+        type: FieldType.file,
         label: 'Upload Annual Audit report (PDF Only - ORIGINAL COPY)',
         required: true,
         nextField: null,

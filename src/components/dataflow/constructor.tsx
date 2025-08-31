@@ -1,5 +1,8 @@
 'use client';
 
+//for testing purposes this is the user's id:
+const user_id = 'c275f6da-7e9c-433a-9ed4-8fdc705c9695';
+
 // import { Block } from 'react-chatbotify';
 import { chatFlow, FieldType } from '../Zustand store data/MainFlow/flow';
 
@@ -18,6 +21,13 @@ import { getDynamicText, extractKeyInfo } from '../AI features/openai';
 import { SidebarFlowStore } from '../Zustand store data/ZustandStores/SideBarFlowStore';
 
 import saveQuestionAnswer from '../database/UploadeAnswers';
+import {
+  getAllMainFields,
+  getAllMainSections,
+  getCurrentMainField,
+  getCurrentMainSection,
+  goToNextMainSection,
+} from '../database/mainFlowDBfunc';
 
 // Type definitions for better type safety
 export type PathParams = {
@@ -35,9 +45,13 @@ export const generateChatBotFlow = (): Record<
 > => {
   return {
     start: {
-      message: (): string => {
+      message: async () => {
         const { setSideBarSections } = SidebarFlowStore.getState();
-        const allSections = Object.values(chatFlow);
+        const allSections = await getAllMainSections();
+        console.log(
+          'these are the extracted sections from the db: ',
+          allSections,
+        );
         setSideBarSections(allSections);
 
         if (allSections.length !== 0) {
@@ -46,8 +60,8 @@ export const generateChatBotFlow = (): Record<
         return `**No section available!** \n\n_Error..._`;
       },
       renderMarkdown: ['BOT', 'USER'] as const,
-      path: (): string => {
-        const allSections = Object.values(chatFlow);
+      path: async () => {
+        const allSections = await getAllMainSections();
         return allSections.length !== 0 ? 'setup' : 'emptyFlow';
       },
       chatDisabled: true,
@@ -55,34 +69,31 @@ export const generateChatBotFlow = (): Record<
     } as MarkdownRendererBlock,
 
     setup: {
-      message: (): string => {
-        const { setSections, getCurrentSection, setAllSections } =
-          useFlowStore.getState();
-        const allSections = Object.values(chatFlow);
-        setSections(allSections);
-        const DBsections = setAllSections();
+      message: async () => {
+        const { setSections, getCurrentSection } = useFlowStore.getState();
+        const allSections = await getAllMainSections();
+        // setSections(allSections);  //i commented hayde bas so i can push the code
+        //l code baed ma kholes so ma be2dar a3mol push.... kell chi 3emel error i commented it so i can fix it later
 
-        console.log('THese are the DATABASE sections ', DBsections);
-
-        const current = getCurrentSection();
+        const current = await getCurrentMainSection(user_id);
 
         return current
-          ? `**Starting section:** \n\n### ${current.sectionTitle}`
+          ? `**Starting section:** \n\n### ${current.sectiontitle}`
           : `**Starting section:** \n\n_Unknown_`;
       },
       renderMarkdown: ['BOT', 'USER'] as const,
-      path: (): string => {
+      path: async () => {
         const {
           getCurrentSection,
           goToNextSection,
           isInFlowFunc,
           currentFlowController,
         } = useFlowStore.getState();
-        const current = getCurrentSection();
+        const current_section = await getCurrentMainSection(user_id);
 
-        if (!current) return 'end';
+        if (!current_section) return 'end';
 
-        const fields = Object.values(current.fields);
+        const fields = await getAllMainFields(current_section.id);
         // console.log(
         //   `Section "${current.sectionTitle}" has ${fields.length} fields`,
         // );
@@ -90,8 +101,7 @@ export const generateChatBotFlow = (): Record<
         if (fields.length === 0) {
           // Skip empty sections
           // console.log('This section does not have fields in it...');
-          goToNextSection();
-          const newSection = useFlowStore.getState().getCurrentSection();
+          const newSection = await goToNextMainSection(user_id);
           return newSection ? 'setup' : 'end';
         }
 
@@ -102,7 +112,7 @@ export const generateChatBotFlow = (): Record<
     } as MarkdownRendererBlock,
 
     loop: {
-      message: async (): Promise<string> => {
+      message: async () => {
         const {
           getCurrentField,
           getCurrentSection,
@@ -111,8 +121,8 @@ export const generateChatBotFlow = (): Record<
           questionBody,
         } = useFlowStore.getState();
 
-        const field = getCurrentField();
-        const section = getCurrentSection();
+        const section = await getCurrentMainSection(user_id);
+        const field = await getCurrentMainField(user_id);
 
         // Debug logging
         // console.log('Loop - Current section:', section?.sectionTitle);
@@ -124,7 +134,7 @@ export const generateChatBotFlow = (): Record<
 
         // Handle FlowFunc with active flow controller
         if (
-          field.type === FieldType.FlowFunc &&
+          field.type === FieldType.flowfunc &&
           isInFlowFunc &&
           currentFlowController
         ) {
@@ -161,21 +171,22 @@ export const generateChatBotFlow = (): Record<
 
         // const {  } = ChartFormUseFlowStore.getState()
 
-        const section = getCurrentSection();
-        const field = getCurrentField();
+        const section = await getCurrentMainSection(user_id);
+        const field = await getCurrentMainField(user_id);
 
         // console.log('Loop path - Section:', section?.sectionTitle);
         // console.log('Loop path - Field:', field?.label);
         // console.log('Loop path - User input:', params?.userInput);
 
         if (!section) return 'end';
+        if (!field) return 'end';
 
-        if (field?.nextField == null) {
-          if (field?.flowInjection?.type === 'ChartForm') {
+        if (field?.nextfield === null) {
+          if (field?.flowinjection?.name === 'ChartForm') {
             // console.log(
-            //   `In this Section: ${section} and this field: ${field} we have injection of type: ${field.flowInjection.type} `,
+            //   `In this Section: ${section} and this field: ${field} we have injection of type: ${field.flowinjection.type} `,
             // );
-            await fetchAndSetChartFormSubFlow(field.flowInjection.name);
+            await fetchAndSetChartFormSubFlow(field.flowinjection.name);
             return 'chartForm';
           }
           // console.log(
@@ -183,14 +194,14 @@ export const generateChatBotFlow = (): Record<
           // );
 
           if (
-            field?.flowInjection?.type === 'OriginalSubFlow' &&
+            field?.flowinjection?.type === 'OriginalSubFlow' &&
             stage != null &&
             stage !== ''
           ) {
             // console.log(
-            //   `In this Section: ${section} and this field: ${field} we have injection of type: ${field.flowInjection.type} `,
+            //   `In this Section: ${section} and this field: ${field} we have injection of type: ${field.flowinjection.type} `,
             // );
-            await fetchAndSetOriginalSubFlow(field.flowInjection.name, stage);
+            await fetchAndSetOriginalSubFlow(field.flowinjection.name, stage);
             return 'OriginalSubFlowLoop';
           }
           // console.log(
@@ -208,63 +219,92 @@ export const generateChatBotFlow = (): Record<
         if (params.userInput !== undefined) {
           let answerToSave = params.userInput; // Default to raw input
 
-          // If extractionType is defined for this field, extract the info
-          if (field.extractionType) {
+          // If extractiontype is defined for this field, extract the info
+          if (field.extractiontype) {
             answerToSave = await extractKeyInfo(
               params.userInput,
-              field.extractionType,
+              field.extractiontype,
             );
           }
 
           // The `flowEngine` already saves the data for FlowFunc types,
           // so we only need to save it for other types.
-          if (field.type !== FieldType.FlowFunc) {
+          if (field.type !== FieldType.flowfunc) {
             // console.log("This is the save Question and Answer in the constructor");
             saveQuestionAnswer(field.label, answerToSave); // MODIFIED: Use answerToSave
           }
         }
 
         if (
-          field.type === FieldType.FlowFunc &&
-          field.flowInjection &&
-          field.flowInjection.type === 'ChartForm' &&
+          field.type === FieldType.flowfunc &&
+          field.flowinjection &&
+          field.flowinjection.type === 'ChartForm' &&
           !isInFlowFunc
         ) {
           // console.log('Entering ChartForm flow');
-          await fetchAndSetChartFormSubFlow(field.flowInjection.name);
+          await fetchAndSetChartFormSubFlow(field.flowinjection.name);
           return 'chartForm';
         }
 
         // Handle OriginalSubFlow injection
         if (
-          field.type === FieldType.FlowFunc &&
-          field.flowInjection &&
-          field.flowInjection.type === 'OriginalSubFlow' &&
+          field.type === FieldType.flowfunc &&
+          field.flowinjection &&
+          field.flowinjection.type === 'OriginalSubFlow' &&
           !isInFlowFunc &&
           stage != null &&
           stage !== ''
         ) {
           // console.log('Entering OriginalSubFlow');
-          await fetchAndSetOriginalSubFlow(field.flowInjection.name, stage);
+          await fetchAndSetOriginalSubFlow(field.flowinjection.name, stage);
           return 'OriginalSubFlowLoop';
         }
 
         // Redirect back to OriginalSubFlow if we're in one
         if (
-          field.type === FieldType.FlowFunc &&
-          field.flowInjection &&
-          field.flowInjection.type === 'OriginalSubFlow' &&
+          field.type === FieldType.flowfunc &&
+          field.flowinjection &&
+          field.flowinjection.type === 'OriginalSubFlow' &&
           isInFlowFunc
         ) {
           return 'OriginalSubFlowLoop';
         }
 
+        /**
+         * 
+         * 
+         * 
+
+
+
+          badde zabbet l fetch functions w berjae bkammel l flow mn tahet hone
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+         */
         // Handle user input for active FlowFunc (non-OriginalSubFlow)
         if (
-          field.type === FieldType.FlowFunc &&
+          field.type === FieldType.flowfunc &&
           isInFlowFunc &&
           currentFlowController &&
-          field.flowInjection?.type !== 'OriginalSubFlow'
+          field.flowinjection?.type !== 'OriginalSubFlow'
         ) {
           if (params?.userInput !== undefined) {
             currentFlowController.answerQuestion(params.userInput);
@@ -294,9 +334,9 @@ export const generateChatBotFlow = (): Record<
         // Handle regular field types - only advance if user provided input or it's a non-input field
         if (
           params?.userInput !== undefined ||
-          field.type === FieldType.File ||
-          field.type === FieldType.Video ||
-          field.type === FieldType.Dropdown
+          field.type === FieldType.file ||
+          field.type === FieldType.video ||
+          field.type === FieldType.dropdown
         ) {
           // console.log('Processing field and moving to next');
           goToNextField();
@@ -322,15 +362,15 @@ export const generateChatBotFlow = (): Record<
         const field = getCurrentField();
 
         if (
-          field?.type === FieldType.Dropdown ||
-          field?.type === FieldType.Text ||
-          field?.type === FieldType.Url ||
-          field?.type === FieldType.FlowFunc
+          field?.type === FieldType.dropdown ||
+          field?.type === FieldType.text ||
+          field?.type === FieldType.url ||
+          field?.type === FieldType.flowfunc
         ) {
           return;
         }
 
-        if (field?.type === FieldType.File || field?.type === FieldType.Video) {
+        if (field?.type === FieldType.file || field?.type === FieldType.video) {
           // Handle multiple files if present
 
           if (params.files && Array.isArray(params.files)) {
@@ -354,7 +394,7 @@ export const generateChatBotFlow = (): Record<
         const field = getCurrentField();
 
         if (
-          field?.type === FieldType.FlowFunc &&
+          field?.type === FieldType.flowfunc &&
           isInFlowFunc &&
           currentFlowController
         ) {
@@ -370,10 +410,10 @@ export const generateChatBotFlow = (): Record<
         const field = getCurrentField();
 
         return Boolean(
-          field?.type === FieldType.File ||
-            field?.type === FieldType.Video ||
-            field?.type === FieldType.Dropdown ||
-            (field?.type === FieldType.FlowFunc &&
+          field?.type === FieldType.file ||
+            field?.type === FieldType.video ||
+            field?.type === FieldType.dropdown ||
+            (field?.type === FieldType.flowfunc &&
               isInFlowFunc &&
               currentFlowController),
         );
@@ -382,13 +422,13 @@ export const generateChatBotFlow = (): Record<
         const { getCurrentField } = useFlowStore.getState();
 
         const field = getCurrentField();
-        if (field?.type === FieldType.FlowFunc) {
+        if (field?.type === FieldType.flowfunc) {
           return 750;
         } else return null;
       },
     } as MarkdownRendererBlock,
 
-    // === ChartForm block for flowInjection ===
+    // === ChartForm block for flowinjection ===
     chartForm: {
       message: (): string => {
         const { getCurrentField, currentFlowController, isInFlowFunc } =
@@ -486,7 +526,7 @@ export const generateChatBotFlow = (): Record<
         const field = getCurrentField();
 
         if (
-          field?.type === FieldType.FlowFunc &&
+          field?.type === FieldType.flowfunc &&
           isInFlowFunc &&
           currentFlowController
         ) {
@@ -501,10 +541,10 @@ export const generateChatBotFlow = (): Record<
         const field = getCurrentField();
 
         return Boolean(
-          field?.type === FieldType.File ||
-            field?.type === FieldType.Video ||
-            field?.type === FieldType.Dropdown ||
-            (field?.type === FieldType.FlowFunc &&
+          field?.type === FieldType.file ||
+            field?.type === FieldType.video ||
+            field?.type === FieldType.dropdown ||
+            (field?.type === FieldType.flowfunc &&
               isInFlowFunc &&
               currentFlowController !== null),
         );
@@ -515,15 +555,15 @@ export const generateChatBotFlow = (): Record<
         const field = getCurrentField();
 
         if (
-          field?.type === FieldType.Dropdown ||
-          field?.type === FieldType.Text ||
-          field?.type === FieldType.Url ||
-          field?.type === FieldType.FlowFunc
+          field?.type === FieldType.dropdown ||
+          field?.type === FieldType.text ||
+          field?.type === FieldType.url ||
+          field?.type === FieldType.flowfunc
         ) {
           return;
         }
 
-        if (field?.type === FieldType.File || field?.type === FieldType.Video) {
+        if (field?.type === FieldType.file || field?.type === FieldType.video) {
           // Handle multiple files if present
           if (params.files && Array.isArray(params.files)) {
             for (const file of params.files) {
@@ -568,7 +608,7 @@ export const generateChatBotFlow = (): Record<
         }
 
         if (
-          field.type === FieldType.FlowFunc &&
+          field.type === FieldType.flowfunc &&
           isInFlowFunc &&
           currentFlowController
         ) {
@@ -649,15 +689,15 @@ export const generateChatBotFlow = (): Record<
         const field = getCurrentSubFlowField();
 
         if (
-          field?.type === FieldType.Dropdown ||
-          field?.type === FieldType.Text ||
-          field?.type === FieldType.Url ||
-          field?.type === FieldType.FlowFunc
+          field?.type === FieldType.dropdown ||
+          field?.type === FieldType.text ||
+          field?.type === FieldType.url ||
+          field?.type === FieldType.flowfunc
         ) {
           return;
         }
 
-        if (field?.type === FieldType.File || field?.type === FieldType.Video) {
+        if (field?.type === FieldType.file || field?.type === FieldType.video) {
           if (params.files && Array.isArray(params.files)) {
             for (const file of params.files) {
               // Validate file before processing
@@ -681,7 +721,7 @@ export const generateChatBotFlow = (): Record<
         const field = getCurrentSubFlowField();
 
         if (
-          field?.type === FieldType.FlowFunc &&
+          field?.type === FieldType.flowfunc &&
           isInFlowFunc &&
           currentFlowController
         ) {
@@ -698,10 +738,10 @@ export const generateChatBotFlow = (): Record<
         const field = getCurrentSubFlowField();
 
         return Boolean(
-          field?.type === FieldType.File ||
-            field?.type === FieldType.Video ||
-            field?.type === FieldType.Dropdown ||
-            (field?.type === FieldType.FlowFunc &&
+          field?.type === FieldType.file ||
+            field?.type === FieldType.video ||
+            field?.type === FieldType.dropdown ||
+            (field?.type === FieldType.flowfunc &&
               isInFlowFunc &&
               currentFlowController),
         );

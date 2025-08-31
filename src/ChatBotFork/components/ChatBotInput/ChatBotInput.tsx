@@ -108,8 +108,8 @@ const ChatBotInput = ({ buttons }: { buttons: React.ReactElement[] }) => {
   const currentField = getField();
   if (
     fileAttachmentButtonIndex !== -1 &&
-    (currentField?.type === FieldType.File ||
-      currentField?.type === FieldType.Video)
+    (currentField?.type === FieldType.file ||
+      currentField?.type === FieldType.video)
   ) {
     fileAttachmentButton = (
       <FileAttachmentButton

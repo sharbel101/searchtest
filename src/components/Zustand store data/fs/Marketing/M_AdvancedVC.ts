@@ -8,7 +8,7 @@ export const M_Advanced_VC_Flow = {
     fields: {
       crmSystemLevel: {
         id: 'crm-system-level',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What enterprise-level CRM system does your company use?',
         required: true,
         nextField: null,
@@ -43,7 +43,7 @@ export const M_Advanced_VC_Flow = {
     fields: {
       crmAutomationLevel: {
         id: 'crm-automation-level',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How advanced is your CRM automation for lead nurturing, customer engagement, and retention?',
         required: true,
@@ -79,7 +79,7 @@ export const M_Advanced_VC_Flow = {
     fields: {
       crmIntegrationLevel: {
         id: 'crm-integration-level',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How well is your CRM integrated with your marketing and sales platforms?',
         required: true,
@@ -112,7 +112,7 @@ export const M_Advanced_VC_Flow = {
     fields: {
       globalCrmStrategy: {
         id: 'global-crm-strategy',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Do you have a global CRM strategy to manage international customer segments?',
         required: true,
@@ -145,7 +145,7 @@ export const M_Advanced_VC_Flow = {
     fields: {
       customerSatisfactionMeasurement: {
         id: 'customer-satisfaction-measurement',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What structured methods do you use to measure customer satisfaction?',
         required: true,
@@ -185,7 +185,7 @@ export const M_Advanced_VC_Flow = {
     fields: {
       currentNpsScore: {
         id: 'current-nps-score',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is your current Net Promoter Score (NPS)?',
         required: true,
         nextField: null,
@@ -219,7 +219,7 @@ export const M_Advanced_VC_Flow = {
     fields: {
       feedbackCollectionAnalysis: {
         id: 'feedback-collection-analysis',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How do you collect and analyze customer feedback across different regions and markets?',
         required: true,
@@ -255,7 +255,7 @@ export const M_Advanced_VC_Flow = {
     fields: {
       customerSatisfactionRateInput: {
         id: 'customer-satisfaction-rate-input',
-        type: FieldType.Text,
+        type: FieldType.text,
         label:
           'What is your customer satisfaction rate? Enter a percentage number between 0% and 100%',
         required: true,
@@ -274,7 +274,7 @@ export const M_Advanced_VC_Flow = {
     fields: {
       feedbackImplementationFrequency: {
         id: 'feedback-implementation-frequency',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How frequently do you implement changes based on customer satisfaction data?',
         required: true,
@@ -311,7 +311,7 @@ export const M_Advanced_VC_Flow = {
     fields: {
       dissatisfiedCustomerHandling: {
         id: 'dissatisfied-customer-handling',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'How do you handle dissatisfied customers and negative reviews?',
         required: true,
         nextField: null,
@@ -346,7 +346,7 @@ export const M_Advanced_VC_Flow = {
     fields: {
       customerRetentionRate: {
         id: 'customer-retention-rate',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is your current customer retention rate?',
         required: true,
         nextField: null,
@@ -380,7 +380,7 @@ export const M_Advanced_VC_Flow = {
     fields: {
       monthlyChurnRate: {
         id: 'monthly-churn-rate',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is your average customer churn rate per month?',
         required: true,
         nextField: null,
@@ -414,7 +414,7 @@ export const M_Advanced_VC_Flow = {
     fields: {
       aiChurnPrediction: {
         id: 'ai-churn-prediction',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Do you use AI or machine learning to predict customer churn and proactively retain users?',
         required: true,
@@ -445,7 +445,7 @@ export const M_Advanced_VC_Flow = {
     fields: {
       retentionCustomerSegmentation: {
         id: 'retention-customer-segmentation',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'How do you segment customers based on retention behavior?',
         required: true,
         nextField: null,
@@ -479,7 +479,7 @@ export const M_Advanced_VC_Flow = {
     fields: {
       retentionStrategies: {
         id: 'retention-strategies',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What retention strategies are in place to maximize customer lifetime value?',
         required: true,
@@ -514,7 +514,7 @@ export const M_Advanced_VC_Flow = {
     fields: {
       customerRetentionRateInput: {
         id: 'customer-retention-rate-input',
-        type: FieldType.Text,
+        type: FieldType.text,
         label:
           'What is your customer retention rate? Enter a percentage number between 0% and 100%',
         required: true,
@@ -533,7 +533,7 @@ export const M_Advanced_VC_Flow = {
     fields: {
       currentClvEstimate: {
         id: 'current-clv-estimate',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is your current estimated Customer Lifetime Value (CLV)?',
         required: true,
         nextField: null,
@@ -567,7 +567,7 @@ export const M_Advanced_VC_Flow = {
     fields: {
       clvVsCacRatio: {
         id: 'clv-vs-cac-ratio',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How does your CLV compare to your Customer Acquisition Cost (CAC)?',
         required: true,
@@ -602,7 +602,7 @@ export const M_Advanced_VC_Flow = {
     fields: {
       aiClvForecasting: {
         id: 'ai-clv-forecasting',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Do you use AI-driven CLV forecasting to predict long-term revenue per customer?',
         required: true,
@@ -633,7 +633,7 @@ export const M_Advanced_VC_Flow = {
     fields: {
       clvCustomerSegmentation: {
         id: 'clv-customer-segmentation',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'How do you segment customers based on CLV?',
         required: true,
         nextField: null,
@@ -667,7 +667,7 @@ export const M_Advanced_VC_Flow = {
     fields: {
       clvOptimizationStrategies: {
         id: 'clv-optimization-strategies',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What strategies have you implemented to increase CLV?',
         required: true,
         nextField: null,
@@ -701,7 +701,7 @@ export const M_Advanced_VC_Flow = {
     fields: {
       customerLifetimeValueInput: {
         id: 'customer-lifetime-value-input',
-        type: FieldType.Text,
+        type: FieldType.text,
         label:
           'What is your customer lifetime value? Enter a finite number in USD',
         required: true,
@@ -719,7 +719,7 @@ export const M_Advanced_VC_Flow = {
     fields: {
       repeatCustomerRevenuePercentage: {
         id: 'repeat-customer-revenue-percentage',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What percentage of your revenue comes from repeat customers?',
         required: true,
         nextField: null,
@@ -753,7 +753,7 @@ export const M_Advanced_VC_Flow = {
     fields: {
       leadToCustomerConversion: {
         id: 'lead-to-customer-conversion',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is your current lead-to-customer conversion rate?',
         required: true,
         nextField: null,
@@ -787,7 +787,7 @@ export const M_Advanced_VC_Flow = {
     fields: {
       websiteConversionRate: {
         id: 'website-conversion-rate',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is your website or landing page conversion rate?',
         required: true,
         nextField: null,
@@ -821,7 +821,7 @@ export const M_Advanced_VC_Flow = {
     fields: {
       aiConversionOptimization: {
         id: 'ai-conversion-optimization',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Do you use AI-driven personalization and predictive analytics to improve conversion rates?',
         required: true,
@@ -853,7 +853,7 @@ export const M_Advanced_VC_Flow = {
     fields: {
       paidVsOrganicConversions: {
         id: 'paid-vs-organic-conversions',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What percentage of conversions come from paid vs. organic channels?',
         required: true,
@@ -888,7 +888,7 @@ export const M_Advanced_VC_Flow = {
     fields: {
       abandonedCartRate: {
         id: 'abandoned-cart-rate',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What is your abandoned cart or incomplete sign-up rate (if applicable)?',
         required: true,
@@ -923,7 +923,7 @@ export const M_Advanced_VC_Flow = {
     fields: {
       conversionOptimizationStrategies: {
         id: 'conversion-optimization-strategies',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What optimization strategies have you implemented to improve conversion rates?',
         required: true,
@@ -958,7 +958,7 @@ export const M_Advanced_VC_Flow = {
     fields: {
       budgetOptimization: {
         id: 'budget-optimization',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Do you adjust your marketing budget dynamically based on performance and ROI?',
         required: true,
@@ -994,7 +994,7 @@ export const M_Advanced_VC_Flow = {
     fields: {
       costPerAcquisition: {
         id: 'cost-per-acquisition',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What is your cost-per-acquisition (CPA) for each marketing channel?',
         required: true,
@@ -1029,7 +1029,7 @@ export const M_Advanced_VC_Flow = {
     fields: {
       budgetReallocationFrequency: {
         id: 'budget-reallocation-frequency',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How frequently do you reallocate marketing budgets based on real-time data?',
         required: true,
@@ -1064,7 +1064,7 @@ export const M_Advanced_VC_Flow = {
     fields: {
       customerAcquisitionCost: {
         id: 'customer-acquisition-cost',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is your current Customer Acquisition Cost (CAC)?',
         required: true,
         nextField: null,
@@ -1098,7 +1098,7 @@ export const M_Advanced_VC_Flow = {
     fields: {
       returnOnAdSpend: {
         id: 'return-on-ad-spend',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What is your current Return on Ad Spend (ROAS)? (Revenue generated per $1 spent on paid ads.)',
         required: true,
@@ -1133,7 +1133,7 @@ export const M_Advanced_VC_Flow = {
     fields: {
       revenueAttribution: {
         id: 'revenue-attribution',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What percentage of total revenue is directly attributed to marketing efforts?',
         required: true,
@@ -1168,7 +1168,7 @@ export const M_Advanced_VC_Flow = {
     fields: {
       marketingEfficiencyRatio: {
         id: 'marketing-efficiency-ratio',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is your Marketing Efficiency Ratio (MER)?',
         required: true,
         nextField: null,
@@ -1202,7 +1202,7 @@ export const M_Advanced_VC_Flow = {
     fields: {
       aiDrivenProfitability: {
         id: 'ai-driven-profitability',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Do you use AI-driven marketing profitability models to optimize spend?',
         required: true,
@@ -1237,7 +1237,7 @@ export const M_Advanced_VC_Flow = {
     fields: {
       spendOptimization: {
         id: 'spend-optimization',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How do you optimize marketing spend based on profitability data?',
         required: true,
@@ -1272,7 +1272,7 @@ export const M_Advanced_VC_Flow = {
     fields: {
       socialMediaFollowers: {
         id: 'social-media-followers',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What is your total social media follower count across all platforms?',
         required: true,
@@ -1307,7 +1307,7 @@ export const M_Advanced_VC_Flow = {
     fields: {
       engagementRate: {
         id: 'engagement-rate',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What is your average engagement rate across your social media platforms?',
         required: true,
@@ -1342,7 +1342,7 @@ export const M_Advanced_VC_Flow = {
     fields: {
       contentPostingFrequency: {
         id: 'content-posting-frequency',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'How frequently do you post new content across your platforms?',
         required: true,
         nextField: null,
@@ -1376,7 +1376,7 @@ export const M_Advanced_VC_Flow = {
     fields: {
       influencerPartnerships: {
         id: 'influencer-partnerships',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Do you use influencer partnerships or paid social media campaigns to boost reach?',
         required: true,
@@ -1407,7 +1407,7 @@ export const M_Advanced_VC_Flow = {
     fields: {
       socialMediaEffectiveness: {
         id: 'social-media-effectiveness',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How do you measure the effectiveness of your social media campaigns?',
         required: true,
@@ -1442,7 +1442,7 @@ export const M_Advanced_VC_Flow = {
     fields: {
       socialMediaIntegration: {
         id: 'social-media-integration',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Do you integrate social media marketing with other digital channels (SEO, paid ads, email marketing)?',
         required: true,
@@ -1474,7 +1474,7 @@ export const M_Advanced_VC_Flow = {
     fields: {
       mediaCoverage: {
         id: 'media-coverage',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Have you received any media coverage, press mentions, or industry recognition?',
         required: true,
@@ -1510,7 +1510,7 @@ export const M_Advanced_VC_Flow = {
     fields: {
       brandSentimentTracking: {
         id: 'brand-sentiment-tracking',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'How do you track brand sentiment and external reputation?',
         required: true,
         nextField: null,
@@ -1541,7 +1541,7 @@ export const M_Advanced_VC_Flow = {
     fields: {
       positiveFeedbackPercentage: {
         id: 'positive-feedback-percentage',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What percentage of your online reviews and public feedback are positive?',
         required: true,
@@ -1576,7 +1576,7 @@ export const M_Advanced_VC_Flow = {
     fields: {
       crisisCommunicationStrategy: {
         id: 'crisis-communication-strategy',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Do you have a structured crisis communication strategy in place?',
         required: true,
@@ -1607,7 +1607,7 @@ export const M_Advanced_VC_Flow = {
     fields: {
       globalPartnerships: {
         id: 'global-partnerships',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Have you established partnerships with globally recognized brands, investors, or thought leaders?',
         required: true,
@@ -1642,7 +1642,7 @@ export const M_Advanced_VC_Flow = {
     fields: {
       industryEventsParticipation: {
         id: 'industry-events-participation',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Have you participated in major industry events, awards, or sponsorships to enhance your reputation?',
         required: true,

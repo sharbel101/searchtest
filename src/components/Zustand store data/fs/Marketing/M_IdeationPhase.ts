@@ -8,7 +8,7 @@ export const M_Ideation_Phase_FLow = {
     fields: {
       targetCustomerSegments: {
         id: 'target-customer-segments',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Have you identified the target customer segments for your product/service?',
         required: true,
@@ -24,7 +24,7 @@ export const M_Ideation_Phase_FLow = {
       },
       customerDataCollection: {
         id: 'customer-data-collection',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Have you planned how you will collect and store customer data once you acquire customers?',
         required: true,
@@ -40,7 +40,7 @@ export const M_Ideation_Phase_FLow = {
       },
       crmToolConsideration: {
         id: 'crm-tool-consideration',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Have you considered which CRM tool or system you might use in the future?',
         required: true,
@@ -62,7 +62,7 @@ export const M_Ideation_Phase_FLow = {
       },
       customerCommunication: {
         id: 'customer-communication',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How do you plan to interact and communicate with your customers?',
         required: true,
@@ -87,7 +87,7 @@ export const M_Ideation_Phase_FLow = {
     fields: {
       keySatisfactionFactors: {
         id: 'key-satisfaction-factors',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Have you identified key factors that will influence customer satisfaction for your product/service?',
         required: true,
@@ -109,7 +109,7 @@ export const M_Ideation_Phase_FLow = {
       },
       feedbackStrategy: {
         id: 'feedback-strategy',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Do you have a strategy for collecting customer feedback once your product/service is live?',
         required: true,
@@ -132,7 +132,7 @@ export const M_Ideation_Phase_FLow = {
       },
       npsConsideration: {
         id: 'nps-consideration',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Have you considered setting up a Net Promoter Score (NPS) or similar metric once you launch?',
         required: true,
@@ -156,7 +156,7 @@ export const M_Ideation_Phase_FLow = {
       },
       dedicatedFeedbackTeam: {
         id: 'dedicated-feedback-team',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Do you plan to have a dedicated person/team responsible for monitoring customer feedback?',
         required: true,
@@ -184,7 +184,7 @@ export const M_Ideation_Phase_FLow = {
     fields: {
       retentionStrategies: {
         id: 'retention-strategies',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Have you considered strategies to retain customers once they start using your product/service?',
         required: true,
@@ -206,7 +206,7 @@ export const M_Ideation_Phase_FLow = {
       },
       engagementStrategy: {
         id: 'engagement-strategy',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What will be your main strategy for keeping customers engaged after they purchase or subscribe?',
         required: true,
@@ -226,7 +226,7 @@ export const M_Ideation_Phase_FLow = {
       },
       churnFactors: {
         id: 'churn-factors',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Have you identified what might cause customers to stop using your product/service?',
         required: true,
@@ -248,7 +248,7 @@ export const M_Ideation_Phase_FLow = {
       },
       followUpProcess: {
         id: 'follow-up-process',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Do you plan to have automated or manual processes for customer follow-ups after their first interaction?',
         required: true,
@@ -277,7 +277,7 @@ export const M_Ideation_Phase_FLow = {
     fields: {
       clvEstimation: {
         id: 'clv-estimation',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Have you estimated how much a single customer will spend over their relationship with your business?',
         required: true,
@@ -296,7 +296,7 @@ export const M_Ideation_Phase_FLow = {
       },
       revenueMaximization: {
         id: 'revenue-maximization',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What strategies do you plan to use to maximize the revenue generated per customer?',
         required: true,
@@ -315,7 +315,7 @@ export const M_Ideation_Phase_FLow = {
       },
       loyaltyImpact: {
         id: 'loyalty-impact',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Have you considered how customer loyalty and retention affect long-term profitability?',
         required: true,
@@ -337,7 +337,7 @@ export const M_Ideation_Phase_FLow = {
       },
       purchaseTracking: {
         id: 'purchase-tracking',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Do you plan to track customer purchase behavior to adjust pricing and marketing strategies?',
         required: true,
@@ -368,7 +368,7 @@ export const M_Ideation_Phase_FLow = {
     fields: {
       conversionGoals: {
         id: 'conversion-goals',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Do you know what your primary conversion goal will be (e.g., sign-ups, purchases, inquiries)?',
         required: true,
@@ -390,7 +390,7 @@ export const M_Ideation_Phase_FLow = {
       },
       conversionTracking: {
         id: 'conversion-tracking',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Have you planned how you will track and measure conversion rates once your product/service is live?',
         required: true,
@@ -413,7 +413,7 @@ export const M_Ideation_Phase_FLow = {
       },
       conversionOptimization: {
         id: 'conversion-optimization',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What strategies do you plan to use to improve conversion rates?',
         required: true,
@@ -436,7 +436,7 @@ export const M_Ideation_Phase_FLow = {
       },
       conversionBenchmarks: {
         id: 'conversion-benchmarks',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Have you researched industry benchmarks for expected conversion rates in your market?',
         required: true,
@@ -467,7 +467,7 @@ export const M_Ideation_Phase_FLow = {
     fields: {
       budgetEstimation: {
         id: 'budget-estimation',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Have you estimated a marketing budget for your first customer acquisition efforts?',
         required: true,
@@ -486,7 +486,7 @@ export const M_Ideation_Phase_FLow = {
       },
       marketingChannels: {
         id: 'marketing-channels',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What marketing channels will you prioritize based on your budget limitations?',
         required: true,
@@ -509,7 +509,7 @@ export const M_Ideation_Phase_FLow = {
       },
       fundingSource: {
         id: 'funding-source',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'How do you plan to fund your initial marketing efforts?',
         required: true,
         nextField: 'lowCostStrategies',
@@ -527,7 +527,7 @@ export const M_Ideation_Phase_FLow = {
       },
       lowCostStrategies: {
         id: 'low-cost-strategies',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Have you considered low-cost or free marketing strategies to gain initial traction?',
         required: true,
@@ -556,7 +556,7 @@ export const M_Ideation_Phase_FLow = {
     fields: {
       roiUnderstanding: {
         id: 'roi-understanding',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Do you understand how to measure marketing ROI (Return on Investment) once you start acquiring customers?',
         required: true,
@@ -579,7 +579,7 @@ export const M_Ideation_Phase_FLow = {
       },
       marketingMetrics: {
         id: 'marketing-metrics',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What key marketing metrics will you track to measure profitability?',
         required: true,
@@ -603,7 +603,7 @@ export const M_Ideation_Phase_FLow = {
       },
       cacConsideration: {
         id: 'cac-consideration',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Have you considered what your ideal Customer Acquisition Cost (CAC) should be to remain profitable?',
         required: true,
@@ -625,7 +625,7 @@ export const M_Ideation_Phase_FLow = {
       },
       costReduction: {
         id: 'cost-reduction',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Have you planned strategies to reduce marketing costs while maintaining customer growth?',
         required: true,
@@ -656,7 +656,7 @@ export const M_Ideation_Phase_FLow = {
     fields: {
       socialAccounts: {
         id: 'social-accounts',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Have you created official social media accounts for your brand?',
         required: true,
@@ -678,7 +678,7 @@ export const M_Ideation_Phase_FLow = {
       },
       platformStrategy: {
         id: 'platform-strategy',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Have you defined your target audience and chosen the right social media platforms to reach them?',
         required: true,
@@ -701,7 +701,7 @@ export const M_Ideation_Phase_FLow = {
       },
       contentStrategy: {
         id: 'content-strategy',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What type of content do you plan to post to attract and engage your audience?',
         required: true,
@@ -724,7 +724,7 @@ export const M_Ideation_Phase_FLow = {
       },
       socialMediaFocus: {
         id: 'social-media-focus',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Do you plan to use social media as a primary channel for brand awareness and marketing?',
         required: true,
@@ -755,7 +755,7 @@ export const M_Ideation_Phase_FLow = {
     fields: {
       brandIdentity: {
         id: 'brand-identity',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Have you defined your brand identity (logo, colors, messaging, and values)?',
         required: true,
@@ -777,7 +777,7 @@ export const M_Ideation_Phase_FLow = {
       },
       credibilityBuilding: {
         id: 'credibility-building',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How do you plan to build credibility and trust with potential customers and investors?',
         required: true,
@@ -800,7 +800,7 @@ export const M_Ideation_Phase_FLow = {
       },
       reputationManagement: {
         id: 'reputation-management',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Have you planned how you will handle negative feedback or reputation risks?',
         required: true,
@@ -823,7 +823,7 @@ export const M_Ideation_Phase_FLow = {
       },
       externalMarketing: {
         id: 'external-marketing',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Have you planned any external marketing efforts (PR, press releases, partnerships) to introduce your brand to the market?',
         required: true,

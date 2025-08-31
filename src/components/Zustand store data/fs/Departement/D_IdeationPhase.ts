@@ -8,7 +8,7 @@ export const D_Ideation_Phase_FLow = {
     fields: {
       numberOfFounders: {
         id: 'number-of-founders',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'Number of Founders or Cofounders',
         required: true,
         nextField: null,
@@ -43,7 +43,7 @@ export const D_Ideation_Phase_FLow = {
     fields: {
       foundersEducationBackground: {
         id: 'founders-education-background',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'Education Background of Founders',
         required: true,
         nextField: null,
@@ -82,7 +82,7 @@ export const D_Ideation_Phase_FLow = {
     fields: {
       foundersPastExperienceSkills: {
         id: 'founders-past-experience-skills',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'Past Experience & Key Skills',
         required: true,
         nextField: null,
@@ -117,7 +117,7 @@ export const D_Ideation_Phase_FLow = {
     fields: {
       founderResponsibilities: {
         id: 'founder-responsibilities',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'Responsibilities of Each Founder',
         required: true,
         nextField: null,
@@ -154,7 +154,7 @@ export const D_Ideation_Phase_FLow = {
     fields: {
       nonFounderTeamMembers: {
         id: 'non-founder-team-members',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'Presence of Non-Founder Team Members',
         required: true,
         nextField: null,
@@ -189,7 +189,7 @@ export const D_Ideation_Phase_FLow = {
     fields: {
       designatedCeo: {
         id: 'designated-ceo',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'Does your startup have a designated CEO among the founders?',
         required: true,
         nextField: null,
@@ -220,7 +220,7 @@ export const D_Ideation_Phase_FLow = {
     fields: {
       technicalBackground: {
         id: 'technical-background',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'Do the founders have a technical (development) background?',
         required: true,
         nextField: null,
@@ -252,7 +252,7 @@ export const D_Ideation_Phase_FLow = {
     fields: {
       organizationChartUpload: {
         id: 'organization-chart-upload',
-        type: FieldType.File,
+        type: FieldType.file,
         label: 'Upload your organization chart',
         required: false,
         nextField: null,
@@ -271,7 +271,7 @@ export const D_Ideation_Phase_FLow = {
     fields: {
       financialExpertise: {
         id: 'financial-expertise',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Do you have a financial/accounting officer or expertise within the founding team?',
         required: true,
@@ -304,7 +304,7 @@ export const D_Ideation_Phase_FLow = {
     fields: {
       coreBusinessFunctionsAssignment: {
         id: 'core-business-functions-assignment',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Have the core business functions been formally assigned to specific founders or team members?',
         required: true,
@@ -339,7 +339,7 @@ export const D_Ideation_Phase_FLow = {
     fields: {
       externalAdvisorsMentors: {
         id: 'external-advisors-mentors',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Are there any external advisors or mentors providing guidance in specialized areas (e.g., legal, finance, product development)?',
         required: true,
@@ -373,7 +373,7 @@ export const D_Ideation_Phase_FLow = {
     fields: {
       internalCommunicationDecisionMaking: {
         id: 'internal-communication-decision-making',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Have you defined internal communication and decision-making processes within the founding team?',
         required: true,
@@ -408,7 +408,7 @@ export const D_Ideation_Phase_FLow = {
     fields: {
       companyRegistration: {
         id: 'company-registration',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'Have you officially registered your company?',
         required: true,
         nextField: null,
@@ -440,7 +440,7 @@ export const D_Ideation_Phase_FLow = {
     fields: {
       teamResponsibilitiesDocumentation: {
         id: 'team-responsibilities-documentation',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Do you have an internal document outlining team responsibilities and department structures?',
         required: true,
@@ -473,7 +473,7 @@ export const D_Ideation_Phase_FLow = {
     fields: {
       kpisTeamMembers: {
         id: 'kpis-team-members',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Have you set KPIs (Key Performance Indicators) for each founder/team member?',
         required: true,
@@ -505,7 +505,7 @@ export const D_Ideation_Phase_FLow = {
     fields: {
       decisionMakingProcess: {
         id: 'decision-making-process',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Is there a structured decision-making process for major company decisions?',
         required: true,
@@ -538,7 +538,7 @@ export const D_Ideation_Phase_FLow = {
     fields: {
       teamMeetingFrequency: {
         id: 'team-meeting-frequency',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How often does your team formally meet to discuss progress and strategy?',
         required: true,
@@ -571,7 +571,7 @@ export const D_Ideation_Phase_FLow = {
     fields: {
       dedicatedWorkspace: {
         id: 'dedicated-workspace',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'Do you have a dedicated workspace for your team?',
         required: true,
         nextField: null,
@@ -603,7 +603,7 @@ export const D_Ideation_Phase_FLow = {
     fields: {
       ownershipEquityDistribution: {
         id: 'ownership-equity-distribution',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Have you legally defined ownership and equity distribution among founders?',
         required: true,
@@ -635,7 +635,7 @@ export const D_Ideation_Phase_FLow = {
     fields: {
       externalPartnerships: {
         id: 'external-partnerships',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Have you identified key external partnerships or suppliers essential to your business?',
         required: true,
@@ -667,7 +667,7 @@ export const D_Ideation_Phase_FLow = {
     fields: {
       founderContingencyPlan: {
         id: 'founder-contingency-plan',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Do you have a contingency plan in case a founder leaves or steps down?',
         required: true,

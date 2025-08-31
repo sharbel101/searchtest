@@ -1,11 +1,12 @@
 // SidebarFlowStore.ts
 import { create } from 'zustand';
 import { FlowSection } from '../MainFlow/flow';
+import { DBFlowSection } from '@/components/database/DBtypes';
 
 interface SidebarFlowState {
-  SideBarSections: FlowSection[];
+  SideBarSections: DBFlowSection[];
   currentSideBaSectionIndex: number;
-  setSideBarSections: (sections: FlowSection[]) => void;
+  setSideBarSections: (sections: DBFlowSection[]) => void;
   setCurrentSideBarSectionIndex: (index: number) => void;
   goToNextSideBarSection: () => void;
 }
@@ -13,7 +14,7 @@ interface SidebarFlowState {
 export const SidebarFlowStore = create<SidebarFlowState>((set, get) => ({
   SideBarSections: [],
   currentSideBaSectionIndex: 0,
-  setSideBarSections: (SideBarSections: FlowSection[]) =>
+  setSideBarSections: (SideBarSections: DBFlowSection[]) =>
     set({ SideBarSections }),
   setCurrentSideBarSectionIndex: (index: number) =>
     set({ currentSideBaSectionIndex: index }),

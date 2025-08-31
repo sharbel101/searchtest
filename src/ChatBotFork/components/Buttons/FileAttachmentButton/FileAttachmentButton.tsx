@@ -268,7 +268,7 @@ const FileAttachmentButton = ({
               if (validated.success) {
                 const message: Message = {
                   id: crypto.randomUUID(), // or however you generate IDs
-                  type: FieldType.File, // use your enum, not a string
+                  type: FieldType.file, // use your enum, not a string
                   content: file, // can be a File here
                   sender: 'USER',
                   timestamp: Date.now().toString(),

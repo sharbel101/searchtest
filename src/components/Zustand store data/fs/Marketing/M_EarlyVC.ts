@@ -8,7 +8,7 @@ export const M_Early_VC_Flow = {
     fields: {
       crmSystem: {
         id: 'crm-system',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What CRM system do you currently use?',
         required: true,
         nextField: null,
@@ -43,7 +43,7 @@ export const M_Early_VC_Flow = {
     fields: {
       activeCustomerContacts: {
         id: 'active-customer-contacts',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How many active customer contacts are currently stored in your CRM?',
         required: true,
@@ -78,7 +78,7 @@ export const M_Early_VC_Flow = {
     fields: {
       crmAutomation: {
         id: 'crm-automation',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How automated is your CRM workflow (e.g., lead scoring, automated follow-ups, pipeline tracking)?',
         required: true,
@@ -111,7 +111,7 @@ export const M_Early_VC_Flow = {
     fields: {
       crmIntegration: {
         id: 'crm-integration',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How well is your CRM integrated with other tools (email marketing, social media, sales pipelines, etc.)?',
         required: true,
@@ -144,7 +144,7 @@ export const M_Early_VC_Flow = {
     fields: {
       customerSatisfactionMeasurement: {
         id: 'customer-satisfaction-measurement',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'How do you currently measure customer satisfaction?',
         required: true,
         nextField: null,
@@ -182,7 +182,7 @@ export const M_Early_VC_Flow = {
     fields: {
       netPromoterScore: {
         id: 'net-promoter-score',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is your current Net Promoter Score (NPS)?',
         required: true,
         nextField: null,
@@ -216,7 +216,7 @@ export const M_Early_VC_Flow = {
     fields: {
       positiveReviewsPercentage: {
         id: 'positive-reviews-percentage',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What percentage of customers leave positive reviews or testimonials?',
         required: true,
@@ -242,7 +242,7 @@ export const M_Early_VC_Flow = {
       },
       customerSatisfactionRate: {
         id: 'customer-satisfaction-rate',
-        type: FieldType.Text,
+        type: FieldType.text,
         label:
           'What is your customer satisfaction rate? Enter a percentage number between 0% and 100%',
         required: true,
@@ -262,7 +262,7 @@ export const M_Early_VC_Flow = {
     fields: {
       feedbackAdjustmentFrequency: {
         id: 'feedback-adjustment-frequency',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How frequently do you adjust your product/service based on customer feedback?',
         required: true,
@@ -296,7 +296,7 @@ export const M_Early_VC_Flow = {
     fields: {
       customerRetentionRate: {
         id: 'customer-retention-rate',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is your current customer retention rate?',
         required: true,
         nextField: null,
@@ -330,7 +330,7 @@ export const M_Early_VC_Flow = {
     fields: {
       customerChurnRate: {
         id: 'customer-churn-rate',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is the average customer churn rate per month?',
         required: true,
         nextField: null,
@@ -364,7 +364,7 @@ export const M_Early_VC_Flow = {
     fields: {
       retentionSegmentation: {
         id: 'retention-segmentation',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'Do you segment customers based on retention behavior?',
         required: true,
         nextField: null,
@@ -394,7 +394,7 @@ export const M_Early_VC_Flow = {
     fields: {
       churnReasons: {
         id: 'churn-reasons',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What are the top reasons customers leave your service? (Multiple choices allowed.)',
         required: true,
@@ -420,7 +420,7 @@ export const M_Early_VC_Flow = {
       },
       customerRetentionRateInput: {
         id: 'customer-retention-rate-input',
-        type: FieldType.Text,
+        type: FieldType.text,
         label:
           'What is your customer retention rate? Enter a percentage number between 0% and 100%',
         required: true,
@@ -440,7 +440,7 @@ export const M_Early_VC_Flow = {
     fields: {
       retentionStrategies: {
         id: 'retention-strategies',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What retention strategies are currently in place? (Select all that apply.)',
         required: true,
@@ -477,7 +477,7 @@ export const M_Early_VC_Flow = {
     fields: {
       customerLifetimeValue: {
         id: 'customer-lifetime-value',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is your current estimated Customer Lifetime Value (CLV)?',
         required: true,
         nextField: null,
@@ -511,7 +511,7 @@ export const M_Early_VC_Flow = {
     fields: {
       clvVsCac: {
         id: 'clv-vs-cac',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How does your CLV compare to your Customer Acquisition Cost (CAC)?',
         required: true,
@@ -537,7 +537,7 @@ export const M_Early_VC_Flow = {
       },
       customerLifetimeValueInput: {
         id: 'customer-lifetime-value-input',
-        type: FieldType.Text,
+        type: FieldType.text,
         label:
           'What is your customer lifetime value? Enter a finite number in USD',
         required: true,
@@ -556,7 +556,7 @@ export const M_Early_VC_Flow = {
     fields: {
       clvSegmentation: {
         id: 'clv-segmentation',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Do you segment customers based on CLV (e.g., high-value vs. low-value customers)?',
         required: true,
@@ -588,7 +588,7 @@ export const M_Early_VC_Flow = {
     fields: {
       clvImprovementStrategies: {
         id: 'clv-improvement-strategies',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What strategies have you implemented to increase CLV? (Select all that apply.)',
         required: true,
@@ -623,7 +623,7 @@ export const M_Early_VC_Flow = {
     fields: {
       repeatCustomerRevenue: {
         id: 'repeat-customer-revenue',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What percentage of your revenue comes from repeat customers?',
         required: true,
         nextField: null,
@@ -659,7 +659,7 @@ export const M_Early_VC_Flow = {
     fields: {
       leadConversionRate: {
         id: 'lead-conversion-rate',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is your current lead-to-customer conversion rate?',
         required: true,
         nextField: null,
@@ -693,7 +693,7 @@ export const M_Early_VC_Flow = {
     fields: {
       websiteConversionRate: {
         id: 'website-conversion-rate',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is your website or landing page conversion rate?',
         required: true,
         nextField: null,
@@ -727,7 +727,7 @@ export const M_Early_VC_Flow = {
     fields: {
       highConvertingChannels: {
         id: 'high-converting-channels',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Which marketing channels provide the highest conversion rates? (Select the primary sources of high-converting leads.)',
         required: true,
@@ -766,7 +766,7 @@ export const M_Early_VC_Flow = {
     fields: {
       abandonedCartRate: {
         id: 'abandoned-cart-rate',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is your abandoned cart rate (if applicable)?',
         required: true,
         nextField: null,
@@ -800,7 +800,7 @@ export const M_Early_VC_Flow = {
     fields: {
       conversionOptimizationStrategies: {
         id: 'conversion-optimization-strategies',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What strategies have you implemented to improve conversion rates? (Select all that apply.)',
         required: true,
@@ -841,7 +841,7 @@ export const M_Early_VC_Flow = {
     fields: {
       monthlyMarketingBudget: {
         id: 'monthly-marketing-budget',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is your total monthly marketing budget?',
         required: true,
         nextField: null,
@@ -875,7 +875,7 @@ export const M_Early_VC_Flow = {
     fields: {
       marketingRevenuePercentage: {
         id: 'marketing-revenue-percentage',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What percentage of total revenue is allocated to marketing?',
         required: true,
         nextField: null,
@@ -909,7 +909,7 @@ export const M_Early_VC_Flow = {
     fields: {
       marketingBudgetDistribution: {
         id: 'marketing-budget-distribution',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How is your marketing budget distributed across different channels? (Select all that apply, with approximate percentage allocation.)',
         required: true,
@@ -948,7 +948,7 @@ export const M_Early_VC_Flow = {
     fields: {
       marketingEffectivenessMeasurement: {
         id: 'marketing-effectiveness-measurement',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'How do you measure the effectiveness of your marketing budget?',
         required: true,
         nextField: null,
@@ -982,7 +982,7 @@ export const M_Early_VC_Flow = {
     fields: {
       budgetAdjustmentFrequency: {
         id: 'budget-adjustment-frequency',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How frequently do you adjust your marketing budget based on performance?',
         required: true,
@@ -1018,7 +1018,7 @@ export const M_Early_VC_Flow = {
     fields: {
       customerAcquisitionCost: {
         id: 'customer-acquisition-cost',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is your current Customer Acquisition Cost (CAC)?',
         required: true,
         nextField: null,
@@ -1052,7 +1052,7 @@ export const M_Early_VC_Flow = {
     fields: {
       returnOnAdSpend: {
         id: 'return-on-ad-spend',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What is your current Return on Ad Spend (ROAS)? (Revenue generated per $1 spent on paid ads.)',
         required: true,
@@ -1087,7 +1087,7 @@ export const M_Early_VC_Flow = {
     fields: {
       revenueAttributedMarketing: {
         id: 'revenue-attributed-marketing',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What percentage of total revenue is directly attributed to marketing efforts?',
         required: true,
@@ -1122,7 +1122,7 @@ export const M_Early_VC_Flow = {
     fields: {
       marketingEfficiencyRatio: {
         id: 'marketing-efficiency-ratio',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What is your Marketing Efficiency Ratio (MER)? (Total revenue generated ÷ total marketing spend.)',
         required: true,
@@ -1157,7 +1157,7 @@ export const M_Early_VC_Flow = {
     fields: {
       marketingProfitabilityStrategies: {
         id: 'marketing-profitability-strategies',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What strategies have you implemented to improve marketing profitability?',
         required: true,
@@ -1194,7 +1194,7 @@ export const M_Early_VC_Flow = {
     fields: {
       socialMediaFollowerCount: {
         id: 'social-media-follower-count',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What is your total social media follower count across all platforms?',
         required: true,
@@ -1229,7 +1229,7 @@ export const M_Early_VC_Flow = {
     fields: {
       socialMediaEngagementRate: {
         id: 'social-media-engagement-rate',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What is your average engagement rate across your social media platforms?',
         required: true,
@@ -1264,7 +1264,7 @@ export const M_Early_VC_Flow = {
     fields: {
       contentPostingFrequency: {
         id: 'content-posting-frequency',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'How frequently do you post new content across your platforms?',
         required: true,
         nextField: null,
@@ -1298,7 +1298,7 @@ export const M_Early_VC_Flow = {
     fields: {
       paidSocialMediaAds: {
         id: 'paid-social-media-ads',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Do you use paid social media ads to increase reach and engagement?',
         required: true,
@@ -1329,7 +1329,7 @@ export const M_Early_VC_Flow = {
     fields: {
       socialMediaEffectiveness: {
         id: 'social-media-effectiveness',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How do you measure the effectiveness of your social media campaigns?',
         required: true,
@@ -1366,7 +1366,7 @@ export const M_Early_VC_Flow = {
     fields: {
       mediaCoverage: {
         id: 'media-coverage',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Have you received any media coverage, press mentions, or industry recognition?',
         required: true,
@@ -1402,7 +1402,7 @@ export const M_Early_VC_Flow = {
     fields: {
       positiveReviewsPercentage: {
         id: 'positive-reviews-percentage',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What percentage of your online reviews or testimonials are positive?',
         required: true,
@@ -1437,7 +1437,7 @@ export const M_Early_VC_Flow = {
     fields: {
       brandPartnerships: {
         id: 'brand-partnerships',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Have you established partnerships with reputable brands, influencers, or investors?',
         required: true,
@@ -1472,7 +1472,7 @@ export const M_Early_VC_Flow = {
     fields: {
       reputationManagement: {
         id: 'reputation-management',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How do you manage and respond to negative feedback or PR risks?',
         required: true,
@@ -1504,7 +1504,7 @@ export const M_Early_VC_Flow = {
     fields: {
       industryEventsParticipation: {
         id: 'industry-events-participation',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Have you participated in any industry events, awards, or sponsorships to enhance your reputation?',
         required: true,

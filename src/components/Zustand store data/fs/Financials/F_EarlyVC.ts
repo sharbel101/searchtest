@@ -8,7 +8,7 @@ export const F_Early_VC_Flow = {
     fields: {
       valuationBracket: {
         id: 'valuation-bracket',
-        type: FieldType.Text,
+        type: FieldType.text,
         label:
           "What is your company's estimated valuation brackets? (Insert estimated bracket - lower + upper bounds in USD)",
         required: true,
@@ -18,7 +18,7 @@ export const F_Early_VC_Flow = {
       },
       capTable: {
         id: 'cap-table',
-        type: FieldType.File,
+        type: FieldType.file,
         label: 'Cap table - Upload PDF or excel file (no csv)',
         required: true,
         nextField: null,
@@ -37,7 +37,7 @@ export const F_Early_VC_Flow = {
     fields: {
       yoyGrowth: {
         id: 'yoy-growth',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What was your year-over-year (YoY) revenue growth?',
         required: true,
         nextField: null,
@@ -60,7 +60,7 @@ export const F_Early_VC_Flow = {
     fields: {
       profitStatus: {
         id: 'profit-status',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Has the generated revenue resulted in a net profit (i.e., revenue surpassing expenses)?',
         required: true,
@@ -74,7 +74,7 @@ export const F_Early_VC_Flow = {
       },
       plStatement: {
         id: 'pl-statement',
-        type: FieldType.File,
+        type: FieldType.file,
         label: 'Upload P&L Statement (PDF or excel file, no csv)',
         required: true,
         nextField: 'profitTimeline',
@@ -84,7 +84,7 @@ export const F_Early_VC_Flow = {
       },
       profitTimeline: {
         id: 'profit-timeline',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'In how many years do you expect your revenue to surpass expenses and generate net profit?',
         required: true,
@@ -99,7 +99,7 @@ export const F_Early_VC_Flow = {
       },
       netResult: {
         id: 'net-result',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is your current net result (profit or loss)?',
         required: true,
         nextField: null,
@@ -123,7 +123,7 @@ export const F_Early_VC_Flow = {
     fields: {
       opexRatio: {
         id: 'opex-ratio',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is your current OpEx ratio?',
         required: true,
         nextField: 'balanceSheet',
@@ -137,7 +137,7 @@ export const F_Early_VC_Flow = {
       },
       balanceSheet: {
         id: 'balance-sheet',
-        type: FieldType.File,
+        type: FieldType.file,
         label: 'Upload Balance Sheet statement (PDF or excel file, no csv)',
         required: true,
         nextField: null,
@@ -156,7 +156,7 @@ export const F_Early_VC_Flow = {
     fields: {
       burnRate: {
         id: 'burn-rate',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is your current monthly cash burn rate?',
         required: true,
         nextField: null,
@@ -179,7 +179,7 @@ export const F_Early_VC_Flow = {
     fields: {
       currentRatio: {
         id: 'current-ratio',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is your current liquidity ratio?',
         required: true,
         nextField: 'quickRatio',
@@ -193,7 +193,7 @@ export const F_Early_VC_Flow = {
       },
       quickRatio: {
         id: 'quick-ratio',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is your quick liquidity ratio?',
         required: true,
         nextField: null,
@@ -216,7 +216,7 @@ export const F_Early_VC_Flow = {
     fields: {
       runwayTime: {
         id: 'runway-time',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'How many months of runway do you currently have?',
         required: true,
         nextField: null,
@@ -240,7 +240,7 @@ export const F_Early_VC_Flow = {
     fields: {
       financingType: {
         id: 'financing-type',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'Did the company previously opt for debt or equity financing?',
         required: true,
         nextField: 'debtEquityRatio',
@@ -254,7 +254,7 @@ export const F_Early_VC_Flow = {
       },
       debtEquityRatio: {
         id: 'debt-equity-ratio',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is your current debt-to-equity ratio?',
         required: true,
         nextField: null,
@@ -277,7 +277,7 @@ export const F_Early_VC_Flow = {
     fields: {
       arTurnover: {
         id: 'ar-turnover',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is your AR turnover ratio?',
         required: true,
         nextField: 'auditReport',
@@ -300,7 +300,7 @@ export const F_Early_VC_Flow = {
       },
       auditReport: {
         id: 'audit-report',
-        type: FieldType.File,
+        type: FieldType.file,
         label: 'Upload Annual Audit report (PDF Only - ORIGINAL COPY)',
         required: true,
         nextField: 'apTurnover',
@@ -310,7 +310,7 @@ export const F_Early_VC_Flow = {
       },
       apTurnover: {
         id: 'ap-turnover',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is your AP turnover ratio?',
         required: true,
         nextField: null,
@@ -343,7 +343,7 @@ export const F_Early_VC_Flow = {
     fields: {
       taxRate: {
         id: 'tax-rate',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: "What is your company's tax effective rate?",
         required: true,
         nextField: null,

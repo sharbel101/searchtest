@@ -169,9 +169,9 @@ export const usePathsInternal = () => {
       //JOE MODIFIED HERE.
       const field = readCurrentField();
       const allowAttachment =
-        (field?.type === FieldType.File ||
-          field?.type === FieldType.Video ||
-          field?.type === FieldType.Signature) &&
+        (field?.type === FieldType.file ||
+          field?.type === FieldType.video ||
+          field?.type === FieldType.signature) &&
         typeof block.file === 'function';
       setBlockAllowsAttachment(allowAttachment);
       updateTextAreaFocus(currPath);

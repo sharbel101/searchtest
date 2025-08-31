@@ -8,7 +8,7 @@ export const D_Private_Equity_Flow = {
     fields: {
       orgChartStatus: {
         id: 'org-chart-status',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Does the company have a formal and documented organizational chart?',
         required: true,
@@ -40,7 +40,7 @@ export const D_Private_Equity_Flow = {
     fields: {
       structureReview: {
         id: 'structure-review',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How often is the organizational structure reviewed and updated?',
         required: true,
@@ -65,7 +65,7 @@ export const D_Private_Equity_Flow = {
     fields: {
       managementLayers: {
         id: 'management-layers',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How many management layers exist between entry-level employees and the CEO?',
         required: true,
@@ -93,7 +93,7 @@ export const D_Private_Equity_Flow = {
     fields: {
       departmentReporting: {
         id: 'department-reporting',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Does each department report directly to its respective C-level executive?',
         required: true,
@@ -121,7 +121,7 @@ export const D_Private_Equity_Flow = {
     fields: {
       businessUnits: {
         id: 'business-units',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Has the company expanded into multiple business units or divisions?',
         required: true,
@@ -152,7 +152,7 @@ export const D_Private_Equity_Flow = {
     fields: {
       middleManagement: {
         id: 'middle-management',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Does each department have a middle management layer separate from senior leadership?',
         required: true,
@@ -183,7 +183,7 @@ export const D_Private_Equity_Flow = {
     fields: {
       cLevelRoles: {
         id: 'c-level-roles',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Which of the following C-level executives are present in the company?',
         required: true,
@@ -209,7 +209,7 @@ export const D_Private_Equity_Flow = {
       },
       education: {
         id: 'c-level-education',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is their highest level of education?',
         required: true,
         validation: 'z.string().min(1, "This field is required")',
@@ -226,7 +226,7 @@ export const D_Private_Equity_Flow = {
       },
       experienceYears: {
         id: 'c-level-experience',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How many years of experience does this C-level executive have in their respective field?',
         required: true,
@@ -241,7 +241,7 @@ export const D_Private_Equity_Flow = {
       },
       leadershipStartup: {
         id: 'leadership-startup',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Has this executive previously held a leadership role in a startup or high-growth company?',
         required: true,
@@ -261,7 +261,7 @@ export const D_Private_Equity_Flow = {
       },
       industryExperience: {
         id: 'industry-experience',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is their industry experience?',
         required: true,
         validation: 'z.string().min(1, "This field is required")',
@@ -277,7 +277,7 @@ export const D_Private_Equity_Flow = {
       },
       investorParticipation: {
         id: 'investor-participation',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Does this executive participate in investor relations and board meetings?',
         required: true,
@@ -300,7 +300,7 @@ export const D_Private_Equity_Flow = {
       },
       strategicInvolvement: {
         id: 'strategic-involvement',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'How involved is this executive in strategic decision-making?',
         required: true,
         validation: 'z.string().min(1, "This field is required")',
@@ -327,7 +327,7 @@ export const D_Private_Equity_Flow = {
     fields: {
       departments: {
         id: 'departments',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Which of the following departments are formally established in your company?',
         required: true,
@@ -365,7 +365,7 @@ export const D_Private_Equity_Flow = {
     fields: {
       departmentKpis: {
         id: 'department-kpis',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Does each department have clear ownership of KPIs and performance metrics?',
         required: true,
@@ -396,7 +396,7 @@ export const D_Private_Equity_Flow = {
     fields: {
       internalTools: {
         id: 'internal-tools',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What tools or platforms are used for internal collaboration?',
         required: true,
         validation: 'z.string().min(1, "This field is required")',
@@ -424,7 +424,7 @@ export const D_Private_Equity_Flow = {
     fields: {
       reportingSystem: {
         id: 'reporting-system',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Are all department heads required to submit periodic reports on performance and progress?',
         required: true,
@@ -455,7 +455,7 @@ export const D_Private_Equity_Flow = {
     fields: {
       scalability: {
         id: 'scalability',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How resilient is the company s department structure in handling rapid scaling?',
         required: true,
@@ -487,7 +487,7 @@ export const D_Private_Equity_Flow = {
     fields: {
       careerPaths: {
         id: 'career-paths',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How well-defined are the career progression paths within each department?',
         required: true,
@@ -516,7 +516,7 @@ export const D_Private_Equity_Flow = {
     fields: {
       leadershipHiring: {
         id: 'leadership-hiring',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How frequently are internal promotions vs. external hires made for leadership roles?',
         required: true,
@@ -548,7 +548,7 @@ export const D_Private_Equity_Flow = {
     fields: {
       globalWorkflow: {
         id: 'global-workflow',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Are interdepartmental workflows optimized for multi-location or global operations?',
         required: true,
@@ -579,7 +579,7 @@ export const D_Private_Equity_Flow = {
     fields: {
       complianceDept: {
         id: 'compliance-dept',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Does the company have a dedicated compliance or risk management department?',
         required: true,
@@ -607,7 +607,7 @@ export const D_Private_Equity_Flow = {
     fields: {
       departmentReview: {
         id: 'department-review',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How frequently does the company restructure or optimize its departments?',
         required: true,

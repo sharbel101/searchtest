@@ -8,7 +8,7 @@ export const D_Angel_Phase_Flow = {
     fields: {
       founderInvolvement: {
         id: 'founder-involvement',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Are all original founders still actively involved in the company?',
         required: true,
@@ -44,7 +44,7 @@ export const D_Angel_Phase_Flow = {
     fields: {
       founderRoleEvolution: {
         id: 'founder-role-evolution',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: "Have the founders' roles evolved from the ideation stage?",
         required: true,
         validation: 'z.string().min(1, "This field is required")',
@@ -76,7 +76,7 @@ export const D_Angel_Phase_Flow = {
     fields: {
       ceoLeadership: {
         id: 'ceo-leadership',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'Is there a designated CEO leading the company?',
         required: true,
         validation: 'z.string().min(1, "This field is required")',
@@ -107,7 +107,7 @@ export const D_Angel_Phase_Flow = {
     fields: {
       founderResponsibilities: {
         id: 'founder-responsibilities',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           "Are the founders' responsibilities documented and aligned with company needs?",
         required: true,
@@ -139,7 +139,7 @@ export const D_Angel_Phase_Flow = {
     fields: {
       investorAdvisorEngagement: {
         id: 'investor-advisor-engagement',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'Do the founders actively engage with investors and advisors?',
         required: true,
         validation: 'z.string().min(1, "This field is required")',
@@ -170,7 +170,7 @@ export const D_Angel_Phase_Flow = {
     fields: {
       externalLeadership: {
         id: 'external-leadership',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Have the founders taken steps to attract experienced leadership outside their founding team?',
         required: true,
@@ -202,7 +202,7 @@ export const D_Angel_Phase_Flow = {
     fields: {
       founderCompensation: {
         id: 'founder-compensation',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'Do all founders have a formal compensation structure?',
         required: true,
         validation: 'z.string().min(1, "This field is required")',
@@ -234,7 +234,7 @@ export const D_Angel_Phase_Flow = {
     fields: {
       departmentalStructures: {
         id: 'departmental-structures',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Has the company formally established departmental structures with defined leadership for each function?',
         required: true,
@@ -269,7 +269,7 @@ export const D_Angel_Phase_Flow = {
     fields: {
       departmentHeadDecisions: {
         id: 'department-head-decisions',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Are department heads or key function leaders involved in strategic decision-making alongside the founders?',
         required: true,
@@ -302,7 +302,7 @@ export const D_Angel_Phase_Flow = {
     fields: {
       organizationalChart: {
         id: 'organizational-chart',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           "Is there a documented organizational chart that reflects the company's current structure?",
         required: true,
@@ -334,7 +334,7 @@ export const D_Angel_Phase_Flow = {
     fields: {
       existingDepartments: {
         id: 'existing-departments',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Which of the following departments currently exist in your company? (Select all that apply)',
         required: true,
@@ -378,7 +378,7 @@ export const D_Angel_Phase_Flow = {
     fields: {
       dedicatedTeamMembers: {
         id: 'dedicated-team-members',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Do all key departments (finance, marketing, tech, operations) have at least one dedicated team member?',
         required: true,
@@ -410,7 +410,7 @@ export const D_Angel_Phase_Flow = {
     fields: {
       departmentLeadersAssignment: {
         id: 'department-leaders-assignment',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Have department leaders been officially assigned (beyond just the founders)?',
         required: true,
@@ -442,7 +442,7 @@ export const D_Angel_Phase_Flow = {
     fields: {
       departmentKpis: {
         id: 'department-kpis',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Do departments have clear KPIs and performance tracking in place?',
         required: true,
@@ -474,7 +474,7 @@ export const D_Angel_Phase_Flow = {
     fields: {
       crossDepartmentCommunication: {
         id: 'cross-department-communication',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Is cross-department communication structured and efficient (e.g., meetings, reporting, tools)?',
         required: true,
@@ -506,7 +506,7 @@ export const D_Angel_Phase_Flow = {
     fields: {
       organizationChartUpload: {
         id: 'organization-chart-upload',
-        type: FieldType.File,
+        type: FieldType.file,
         label: 'Upload your organization chart',
         required: false,
         validation:
@@ -525,7 +525,7 @@ export const D_Angel_Phase_Flow = {
     fields: {
       productTechResponsibility: {
         id: 'product-tech-responsibility',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'Who is responsible for product & technology development?',
         required: true,
         validation: 'z.string().min(1, "This field is required")',
@@ -556,7 +556,7 @@ export const D_Angel_Phase_Flow = {
     fields: {
       techLeadEducation: {
         id: 'tech-lead-education',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is their highest level of education in a technical field?',
         required: true,
         validation: 'z.string().min(1, "This field is required")',
@@ -587,7 +587,7 @@ export const D_Angel_Phase_Flow = {
     fields: {
       techLeadExperience: {
         id: 'tech-lead-experience',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How many years of experience do they have in software/product development?',
         required: true,
@@ -623,7 +623,7 @@ export const D_Angel_Phase_Flow = {
     fields: {
       techLeadLeadership: {
         id: 'tech-lead-leadership',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'Have they led a tech/product team before?',
         required: true,
         validation: 'z.string().min(1, "This field is required")',
@@ -654,7 +654,7 @@ export const D_Angel_Phase_Flow = {
     fields: {
       marketingSalesResponsibility: {
         id: 'marketing-sales-responsibility',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'Who is responsible for marketing & sales strategy?',
         required: true,
         validation: 'z.string().min(1, "This field is required")',
@@ -685,7 +685,7 @@ export const D_Angel_Phase_Flow = {
     fields: {
       marketingLeadEducation: {
         id: 'marketing-lead-education',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What is their highest level of education in business/marketing?',
         required: true,
@@ -717,7 +717,7 @@ export const D_Angel_Phase_Flow = {
     fields: {
       marketingLeadExperience: {
         id: 'marketing-lead-experience',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How many years of experience do they have in sales, branding, or customer acquisition?',
         required: true,
@@ -753,7 +753,7 @@ export const D_Angel_Phase_Flow = {
     fields: {
       marketingLeadIndustryExperience: {
         id: 'marketing-lead-industry-experience',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'Have they worked in a similar industry before?',
         required: true,
         validation: 'z.string().min(1, "This field is required")',
@@ -784,7 +784,7 @@ export const D_Angel_Phase_Flow = {
     fields: {
       financeManagementResponsibility: {
         id: 'finance-management-responsibility',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'Who manages company finances and investor relations?',
         required: true,
         validation: 'z.string().min(1, "This field is required")',
@@ -815,7 +815,7 @@ export const D_Angel_Phase_Flow = {
     fields: {
       financeLeadEducation: {
         id: 'finance-lead-education',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is their educational background in finance/accounting?',
         required: true,
         validation: 'z.string().min(1, "This field is required")',
@@ -846,7 +846,7 @@ export const D_Angel_Phase_Flow = {
     fields: {
       financeLeadPriorExperience: {
         id: 'finance-lead-prior-experience',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Do they have prior experience in financial planning, budgeting, or fundraising?',
         required: true,
@@ -882,7 +882,7 @@ export const D_Angel_Phase_Flow = {
     fields: {
       financeLeadTotalExperience: {
         id: 'finance-lead-total-experience',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How many years of experience do they have in finance/accounting/investment?',
         required: true,
@@ -918,7 +918,7 @@ export const D_Angel_Phase_Flow = {
     fields: {
       operationsHrResponsibility: {
         id: 'operations-hr-responsibility',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'Who is responsible for company operations and HR?',
         required: true,
         validation: 'z.string().min(1, "This field is required")',
@@ -949,7 +949,7 @@ export const D_Angel_Phase_Flow = {
     fields: {
       operationsLeadBackground: {
         id: 'operations-lead-background',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What is their background in business operations, supply chain, or management?',
         required: true,
@@ -981,7 +981,7 @@ export const D_Angel_Phase_Flow = {
     fields: {
       operationsLeadPriorExperience: {
         id: 'operations-lead-prior-experience',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Do they have prior experience in business operations, supply chain, or management?',
         required: true,
@@ -1017,7 +1017,7 @@ export const D_Angel_Phase_Flow = {
     fields: {
       dedicatedFullTimeEmployees: {
         id: 'dedicated-full-time-employees',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Does each department have at least one dedicated full-time employee (excluding the founder-led roles)?',
         required: true,
@@ -1050,7 +1050,7 @@ export const D_Angel_Phase_Flow = {
     fields: {
       employeeCount: {
         id: 'employee-count',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How many employees (excluding founders) are currently in the company?',
         required: true,
@@ -1082,7 +1082,7 @@ export const D_Angel_Phase_Flow = {
     fields: {
       employeeRoleDocumentation: {
         id: 'employee-role-documentation',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Are employee roles and responsibilities formally documented for each department?',
         required: true,
@@ -1115,7 +1115,7 @@ export const D_Angel_Phase_Flow = {
     fields: {
       departmentToolsInfrastructure: {
         id: 'department-tools-infrastructure',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Is each department equipped with the necessary tools, software, or infrastructure to operate efficiently?',
         required: true,
@@ -1148,7 +1148,7 @@ export const D_Angel_Phase_Flow = {
     fields: {
       internalProcessesWorkflows: {
         id: 'internal-processes-workflows',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Have departments developed internal processes and workflows to handle daily operations?',
         required: true,

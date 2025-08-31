@@ -8,7 +8,7 @@ export const M_Angel_Phase_Flow = {
     fields: {
       crmSystemUsage: {
         id: 'crm-system-usage',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Do you currently use a CRM system to track customer interactions and data?',
         required: true,
@@ -40,7 +40,7 @@ export const M_Angel_Phase_Flow = {
     fields: {
       customerContactsCount: {
         id: 'customer-contacts-count',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How many customer contacts do you currently have in your CRM database?',
         required: true,
@@ -75,7 +75,7 @@ export const M_Angel_Phase_Flow = {
     fields: {
       customerEngagementFrequency: {
         id: 'customer-engagement-frequency',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How frequently do you engage with customers through CRM tools (email, SMS, follow-ups)?',
         required: true,
@@ -110,7 +110,7 @@ export const M_Angel_Phase_Flow = {
     fields: {
       customerSegmentation: {
         id: 'customer-segmentation',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Do you segment your customers in your CRM (by behavior, demographics, spending, etc.)?',
         required: true,
@@ -141,7 +141,7 @@ export const M_Angel_Phase_Flow = {
     fields: {
       feedbackCollection: {
         id: 'feedback-collection',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Do you actively collect customer feedback to measure satisfaction?',
         required: true,
@@ -172,7 +172,7 @@ export const M_Angel_Phase_Flow = {
     fields: {
       customerSatisfactionRating: {
         id: 'customer-satisfaction-rating',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What is your current average customer satisfaction rating (from surveys, reviews, or feedback)?',
         required: true,
@@ -207,7 +207,7 @@ export const M_Angel_Phase_Flow = {
     fields: {
       netPromoterScore: {
         id: 'net-promoter-score',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is your Net Promoter Score (NPS) from customers?',
         required: true,
         nextField: null,
@@ -241,7 +241,7 @@ export const M_Angel_Phase_Flow = {
     fields: {
       negativeFeedbackHandling: {
         id: 'negative-feedback-handling',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Have you received any negative reviews or customer complaints? If so, how do you handle them?',
         required: true,
@@ -273,7 +273,7 @@ export const M_Angel_Phase_Flow = {
     fields: {
       customerRetentionRate: {
         id: 'customer-retention-rate',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is your current customer retention rate?',
         required: true,
         nextField: null,
@@ -307,7 +307,7 @@ export const M_Angel_Phase_Flow = {
     fields: {
       customerChurnReasons: {
         id: 'customer-churn-reasons',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What is the most common reason customers leave or stop using your product/service?',
         required: true,
@@ -342,7 +342,7 @@ export const M_Angel_Phase_Flow = {
     fields: {
       retentionStrategies: {
         id: 'retention-strategies',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What strategies have you implemented to improve retention?',
         required: true,
         nextField: null,
@@ -372,7 +372,7 @@ export const M_Angel_Phase_Flow = {
     fields: {
       customerLifespanTracking: {
         id: 'customer-lifespan-tracking',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Do you track how long customers typically stay with your company?',
         required: true,
@@ -403,7 +403,7 @@ export const M_Angel_Phase_Flow = {
     fields: {
       estimatedClv: {
         id: 'estimated-clv',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is your estimated Customer Lifetime Value (CLV)?',
         required: true,
         nextField: null,
@@ -437,7 +437,7 @@ export const M_Angel_Phase_Flow = {
     fields: {
       clvVsCac: {
         id: 'clv-vs-cac',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How does your CLV compare to your Customer Acquisition Cost (CAC)?',
         required: true,
@@ -468,7 +468,7 @@ export const M_Angel_Phase_Flow = {
     fields: {
       clvIncreaseStrategies: {
         id: 'clv-increase-strategies',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What strategies have you implemented to increase CLV?',
         required: true,
         nextField: null,
@@ -499,7 +499,7 @@ export const M_Angel_Phase_Flow = {
     fields: {
       repeatPurchasePercentage: {
         id: 'repeat-purchase-percentage',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What percentage of your customers make repeat purchases or renew subscriptions?',
         required: true,
@@ -534,7 +534,7 @@ export const M_Angel_Phase_Flow = {
     fields: {
       leadConversionRate: {
         id: 'lead-conversion-rate',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What is your current conversion rate from leads to paying customers?',
         required: true,
@@ -569,7 +569,7 @@ export const M_Angel_Phase_Flow = {
     fields: {
       websiteConversionRate: {
         id: 'website-conversion-rate',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is your website or landing page conversion rate?',
         required: true,
         nextField: null,
@@ -603,7 +603,7 @@ export const M_Angel_Phase_Flow = {
     fields: {
       conversionOptimizationStrategies: {
         id: 'conversion-optimization-strategies',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What strategies have you implemented to improve conversion rates?',
         required: true,
@@ -634,7 +634,7 @@ export const M_Angel_Phase_Flow = {
     fields: {
       lostLeadsRetargeting: {
         id: 'lost-leads-retargeting',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           "Do you retarget lost leads (potential customers who didn't convert)?",
         required: true,
@@ -665,7 +665,7 @@ export const M_Angel_Phase_Flow = {
     fields: {
       monthlyMarketingBudget: {
         id: 'monthly-marketing-budget',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is your total monthly marketing budget?',
         required: true,
         nextField: null,
@@ -699,7 +699,7 @@ export const M_Angel_Phase_Flow = {
     fields: {
       marketingBudgetPercentage: {
         id: 'marketing-budget-percentage',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What percentage of your total revenue is allocated to marketing?',
         required: true,
@@ -734,7 +734,7 @@ export const M_Angel_Phase_Flow = {
     fields: {
       marketingBudgetDistribution: {
         id: 'marketing-budget-distribution',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How is your marketing budget distributed across different channels?',
         required: true,
@@ -773,7 +773,7 @@ export const M_Angel_Phase_Flow = {
     fields: {
       marketingRoiTracking: {
         id: 'marketing-roi-tracking',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How do you track the return on investment (ROI) for your marketing spend?',
         required: true,
@@ -804,7 +804,7 @@ export const M_Angel_Phase_Flow = {
     fields: {
       customerAcquisitionCost: {
         id: 'customer-acquisition-cost',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is your current Customer Acquisition Cost (CAC)?',
         required: true,
         nextField: null,
@@ -838,7 +838,7 @@ export const M_Angel_Phase_Flow = {
     fields: {
       returnOnAdSpend: {
         id: 'return-on-ad-spend',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is your current Return on Ad Spend (ROAS)?',
         required: true,
         nextField: null,
@@ -872,7 +872,7 @@ export const M_Angel_Phase_Flow = {
     fields: {
       marketingAttributedRevenue: {
         id: 'marketing-attributed-revenue',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How much revenue is directly attributed to your marketing efforts in the last 3 months?',
         required: true,
@@ -907,7 +907,7 @@ export const M_Angel_Phase_Flow = {
     fields: {
       marketingEfficiencyRatio: {
         id: 'marketing-efficiency-ratio',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is your current Marketing Efficiency Ratio (MER)?',
         required: true,
         nextField: null,
@@ -941,7 +941,7 @@ export const M_Angel_Phase_Flow = {
     fields: {
       socialMediaFollowers: {
         id: 'social-media-followers',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How many followers do you have on your most active social media platform?',
         required: true,
@@ -976,7 +976,7 @@ export const M_Angel_Phase_Flow = {
     fields: {
       socialMediaEngagementRate: {
         id: 'social-media-engagement-rate',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What is your average engagement rate on your social media content?',
         required: true,
@@ -1010,7 +1010,7 @@ export const M_Angel_Phase_Flow = {
     fields: {
       contentPostingFrequency: {
         id: 'content-posting-frequency',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'How frequently do you post new content across your platforms?',
         required: true,
         nextField: null,
@@ -1044,7 +1044,7 @@ export const M_Angel_Phase_Flow = {
     fields: {
       paidSocialMediaAds: {
         id: 'paid-social-media-ads',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Do you use paid social media ads to increase reach and engagement?',
         required: true,
@@ -1075,7 +1075,7 @@ export const M_Angel_Phase_Flow = {
     fields: {
       mediaCoverage: {
         id: 'media-coverage',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Have you received any media coverage, press mentions, or external recognition?',
         required: true,
@@ -1110,7 +1110,7 @@ export const M_Angel_Phase_Flow = {
     fields: {
       onlineReviews: {
         id: 'online-reviews',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How many online reviews or testimonials do you have from customers?',
         required: true,
@@ -1145,7 +1145,7 @@ export const M_Angel_Phase_Flow = {
     fields: {
       brandPartnerships: {
         id: 'brand-partnerships',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Have you partnered with any reputable brands, investors, or influencers to boost credibility?',
         required: true,
@@ -1176,7 +1176,7 @@ export const M_Angel_Phase_Flow = {
     fields: {
       reputationManagement: {
         id: 'reputation-management',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'How do you handle negative feedback or reputation risks?',
         required: true,
         nextField: null,

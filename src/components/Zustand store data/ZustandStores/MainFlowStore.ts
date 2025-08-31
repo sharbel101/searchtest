@@ -2,20 +2,18 @@ import { create } from 'zustand';
 import { FlowSection, FormField } from '../MainFlow/flow';
 import { SidebarFlowStore } from './SideBarFlowStore';
 
-import { getAllMainSections } from '@/components/database/extractMainFlow';
-import { DBFlowSection } from '@/components/database/extractMainFlow';
+import { getAllMainSections } from '@/components/database/mainFlowDBfunc';
+import { DBFlowSection } from '@/components/database/DBtypes';
 
 interface FlowState {
   //for the main flow
   currentSectionId: string;
   currentFieldId: string;
   sections: FlowSection[];
+  // sections: DBFlowSection[];
 
   setSections: (sections: FlowSection[]) => void;
-
-  //from database:
-  setAllSections: () => Promise<DBFlowSection[]>;
-  DBsections: DBFlowSection[];
+  // setSections: (sections: DBFlowSection[]) => void;
 
   // Updated navigation methods
   goToNextField: () => void;
@@ -54,18 +52,6 @@ export const useFlowStore = create<FlowState>((set, get) => ({
   sections: [],
 
   setSections: (sections) => set({ sections }),
-
-  DBsections: [],
-  setAllSections: async () => {
-    try {
-      const DBsections = await getAllMainSections(); // await the async call
-      set({ DBsections }); // update the Zustand state
-      return DBsections; // return fetched sections if needed
-    } catch (error) {
-      console.error('Failed to fetch sections:', error);
-      return [];
-    }
-  },
 
   // navigation logic based on nextField and nextNode
   goToNextField: () => {

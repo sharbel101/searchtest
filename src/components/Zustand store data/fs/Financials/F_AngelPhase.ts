@@ -8,7 +8,7 @@ export const F_Angel_Phase_Flow = {
     fields: {
       valuationBracket: {
         id: 'valuation-bracket',
-        type: FieldType.Text,
+        type: FieldType.text,
         label:
           "What is your company's estimated valuation brackets? (Insert estimated bracket - lower + upper bounds in USD)",
         required: true,
@@ -18,7 +18,7 @@ export const F_Angel_Phase_Flow = {
       },
       capTable: {
         id: 'cap-table',
-        type: FieldType.File,
+        type: FieldType.file,
         label: 'Cap table - Upload PDF or excel file (no csv)',
         required: true,
         nextField: null,
@@ -37,7 +37,7 @@ export const F_Angel_Phase_Flow = {
     fields: {
       expectedGrowth: {
         id: 'expected-growth',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is your expected revenue growth at year-end?',
         required: true,
         nextField: null,
@@ -60,7 +60,7 @@ export const F_Angel_Phase_Flow = {
     fields: {
       profitTimeline: {
         id: 'profit-timeline',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'In how many years do you expect your revenue to surpass expenses and generate net profit?',
         required: true,
@@ -75,7 +75,7 @@ export const F_Angel_Phase_Flow = {
       },
       projectedResult: {
         id: 'projected-result',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What is your projected net result (profit or loss) one year after launching?',
         required: true,
@@ -90,7 +90,7 @@ export const F_Angel_Phase_Flow = {
       },
       plStatement: {
         id: 'pl-statement',
-        type: FieldType.File,
+        type: FieldType.file,
         label: 'Upload P&L Statement (PDF or excel file, no csv)',
         required: true,
         nextField: null,
@@ -109,7 +109,7 @@ export const F_Angel_Phase_Flow = {
     fields: {
       projectedOpex: {
         id: 'projected-opex',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is your projected OpEx ratio one year after launch?',
         required: true,
         nextField: 'balanceSheet',
@@ -123,7 +123,7 @@ export const F_Angel_Phase_Flow = {
       },
       balanceSheet: {
         id: 'balance-sheet',
-        type: FieldType.File,
+        type: FieldType.file,
         label: 'Upload Balance Sheet statement (PDF or excel file, no csv)',
         required: true,
         nextField: null,
@@ -142,7 +142,7 @@ export const F_Angel_Phase_Flow = {
     fields: {
       runwayBurnRate: {
         id: 'runway-burn-rate',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is your current monthly cash burn rate? (Time-Based)',
         required: true,
         nextField: null,
@@ -165,7 +165,7 @@ export const F_Angel_Phase_Flow = {
     fields: {
       estimatedCurrentRatio: {
         id: 'estimated-current-ratio',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is your estimated liquidity ratio at year-end?',
         required: true,
         nextField: 'estimatedQuickRatio',
@@ -179,7 +179,7 @@ export const F_Angel_Phase_Flow = {
       },
       estimatedQuickRatio: {
         id: 'estimated-quick-ratio',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is your estimated quick liquidity ratio at year-end?',
         required: true,
         nextField: null,
@@ -202,7 +202,7 @@ export const F_Angel_Phase_Flow = {
     fields: {
       estimatedRunway: {
         id: 'estimated-runway',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is your estimated cash runway at year-end?',
         required: true,
         nextField: null,
@@ -225,7 +225,7 @@ export const F_Angel_Phase_Flow = {
     fields: {
       financingHistory: {
         id: 'financing-history',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'Did the company previously opt for debt or equity financing?',
         required: true,
         nextField: null,
@@ -249,7 +249,7 @@ export const F_Angel_Phase_Flow = {
     fields: {
       arTurnover: {
         id: 'ar-turnover',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is your AR turnover ratio?',
         required: true,
         nextField: 'auditReport',
@@ -272,7 +272,7 @@ export const F_Angel_Phase_Flow = {
       },
       auditReport: {
         id: 'audit-report',
-        type: FieldType.File,
+        type: FieldType.file,
         label: 'Upload Annual Audit report (PDF Only - ORIGINAL COPY)',
         required: true,
         nextField: 'apTurnover',
@@ -282,7 +282,7 @@ export const F_Angel_Phase_Flow = {
       },
       apTurnover: {
         id: 'ap-turnover',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is your AP turnover ratio?',
         required: true,
         nextField: null,
@@ -315,7 +315,7 @@ export const F_Angel_Phase_Flow = {
     fields: {
       taxRate: {
         id: 'tax-rate',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: "What is your company's tax effective rate?",
         required: true,
         nextField: null,

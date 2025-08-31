@@ -94,7 +94,7 @@ export const handleValidate = (
     if (
       Array.isArray(field.options) &&
       field.options.length !== 0 &&
-      field.type === FieldType.Dropdown
+      field.type === FieldType.dropdown
     ) {
       //console.log('validateInput - inside the options validation');
       const validValues = field.options
@@ -131,7 +131,7 @@ export const handleValidate = (
     }
 
     // File Validation here
-    if (field.type === FieldType.File) {
+    if (field.type === FieldType.file) {
       //console.log('validateInput - inside the File validation');
       let fileName: string;
 

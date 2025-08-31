@@ -8,7 +8,7 @@ export const D_Advanced_VC_Flow = {
     fields: {
       organizationalChart: {
         id: 'organizational-chart',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Does the company have a formal and documented organizational chart?',
         required: true,
@@ -41,7 +41,7 @@ export const D_Advanced_VC_Flow = {
     fields: {
       structureReview: {
         id: 'structure-review',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How often is the organizational structure reviewed and updated?',
         required: true,
@@ -67,7 +67,7 @@ export const D_Advanced_VC_Flow = {
     fields: {
       managementLayers: {
         id: 'management-layers',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How many management layers exist between entry-level employees and the CEO?',
         required: true,
@@ -96,7 +96,7 @@ export const D_Advanced_VC_Flow = {
     fields: {
       departmentReporting: {
         id: 'department-reporting',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Does each department report directly to its respective C-level executive?',
         required: true,
@@ -128,7 +128,7 @@ export const D_Advanced_VC_Flow = {
     fields: {
       businessUnits: {
         id: 'business-units',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Has the company expanded into multiple business units or divisions?',
         required: true,
@@ -160,7 +160,7 @@ export const D_Advanced_VC_Flow = {
     fields: {
       middleManagement: {
         id: 'middle-management',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Does each department have a middle management layer separate from senior leadership?',
         required: true,
@@ -192,7 +192,7 @@ export const D_Advanced_VC_Flow = {
     fields: {
       cLevelRolesPresent: {
         id: 'c-level-roles-present',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Which of the following C-level executives are present in the company? (Select all that apply)',
         required: true,
@@ -214,7 +214,7 @@ export const D_Advanced_VC_Flow = {
       },
       cLevelCount: {
         id: 'c-level-count',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'How many C-level executives are present in the company?',
         required: true,
         validation:
@@ -238,7 +238,7 @@ export const D_Advanced_VC_Flow = {
     fields: {
       educationLevel: {
         id: 'education-level',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is their highest level of education?',
         required: true,
         validation:
@@ -253,7 +253,7 @@ export const D_Advanced_VC_Flow = {
       },
       yearsExperience: {
         id: 'years-experience',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How many years of experience does this C-level executive have in their respective field?',
         required: true,
@@ -269,7 +269,7 @@ export const D_Advanced_VC_Flow = {
       },
       startupLeadershipExperience: {
         id: 'startup-leadership-experience',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Has this executive previously held a leadership role in a startup or high-growth company?',
         required: true,
@@ -293,7 +293,7 @@ export const D_Advanced_VC_Flow = {
       },
       industryExperience: {
         id: 'industry-experience',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is their industry experience?',
         required: true,
         validation:
@@ -316,7 +316,7 @@ export const D_Advanced_VC_Flow = {
       },
       investorRelationsParticipation: {
         id: 'investor-relations-participation',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Does this executive participate in investor relations and board meetings?',
         required: true,
@@ -340,7 +340,7 @@ export const D_Advanced_VC_Flow = {
       },
       strategicDecisionInvolvement: {
         id: 'strategic-decision-involvement',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'How involved is this executive in strategic decision-making?',
         required: true,
         validation:
@@ -371,7 +371,7 @@ export const D_Advanced_VC_Flow = {
     fields: {
       departmentsEstablished: {
         id: 'departments-established',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Which of the following departments are formally established in your company? (Select all that apply)',
         required: true,
@@ -403,7 +403,7 @@ export const D_Advanced_VC_Flow = {
       },
       departmentsCount: {
         id: 'departments-count',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'How many departments are formally established?',
         required: true,
         validation:
@@ -419,7 +419,7 @@ export const D_Advanced_VC_Flow = {
       },
       departmentHeadEducation: {
         id: 'department-head-education',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What is the highest level of education for the department head?',
         required: true,
@@ -435,7 +435,7 @@ export const D_Advanced_VC_Flow = {
       },
       departmentHeadExperience: {
         id: 'department-head-experience',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How many years of experience does the department head have in this function?',
         required: true,
@@ -451,7 +451,7 @@ export const D_Advanced_VC_Flow = {
       },
       departmentHeadStartupExperience: {
         id: 'department-head-startup-experience',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Has this department head previously worked in a startup or high-growth company?',
         required: true,
@@ -475,7 +475,7 @@ export const D_Advanced_VC_Flow = {
       },
       departmentTeamSize: {
         id: 'department-team-size',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'How many employees currently work in this department?',
         required: true,
         validation:
@@ -490,7 +490,7 @@ export const D_Advanced_VC_Flow = {
       },
       experiencedEmployeesPercentage: {
         id: 'experienced-employees-percentage',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What percentage of employees in this department have 5+ years of experience in their field?',
         required: true,
@@ -505,7 +505,7 @@ export const D_Advanced_VC_Flow = {
       },
       performanceReviewFrequency: {
         id: 'performance-review-frequency',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How frequently does this department conduct performance reviews?',
         required: true,
@@ -524,7 +524,7 @@ export const D_Advanced_VC_Flow = {
       },
       workflowToolsUsage: {
         id: 'workflow-tools-usage',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Does this department use dedicated tools/software to manage workflows?',
         required: true,
@@ -548,7 +548,7 @@ export const D_Advanced_VC_Flow = {
       },
       processDocumentation: {
         id: 'process-documentation',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Does this department have documented processes for its core functions?',
         required: true,
@@ -574,7 +574,7 @@ export const D_Advanced_VC_Flow = {
       },
       processReviewFrequency: {
         id: 'process-review-frequency',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'How often are departmental processes reviewed and updated?',
         required: true,
         validation:
@@ -589,7 +589,7 @@ export const D_Advanced_VC_Flow = {
       },
       bottleneckResolution: {
         id: 'bottleneck-resolution',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How are bottlenecks in workflows typically identified and resolved?',
         required: true,
@@ -621,7 +621,7 @@ export const D_Advanced_VC_Flow = {
     fields: {
       departmentKpis: {
         id: 'department-kpis',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Does each department have clear ownership of KPIs and performance metrics?',
         required: true,
@@ -653,7 +653,7 @@ export const D_Advanced_VC_Flow = {
     fields: {
       collaborationTools: {
         id: 'collaboration-tools',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What tools or platforms are used for internal collaboration?',
         required: true,
         validation:
@@ -685,7 +685,7 @@ export const D_Advanced_VC_Flow = {
     fields: {
       periodicReports: {
         id: 'periodic-reports',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Are all department heads required to submit periodic reports on performance and progress?',
         required: true,
@@ -717,7 +717,7 @@ export const D_Advanced_VC_Flow = {
     fields: {
       scalabilityResilience: {
         id: 'scalability-resilience',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           "How resilient is the company's department structure in handling rapid scaling?",
         required: true,
@@ -750,7 +750,7 @@ export const D_Advanced_VC_Flow = {
     fields: {
       careerProgression: {
         id: 'career-progression',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How well-defined are the career progression paths within each department?',
         required: true,
@@ -783,7 +783,7 @@ export const D_Advanced_VC_Flow = {
     fields: {
       hiringPattern: {
         id: 'hiring-pattern',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How frequently are internal promotions vs. external hires made for leadership roles?',
         required: true,
@@ -816,7 +816,7 @@ export const D_Advanced_VC_Flow = {
     fields: {
       globalOperations: {
         id: 'global-operations',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Are interdepartmental workflows optimized for multi-location or global operations?',
         required: true,
@@ -848,7 +848,7 @@ export const D_Advanced_VC_Flow = {
     fields: {
       complianceRisk: {
         id: 'compliance-risk',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Does the company have a dedicated compliance or risk management department?',
         required: true,
@@ -880,7 +880,7 @@ export const D_Advanced_VC_Flow = {
     fields: {
       restructuringFrequency: {
         id: 'restructuring-frequency',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How frequently does the company restructure or optimize its departments?',
         required: true,

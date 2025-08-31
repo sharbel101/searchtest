@@ -8,7 +8,7 @@ export const M_Private_Equity_Flow = {
     fields: {
       crmSystemLevel: {
         id: 'crm-system-level',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What CRM system does your company use at the enterprise level?',
         required: true,
         nextField: null,
@@ -44,7 +44,7 @@ export const M_Private_Equity_Flow = {
     fields: {
       crmIntegration: {
         id: 'crm-integration',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How is your CRM integrated across global markets and business units?',
         required: true,
@@ -76,7 +76,7 @@ export const M_Private_Equity_Flow = {
     fields: {
       aiDrivenCustomerIntelligence: {
         id: 'ai-driven-customer-intelligence',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Do you use AI-driven customer intelligence to predict behavior and personalize engagement?',
         required: true,
@@ -108,7 +108,7 @@ export const M_Private_Equity_Flow = {
     fields: {
       clvTracking: {
         id: 'clv-tracking',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How do you track customer lifetime value (CLV) and its impact on marketing strategy?',
         required: true,
@@ -141,7 +141,7 @@ export const M_Private_Equity_Flow = {
     fields: {
       existingCustomerRevenue: {
         id: 'existing-customer-revenue',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What percentage of your revenue comes from existing customers (vs. new customer acquisition)?',
         required: true,
@@ -176,7 +176,7 @@ export const M_Private_Equity_Flow = {
     fields: {
       customerSatisfactionMethods: {
         id: 'customer-satisfaction-methods',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What structured methods do you use to measure customer satisfaction?',
         required: true,
@@ -216,7 +216,7 @@ export const M_Private_Equity_Flow = {
     fields: {
       netPromoterScore: {
         id: 'net-promoter-score',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What is your current Net Promoter Score (NPS)? (On a scale from -100 to 100, how likely customers are to recommend your product.)',
         required: true,
@@ -251,7 +251,7 @@ export const M_Private_Equity_Flow = {
     fields: {
       feedbackCollectionAnalysis: {
         id: 'feedback-collection-analysis',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How do you collect and analyze customer feedback across different regions and markets?',
         required: true,
@@ -287,7 +287,7 @@ export const M_Private_Equity_Flow = {
     fields: {
       feedbackImplementationFrequency: {
         id: 'feedback-implementation-frequency',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How frequently do you implement changes based on customer satisfaction data?',
         required: true,
@@ -323,7 +323,7 @@ export const M_Private_Equity_Flow = {
     fields: {
       dissatisfiedCustomerManagement: {
         id: 'dissatisfied-customer-management',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How do you manage dissatisfied customers and negative brand sentiment?',
         required: true,
@@ -359,7 +359,7 @@ export const M_Private_Equity_Flow = {
     fields: {
       customerRetentionRate: {
         id: 'customer-retention-rate',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is your current customer retention rate?',
         required: true,
         nextField: null,
@@ -393,7 +393,7 @@ export const M_Private_Equity_Flow = {
     fields: {
       customerChurnRate: {
         id: 'customer-churn-rate',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is your average customer churn rate per month?',
         required: true,
         nextField: null,
@@ -427,7 +427,7 @@ export const M_Private_Equity_Flow = {
     fields: {
       aiChurnPrediction: {
         id: 'ai-churn-prediction',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Do you use AI or machine learning to predict customer churn and proactively retain users?',
         required: true,
@@ -459,7 +459,7 @@ export const M_Private_Equity_Flow = {
     fields: {
       customerSegmentationRetention: {
         id: 'customer-segmentation-retention',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'How do you segment customers based on retention behavior?',
         required: true,
         nextField: null,
@@ -493,7 +493,7 @@ export const M_Private_Equity_Flow = {
     fields: {
       retentionStrategies: {
         id: 'retention-strategies',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What retention strategies are in place to maximize customer lifetime value?',
         required: true,
@@ -528,7 +528,7 @@ export const M_Private_Equity_Flow = {
     fields: {
       repeatCustomerRevenue: {
         id: 'repeat-customer-revenue',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What percentage of revenue comes from repeat customers (vs. new customer acquisition)?',
         required: true,
@@ -563,7 +563,7 @@ export const M_Private_Equity_Flow = {
     fields: {
       estimatedClv: {
         id: 'estimated-clv',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is your current estimated Customer Lifetime Value (CLV)?',
         required: true,
         nextField: null,
@@ -597,7 +597,7 @@ export const M_Private_Equity_Flow = {
     fields: {
       clvVsCac: {
         id: 'clv-vs-cac',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How does your CLV compare to your Customer Acquisition Cost (CAC)?',
         required: true,
@@ -632,7 +632,7 @@ export const M_Private_Equity_Flow = {
     fields: {
       aiClvForecasting: {
         id: 'ai-clv-forecasting',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Do you use AI-driven CLV forecasting to predict long-term revenue per customer?',
         required: true,
@@ -663,7 +663,7 @@ export const M_Private_Equity_Flow = {
     fields: {
       clvCustomerSegmentation: {
         id: 'clv-customer-segmentation',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'How do you segment customers based on CLV?',
         required: true,
         nextField: null,
@@ -697,7 +697,7 @@ export const M_Private_Equity_Flow = {
     fields: {
       clvIncreaseStrategies: {
         id: 'clv-increase-strategies',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What strategies have you implemented to increase CLV?',
         required: true,
         nextField: null,
@@ -731,7 +731,7 @@ export const M_Private_Equity_Flow = {
     fields: {
       highClvRevenuePercentage: {
         id: 'high-clv-revenue-percentage',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What percentage of total revenue comes from high CLV customers (top 10%)?',
         required: true,
@@ -766,7 +766,7 @@ export const M_Private_Equity_Flow = {
     fields: {
       leadConversionRate: {
         id: 'lead-conversion-rate',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is your current lead-to-customer conversion rate?',
         required: true,
         nextField: null,
@@ -800,7 +800,7 @@ export const M_Private_Equity_Flow = {
     fields: {
       websiteConversionRate: {
         id: 'website-conversion-rate',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is your website or landing page conversion rate?',
         required: true,
         nextField: null,
@@ -834,7 +834,7 @@ export const M_Private_Equity_Flow = {
     fields: {
       aiConversionOptimization: {
         id: 'ai-conversion-optimization',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Do you use AI-driven personalization and predictive analytics to improve conversion rates?',
         required: true,
@@ -866,7 +866,7 @@ export const M_Private_Equity_Flow = {
     fields: {
       paidVsOrganicConversions: {
         id: 'paid-vs-organic-conversions',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What percentage of conversions come from paid vs. organic channels?',
         required: true,
@@ -901,7 +901,7 @@ export const M_Private_Equity_Flow = {
     fields: {
       abandonedCartRate: {
         id: 'abandoned-cart-rate',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What is your abandoned cart or incomplete sign-up rate (if applicable)?',
         required: true,
@@ -936,7 +936,7 @@ export const M_Private_Equity_Flow = {
     fields: {
       conversionOptimizationStrategies: {
         id: 'conversion-optimization-strategies',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What optimization strategies have you implemented to improve conversion rates?',
         required: true,
@@ -971,7 +971,7 @@ export const M_Private_Equity_Flow = {
     fields: {
       monthlyMarketingBudget: {
         id: 'monthly-marketing-budget',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is your total monthly marketing budget?',
         required: true,
         nextField: null,
@@ -1005,7 +1005,7 @@ export const M_Private_Equity_Flow = {
     fields: {
       marketingBudgetPercentage: {
         id: 'marketing-budget-percentage',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What percentage of total revenue is allocated to marketing?',
         required: true,
         nextField: null,
@@ -1039,7 +1039,7 @@ export const M_Private_Equity_Flow = {
     fields: {
       marketingBudgetDistribution: {
         id: 'marketing-budget-distribution',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How is your marketing budget distributed across different channels?',
         required: true,
@@ -1078,7 +1078,7 @@ export const M_Private_Equity_Flow = {
     fields: {
       dynamicBudgetAdjustment: {
         id: 'dynamic-budget-adjustment',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Do you adjust your marketing budget dynamically based on performance and ROI?',
         required: true,
@@ -1113,7 +1113,7 @@ export const M_Private_Equity_Flow = {
     fields: {
       costPerAcquisitionChannel: {
         id: 'cost-per-acquisition-channel',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What is your cost-per-acquisition (CPA) for each marketing channel?',
         required: true,
@@ -1148,7 +1148,7 @@ export const M_Private_Equity_Flow = {
     fields: {
       budgetReallocationFrequency: {
         id: 'budget-reallocation-frequency',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How frequently do you reallocate marketing budgets based on real-time data?',
         required: true,
@@ -1183,7 +1183,7 @@ export const M_Private_Equity_Flow = {
     fields: {
       marketingBudgetEbitdaImpact: {
         id: 'marketing-budget-ebitda-impact',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How does your marketing budget impact your EBITDA and overall financial performance?',
         required: true,
@@ -1221,7 +1221,7 @@ export const M_Private_Equity_Flow = {
     fields: {
       customerAcquisitionCost: {
         id: 'customer-acquisition-cost',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'What is your current Customer Acquisition Cost (CAC)?',
         required: true,
         nextField: null,
@@ -1255,7 +1255,7 @@ export const M_Private_Equity_Flow = {
     fields: {
       returnOnAdSpend: {
         id: 'return-on-ad-spend',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What is your current Return on Ad Spend (ROAS)? (Revenue generated per $1 spent on paid ads.)',
         required: true,
@@ -1290,7 +1290,7 @@ export const M_Private_Equity_Flow = {
     fields: {
       revenueAttributionMarketing: {
         id: 'revenue-attribution-marketing',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What percentage of total revenue is directly attributed to marketing efforts?',
         required: true,
@@ -1325,7 +1325,7 @@ export const M_Private_Equity_Flow = {
     fields: {
       marketingEfficiencyRatio: {
         id: 'marketing-efficiency-ratio',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What is your Marketing Efficiency Ratio (MER)? (Total revenue generated ÷ total marketing spend.)',
         required: true,
@@ -1360,7 +1360,7 @@ export const M_Private_Equity_Flow = {
     fields: {
       marketingSpendOptimization: {
         id: 'marketing-spend-optimization',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How do you optimize marketing spend based on profitability data?',
         required: true,
@@ -1395,7 +1395,7 @@ export const M_Private_Equity_Flow = {
     fields: {
       marketingProfitabilityEbitda: {
         id: 'marketing-profitability-ebitda',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How does your marketing profitability impact your EBITDA and financial valuation?',
         required: true,
@@ -1432,7 +1432,7 @@ export const M_Private_Equity_Flow = {
     fields: {
       socialMediaFollowerCount: {
         id: 'social-media-follower-count',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What is your total social media follower count across all platforms?',
         required: true,
@@ -1467,7 +1467,7 @@ export const M_Private_Equity_Flow = {
     fields: {
       socialMediaEngagementRate: {
         id: 'social-media-engagement-rate',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What is your average engagement rate across your social media platforms?',
         required: true,
@@ -1502,7 +1502,7 @@ export const M_Private_Equity_Flow = {
     fields: {
       contentPostingFrequency: {
         id: 'content-posting-frequency',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'How frequently do you post new content across your platforms?',
         required: true,
         nextField: null,
@@ -1536,7 +1536,7 @@ export const M_Private_Equity_Flow = {
     fields: {
       influencerPartnershipsSocial: {
         id: 'influencer-partnerships-social',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Do you use influencer partnerships or paid social media campaigns to boost reach?',
         required: true,
@@ -1567,7 +1567,7 @@ export const M_Private_Equity_Flow = {
     fields: {
       socialMediaCampaignEffectiveness: {
         id: 'social-media-campaign-effectiveness',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How do you measure the effectiveness of your social media campaigns?',
         required: true,
@@ -1602,7 +1602,7 @@ export const M_Private_Equity_Flow = {
     fields: {
       socialMediaInvestorRelations: {
         id: 'social-media-investor-relations',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Do you integrate social media marketing with investor relations and corporate branding efforts?',
         required: true,
@@ -1635,7 +1635,7 @@ export const M_Private_Equity_Flow = {
     fields: {
       socialMediaTrafficLeads: {
         id: 'social-media-traffic-leads',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What percentage of website traffic and leads are generated from social media channels?',
         required: true,
@@ -1670,7 +1670,7 @@ export const M_Private_Equity_Flow = {
     fields: {
       mediaCoverageRecognition: {
         id: 'media-coverage-recognition',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Have you received any media coverage, press mentions, or industry recognition?',
         required: true,
@@ -1706,7 +1706,7 @@ export const M_Private_Equity_Flow = {
     fields: {
       brandSentimentReputationTracking: {
         id: 'brand-sentiment-reputation-tracking',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label: 'How do you track brand sentiment and external reputation?',
         required: true,
         nextField: null,
@@ -1737,7 +1737,7 @@ export const M_Private_Equity_Flow = {
     fields: {
       positiveFeedbackPercentage: {
         id: 'positive-feedback-percentage',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'What percentage of your online reviews and public feedback are positive?',
         required: true,
@@ -1772,7 +1772,7 @@ export const M_Private_Equity_Flow = {
     fields: {
       crisisCommunicationStrategy: {
         id: 'crisis-communication-strategy',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Do you have a structured crisis communication strategy in place?',
         required: true,
@@ -1803,7 +1803,7 @@ export const M_Private_Equity_Flow = {
     fields: {
       globalPartnerships: {
         id: 'global-partnerships',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Have you established partnerships with globally recognized brands, investors, or thought leaders?',
         required: true,
@@ -1838,7 +1838,7 @@ export const M_Private_Equity_Flow = {
     fields: {
       industryEventsParticipation: {
         id: 'industry-events-participation',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'Have you participated in major industry events, awards, or sponsorships to enhance your reputation?',
         required: true,
@@ -1875,7 +1875,7 @@ export const M_Private_Equity_Flow = {
     fields: {
       negativePrManagement: {
         id: 'negative-pr-management',
-        type: FieldType.Dropdown,
+        type: FieldType.dropdown,
         label:
           'How do you manage and respond to negative PR or reputation risks?',
         required: true,
