@@ -40,7 +40,24 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
             />
           </div>
           <h1 className="login-title text-2xl font-bold">CapBot</h1>
-          <p className="login-subtitle text-gray-400">Sign in to continue</p>
+          <p
+            className="login-subtitle text-gray-400"
+            style={{ marginTop: '2rem' }}
+          >
+            CapBot is an AI-powered fintech platform that helps investors
+            discover, analyze, and connect with promising companies.
+          </p>
+          <div style={{ flex: 1 }} />
+          <p
+            className="login-subtitle text-gray-400 font-bold"
+            style={{
+              fontSize: '1.4rem',
+              lineHeight: '2.0rem',
+              marginTop: '4rem',
+            }}
+          >
+            Sign in to continue
+          </p>
         </div>
 
         {/* Form */}

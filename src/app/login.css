@@ -239,7 +239,7 @@
 }
 
 /* Responsive adjustments */
-@media (max-width: 480px) {
+@media (max-width: 767px) {
   .login-card {
     margin: 1rem;
     padding: 1.5rem;
@@ -247,5 +247,39 @@
 
   .login-title {
     font-size: 1.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .login-card {
+    max-width: 800px;
+    flex-direction: row;
+    display: flex;
+    align-items: stretch;
+    padding: 0;
+  }
+
+  .login-header {
+    flex-basis: 45%;
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .login-form {
+    flex-basis: 55%;
+    padding: 2.5rem;
+    justify-content: center;
+  }
+
+  .logo-container {
+    width: 100px;
+    height: 100px;
+  }
+
+  .login-title {
+    font-size: 1.75rem;
   }
 }
