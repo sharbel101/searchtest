@@ -6,7 +6,6 @@ import { useFlowStore } from '../../dataflow/FlowStore';
 import ChatBotComponent, { Flow } from '@/ChatBotFork';
 import MarkdownRenderer, { MarkdownRendererBlock } from '@/RCB_MarkDown';
 import { styles } from './ChatStyles';
-import './scrollbar.css';
 import { Span } from 'next/dist/trace';
 
 export default function Chat() {
