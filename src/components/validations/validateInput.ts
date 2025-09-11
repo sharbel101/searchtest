@@ -6,13 +6,28 @@ import { ChartFormUseFlowStore } from '@/components/Zustand store data/ZustandSt
 import { FieldType, FormField } from '../Zustand store data/MainFlow/flow';
 import { error } from 'console';
 
+//dummy data stores
+// const {
+//   getCurrentField,
+//   isInFlowFunc,
+//   currentFlowController,
+//   CurrentInjectionType,
+// } = useFlowStore.getState();
+// const { getCurrentSubFlowField } = useSubFlowStore.getState();
+// const { getCurrentChartFormField } = ChartFormUseFlowStore.getState();
+
+//real database stores
+import { useMainDBFlowStore } from '@/components/database/zustand_containers/MainFlowStore';
+import { useInjectedDBFlowStore } from '@/components/database/zustand_containers/InjectedFlowStore';
+import { DBFlowField } from '../database/DBtypes';
+
 const {
   getCurrentField,
   isInFlowFunc,
   currentFlowController,
   CurrentInjectionType,
-} = useFlowStore.getState();
-const { getCurrentSubFlowField } = useSubFlowStore.getState();
+} = useMainDBFlowStore.getState();
+const { getCurrentInjectedField } = useInjectedDBFlowStore.getState();
 const { getCurrentChartFormField } = ChartFormUseFlowStore.getState();
 
 /**
@@ -61,12 +76,12 @@ export const getValidationSchema = (
  * Helper to read the current FormField from the correct store/injection.
  * Extracted to avoid duplicating branching logic.
  */
-export default function readCurrentField(): FormField | undefined | null {
+export default function readCurrentField(): DBFlowField | undefined | null {
   if (isInFlowFunc && currentFlowController) {
     if (CurrentInjectionType === 'ChartForm') {
-      return getCurrentChartFormField();
+      return null; //getCurrentChartFormField();
     } else if (CurrentInjectionType === 'OriginalSubFlow') {
-      return getCurrentSubFlowField();
+      return getCurrentInjectedField();
     }
   } else {
     return getCurrentField();
@@ -89,7 +104,7 @@ export const handleValidate = (
   if (!field.validation) return { success: true }; // no validation → always pass
 
   try {
-    const schema = getValidationSchema(field.validation);
+    const schema = getValidationSchema('z.string()'); //getValidationSchema(field.validation);
 
     if (
       Array.isArray(field.options) &&

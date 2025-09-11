@@ -76,12 +76,20 @@ export async function getSpecificInjectedSection(
   return data;
 }
 
-export async function getCurrentMainField(
+export async function getCurrentInjectedField(
   user_id: string,
 ): Promise<DBFlowField | null> {
   const current_state = await getCurrentState(user_id);
   if (!current_state) {
     console.warn("can't access a current state!");
+    return null;
+  }
+
+  if (
+    !current_state.current_injected_flow_section_id ||
+    !current_state.current_injected_flow_field_id
+  ) {
+    console.warn('Missing section_id or field_id in current state');
     return null;
   }
 
@@ -106,6 +114,14 @@ export async function getCurrentInjectedSection(
     return null;
   }
 
+  if (
+    !current_state.current_injected_flow_section_id ||
+    !current_state.current_injected_flow_field_id
+  ) {
+    console.warn('Missing section_id or field_id in current state');
+    return null;
+  }
+
   const current_section = await getSpecificInjectedSection(
     current_state.current_injected_flow_section_id,
   );
@@ -122,6 +138,14 @@ export async function getCurrentInjectedSection(
 export async function goToNextInjectedField(user_id: string) {
   const current_state = await getCurrentState(user_id);
   if (!current_state) return null;
+
+  if (
+    !current_state.current_injected_flow_section_id ||
+    !current_state.current_injected_flow_field_id
+  ) {
+    console.warn('Missing section_id or field_id in current state');
+    return null;
+  }
 
   const currentField = await getSpecificInjectedField(
     current_state.current_injected_flow_section_id,
@@ -151,6 +175,11 @@ export async function goToNextInjectedField(user_id: string) {
 export async function goToNextInjectedSection(user_id: string) {
   const current_state = await getCurrentState(user_id);
   if (!current_state) return null;
+
+  if (!current_state.current_injected_flow_section_id) {
+    console.warn('Missing section_id or field_id in current state');
+    return null;
+  }
 
   const currentSection = await getSpecificInjectedSection(
     current_state.current_injected_flow_section_id,

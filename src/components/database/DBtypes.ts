@@ -17,27 +17,28 @@ export type DBFlowField = {
   description: string;
   required: boolean;
   validation: string;
-  options: Record<string, string>;
-  flowinjection: { name: string; type: string };
+  options?: Record<string, string>;
+  flowinjection?: { name: string; type: string };
   extractiontype: string;
   nextfield?: string | null; // ✅ added because `goToNextMainField` expects this
+  form_id: string;
 };
 
 export type DBCurrentStates = {
   user_id: string;
 
-  current_main_flow_section_id: string;
-  current_main_flow_field_id: string;
+  current_main_flow_section_id?: string | null;
+  current_main_flow_field_id?: string | null;
 
-  current_injected_flow_section_id: string;
-  current_injected_flow_field_id: string;
+  current_injected_flow_section_id?: string | null;
+  current_injected_flow_field_id?: string | null;
 
-  current_chartform_id: string | null;
+  current_chartform_id?: string | null;
 
-  is_flow_func: boolean;
-  flow_type: string | null;
+  is_flow_func?: boolean | null;
+  flow_type?: string | null;
 
-  stage: string | null;
+  stage?: string | null;
 
-  updated_at?: string;
+  updated_at?: string | null;
 };

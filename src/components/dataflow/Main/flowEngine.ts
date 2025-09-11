@@ -1,13 +1,22 @@
 'use client';
+import { DBFlowSection } from '@/components/database/DBtypes';
+import {
+  getCurrentInjectedField,
+  getSpecificInjectedField,
+} from '@/components/database/injectedFlowDBfunc';
+import { setCurrentState } from '@/components/database/mainFlowDBfunc';
 import { StageSubFlow } from '@/components/Zustand store data/fs/AllOriginalSubFlowsData';
+import { FlowSection } from '@/components/Zustand store data/MainFlow/flow';
 import { ChartFormUseFlowStore } from '@/components/Zustand store data/ZustandStores/ChartFormFlowStore';
+import { user_id } from '../constructor';
 
 //these TYPES are for the createFlowController
 export type QuestionNode = {
   id: string;
   question: string;
   answers: Record<string, { next?: string; setStage?: string }>;
-  options?: { id: string; value: string }[];
+  form_id: string;
+  starting_node: string;
 };
 
 export type FlowDefinition = Record<string, QuestionNode>;
@@ -27,7 +36,16 @@ export type TypeOriginalSubFlowsOptions = {
 
 //  createFlowController
 export const createFlowController = (flow: FlowDefinition): FlowController => {
-  let currentNodeId = 'q1'; //hone lezem a3mol supabase lal currentChartFormFieldId li hiye by default awwal field bel injected flow w msayyave bel table taba3 l progress;
+  // Find the node with a non-empty starting_node
+  const startingNodeEntry = Object.values(flow).find(
+    (node) => node.starting_node && node.starting_node !== '',
+  );
+
+  if (!startingNodeEntry) {
+    throw new Error('No starting node found in the flow!');
+  }
+
+  let currentNodeId = startingNodeEntry.id; //hone lezem a3mol supabase lal currentChartFormFieldId li hiye by default awwal field bel injected flow w msayyave bel table taba3 l progress;
   let stage: string | null = null;
 
   const getCurrentQuestion = () => {
@@ -88,32 +106,44 @@ export const createFlowController = (flow: FlowDefinition): FlowController => {
 
 //   createOriginalSubFlowController
 
-export const createOriginalSubFlowController = (flow: StageSubFlow) => {
-  let currentNodeId = 'q1'; //hone lezem a3mol supabase lal currentInjectedFieldId li hiye by default awwal field bel injected flow w msayyave bel table taba3 l progress;
+export const createOriginalSubFlowController = (
+  starting_node: DBFlowSection,
+) => {
+  let currentNodeId = starting_node.id; //hone lezem a3mol supabase lal currentInjectedFieldId li hiye by default awwal field bel injected flow w msayyave bel table taba3 l progress;
 
-  const getCurrentQuestion = (): string => {
-    const currentNode = flow[currentNodeId];
-    if (!currentNode) return '';
+  setCurrentState({
+    user_id: user_id,
+    current_injected_flow_section_id: currentNodeId,
+    current_injected_flow_field_id: starting_node.firstfield,
+  });
 
-    // Get the first field in the current node (assuming single field per question)
-    const firstFieldKey = Object.keys(currentNode.fields)[0];
-    const firstField = currentNode.fields[firstFieldKey];
+  const getCurrentQuestion = async () => {
+    if (!starting_node) return '';
+
+    // Get the first field in the current node (assuming single field per question);
+    const firstFieldId = starting_node.firstfield;
+    if (!firstFieldId) {
+      return '';
+    }
+    const firstField = await getSpecificInjectedField(
+      starting_node.id,
+      firstFieldId,
+    );
 
     return firstField?.label || '';
   };
 
-  const getCurrentAnswers = (): any[] => {
-    const currentNode = flow[currentNodeId];
+  const getCurrentAnswers = async () => {
+    const currentNode = starting_node;
     if (!currentNode) return [];
 
     // Get the first field in the current node
-    const firstFieldKey = Object.keys(currentNode.fields)[0];
-    const firstField = currentNode.fields[firstFieldKey];
+    const field = await getCurrentInjectedField(user_id);
 
-    if (!firstField?.options) return [];
+    if (!field?.options) return [];
 
     // Map the objects and extract their values into an array
-    return firstField.options.map((option) => option.value); // or option.text, option.id, etc.
+    return field.options; //.map((option) => option.value); // or option.text, option.id, etc.
   };
 
   /**
@@ -165,7 +195,7 @@ export const createOriginalSubFlowController = (flow: StageSubFlow) => {
 
   return {
     getCurrentQuestion,
-    getCurrentAnswers,
+    // getCurrentAnswers,
     // getCurrentSectionTitle,
     // getCurrentSectionId,
     // getCurrentFields,

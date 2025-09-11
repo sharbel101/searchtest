@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { FlowSection, FormField } from '../MainFlow/flow';
-import { SidebarFlowStore } from './SideBarFlowStore';
+import { SidebarFlowStore } from '../../database/zustand_containers/SideBarFlowStore';
 
 import { getAllMainSections } from '@/components/database/mainFlowDBfunc';
 import { DBFlowSection } from '@/components/database/DBtypes';

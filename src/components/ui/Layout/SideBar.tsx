@@ -1,12 +1,13 @@
 'use client';
 
-import { SidebarFlowStore } from '@/components/Zustand store data/ZustandStores/SideBarFlowStore';
-import { useState, useEffect } from 'react';
+import { SidebarFlowStore } from '@/components/database/zustand_containers/SideBarFlowStore';
+import { useState, useEffect, Suspense } from 'react';
 import { Menu, X } from 'lucide-react';
 import QuestionDetails from '../Chatbot UI/QuestionDetails';
+import { DBFlowSection } from '@/components/database/DBtypes';
 
 interface SectionProps {
-  section: any;
+  section: DBFlowSection;
   index: number;
   isAccessible: boolean;
   isActive: boolean;
@@ -48,7 +49,7 @@ function SectionItem({
           userSelect: 'none',
         }}
       >
-        {section.sectionTitle}
+        {section.sectiontitle}
       </div>
       {/* Inline expansion for fields */}
       {open && (
@@ -60,7 +61,15 @@ function SectionItem({
             animation: 'fadein 0.2s',
           }}
         >
-          <QuestionDetails flowItem={section} />
+          <Suspense
+            fallback={
+              <div className="flex items-center justify-center py-4">
+                <div className="w-6 h-6 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+              </div>
+            }
+          >
+            <QuestionDetails section={section} />
+          </Suspense>
         </div>
       )}
     </div>
