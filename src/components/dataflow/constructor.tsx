@@ -11,12 +11,11 @@ import {
   fetchAndSetChartFormSubFlow,
   fetchAndSetOriginalSubFlow,
 } from './FetchSubFlow';
-import MarkdownRenderer, { MarkdownRendererBlock } from '@/RCB_MarkDown';
+import { MarkdownRendererBlock } from '@/RCB_MarkDown';
 
 // import { useFlowStore } from '../Zustand store data/ZustandStores/MainFlowStore'; //for the offline version
 
 // import { ChartFormUseFlowStore } from '../Zustand store data/ZustandStores/ChartFormFlowStore'; //for the offline version
-// import { ChartFormUseFlowStore } from '@/components/database/zustand_containers/'; //for the DB
 
 // import { useSubFlowStore } from '../Zustand store data/ZustandStores/InjectedFlowStore';
 import { useInjectedDBFlowStore } from '@/components/database/zustand_containers/InjectedFlowStore';
@@ -38,11 +37,17 @@ import {
 } from '../database/mainFlowDBfunc';
 import {
   getCurrentInjectedField,
+  getCurrentInjectedFlowAnswers,
   goToNextInjectedField,
   goToNextInjectedSection,
 } from '../database/injectedFlowDBfunc';
 import { useMainDBFlowStore } from '../database/zustand_containers/MainFlowStore';
-import { DBFlowField } from '../database/DBtypes';
+
+import {
+  AnswerChartFormQuestion,
+  getCurrentChartFormAnswers,
+  getCurrentChartFormField,
+} from '../database/chartformFlowDBfunc';
 
 // Type definitions for better type safety
 export type PathParams = {
@@ -153,7 +158,7 @@ export const generateChatBotFlow = (): Record<
           isInFlowFunc &&
           currentFlowController
         ) {
-          const answers = currentFlowController.getCurrentAnswers();
+          const answers = await getCurrentChartFormAnswers(field.id);
           let body = questionBody;
 
           if (answers.length > 0) {
@@ -256,7 +261,7 @@ export const generateChatBotFlow = (): Record<
           field.type === FieldType.flowfunc &&
           field.flowinjection &&
           field.flowinjection.type === 'ChartForm' &&
-          !isInFlowFunc
+          !current_state?.is_flow_func
         ) {
           // console.log('Entering ChartForm flow');
           await fetchAndSetChartFormSubFlow(field.flowinjection.name);
@@ -268,7 +273,7 @@ export const generateChatBotFlow = (): Record<
           field.type === FieldType.flowfunc &&
           field.flowinjection &&
           field.flowinjection.type === 'OriginalSubFlow' &&
-          !isInFlowFunc &&
+          !current_state?.is_flow_func &&
           stage != null &&
           stage !== ''
         ) {
@@ -282,56 +287,32 @@ export const generateChatBotFlow = (): Record<
           field.type === FieldType.flowfunc &&
           field.flowinjection &&
           field.flowinjection.type === 'OriginalSubFlow' &&
-          isInFlowFunc
+          current_state?.is_flow_func
         ) {
           return 'OriginalSubFlowLoop';
         }
 
-        /**
-         * 
-         * 
-         * 
-
-
-
-          badde zabbet l fetch functions w berjae bkammel l flow mn tahet hone
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-         */
-        // Handle user input for active FlowFunc (non-OriginalSubFlow)
         if (
           field.type === FieldType.flowfunc &&
-          isInFlowFunc &&
+          current_state?.is_flow_func &&
           currentFlowController &&
           field.flowinjection?.type !== 'OriginalSubFlow'
         ) {
           if (params?.userInput !== undefined) {
-            currentFlowController.answerQuestion(params.userInput);
+            await AnswerChartFormQuestion(params.userInput);
 
-            const stageResult = currentFlowController.OnSuccess();
-            if (stageResult !== 'Stage not available yet') {
-              setStage(stageResult); //for offline (no DB)
-              setCurrentState({ user_id: user_id, stage: stageResult }); // for the database
+            const state = await getCurrentState(user_id);
+            const stage = state?.stage;
 
-              setIsInFlowFunc(false);
+            if (!stage) {
+              setStage(stage); //for offline (no DB)
+              setCurrentState({
+                user_id: user_id,
+                stage: stage,
+                is_flow_func: false,
+              }); // for the database
+
+              // setIsInFlowFunc(false); // for ofline
               setCurrentFlowController(null);
 
               //goToNextField();
@@ -416,40 +397,32 @@ export const generateChatBotFlow = (): Record<
       },
 
       options: async () => {
-        const { getCurrentField, currentFlowController, isInFlowFunc } =
-          useMainDBFlowStore.getState();
         // const field = getCurrentField();
         const field = await getCurrentMainField(user_id);
-
-        if (
-          field?.type === FieldType.flowfunc &&
-          isInFlowFunc &&
-          currentFlowController
-        ) {
-          return currentFlowController.getCurrentAnswers();
-        }
-        return field?.options; //?.map((o: { value: string }) => o.value) || []
+        if (!field?.options) return [];
+        return Object.values(field.options);
       },
 
-      chatDisabled: (): boolean => {
+      chatDisabled: async () => {
         const { getCurrentField, currentFlowController, isInFlowFunc } =
           useMainDBFlowStore.getState();
 
-        const field = getCurrentField();
+        const field = await getCurrentMainField(user_id);
+        const state = await getCurrentState(user_id);
 
         return Boolean(
           field?.type === FieldType.file ||
             field?.type === FieldType.video ||
             field?.type === FieldType.dropdown ||
             (field?.type === FieldType.flowfunc &&
-              isInFlowFunc &&
+              state?.is_flow_func &&
               currentFlowController),
         );
       },
-      transition: () => {
+      transition: async () => {
         const { getCurrentField } = useMainDBFlowStore.getState();
 
-        const field = getCurrentField();
+        const field = await getCurrentMainField(user_id);
         if (field?.type === FieldType.flowfunc) {
           return 750;
         } else return null;
@@ -457,157 +430,111 @@ export const generateChatBotFlow = (): Record<
     } as MarkdownRendererBlock,
 
     // === ChartForm block for flowinjection ===
-    // chartForm: {
-    //   message: (): string => {
-    //     const { getCurrentField, currentFlowController, isInFlowFunc } =
-    //       useMainDBFlowStore.getState();
+    chartForm: {
+      message: async (): Promise<string> => {
+        const { getCurrentField, currentFlowController, isInFlowFunc } =
+          useMainDBFlowStore.getState();
 
-    //     const { questionBody } = ChartFormUseFlowStore.getState();
+        const field = await getCurrentChartFormField(user_id);
+        const current_state = await getCurrentState(user_id);
 
-    //     const field = getCurrentField();
+        if (!field?.question) {
+          return `**No more subflow fields available.**`;
+        }
 
-    //     if (!field?.label) {
-    //       return `**No more subflow fields available.**`;
-    //     }
+        if (current_state?.is_flow_func && currentFlowController) {
+          const answers = await getCurrentChartFormAnswers(field.id);
+          let body = '';
+          if (answers.length > 0) {
+            body += '**Please select one of the following options:**';
+          }
+          return `**${field.question}**\n\n${body}`;
+        }
 
-    //     if (isInFlowFunc && currentFlowController) {
-    //       const answers = currentFlowController.getCurrentAnswers();
-    //       let body = questionBody;
+        return `**${field.question}**`;
+      },
+      renderMarkdown: ['BOT', 'USER'] as const,
+      path: async (params: PathParams) => {
+        const field = await getCurrentChartFormField(user_id);
+        const state = await getCurrentState(user_id);
 
-    //       if (answers.length > 0) {
-    //         body += '\n\n**Please select one of the following options:**';
-    //       }
-    //       return `**${field.label}**\n\n${body}`;
-    //     }
+        if (!state) {
+          console.warn('No extraxted states in the chart form object');
+        }
 
-    //     return `**${field.label}**\n\n${field.description || `Please provide ${field.label}`}`;
-    //   },
-    //   renderMarkdown: ['BOT', 'USER'] as const,
-    //   path: (params: PathParams): string => {
-    //     const {
-    //       // goToNextSection,
-    //       getCurrentSection,
-    //       setStage,
-    //       setIsInFlowFunc,
-    //       setCurrentFlowController,
-    //       currentFlowController,
-    //       isInFlowFunc,
-    //     } = useMainDBFlowStore.getState();
+        if (!field) {
+          console.log(
+            'No more fields in the Injected Flow. Returning to the main flow.',
+          );
+          await setCurrentState({
+            user_id: user_id,
+            is_flow_func: false,
+          });
+          await goToNextMainSection(user_id);
+          return (await getCurrentMainSection(user_id)) ? 'setup' : 'end';
+        }
 
-    //     const { getCurrentChartFormField, goToNextField, setQuestionBody } =
-    //       ChartFormUseFlowStore.getState();
+        // Handle user input in active subflow
+        if (state?.is_flow_func && params?.userInput !== undefined) {
+          const stage = await AnswerChartFormQuestion(params.userInput);
 
-    //     // const field = ();
+          if (stage !== '' || stage !== null || stage !== undefined) {
+            // Subflow completed
+            const nextField = await goToNextMainField(user_id);
 
-    //     // if (!field) {
-    //     //   console.log('No more fields in the Injected Flow. Returning to the main flow.');
-    //     //   setIsInFlowFunc(false);
-    //     //   setCurrentFlowController(null);
-    //     //   goToNextSection();
-    //     //   return getCurrentSection() ? 'setup' : 'end';
-    //     // }
+            if (!nextField) {
+              await goToNextMainSection(user_id);
+              return 'setup';
+            }
+            return 'loop';
+          } else {
+            return 'chartForm';
+          }
+        }
 
-    //     // Handle user input in active subflow
+        if (state?.is_flow_func) {
+          return 'chartForm';
+        }
 
-    //     if (
-    //       isInFlowFunc &&
-    //       currentFlowController &&
-    //       params?.userInput !== undefined
-    //     ) {
-    //       currentFlowController.answerQuestion(params.userInput);
+        console.warn(
+          "Unexpected state in chartForm path. Returning 'end'.",
+          state?.is_flow_func,
+        );
+        return 'end';
+      },
 
-    //       const stageResult = currentFlowController.OnSuccess();
-    //       if (stageResult !== 'Stage not available yet') {
-    //         // Subflow completed
-    //         setStage(stageResult);
-    //         setIsInFlowFunc(false);
-    //         setCurrentFlowController(null);
-    //         const nextField = getCurrentChartFormField();
+      options: async () => {
+        const { getCurrentField, currentFlowController, isInFlowFunc } =
+          useMainDBFlowStore.getState();
 
-    //         if (!nextField) {
-    //           goToNextSection();
-    //           return getCurrentSection() ? 'setup' : 'end';
-    //         }
-    //         return 'loop';
-    //       } else {
-    //         // Subflow ongoing
-    //         setQuestionBody(currentFlowController.getCurrentQuestion());
-    //         return 'chartForm';
-    //       }
-    //     }
+        const field = await getCurrentChartFormField(user_id);
+        if (!field) {
+          console.warn('No field provided for options in chartform');
+          return [];
+        }
 
-    //     if (isInFlowFunc && currentFlowController) {
-    //       return 'chartForm';
-    //     }
+        const state = await getCurrentState(user_id);
 
-    //     console.warn("Unexpected state in chartForm path. Returning 'end'.", {
-    //       field,
-    //       isInFlowFunc,
-    //       currentFlowController,
-    //     });
-    //     return 'end';
-    //   },
+        // If flow func: fetch possible answers
+        if (state?.is_flow_func && currentFlowController) {
+          const answers = await getCurrentChartFormAnswers(field.id);
+          return answers.map((a) => a.answer);
+        }
 
-    //   options: (): string[] => {
-    //     const { getCurrentField, currentFlowController, isInFlowFunc } =
-    //       useMainDBFlowStore.getState();
-    //     const field = getCurrentField();
+        // If field has static options
+        if (field?.answer) {
+          return Object.values(field.answer);
+        }
 
-    //     if (
-    //       field?.type === FieldType.flowfunc &&
-    //       isInFlowFunc &&
-    //       currentFlowController
-    //     ) {
-    //       return currentFlowController.getCurrentAnswers();
-    //     }
-    //     return field?.options?.map((o: { value: string }) => o.value) || [];
-    //   },
+        return [];
+      },
 
-    //   chatDisabled: (): boolean => {
-    //     const { getCurrentField, currentFlowController, isInFlowFunc } =
-    //       useMainDBFlowStore.getState();
-    //     const field = getCurrentField();
+      chatDisabled: true, //the chartform's input is only as a dropdown input so we don't need any chat here
 
-    //     return Boolean(
-    //       field?.type === FieldType.file ||
-    //         field?.type === FieldType.video ||
-    //         field?.type === FieldType.dropdown ||
-    //         (field?.type === FieldType.flowfunc &&
-    //           isInFlowFunc &&
-    //           currentFlowController !== null),
-    //     );
-    //   },
-
-    //   file: async (params: FileParams): Promise<void> => {
-    //     const { getCurrentField } = useMainDBFlowStore.getState();
-    //     const field = getCurrentField();
-
-    //     if (
-    //       field?.type === FieldType.dropdown ||
-    //       field?.type === FieldType.text ||
-    //       field?.type === FieldType.url ||
-    //       field?.type === FieldType.flowfunc
-    //     ) {
-    //       return;
-    //     }
-
-    //     if (field?.type === FieldType.file || field?.type === FieldType.video) {
-    //       // Handle multiple files if present
-    //       if (params.files && Array.isArray(params.files)) {
-    //         for (const file of params.files) {
-    //           if (file && file instanceof File) {
-    //             await UploadFileHandler(file);
-    //           } else {
-    //             console.warn(
-    //               'Invalid file object passed to file handler:',
-    //               file,
-    //             );
-    //           }
-    //         }
-    //       }
-    //     }
-    //   },
-    // } as MarkdownRendererBlock,
+      file: () => {
+        return null;
+      },
+    } as MarkdownRendererBlock,
 
     end: {
       message: (): string => `🎉 **Thank you!** All sections completed.`,
@@ -624,27 +551,19 @@ export const generateChatBotFlow = (): Record<
 
     OriginalSubFlowLoop: {
       message: async (): Promise<string> => {
-        const { currentFlowController, isInFlowFunc, questionBody } =
-          useMainDBFlowStore.getState();
-
-        // const { getCurrentSubFlowField } = useSubFlowStore.getState();
-
-        const field = await getCurrentInjectedField(user_id); //getCurrentSubFlowField();
+        const field = await getCurrentInjectedField(user_id);
+        const state = await getCurrentState(user_id);
 
         if (!field?.label) {
           return `**No more fields in this section...**\n\n_Send me anything to jump to the next section._`;
         }
 
-        if (
-          field.type === FieldType.flowfunc &&
-          isInFlowFunc &&
-          currentFlowController
-        ) {
-          const answers = currentFlowController.getCurrentAnswers();
-          let body = questionBody;
+        if (field.type === FieldType.flowfunc && state?.is_flow_func) {
+          const answers = await getCurrentInjectedFlowAnswers(field.id);
+          let body = '';
 
           if (answers.length > 0) {
-            body += `\n\n**Please select one of the following options:**`;
+            body += `**Please select one of the following options:**`;
           }
           return `**${field.label}**\n\n${body}`;
         }
@@ -653,22 +572,6 @@ export const generateChatBotFlow = (): Record<
       },
       renderMarkdown: ['BOT', 'USER'] as const,
       path: async (params: PathParams): Promise<string> => {
-        const {
-          // getCurrentField,
-          // getCurrentSection,
-          // goToNextField,
-          // goToNextSection,
-          setCurrentFlowController,
-          setIsInFlowFunc,
-        } = useMainDBFlowStore.getState();
-
-        // const {
-        //   // getCurrentSubFlowSection,
-        //   // getCurrentSubFlowField,
-        //   // goToNextSubFlowField,
-        //   // goToNextSubFlowSection,
-        // } = useSubFlowStore.getState();
-
         const subFlowField = await getCurrentInjectedField(user_id);
 
         if (!subFlowField) {
@@ -696,8 +599,12 @@ export const generateChatBotFlow = (): Record<
           hasNextSubFlowSection === undefined
         ) {
           // Subflow is done, go back to main flow
-          setIsInFlowFunc(false);
-          setCurrentFlowController(null);
+          await setCurrentState({
+            user_id: user_id,
+            is_flow_func: false,
+            current_injected_flow_field_id: null,
+            current_injected_flow_section_id: null,
+          });
 
           let mainField = await goToNextMainField(user_id);
           if (mainField === null || mainField === undefined) {
@@ -713,7 +620,6 @@ export const generateChatBotFlow = (): Record<
       },
 
       file: async (params: FileParams): Promise<void> => {
-        // const { getCurrentSubFlowField } = useSubFlowStore.getState();
         const field = await getCurrentInjectedField(user_id);
 
         if (
@@ -743,37 +649,31 @@ export const generateChatBotFlow = (): Record<
       },
 
       options: async () => {
-        // const { getCurrentSubFlowField } = useSubFlowStore.getState();
-
         const { currentFlowController, isInFlowFunc } =
           useInjectedDBFlowStore.getState();
-        const field = await getCurrentInjectedField(user_id); //getCurrentSubFlowField();
+        const field = await getCurrentInjectedField(user_id);
 
-        if (
-          field?.type === FieldType.flowfunc &&
-          isInFlowFunc &&
-          currentFlowController
-        ) {
-          return currentFlowController.getCurrentAnswers();
+        const state = await getCurrentState(user_id);
+
+        if (field?.type === FieldType.flowfunc && state?.is_flow_func) {
+          return getCurrentInjectedFlowAnswers(field.id);
         }
 
-        return field?.options || []; //?.map((o: { value: string }) => o.value)
+        return field?.options || [];
       },
 
       chatDisabled: async () => {
-        // const { getCurrentSubFlowField } = useSubFlowStore.getState();
-
         const { currentFlowController, isInFlowFunc } =
           useInjectedDBFlowStore.getState();
         const field = await getCurrentInjectedField(user_id); //getCurrentSubFlowField();
+
+        const state = await getCurrentState(user_id);
 
         return Boolean(
           field?.type === FieldType.file ||
             field?.type === FieldType.video ||
             field?.type === FieldType.dropdown ||
-            (field?.type === FieldType.flowfunc &&
-              isInFlowFunc &&
-              currentFlowController),
+            (field?.type === FieldType.flowfunc && state?.is_flow_func),
         );
       },
     } as MarkdownRendererBlock,

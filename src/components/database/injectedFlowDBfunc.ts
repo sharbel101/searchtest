@@ -1,10 +1,11 @@
 import { createClient } from '@/utils/supabase/client';
-import {
-  DBFlowSection,
-  DBFlowField,
-  DBCurrentStates,
-} from '@/components/database/DBtypes';
+import { DBFlowSection, DBFlowField } from '@/components/database/DBtypes';
 import { getCurrentState, setCurrentState } from './mainFlowDBfunc';
+
+import { useInjectedDBFlowStore } from './zustand_containers/InjectedFlowStore';
+
+import { user_id } from '../dataflow/constructor';
+import { da } from 'zod/v4/locales';
 
 const supabase = createClient();
 
@@ -20,6 +21,9 @@ export async function getAllInjectedSections(): Promise<DBFlowSection[]> {
     console.error('Error fetching injected sections:', error.message);
     return [];
   }
+
+  const { setInjectedSections } = useInjectedDBFlowStore.getState();
+  setInjectedSections(data);
 
   return data ?? [];
 }
@@ -102,6 +106,9 @@ export async function getCurrentInjectedField(
     return null;
   }
 
+  const { setCurrentInjectedField } = useInjectedDBFlowStore.getState();
+  setCurrentInjectedField(current_field);
+
   return current_field;
 }
 
@@ -131,6 +138,30 @@ export async function getCurrentInjectedSection(
   }
 
   return current_section;
+}
+
+export async function getCurrentInjectedFlowAnswers(
+  field_id: string,
+): Promise<string[]> {
+  const current_injected_field = await getCurrentInjectedField(user_id);
+
+  if (!current_injected_field) {
+    console.warn("can't access the current injected field answers!");
+    return [];
+  }
+
+  const current_answers = current_injected_field.options as Record<
+    string,
+    string
+  > | null;
+
+  if (!current_answers || !Array.isArray(current_answers)) {
+    console.warn('no current answers from getCurrentInjectedFlowAnswers');
+    return [];
+  }
+
+  // Return only the list of "value" strings
+  return current_answers.map((a) => a.value);
 }
 
 // ---------- Flow Navigation ----------
@@ -167,6 +198,9 @@ export async function goToNextInjectedField(user_id: string) {
       user_id,
       current_injected_flow_field_id: nextField.id,
     });
+
+    const { setCurrentInjectedField } = useInjectedDBFlowStore.getState();
+    setCurrentInjectedField(nextField);
   }
 
   return nextField;
@@ -200,6 +234,9 @@ export async function goToNextInjectedSection(user_id: string) {
       current_injected_flow_section_id: nextSectionId,
       current_injected_flow_field_id: nextSection.firstfield,
     });
+
+    const { setCurrentInjectedSection } = useInjectedDBFlowStore.getState();
+    setCurrentInjectedSection(nextSection);
   }
 
   return nextSection;

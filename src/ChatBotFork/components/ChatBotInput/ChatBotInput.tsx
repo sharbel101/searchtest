@@ -24,31 +24,53 @@ import { useFlowStore } from '@/components/Zustand store data/ZustandStores/Main
 import { useSubFlowStore } from '@/components/Zustand store data/ZustandStores/InjectedFlowStore';
 import { ChartFormUseFlowStore } from '@/components/Zustand store data/ZustandStores/ChartFormFlowStore';
 
-import {
-  FieldType,
-  FormField,
-} from '@/components/Zustand store data/MainFlow/flow';
+import { useChartFormDBFlowStore } from '@/components/database/zustand_containers/ChartFormFlowStore';
+import { useInjectedDBFlowStore } from '@/components/database/zustand_containers/InjectedFlowStore';
+import { useMainDBFlowStore } from '@/components/database/zustand_containers/MainFlowStore';
+import { FieldType } from '@/components/Zustand store data/MainFlow/flow';
+import { DBFlowField } from '@/components/database/DBtypes';
 
-const {
-  getCurrentField,
-  isInFlowFunc,
-  currentFlowController,
-  CurrentInjectionType,
-} = useFlowStore.getState();
-const { getCurrentSubFlowField } = useSubFlowStore.getState();
-const { getCurrentChartFormField } = ChartFormUseFlowStore.getState();
+// const {
+//   getCurrentField,
+//   isInFlowFunc,
+//   currentFlowController,
+//   CurrentInjectionType,
+// } = useFlowStore.getState();
+// const { getCurrentSubFlowField } = useSubFlowStore.getState();
+//const { getCurrentChartFormField } = ChartFormUseFlowStore.getStFate();
+
+const { currentChartFormField } = useChartFormDBFlowStore.getState();
+const { getCurrentInjectedField } = useInjectedDBFlowStore.getState();
+const { getCurrentField, isInFlowFunc, CurrentInjectionType } =
+  useMainDBFlowStore.getState();
 
 //JOE MODIFIED HERE
-function getField(): FormField | undefined | null {
-  if (isInFlowFunc && currentFlowController) {
-    if (CurrentInjectionType === 'ChartForm') {
-      return getCurrentChartFormField();
-    } else if (CurrentInjectionType === 'OriginalSubFlow') {
-      return getCurrentSubFlowField();
+export function getField(): DBFlowField /*| DBchartFlowField */ | null {
+  let field: DBFlowField /*| DBchartFlowField*/ | null = null;
+
+  if (isInFlowFunc) {
+    // we don't need to check for the chartForm because it is only a dropdown list...
+
+    // if (state.flow_type === "ChartForm") {
+    //   field = await getCurrentChartFormField(user_id);
+    //   if (!field) {
+    //     console.warn("No field in getField() (Chart form)");
+    //   }
+    // } else
+    if (CurrentInjectionType === 'OriginalSubFlow') {
+      field = getCurrentInjectedField();
+      if (!field) {
+        console.warn('No field in getField() (Original sub flow)');
+      }
     }
   } else {
-    return getCurrentField();
+    field = getCurrentField();
+    if (!field) {
+      console.warn('No field in getField() (Main flow)');
+    }
   }
+
+  return field;
 }
 
 /**

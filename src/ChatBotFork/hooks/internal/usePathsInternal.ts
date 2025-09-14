@@ -14,11 +14,9 @@ import { useToastsInternal } from './useToastsInternal';
 import { preProcessBlock } from '../../services/BlockService/BlockService';
 import { useDispatchRcbEventInternal } from './useDispatchRcbEventInternal';
 import { Block } from '../../types/Block';
-import { useFlowStore } from '@/components/Zustand store data/ZustandStores/MainFlowStore';
-import { ChartFormUseFlowStore } from '@/components/Zustand store data/ZustandStores/ChartFormFlowStore';
-import { useSubFlowStore } from '@/components/Zustand store data/ZustandStores/InjectedFlowStore';
-import readCurrentField from '@/components/validations/validateInput';
+
 import { FieldType } from '@/components/Zustand store data/MainFlow/flow';
+import { getField } from '@/ChatBotFork/components/ChatBotInput/ChatBotInput';
 
 /**
  * Internal custom hook to handle paths in the chatbot conversation flow.
@@ -167,7 +165,7 @@ export const usePathsInternal = () => {
       }
 
       //JOE MODIFIED HERE.
-      const field = readCurrentField();
+      const field = getField();
       const allowAttachment =
         (field?.type === FieldType.file ||
           field?.type === FieldType.video ||

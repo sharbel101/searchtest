@@ -104,6 +104,14 @@ export async function getCurrentState(
     return null;
   }
 
+  const DBdata: DBCurrentStates = data;
+
+  const { setCurrentInjectionType, setIsInFlowFunc, setStage } =
+    useMainDBFlowStore.getState();
+  setCurrentInjectionType(data?.flow_type);
+  setIsInFlowFunc(data?.is_flow_func);
+  setStage(data?.stage);
+
   return data;
 }
 
@@ -120,6 +128,12 @@ export async function setCurrentState(state: DBCurrentStates) {
       .single();
 
     if (error) throw error;
+
+    const { setCurrentInjectionType, setIsInFlowFunc, setStage } =
+      useMainDBFlowStore.getState();
+    setCurrentInjectionType(data?.flow_type);
+    setIsInFlowFunc(data?.is_flow_func);
+    setStage(data?.stage);
 
     return data;
   } catch (error) {
@@ -389,8 +403,6 @@ export async function getMainFieldStartingNodes(): Promise<DBFlowField | null> {
   setCurrentField(first_field);
 
   return first_field;
-  // for testing
-  //{"id":"4bd3e0ac-fb15-4bed-8221-0ce326e2dbda","sectionid":"6445e119-f6f5-4c8a-bd30-35ea389d88a3","type":FieldType.file,"label":"Companies NDAs Form","placeholder":"","description":"Upload the signed NDA form (PDF format).","required":true,"validation":"z.string().min(1, 'NDA form is required').refine((val) => val.endsWith('.pdf') || val.includes('pdf'), 'File must be a PDF format')","extractiontype":"","form_id":"1","nextfield":null}
 }
 
 // ---------- Flow Navigation ----------
@@ -413,7 +425,7 @@ export async function goToNextMainField(user_id: string) {
     current_state.current_main_flow_section_id,
     current_state.current_main_flow_field_id,
   );
-  console.log('this is the current fied', currentField);
+  console.log('this is the current field', currentField);
   if (
     !currentField ||
     currentField.nextfield === null ||

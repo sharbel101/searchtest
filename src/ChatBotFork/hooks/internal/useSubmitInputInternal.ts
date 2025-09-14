@@ -16,21 +16,27 @@ import { Flow } from '../../types/Flow';
 import { RcbEvent } from '../../constants/RcbEvent';
 import { usePathsContext } from '../../context/PathsContext';
 
-import { useFlowStore } from '@/components/Zustand store data/ZustandStores/MainFlowStore';
-import { useSubFlowStore } from '@/components/Zustand store data/ZustandStores/InjectedFlowStore';
-import { ChartFormUseFlowStore } from '@/components/Zustand store data/ZustandStores/ChartFormFlowStore';
-
-import { FormField } from '@/components/Zustand store data/MainFlow/flow';
+//online version (database)
 import { handleValidate } from '@/components/validations/validateInput';
+import { getCurrentChartFormField } from '@/components/database/chartformFlowDBfunc';
+import { useChartFormDBFlowStore } from '@/components/database/zustand_containers/ChartFormFlowStore';
+import { useInjectedDBFlowStore } from '@/components/database/zustand_containers/InjectedFlowStore';
+import { useMainDBFlowStore } from '@/components/database/zustand_containers/MainFlowStore';
 
-const {
-  getCurrentField,
-  isInFlowFunc,
-  currentFlowController,
-  CurrentInjectionType,
-} = useFlowStore.getState();
-const { getCurrentSubFlowField } = useSubFlowStore.getState();
-const { getCurrentChartFormField } = ChartFormUseFlowStore.getState();
+//offline version
+// const {
+//   getCurrentField,
+//   isInFlowFunc,
+//   currentFlowController,
+//   CurrentInjectionType,
+// } = useFlowStore.getState();
+//const { getCurrentSubFlowField } = useSubFlowStore.getState();
+//const { getCurrentChartFormField } = ChartFormUseFlowStore.getState();
+
+const { currentChartFormField } = useChartFormDBFlowStore.getState();
+const { getCurrentInjectedField } = useInjectedDBFlowStore.getState();
+const { getCurrentField, isInFlowFunc, CurrentInjectionType } =
+  useMainDBFlowStore.getState();
 
 /**
  * Internal custom hook for managing user input submissions.
@@ -256,12 +262,12 @@ export const useSubmitInputInternal = () => {
       showToast,
       dismissToast,
       flowRef,
+
       isInFlowFunc,
-      currentFlowController,
       CurrentInjectionType,
       getCurrentField,
-      getCurrentChartFormField,
-      getCurrentSubFlowField,
+      currentChartFormField,
+      getCurrentInjectedField,
     ],
   );
 

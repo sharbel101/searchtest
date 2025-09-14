@@ -1,34 +1,8 @@
 import { z, ZodSchema } from 'zod';
-
-import { useFlowStore } from '@/components/Zustand store data/ZustandStores/MainFlowStore';
-import { useSubFlowStore } from '@/components/Zustand store data/ZustandStores/InjectedFlowStore';
-import { ChartFormUseFlowStore } from '@/components/Zustand store data/ZustandStores/ChartFormFlowStore';
-import { FieldType, FormField } from '../Zustand store data/MainFlow/flow';
-import { error } from 'console';
-
-//dummy data stores
-// const {
-//   getCurrentField,
-//   isInFlowFunc,
-//   currentFlowController,
-//   CurrentInjectionType,
-// } = useFlowStore.getState();
-// const { getCurrentSubFlowField } = useSubFlowStore.getState();
-// const { getCurrentChartFormField } = ChartFormUseFlowStore.getState();
+import { FieldType } from '../Zustand store data/MainFlow/flow';
 
 //real database stores
-import { useMainDBFlowStore } from '@/components/database/zustand_containers/MainFlowStore';
-import { useInjectedDBFlowStore } from '@/components/database/zustand_containers/InjectedFlowStore';
-import { DBFlowField } from '../database/DBtypes';
-
-const {
-  getCurrentField,
-  isInFlowFunc,
-  currentFlowController,
-  CurrentInjectionType,
-} = useMainDBFlowStore.getState();
-const { getCurrentInjectedField } = useInjectedDBFlowStore.getState();
-const { getCurrentChartFormField } = ChartFormUseFlowStore.getState();
+import { getField } from '@/ChatBotFork/components/ChatBotInput/ChatBotInput';
 
 /**
  * Compile cache for parsed Zod schemas.
@@ -73,22 +47,6 @@ export const getValidationSchema = (
 };
 
 /**
- * Helper to read the current FormField from the correct store/injection.
- * Extracted to avoid duplicating branching logic.
- */
-export default function readCurrentField(): DBFlowField | undefined | null {
-  if (isInFlowFunc && currentFlowController) {
-    if (CurrentInjectionType === 'ChartForm') {
-      return null; //getCurrentChartFormField();
-    } else if (CurrentInjectionType === 'OriginalSubFlow') {
-      return getCurrentInjectedField();
-    }
-  } else {
-    return getCurrentField();
-  }
-}
-
-/**
  * Validates user input against the current field's validation schema.
  *
  * NOTE: preserves the original two-fetch pattern:
@@ -98,13 +56,13 @@ export default function readCurrentField(): DBFlowField | undefined | null {
 export const handleValidate = (
   userInput: any,
 ): { success: boolean; error?: string } => {
-  const field = readCurrentField();
+  const field = getField();
 
   if (!field) return { success: false, error: 'No field found for validation' };
   if (!field.validation) return { success: true }; // no validation → always pass
 
   try {
-    const schema = getValidationSchema('z.string()'); //getValidationSchema(field.validation);
+    const schema = getValidationSchema('z.string()'); //getValidationSchema(field.validation)
 
     if (
       Array.isArray(field.options) &&

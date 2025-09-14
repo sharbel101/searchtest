@@ -42,3 +42,18 @@ export type DBCurrentStates = {
 
   updated_at?: string | null;
 };
+
+export type BranchTarget = {
+  next?: string;
+  setStage?: string;
+};
+
+export type DBchartFormAnswer = Record<string, BranchTarget>;
+
+export type DBchartFlowField = {
+  id: string;
+  question: string;
+  answer?: DBchartFormAnswer | null;
+  form_id: string;
+  starting_node?: string | null;
+};

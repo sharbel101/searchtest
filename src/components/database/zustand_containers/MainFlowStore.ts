@@ -16,7 +16,7 @@ interface FlowState {
   getCurrentField: () => DBFlowField | null;
 
   stage: string | null;
-  setStage: (stage: string | null) => void;
+  setStage: (stage: string | null | undefined) => void;
 
   // for injected chart forms
   currentFlowController: any;
