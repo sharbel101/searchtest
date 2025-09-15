@@ -161,7 +161,7 @@ export async function getCurrentChartFormAnswers(field_id: string) {
     return [];
   }
 
-  const current_answers = current_chartform_field.answer as Record<
+  const current_answers = current_chartform_field.answers as Record<
     string,
     BranchTarget
   > | null;
@@ -178,7 +178,9 @@ export async function getCurrentChartFormAnswers(field_id: string) {
     answer,
     ...target,
   }));
-
+  console.log(
+    'these are the extracted options from the chartForm Flow DB func in getCurrent chart from answers',
+  );
   return answers;
 }
 

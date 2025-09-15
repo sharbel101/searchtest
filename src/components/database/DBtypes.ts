@@ -53,7 +53,7 @@ export type DBchartFormAnswer = Record<string, BranchTarget>;
 export type DBchartFlowField = {
   id: string;
   question: string;
-  answer?: DBchartFormAnswer | null;
+  answers?: DBchartFormAnswer | null;
   form_id: string;
   starting_node?: string | null;
 };

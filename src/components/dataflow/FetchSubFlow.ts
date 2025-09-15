@@ -6,12 +6,15 @@ import {
   setCurrentState,
 } from '../database/mainFlowDBfunc';
 
+const { setIsInFlowFunc } = useMainDBFlowStore.getState();
+
 const supabase = createClient();
 
 //only for development purposes
 import { user_id } from './constructor';
 
 import { DBFlowSection } from '@/components/database/DBtypes';
+import { useMainDBFlowStore } from '../database/zustand_containers/MainFlowStore';
 
 //IS
 export const fetchAndSetChartFormSubFlow = async (
@@ -46,6 +49,7 @@ export const fetchAndSetChartFormSubFlow = async (
     current_chartform_id: data.id,
     flow_type: field?.flowinjection?.type,
   });
+  setIsInFlowFunc(true);
 
   return true;
 };
@@ -86,9 +90,7 @@ export const fetchAndSetOriginalSubFlow = async (
     is_flow_func: true,
     flow_type: field?.flowinjection?.type,
   });
-  // const flowController = createOriginalSubFlowController(DBdata);
-  // setCurrentFlowController(flowController);
-  // setIsInFlowFunc(true);
+  setIsInFlowFunc(true);
 
   return true;
 };

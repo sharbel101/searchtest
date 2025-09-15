@@ -174,7 +174,7 @@ export const generateChatBotFlow = (): Record<
         return `**${field.label}**\n\n${dynamicDescription}`;
       },
       renderMarkdown: ['BOT', 'USER'] as const,
-      path: async (params: PathParams): Promise<string> => {
+      path: async (params: PathParams): Promise<string | null> => {
         const {
           getCurrentSection,
           getCurrentField,
@@ -190,8 +190,22 @@ export const generateChatBotFlow = (): Record<
 
         // const {  } = ChartFormUseFlowStore.getState()
         const current_state = await getCurrentState(user_id);
+        if (!current_state) {
+          console.warn("can't have a current state in loop's path");
+          return 'end';
+        }
+
         const section = await getCurrentMainSection(user_id);
+        if (!section) {
+          console.warn("can't have a current section in loop's path");
+          return 'end';
+        }
+
         const field = await getCurrentMainField(user_id);
+        if (!field) {
+          console.warn("can't have a current field in loop's path");
+          return 'end';
+        }
 
         const stage = current_state?.stage;
 
@@ -199,11 +213,8 @@ export const generateChatBotFlow = (): Record<
         // console.log('Loop path - Field:', field?.label);
         // console.log('Loop path - User input:', params?.userInput);
 
-        if (!section) return 'end';
-        if (!field) return 'end';
-
         if (field?.nextfield === null) {
-          if (field?.flowinjection?.name === 'ChartForm') {
+          if (field?.flowinjection?.type === 'ChartForm') {
             // console.log(
             //   `In this Section: ${section} and this field: ${field} we have injection of type: ${field.flowinjection.type} `,
             // );
@@ -295,7 +306,6 @@ export const generateChatBotFlow = (): Record<
         if (
           field.type === FieldType.flowfunc &&
           current_state?.is_flow_func &&
-          currentFlowController &&
           field.flowinjection?.type !== 'OriginalSubFlow'
         ) {
           if (params?.userInput !== undefined) {
@@ -312,22 +322,17 @@ export const generateChatBotFlow = (): Record<
                 is_flow_func: false,
               }); // for the database
 
-              // setIsInFlowFunc(false); // for ofline
-              setCurrentFlowController(null);
-
-              //goToNextField();
+              setIsInFlowFunc(false); // for ofline
 
               const nextField = goToNextMainField(user_id);
 
               if (!nextField) {
-                //goToNextSection();
                 const nextSection = await goToNextMainSection(user_id);
                 return nextSection ? 'setup' : 'end';
               }
               return 'loop';
             }
             const questionBody = await getQuestionBody(user_id);
-            // setQuestionBody(currentFlowController.getCurrentQuestion());
             setQuestionBody(questionBody);
             return 'loop';
           }
@@ -476,7 +481,8 @@ export const generateChatBotFlow = (): Record<
 
         // Handle user input in active subflow
         if (state?.is_flow_func && params?.userInput !== undefined) {
-          const stage = await AnswerChartFormQuestion(params.userInput);
+          const state = await getCurrentState(user_id);
+          const stage = state?.stage;
 
           if (stage !== '' || stage !== null || stage !== undefined) {
             // Subflow completed
@@ -504,8 +510,7 @@ export const generateChatBotFlow = (): Record<
       },
 
       options: async () => {
-        const { getCurrentField, currentFlowController, isInFlowFunc } =
-          useMainDBFlowStore.getState();
+        const { isInFlowFunc } = useMainDBFlowStore.getState();
 
         const field = await getCurrentChartFormField(user_id);
         if (!field) {
@@ -516,14 +521,15 @@ export const generateChatBotFlow = (): Record<
         const state = await getCurrentState(user_id);
 
         // If flow func: fetch possible answers
-        if (state?.is_flow_func && currentFlowController) {
+        if (state?.is_flow_func) {
           const answers = await getCurrentChartFormAnswers(field.id);
-          return answers.map((a) => a.answer);
+          const filtered_answers = answers.map((a) => a.answer);
+          return filtered_answers;
         }
 
         // If field has static options
-        if (field?.answer) {
-          return Object.values(field.answer);
+        if (field?.answers) {
+          return Object.values(field.answers);
         }
 
         return [];
