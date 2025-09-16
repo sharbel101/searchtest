@@ -180,6 +180,7 @@ export async function getCurrentChartFormAnswers(field_id: string) {
   }));
   console.log(
     'these are the extracted options from the chartForm Flow DB func in getCurrent chart from answers',
+    answers,
   );
   return answers;
 }
@@ -197,7 +198,7 @@ export async function AnswerChartFormQuestion(userInput: string) {
   const question_answers = await getCurrentChartFormAnswers(field.id);
 
   // Save the question and answer to the database.
-  saveQuestionAnswer(question, userInput);
+  // saveQuestionAnswer(question, userInput);
 
   // find the matching answer
   const answerConfig = question_answers.find((a) => a.answer === userInput);
@@ -205,6 +206,8 @@ export async function AnswerChartFormQuestion(userInput: string) {
     console.warn(`No matching config found for input: ${userInput}`);
     return;
   }
+
+  console.log('this is the AnswerConfig:', answerConfig);
 
   if (answerConfig.setStage) {
     //database update

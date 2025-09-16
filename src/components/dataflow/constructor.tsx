@@ -447,7 +447,7 @@ export const generateChatBotFlow = (): Record<
           return `**No more subflow fields available.**`;
         }
 
-        if (current_state?.is_flow_func && currentFlowController) {
+        if (current_state?.is_flow_func) {
           const answers = await getCurrentChartFormAnswers(field.id);
           let body = '';
           if (answers.length > 0) {
@@ -469,7 +469,7 @@ export const generateChatBotFlow = (): Record<
 
         if (!field) {
           console.log(
-            'No more fields in the Injected Flow. Returning to the main flow.',
+            'No more fields in the chartform Flow. Returning to the main flow.',
           );
           await setCurrentState({
             user_id: user_id,
@@ -481,10 +481,11 @@ export const generateChatBotFlow = (): Record<
 
         // Handle user input in active subflow
         if (state?.is_flow_func && params?.userInput !== undefined) {
+          await AnswerChartFormQuestion(params?.userInput);
           const state = await getCurrentState(user_id);
           const stage = state?.stage;
 
-          if (stage !== '' || stage !== null || stage !== undefined) {
+          if (stage) {
             // Subflow completed
             const nextField = await goToNextMainField(user_id);
 
