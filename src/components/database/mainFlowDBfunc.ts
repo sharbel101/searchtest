@@ -30,6 +30,25 @@ export async function getAllMainSections(): Promise<DBFlowSection[]> {
   return data ?? [];
 }
 
+export async function getAllOrderedMainSections(): Promise<DBFlowSection[]> {
+  const { data, error } = await supabase
+    .from('main_flow_sections')
+    .select('*')
+    .order('order_index', { ascending: true }); // fetch in ascending order
+
+  if (error) {
+    console.error('Error fetching main sections:', error.message);
+    return [];
+  }
+
+  const { setSections } = useMainDBFlowStore.getState();
+
+  // Store in zustand
+  setSections(data);
+
+  return data ?? [];
+}
+
 // Fetch all fields
 export async function getAllMainFields(
   section_id: string,

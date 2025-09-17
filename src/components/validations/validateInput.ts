@@ -62,7 +62,7 @@ export const handleValidate = (
   if (!field.validation) return { success: true }; // no validation → always pass
 
   try {
-    const schema = getValidationSchema('z.string()'); //getValidationSchema(field.validation)
+    const schema = getValidationSchema(field.validation);
 
     if (
       Array.isArray(field.options) &&

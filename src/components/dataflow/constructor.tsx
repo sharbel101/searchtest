@@ -27,6 +27,7 @@ import saveQuestionAnswer from '../database/UploadeAnswers';
 import {
   getAllMainFields,
   getAllMainSections,
+  getAllOrderedMainSections,
   getCurrentMainField,
   getCurrentMainSection,
   getCurrentState,
@@ -67,7 +68,7 @@ export const generateChatBotFlow = (): Record<
     start: {
       message: async () => {
         const { setSideBarSections } = SidebarFlowStore.getState();
-        const allSections = await getAllMainSections();
+        const allSections = await getAllOrderedMainSections();
         console.log(
           'these are the extracted sections from the db: ',
           allSections,
@@ -409,23 +410,20 @@ export const generateChatBotFlow = (): Record<
       },
 
       chatDisabled: async () => {
-        const { getCurrentField, currentFlowController, isInFlowFunc } =
-          useMainDBFlowStore.getState();
+        // const { getCurrentField, isInFlowFunc } = useMainDBFlowStore.getState();
 
         const field = await getCurrentMainField(user_id);
-        const state = await getCurrentState(user_id);
+        // const state = await getCurrentState(user_id);
 
         return Boolean(
           field?.type === FieldType.file ||
             field?.type === FieldType.video ||
             field?.type === FieldType.dropdown ||
-            (field?.type === FieldType.flowfunc &&
-              state?.is_flow_func &&
-              currentFlowController),
+            field?.type === FieldType.flowfunc,
         );
       },
       transition: async () => {
-        const { getCurrentField } = useMainDBFlowStore.getState();
+        // const { getCurrentField } = useMainDBFlowStore.getState();
 
         const field = await getCurrentMainField(user_id);
         if (field?.type === FieldType.flowfunc) {

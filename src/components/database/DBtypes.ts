@@ -6,6 +6,7 @@ export type DBFlowSection = {
   firstfield: string;
   nextnode: string;
   form_id: string;
+  order_index: number;
 };
 
 export type DBFlowField = {
