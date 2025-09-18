@@ -343,9 +343,22 @@ export async function getCurrentMainSection(
       ? await getSpecificMainSection(current_state.current_main_flow_section_id)
       : starting_section;
 
+    if (!latest_section) {
+      console.warn(
+        "can't get the latest section from the get current main section",
+      );
+      return null;
+    }
+
+    //this is for the sidebar to display all the section's fields
+    const allSectionFields = await getAllMainFields(latest_section?.id);
+
     // Update zustand store
-    const { setCurrentSection } = useMainDBFlowStore.getState();
+    const { setCurrentSection, setSectionFieldsBulk } =
+      useMainDBFlowStore.getState();
     setCurrentSection(latest_section);
+    // this is for the side bar that displays each section's fields when we click on a certain one
+    setSectionFieldsBulk(latest_section.id, allSectionFields);
 
     return latest_section;
   }

@@ -110,8 +110,6 @@ export const generateChatBotFlow = (): Record<
       },
       renderMarkdown: ['BOT', 'USER'] as const,
       path: async () => {
-        const { getCurrentSection, isInFlowFunc, currentFlowController } =
-          useMainDBFlowStore.getState();
         const current_section = await getCurrentMainSection(user_id);
 
         if (!current_section) return 'end';
@@ -177,17 +175,15 @@ export const generateChatBotFlow = (): Record<
       renderMarkdown: ['BOT', 'USER'] as const,
       path: async (params: PathParams): Promise<string | null> => {
         const {
-          getCurrentSection,
           getCurrentField,
-
-          setCurrentFlowController,
           setIsInFlowFunc,
-          currentFlowController,
           isInFlowFunc,
           setStage,
           // stage,
           setQuestionBody,
         } = useMainDBFlowStore.getState();
+
+        const { goToNextSideBarSection } = SidebarFlowStore.getState();
 
         // const {  } = ChartFormUseFlowStore.getState()
         const current_state = await getCurrentState(user_id);
@@ -245,6 +241,9 @@ export const generateChatBotFlow = (): Record<
           //lezem ghayyer enno eza ma fi nextSection return false aw null w hott if statement hone la ta3mol return lal "end"
           // goToNextSection(); //i removed this function.... le2ila halle
           await goToNextMainSection(user_id);
+
+          //sidebar: update the opened sections
+          goToNextSideBarSection();
 
           return 'setup';
         }

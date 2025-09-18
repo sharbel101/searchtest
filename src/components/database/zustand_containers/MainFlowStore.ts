@@ -5,12 +5,22 @@ interface FlowState {
   // main flow
   currentSection: DBFlowSection | null;
   currentField: DBFlowField | null;
+
+  currentSectionFields: Record<string, Record<string, DBFlowField>>;
   sections: DBFlowSection[];
 
   setSections: (sections: DBFlowSection[]) => void;
 
   setCurrentSection: (section: DBFlowSection | null) => void;
   setCurrentField: (field: DBFlowField | null) => void;
+
+  //This adds the field to it's section one by one (KEEP IT MAYBE WE WILL USE IT LATER)
+  // setCurrentSectionFields: (
+  //   sectionId: string,
+  //   fieldId: string,
+  //   field: DBFlowField
+  // ) => void;
+  setSectionFieldsBulk: (sectionId: string, fields: DBFlowField[]) => void;
 
   getCurrentSection: () => DBFlowSection | null;
   getCurrentField: () => DBFlowField | null;
@@ -34,6 +44,7 @@ interface FlowState {
 export const useMainDBFlowStore = create<FlowState>((set, get) => ({
   currentSection: null,
   currentField: null,
+  currentSectionFields: {},
 
   sections: [],
 
@@ -41,6 +52,27 @@ export const useMainDBFlowStore = create<FlowState>((set, get) => ({
 
   setCurrentSection: (section) => set({ currentSection: section }),
   setCurrentField: (field) => set({ currentField: field }),
+
+  // setCurrentSectionFields: (sectionId, fieldId, field) =>
+  //   set((state) => ({
+  //     currentSectionFields: {
+  //       ...state.currentSectionFields,
+  //       [sectionId]: {
+  //         ...(state.currentSectionFields[sectionId] || {}),
+  //         [fieldId]: field, // add/overwrite field in section
+  //       },
+  //     },
+  //   })),
+  setSectionFieldsBulk: (sectionId: string, fields: DBFlowField[]) =>
+    set((state) => ({
+      currentSectionFields: {
+        ...state.currentSectionFields,
+        [sectionId]: {
+          ...(state.currentSectionFields[sectionId] || {}),
+          ...Object.fromEntries(fields.map((f) => [f.id, f])),
+        },
+      },
+    })),
 
   getCurrentSection: () => get().currentSection,
   getCurrentField: () => get().currentField,

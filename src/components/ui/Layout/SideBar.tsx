@@ -61,15 +61,7 @@ function SectionItem({
             animation: 'fadein 0.2s',
           }}
         >
-          <Suspense
-            fallback={
-              <div className="flex items-center justify-center py-4">
-                <div className="w-6 h-6 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-              </div>
-            }
-          >
-            <QuestionDetails section={section} />
-          </Suspense>
+          <QuestionDetails section={section} />
         </div>
       )}
     </div>
