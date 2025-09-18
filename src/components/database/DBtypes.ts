@@ -41,6 +41,8 @@ export type DBCurrentStates = {
 
   stage?: string | null;
 
+  sidebar_index?: number;
+
   updated_at?: string | null;
 };
 

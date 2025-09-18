@@ -84,7 +84,7 @@ export const useFlowStore = create<FlowState>((set, get) => ({
 
   goToNextSection: () => {
     const { sections, getCurrentSection } = get();
-    const { goToNextSideBarSection } = SidebarFlowStore.getState();
+    // const {  } = SidebarFlowStore.getState();
     const currentSection = getCurrentSection();
 
     if (!currentSection || !currentSection.nextNode) return 'end';
@@ -96,7 +96,6 @@ export const useFlowStore = create<FlowState>((set, get) => ({
     );
 
     if (nextSection) {
-      goToNextSideBarSection();
       set({
         currentSectionId: nextSection.sectionId,
         currentFieldId: nextSection.firstField,

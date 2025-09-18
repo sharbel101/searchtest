@@ -114,7 +114,9 @@ export default function Sidebar() {
 
   // Progress
   const progressPct =
-    sections.length > 0 ? ((currentIdx + 1) / sections.length) * 100 : 0;
+    sections.length > 0
+      ? ((currentIdx ? currentIdx - 1 : 0) / sections.length) * 100
+      : 0;
 
   return (
     <>
@@ -218,7 +220,12 @@ export default function Sidebar() {
           >
             <span>Progress</span>
             <span>
-              {currentIdx + 1} / {sections.length}
+              {currentIdx ? (
+                currentIdx - 1
+              ) : (
+                <span className="animate-pulse text-gray-500">Loading...</span>
+              )}{' '}
+              / {sections.length}
             </span>
           </div>
           <div
@@ -268,8 +275,8 @@ export default function Sidebar() {
               key={idx}
               section={sec}
               index={idx}
-              isAccessible={idx <= currentIdx}
-              isActive={idx === currentIdx}
+              isAccessible={currentIdx !== null && idx <= currentIdx - 1}
+              isActive={currentIdx !== null && idx === currentIdx - 1}
               open={openSectionIdx === idx}
               onToggle={() =>
                 setOpenSectionIdx(openSectionIdx === idx ? null : idx)

@@ -183,8 +183,7 @@ export const generateChatBotFlow = (): Record<
           setQuestionBody,
         } = useMainDBFlowStore.getState();
 
-        const { goToNextSideBarSection } = SidebarFlowStore.getState();
-
+        // const {  } = SidebarFlowStore.getState();
         // const {  } = ChartFormUseFlowStore.getState()
         const current_state = await getCurrentState(user_id);
         if (!current_state) {
@@ -243,7 +242,7 @@ export const generateChatBotFlow = (): Record<
           await goToNextMainSection(user_id);
 
           //sidebar: update the opened sections
-          goToNextSideBarSection();
+          // goToNextSideBarSection();
 
           return 'setup';
         }

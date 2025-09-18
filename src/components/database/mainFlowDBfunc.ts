@@ -8,6 +8,7 @@ import {
 import { useMainDBFlowStore } from './zustand_containers/MainFlowStore';
 import { FieldType } from '../Zustand store data/MainFlow/flow';
 import { user_id } from '../dataflow/constructor';
+import { SidebarFlowStore } from './zustand_containers/SideBarFlowStore';
 
 const supabase = createClient();
 
@@ -377,9 +378,18 @@ export async function getCurrentMainSection(
     return null;
   }
 
+  if (!current_state.sidebar_index) {
+    console.warn(
+      "can't get a sidebar index from the current state in the getCurrentMainSection",
+    );
+    return null;
+  }
+
   // Update zustand store
   const { setCurrentSection } = useMainDBFlowStore.getState();
+  const { setCurrentSideBarSectionIndex } = SidebarFlowStore.getState();
   setCurrentSection(current_section);
+  setCurrentSideBarSectionIndex(current_state?.sidebar_index);
 
   return current_section;
 }
@@ -530,6 +540,7 @@ export async function goToNextMainSection(user_id: string) {
       user_id,
       current_main_flow_section_id: nextSection.id,
       current_main_flow_field_id: nextSection.firstfield,
+      sidebar_index: nextSection.order_index,
     });
   }
 
