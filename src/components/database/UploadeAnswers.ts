@@ -1,46 +1,46 @@
-import { createClient } from '@/utils/supabase/server';
-import { v4 as uuidv4 } from 'uuid';
+import { createClient } from '@/utils/supabase/client';
+import { useChartFormDBFlowStore } from './zustand_containers/ChartFormFlowStore';
+import { useMainDBFlowStore } from './zustand_containers/MainFlowStore';
+import { useInjectedDBFlowStore } from './zustand_containers/InjectedFlowStore';
+import { extractKeyInfo } from '../AI features/openai';
+import { DBresponse } from './DBtypes';
 
 export default async function saveQuestionAnswer(
-  question: string,
-  answer: string,
+  user_id: string,
+  response: string,
+  field_id?: string | null,
+  stage_field_id?: string | null,
+  extractionType?: string,
 ) {
-  const supabase = await createClient();
-  console.log('📡 Supabase client created:');
+  const supabase = createClient();
 
-  const sessionId = uuidv4();
-  console.log('🆔 Generated sessionId:', sessionId);
+  // Run AI extraction only if requested
+  const processedResponse = extractionType
+    ? await extractKeyInfo(response, extractionType)
+    : response;
+
+  const payload: DBresponse = {
+    user_id,
+    field_id: field_id ?? null,
+    stage_field_id: stage_field_id ?? null,
+    response: processedResponse,
+  };
 
   try {
-    console.log('📤 Attempting to insert row:', {
-      session_id: sessionId,
-      question,
-      answer,
-    });
-
-    const { data, error, status, statusText } = await supabase
+    const { data, error } = await supabase
       .from('user_responses')
-      .insert([{ session_id: sessionId, question, answer }])
-      .select(); // fetch back inserted row for debugging
-
-    console.log('📡 Supabase insert response:', {
-      data,
-      error,
-      status,
-      statusText,
-    });
+      .insert([payload])
+      .select();
 
     if (error) {
-      console.error('❌ Error returned from Supabase:', error);
-      throw error;
+      console.error('❌ Supabase error in saveQuestionAnswer:', error);
+      throw new Error(error.message);
     }
 
-    console.log('✅ Successfully saved question/answer to Supabase:', {
-      question,
-      answer,
-      returnedData: data,
-    });
-  } catch (error) {
-    console.error('🔥 Exception caught in saveQuestionAnswer:', error);
+    console.log('✅ Saved question/answer:', data);
+    return data;
+  } catch (err) {
+    console.error('🔥 Unexpected exception in saveQuestionAnswer:', err);
+    throw err;
   }
 }

@@ -28,7 +28,7 @@ import { useChartFormDBFlowStore } from '@/components/database/zustand_container
 import { useInjectedDBFlowStore } from '@/components/database/zustand_containers/InjectedFlowStore';
 import { useMainDBFlowStore } from '@/components/database/zustand_containers/MainFlowStore';
 import { FieldType } from '@/components/Zustand store data/MainFlow/flow';
-import { DBFlowField } from '@/components/database/DBtypes';
+import { DBchartFlowField, DBFlowField } from '@/components/database/DBtypes';
 
 // const {
 //   getCurrentField,
@@ -46,13 +46,11 @@ const { getCurrentField, isInFlowFunc, CurrentInjectionType } =
 
 //JOE MODIFIED HERE
 export function getField(): DBFlowField /*| DBchartFlowField */ | null {
-  let field: DBFlowField /*| DBchartFlowField*/ | null = null;
+  let field: DBFlowField /*| DBchartFlowField */ | null = null;
 
   if (isInFlowFunc) {
-    // we don't need to check for the chartForm because it is only a dropdown list...
-
-    // if (state.flow_type === "ChartForm") {
-    //   field = await getCurrentChartFormField(user_id);
+    // if (CurrentInjectionType === "ChartForm") {
+    //   field = currentChartFormField;
     //   if (!field) {
     //     console.warn("No field in getField() (Chart form)");
     //   }

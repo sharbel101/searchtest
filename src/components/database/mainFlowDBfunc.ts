@@ -3,6 +3,9 @@ import {
   DBFlowSection,
   DBFlowField,
   DBCurrentStates,
+  Dbdependencies,
+  Dependency,
+  DBresponse,
 } from '@/components/database/DBtypes';
 
 import { useMainDBFlowStore } from './zustand_containers/MainFlowStore';
@@ -149,11 +152,10 @@ export async function setCurrentState(state: DBCurrentStates) {
 
     if (error) throw error;
 
-    const { setCurrentInjectionType, setIsInFlowFunc, setStage } =
+    const { setCurrentInjectionType, setIsInFlowFunc } =
       useMainDBFlowStore.getState();
     setCurrentInjectionType(data?.flow_type);
     setIsInFlowFunc(data?.is_flow_func);
-    setStage(data?.stage);
 
     return data;
   } catch (error) {
@@ -558,4 +560,123 @@ export async function getQuestionBody(user_id: string) {
     return 'Unknown Field.';
   }
   return current_field.label;
+}
+
+// export async function getCurrentDependencies(
+//   user_id: string,
+//   field: DBFlowField
+// ): Promise<Dbdependencies | null> {
+
+//   console.log("this is the field in the get current Dependencies :", field);
+
+//   const flowinjection_dependencies = field.flowinjection?.dependencies;
+
+//   console.log("this is the flow injection dependencies:", flowinjection_dependencies);
+
+//   if (!flowinjection_dependencies) return null;
+
+//   const entries = Object.entries(flowinjection_dependencies);
+
+//   // Map each dependency to a promise
+//   const results = await Promise.all(
+//     entries.map(async ([key, dep]) => {
+//       if (!dep.internal) return [key, null];
+
+//       try {
+//         const code = dep.internal.replace(/\?/g, `"${user_id}"`);
+//         const fn = new Function(
+//           "supabase",
+//           `return (async () => { return ${code}; })();`
+//         );
+
+//         const result = await fn(supabase);
+//         return [key, result];
+//       } catch (err) {
+//         console.error(`Error running dependency for ${key}:`, err);
+//         return [key, null];
+//       }
+//     })
+//   );
+
+//   // Convert back to an object
+//   const collected_dependencies = Object.fromEntries(results);
+//   console.log("THIS IS THE COLLECTED DEPENDENCIES:", collected_dependencies);
+
+//   return collected_dependencies;
+// }
+
+export async function getCurrentDependencies(
+  user_id: string,
+  field: DBFlowField,
+): Promise<Dbdependencies | null> {
+  console.log('📌 Field in getCurrentDependencies:', field);
+
+  const flowinjection_dependencies = field.flowinjection?.dependencies;
+  console.log('📌 Flow injection dependencies:', flowinjection_dependencies);
+
+  if (!flowinjection_dependencies) return null;
+
+  const results = await Promise.all(
+    Object.entries(flowinjection_dependencies).map(async ([key, dep]) => {
+      try {
+        if (dep.internal) {
+          const { table, column, conditions } = dep.internal;
+
+          // Tell supabase what a row looks like, relationships are unknown
+          let query = supabase.from(table).select(column);
+
+          for (const condition of conditions) {
+            const value =
+              condition.value === '$user_id' ? user_id : condition.value;
+
+            switch (condition.operator) {
+              case '=':
+                query = query.eq(condition.field, value);
+                break;
+              case '!=':
+                query = query.neq(condition.field, value);
+                break;
+              case 'is':
+                query = query.is(condition.field, value);
+                break;
+              case 'not':
+                query = query.not(condition.field, 'is', value);
+                break;
+              default:
+                throw new Error(`Unsupported operator: ${condition.operator}`);
+            }
+          }
+
+          const { data, error } = await query.single();
+
+          if (error) {
+            console.error(`❌ Error fetching dependency "${key}":`, error);
+            return [key, null];
+          }
+
+          // Type-safe property access using bracket notation with proper typing
+          const columnValue =
+            data && typeof data === 'object' && column in data
+              ? (data as Record<string, unknown>)[column]
+              : null;
+
+          return [key, columnValue];
+        }
+
+        if (dep.external) {
+          return [`${key}_external`, null];
+        }
+
+        return [key, null];
+      } catch (err) {
+        console.error(`🔥 Exception in dependency "${key}":`, err);
+        return [key, null];
+      }
+    }),
+  );
+
+  const collected_dependencies = Object.fromEntries(results);
+  console.log('✅ Collected dependencies:', collected_dependencies);
+
+  return collected_dependencies;
 }

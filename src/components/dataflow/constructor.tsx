@@ -28,6 +28,7 @@ import {
   getAllMainFields,
   getAllMainSections,
   getAllOrderedMainSections,
+  getCurrentDependencies,
   getCurrentMainField,
   getCurrentMainSection,
   getCurrentState,
@@ -183,8 +184,6 @@ export const generateChatBotFlow = (): Record<
           setQuestionBody,
         } = useMainDBFlowStore.getState();
 
-        // const {  } = SidebarFlowStore.getState();
-        // const {  } = ChartFormUseFlowStore.getState()
         const current_state = await getCurrentState(user_id);
         if (!current_state) {
           console.warn("can't have a current state in loop's path");
@@ -203,67 +202,43 @@ export const generateChatBotFlow = (): Record<
           return 'end';
         }
 
-        const stage = current_state?.stage;
-
-        // console.log('Loop path - Section:', section?.sectionTitle);
-        // console.log('Loop path - Field:', field?.label);
-        // console.log('Loop path - User input:', params?.userInput);
+        // const stage = current_state?.stage;
 
         if (field?.nextfield === null) {
           if (field?.flowinjection?.type === 'ChartForm') {
-            // console.log(
-            //   `In this Section: ${section} and this field: ${field} we have injection of type: ${field.flowinjection.type} `,
-            // );
             await fetchAndSetChartFormSubFlow(field.flowinjection.name);
             return 'chartForm';
           }
-          // console.log(
-          //   'No more fields in current section, moving to next section',
-          // );
 
-          if (
-            field?.flowinjection?.type === 'OriginalSubFlow' &&
-            stage != null &&
-            stage !== ''
-          ) {
-            // console.log(
-            //   `In this Section: ${section} and this field: ${field} we have injection of type: ${field.flowinjection.type} `,
-            // );
-            await fetchAndSetOriginalSubFlow(field.flowinjection.name, stage);
+          if (field?.flowinjection?.type === 'OriginalSubFlow') {
+            const dependencies = await getCurrentDependencies(user_id, field);
+
+            await fetchAndSetOriginalSubFlow(
+              user_id,
+              field.flowinjection.name,
+              dependencies,
+            );
             return 'OriginalSubFlowLoop';
           }
-          // console.log(
-          //   'No more fields in current section, moving to next section',
-          // );
 
           //HONE I THINK IT WILL MAKE AN ERROR AT THE LAST NODE
           //lezem ghayyer enno eza ma fi nextSection return false aw null w hott if statement hone la ta3mol return lal "end"
           // goToNextSection(); //i removed this function.... le2ila halle
           await goToNextMainSection(user_id);
-
-          //sidebar: update the opened sections
-          // goToNextSideBarSection();
-
           return 'setup';
         }
 
         // If we have user input, save it against the current question.
         if (params.userInput !== undefined) {
           let answerToSave = params.userInput; // Default to raw input
-
-          // If extractiontype is defined for this field, extract the info
-          if (field.extractiontype) {
-            answerToSave = await extractKeyInfo(
-              params.userInput,
+          if (field.type !== FieldType.flowfunc) {
+            saveQuestionAnswer(
+              user_id,
+              answerToSave,
+              field.id,
+              null,
               field.extractiontype,
             );
-          }
-
-          // The `flowEngine` already saves the data for FlowFunc types,
-          // so we only need to save it for other types.
-          if (field.type !== FieldType.flowfunc) {
-            // console.log("This is the save Question and Answer in the constructor");
-            saveQuestionAnswer(field.label, answerToSave); // MODIFIED: Use answerToSave
           }
         }
 
@@ -283,12 +258,14 @@ export const generateChatBotFlow = (): Record<
           field.type === FieldType.flowfunc &&
           field.flowinjection &&
           field.flowinjection.type === 'OriginalSubFlow' &&
-          !current_state?.is_flow_func &&
-          stage != null &&
-          stage !== ''
+          !current_state?.is_flow_func
         ) {
-          // console.log('Entering OriginalSubFlow');
-          await fetchAndSetOriginalSubFlow(field.flowinjection.name, stage);
+          const dependencies = await getCurrentDependencies(user_id, field);
+          await fetchAndSetOriginalSubFlow(
+            user_id,
+            field.flowinjection.name,
+            dependencies,
+          );
           return 'OriginalSubFlowLoop';
         }
 
@@ -310,14 +287,15 @@ export const generateChatBotFlow = (): Record<
           if (params?.userInput !== undefined) {
             await AnswerChartFormQuestion(params.userInput);
 
-            const state = await getCurrentState(user_id);
-            const stage = state?.stage;
+            const dependencies = await getCurrentDependencies(user_id, field);
+            const stage = dependencies?.investment_stage ?? null;
 
-            if (!stage) {
+            if (stage) {
               setStage(stage); //for offline (no DB)
               setCurrentState({
                 user_id: user_id,
-                stage: stage,
+                flow_type: '',
+                current_chartform_id: null,
                 is_flow_func: false,
               }); // for the database
 
@@ -470,6 +448,9 @@ export const generateChatBotFlow = (): Record<
           await setCurrentState({
             user_id: user_id,
             is_flow_func: false,
+            current_injected_flow_field_id: null,
+            current_injected_flow_section_id: null,
+            flow_type: '',
           });
           await goToNextMainSection(user_id);
           return (await getCurrentMainSection(user_id)) ? 'setup' : 'end';
@@ -477,9 +458,9 @@ export const generateChatBotFlow = (): Record<
 
         // Handle user input in active subflow
         if (state?.is_flow_func && params?.userInput !== undefined) {
-          await AnswerChartFormQuestion(params?.userInput);
-          const state = await getCurrentState(user_id);
-          const stage = state?.stage;
+          const stage = await AnswerChartFormQuestion(params?.userInput);
+
+          // const state = await getCurrentState(user_id);
 
           if (stage) {
             // Subflow completed
@@ -607,6 +588,7 @@ export const generateChatBotFlow = (): Record<
             is_flow_func: false,
             current_injected_flow_field_id: null,
             current_injected_flow_section_id: null,
+            flow_type: '',
           });
 
           let mainField = await goToNextMainField(user_id);

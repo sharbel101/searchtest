@@ -4,6 +4,11 @@ import { FieldType } from '../Zustand store data/MainFlow/flow';
 //real database stores
 import { getField } from '@/ChatBotFork/components/ChatBotInput/ChatBotInput';
 
+//Here i am saving the user responses of the main flow and of the injected flow
+//if you want to check how i save the stage from the chart form flow you can check the chartformFlowDBfunc.ts in the AnswerQuestion function
+import saveQuestionAnswer from '../database/UploadeAnswers';
+import { user_id } from '../dataflow/constructor';
+
 /**
  * Compile cache for parsed Zod schemas.
  * Keeps a small upper bound to avoid unbounded growth.
@@ -59,7 +64,11 @@ export const handleValidate = (
   const field = getField();
 
   if (!field) return { success: false, error: 'No field found for validation' };
-  if (!field.validation) return { success: true }; // no validation → always pass
+  if (!field.validation) {
+    if (field.flowinjection?.type === 'OriginalSubFlow')
+      saveQuestionAnswer(user_id, userInput, field.id);
+    return { success: true };
+  } // no validation → always pass
 
   try {
     const schema = getValidationSchema(field.validation);
@@ -100,6 +109,7 @@ export const handleValidate = (
             'Invalid',
         };
       }
+      saveQuestionAnswer(user_id, userInput, field.id);
       return { success: true };
     }
 
@@ -130,6 +140,10 @@ export const handleValidate = (
             'Invalid',
         };
       }
+      //hone badde sir sayyev l file itself mech esmo bas hallae it is here for testing
+      //  NTEBEHLA
+      //
+      saveQuestionAnswer(user_id, fileName, field.id);
       return { success: true };
     }
 
@@ -142,6 +156,7 @@ export const handleValidate = (
         error: result.error.issues.map((issue) => issue.message).join('\n'),
       };
     }
+    saveQuestionAnswer(user_id, userInput, field.id);
     return { success: true };
   } catch {
     return { success: false, error: 'Schema parsing failed' };

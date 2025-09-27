@@ -13,7 +13,7 @@ const supabase = createClient();
 //only for development purposes
 import { user_id } from './constructor';
 
-import { DBFlowSection } from '@/components/database/DBtypes';
+import { Dbdependencies, DBFlowSection } from '@/components/database/DBtypes';
 import { useMainDBFlowStore } from '../database/zustand_containers/MainFlowStore';
 
 //IS
@@ -56,41 +56,56 @@ export const fetchAndSetChartFormSubFlow = async (
 
 //fs
 export const fetchAndSetOriginalSubFlow = async (
+  user_id: string, // you’ll need to pass this in
   injection_name: string,
-  stage: string,
+  dependencies: Dbdependencies | null,
 ): Promise<boolean> => {
-  const { data, error } = await supabase
-    .from('injected_flow_sections')
-    .select('*')
-    .eq('injection_name', injection_name)
-    .eq('stage', stage)
-    .single();
+  try {
+    let query = supabase
+      .from('injected_flow_sections')
+      .select('*')
+      .eq('injection_name', injection_name);
 
-  if (error) {
-    console.error('Error fetching:', error);
-  } else {
-    console.log('Rows with starting_node:', data);
-  }
+    // Apply dependency filters against the "requirements" JSON column
+    if (dependencies) {
+      for (const [key, value] of Object.entries(dependencies)) {
+        if (value !== undefined && value !== null) {
+          query = query.eq(`requirements->>${key}`, value);
+        }
+      }
+    }
 
-  if (!data) {
+    const { data, error } = await query.single();
+
+    if (error) {
+      console.error('Error fetching:', error);
+      return false;
+    }
+
+    if (!data) {
+      return false;
+    }
+
+    const DBdata: DBFlowSection = data;
+
+    const field = await getCurrentMainField(user_id);
+    if (!field) {
+      console.warn('No field provided to define the type of the injection.');
+    }
+
+    await setCurrentState({
+      user_id,
+      current_injected_flow_section_id: DBdata.id,
+      current_injected_flow_field_id: DBdata.firstfield,
+      is_flow_func: true,
+      flow_type: field?.flowinjection?.type,
+    });
+
+    setIsInFlowFunc(true);
+
+    return true;
+  } catch (err) {
+    console.error('Unexpected error:', err);
     return false;
   }
-
-  const DBdata: DBFlowSection = data;
-
-  const field = await getCurrentMainField(user_id);
-  if (!field) {
-    console.warn('No field provided to define the type of the injection.');
-  }
-
-  const state = await setCurrentState({
-    user_id: user_id,
-    current_injected_flow_section_id: DBdata.id,
-    current_injected_flow_field_id: DBdata.firstfield,
-    is_flow_func: true,
-    flow_type: field?.flowinjection?.type,
-  });
-  setIsInFlowFunc(true);
-
-  return true;
 };

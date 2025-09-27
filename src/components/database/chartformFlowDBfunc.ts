@@ -12,8 +12,8 @@ import { useChartFormDBFlowStore } from '@/components/database/zustand_container
 
 import { user_id } from '../dataflow/constructor';
 import { getCurrentState, setCurrentState } from './mainFlowDBfunc';
-import { saveQuestionAnswer } from './databaseService';
 import { useMainDBFlowStore } from './zustand_containers/MainFlowStore';
+import saveQuestionAnswer from './UploadeAnswers';
 
 const supabase = createClient();
 
@@ -197,9 +197,6 @@ export async function AnswerChartFormQuestion(userInput: string) {
 
   const question_answers = await getCurrentChartFormAnswers(field.id);
 
-  // Save the question and answer to the database.
-  // saveQuestionAnswer(question, userInput);
-
   // find the matching answer
   const answerConfig = question_answers.find((a) => a.answer === userInput);
   if (!answerConfig) {
@@ -213,9 +210,11 @@ export async function AnswerChartFormQuestion(userInput: string) {
     //database update
     await setCurrentState({
       user_id: user_id,
-      stage: answerConfig.setStage,
       is_flow_func: false,
     });
+
+    //Save the stage in the user_responses
+    saveQuestionAnswer(user_id, answerConfig.setStage, null, field.id);
 
     //zustand update
     const { setStage, setCurrentChartFormField } =
@@ -231,5 +230,8 @@ export async function AnswerChartFormQuestion(userInput: string) {
       user_id: user_id,
       current_chartform_id: answerConfig.next,
     });
+
+    // HERE I CAN SAVE THE CHARTFORM RESPONSES
+    // saveQuestionAnswer(balbalbal)
   }
 }
