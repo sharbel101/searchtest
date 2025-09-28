@@ -1,15 +1,29 @@
 # React + TypeScript + Vite
-HOW TO RUN
- WRITE THESE IN THE TERMINAL 
- cd my-search-app
- then 
- npm run dev
+## How to Run This Project
 
-  and open it in ur local host 
+1.  **Clone the repository:**
+   
+    git clone https://github.com/sharbel101/searchtest.git
+    
 
+2.  **Navigate to the project directory:**
+    The project files are located in the `my-search-app` subdirectory.
+    
+    cd searchtest/my-search-app
+  
 
+3.  **Install dependencies:**
+    
+    npm install
+  
 
-logic is in my-search-app\src\SearchApp.tsx
+4.  **Start the development server:**
+    
+    npm run dev
+  
+    You can then open the local server URL provided in your browser
+
+The main application logic is in `src/SearchApp.tsx`.
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
