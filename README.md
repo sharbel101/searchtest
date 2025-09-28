@@ -8,6 +8,9 @@ HOW TO RUN
   and open it in ur local host 
 
 
+
+logic is in my-search-app\src\SearchApp.tsx
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:
