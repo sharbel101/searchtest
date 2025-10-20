@@ -7,7 +7,8 @@ import { getField } from '@/ChatBotFork/components/ChatBotInput/ChatBotInput';
 //Here i am saving the user responses of the main flow and of the injected flow
 //if you want to check how i save the stage from the chart form flow you can check the chartformFlowDBfunc.ts in the AnswerQuestion function
 import saveQuestionAnswer from '../database/UploadeAnswers';
-import { user_id } from '../dataflow/constructor';
+import { useUserInfo } from '@/components/database/zustand_containers/UsersInfo';
+const { user_id } = useUserInfo.getState();
 
 /**
  * Compile cache for parsed Zod schemas.

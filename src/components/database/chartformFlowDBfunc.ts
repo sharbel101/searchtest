@@ -10,10 +10,11 @@ import {
 
 import { useChartFormDBFlowStore } from '@/components/database/zustand_containers/ChartFormFlowStore'; //for the DB
 
-import { user_id } from '../dataflow/constructor';
 import { getCurrentState, setCurrentState } from './mainFlowDBfunc';
 import { useMainDBFlowStore } from './zustand_containers/MainFlowStore';
 import saveQuestionAnswer from './UploadeAnswers';
+import { useUserInfo } from '@/components/database/zustand_containers/UsersInfo';
+const { user_id } = useUserInfo.getState();
 
 const supabase = createClient();
 
@@ -70,10 +71,12 @@ export async function getCurrentChartFormField(
       return null;
     }
 
-    await setCurrentState({
+    await setCurrentState(
+      {
+        current_chartform_id: starting_node.id,
+      },
       user_id,
-      current_chartform_id: starting_node.id,
-    });
+    );
 
     // Fetch latest state after upsert
     current_state = await getCurrentState(user_id);
@@ -208,10 +211,12 @@ export async function AnswerChartFormQuestion(userInput: string) {
 
   if (answerConfig.setStage) {
     //database update
-    await setCurrentState({
-      user_id: user_id,
-      is_flow_func: false,
-    });
+    await setCurrentState(
+      {
+        is_flow_func: false,
+      },
+      user_id,
+    );
 
     //Save the stage in the user_responses
     saveQuestionAnswer(user_id, answerConfig.setStage, null, field.id);
@@ -226,10 +231,12 @@ export async function AnswerChartFormQuestion(userInput: string) {
 
     return answerConfig.setStage;
   } else if (answerConfig.next) {
-    await setCurrentState({
-      user_id: user_id,
-      current_chartform_id: answerConfig.next,
-    });
+    await setCurrentState(
+      {
+        current_chartform_id: answerConfig.next,
+      },
+      user_id,
+    );
 
     // HERE I CAN SAVE THE CHARTFORM RESPONSES
     // saveQuestionAnswer(balbalbal)

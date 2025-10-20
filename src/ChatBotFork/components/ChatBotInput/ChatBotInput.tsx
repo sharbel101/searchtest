@@ -7,6 +7,7 @@ import React, {
   Fragment,
   useRef,
 } from 'react';
+import { AssemblyAI } from 'assemblyai';
 
 import { useSubmitInputInternal } from '../../hooks/internal/useSubmitInputInternal';
 import { useIsDesktopInternal } from '../../hooks/internal/useIsDesktopInternal';
@@ -70,6 +71,9 @@ export function getField(): DBFlowField /*| DBchartFlowField */ | null {
 
   return field;
 }
+const client = new AssemblyAI({
+  apiKey: '2fad6869c319423e88b16e68fb4251e6',
+});
 
 /**
  * Contains chat input field for user to enter messages.
@@ -116,6 +120,91 @@ const ChatBotInput = ({ buttons }: { buttons: React.ReactElement[] }) => {
 
   const [pendingFiles, setPendingFiles] = useState<any[]>([]); // FileWithPreview[]
   const [previewFile, setPreviewFile] = useState<any | null>(null);
+
+  const [isRecording, setIsRecording] = useState(false);
+  const mediaRecorder = useRef<MediaRecorder | null>(null);
+  const audioChunks = useRef<Blob[]>([]);
+
+  const handleMicClick = async () => {
+    if (isRecording) {
+      mediaRecorder.current?.stop();
+      setIsRecording(false);
+    } else {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          audio: true,
+        });
+        mediaRecorder.current = new MediaRecorder(stream);
+        const audioChunks: Blob[] = [];
+
+        mediaRecorder.current.ondataavailable = (event) => {
+          audioChunks.push(event.data);
+        };
+
+        mediaRecorder.current.onstop = async () => {
+          const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+          const formData = new FormData();
+          formData.append('audio', audioBlob, 'recording.webm');
+
+          // Upload audio to AssemblyAI
+          const uploadRes = await fetch(
+            'https://api.assemblyai.com/v2/upload',
+            {
+              method: 'POST',
+              headers: {
+                authorization: '2fad6869c319423e88b16e68fb4251e6',
+              },
+              body: audioBlob,
+            },
+          );
+
+          const { upload_url } = await uploadRes.json();
+
+          // Transcribe
+          const transcriptRes = await fetch(
+            'https://api.assemblyai.com/v2/transcript',
+            {
+              method: 'POST',
+              headers: {
+                authorization: '2fad6869c319423e88b16e68fb4251e6',
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                audio_url: upload_url,
+                speech_model: 'universal',
+              }),
+            },
+          );
+
+          const transcriptData = await transcriptRes.json();
+
+          // Poll until transcription is complete
+          let transcription;
+          while (!transcription || transcription.status !== 'completed') {
+            const pollRes = await fetch(
+              `https://api.assemblyai.com/v2/transcript/${transcriptData.id}`,
+              {
+                headers: { authorization: '2fad6869c319423e88b16e68fb4251e6' },
+              },
+            );
+            transcription = await pollRes.json();
+            if (transcription.status === 'completed') break;
+            await new Promise((r) => setTimeout(r, 1000));
+          }
+
+          if (transcription.text) {
+            setTextAreaValue(transcription.text);
+            setInputLength(transcription.text.length);
+          }
+        };
+
+        mediaRecorder.current.start();
+        setIsRecording(true);
+      } catch (err) {
+        console.error('Mic error:', err);
+      }
+    }
+  };
 
   // Find the file attachment button and replace it with our controlled version
   const fileAttachmentButtonIndex = buttons.findIndex(
@@ -365,7 +454,9 @@ const ChatBotInput = ({ buttons }: { buttons: React.ReactElement[] }) => {
                     fileUrl.startsWith('http') ||
                     fileUrl.startsWith('data:') ||
                     fileUrl.startsWith('blob:');
-                  const embedOffice = `https://docs.google.com/gview?url=${encodeURIComponent(fileUrl)}&embedded=true`;
+                  const embedOffice = `https://docs.google.com/gview?url=${encodeURIComponent(
+                    fileUrl,
+                  )}&embedded=true`;
                   if (fileType === 'image' && isValidUrl) {
                     return (
                       <img
@@ -465,7 +556,6 @@ const ChatBotInput = ({ buttons }: { buttons: React.ReactElement[] }) => {
                 ? textAreaFocusedStyle
                 : textAreaStyle
           }
-          rows={1}
           className="rcb-chat-input-textarea"
           placeholder={placeholder}
           onChange={handleTextAreaValueChange}
@@ -477,6 +567,15 @@ const ChatBotInput = ({ buttons }: { buttons: React.ReactElement[] }) => {
         />
       )}
       <>
+        <button
+          className={`rcb-mic-button ${isRecording ? 'recording' : ''}`}
+          onClick={handleMicClick}
+        >
+          <img
+            src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z'/><path d='M19 10v2a7 7 0 0 1-14 0v-2'/><line x1='12' y1='19' x2='12' y2='23'/><line x1='8' y1='23' x2='16' y2='23'/></svg>"
+            alt="mic"
+          />
+        </button>
         {otherButtons?.map((button: React.ReactElement, index: number) => (
           <Fragment key={index}>{button}</Fragment>
         ))}

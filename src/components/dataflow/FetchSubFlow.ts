@@ -10,11 +10,13 @@ const { setIsInFlowFunc } = useMainDBFlowStore.getState();
 
 const supabase = createClient();
 
-//only for development purposes
-import { user_id } from './constructor';
+// //only for development purposes
+// import { user_id } from './constructor';
 
 import { Dbdependencies, DBFlowSection } from '@/components/database/DBtypes';
 import { useMainDBFlowStore } from '../database/zustand_containers/MainFlowStore';
+import { useUserInfo } from '@/components/database/zustand_containers/UsersInfo';
+const { user_id } = useUserInfo.getState();
 
 //IS
 export const fetchAndSetChartFormSubFlow = async (
@@ -43,12 +45,14 @@ export const fetchAndSetChartFormSubFlow = async (
     console.warn('No field provided to define the type of the injection.');
   }
 
-  const state = await setCurrentState({
-    user_id: user_id,
-    is_flow_func: true,
-    current_chartform_id: data.id,
-    flow_type: field?.flowinjection?.type,
-  });
+  const state = await setCurrentState(
+    {
+      is_flow_func: true,
+      current_chartform_id: data.id,
+      flow_type: field?.flowinjection?.type,
+    },
+    user_id,
+  );
   setIsInFlowFunc(true);
 
   return true;
@@ -93,13 +97,15 @@ export const fetchAndSetOriginalSubFlow = async (
       console.warn('No field provided to define the type of the injection.');
     }
 
-    await setCurrentState({
+    await setCurrentState(
+      {
+        current_injected_flow_section_id: DBdata.id,
+        current_injected_flow_field_id: DBdata.firstfield,
+        is_flow_func: true,
+        flow_type: field?.flowinjection?.type,
+      },
       user_id,
-      current_injected_flow_section_id: DBdata.id,
-      current_injected_flow_field_id: DBdata.firstfield,
-      is_flow_func: true,
-      flow_type: field?.flowinjection?.type,
-    });
+    );
 
     setIsInFlowFunc(true);
 

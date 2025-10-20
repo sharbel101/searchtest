@@ -6,7 +6,6 @@ import { useFlowStore } from '@/components/Zustand store data/ZustandStores/Main
 import ChatBotComponent, { Flow } from '@/ChatBotFork';
 import MarkdownRenderer, { MarkdownRendererBlock } from '@/RCB_MarkDown';
 import { styles } from './ChatStyles';
-import './scrollbar.css';
 
 export default function Chat() {
   // ——————————————`

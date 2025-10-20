@@ -4,8 +4,8 @@ import { getCurrentState, setCurrentState } from './mainFlowDBfunc';
 
 import { useInjectedDBFlowStore } from './zustand_containers/InjectedFlowStore';
 
-import { user_id } from '../dataflow/constructor';
-import { da } from 'zod/v4/locales';
+import { useUserInfo } from '@/components/database/zustand_containers/UsersInfo';
+const { user_id } = useUserInfo.getState();
 
 const supabase = createClient();
 
@@ -194,10 +194,12 @@ export async function goToNextInjectedField(user_id: string) {
   );
 
   if (nextField) {
-    await setCurrentState({
+    await setCurrentState(
+      {
+        current_injected_flow_field_id: nextField.id,
+      },
       user_id,
-      current_injected_flow_field_id: nextField.id,
-    });
+    );
 
     const { setCurrentInjectedField } = useInjectedDBFlowStore.getState();
     setCurrentInjectedField(nextField);
@@ -229,11 +231,13 @@ export async function goToNextInjectedSection(user_id: string) {
   const nextSection = await getSpecificInjectedSection(nextSectionId);
 
   if (nextSection) {
-    await setCurrentState({
+    await setCurrentState(
+      {
+        current_injected_flow_section_id: nextSectionId,
+        current_injected_flow_field_id: nextSection.firstfield,
+      },
       user_id,
-      current_injected_flow_section_id: nextSectionId,
-      current_injected_flow_field_id: nextSection.firstfield,
-    });
+    );
 
     const { setCurrentInjectedSection } = useInjectedDBFlowStore.getState();
     setCurrentInjectedSection(nextSection);

@@ -1,7 +1,7 @@
 'use client';
 
 //for testing purposes this is the user's id:
-export const user_id = 'c275f6da-7e9c-433a-9ed4-8fdc705c9695';
+// export const user_id = 'c275f6da-7e9c-433a-9ed4-8fdc705c9695';
 
 // import { Block } from 'react-chatbotify';
 import { chatFlow, FieldType } from '../Zustand store data/MainFlow/flow';
@@ -19,7 +19,7 @@ import { MarkdownRendererBlock } from '@/RCB_MarkDown';
 
 // import { useSubFlowStore } from '../Zustand store data/ZustandStores/InjectedFlowStore';
 import { useInjectedDBFlowStore } from '@/components/database/zustand_containers/InjectedFlowStore';
-
+import { useUserInfo } from '@/components/database/zustand_containers/UsersInfo';
 import { getDynamicText, extractKeyInfo } from '../AI features/openai';
 import { SidebarFlowStore } from '../database/zustand_containers/SideBarFlowStore';
 
@@ -50,6 +50,9 @@ import {
   getCurrentChartFormAnswers,
   getCurrentChartFormField,
 } from '../database/chartformFlowDBfunc';
+
+//extract the user id from the zustand store
+const { user_id } = useUserInfo.getState();
 
 // Type definitions for better type safety
 export type PathParams = {
@@ -292,12 +295,14 @@ export const generateChatBotFlow = (): Record<
 
             if (stage) {
               setStage(stage); //for offline (no DB)
-              setCurrentState({
-                user_id: user_id,
-                flow_type: '',
-                current_chartform_id: null,
-                is_flow_func: false,
-              }); // for the database
+              setCurrentState(
+                {
+                  flow_type: '',
+                  current_chartform_id: null,
+                  is_flow_func: false,
+                },
+                user_id,
+              ); // for the database
 
               setIsInFlowFunc(false); // for ofline
 
@@ -445,13 +450,15 @@ export const generateChatBotFlow = (): Record<
           console.log(
             'No more fields in the chartform Flow. Returning to the main flow.',
           );
-          await setCurrentState({
-            user_id: user_id,
-            is_flow_func: false,
-            current_injected_flow_field_id: null,
-            current_injected_flow_section_id: null,
-            flow_type: '',
-          });
+          await setCurrentState(
+            {
+              is_flow_func: false,
+              current_injected_flow_field_id: null,
+              current_injected_flow_section_id: null,
+              flow_type: '',
+            },
+            user_id,
+          );
           await goToNextMainSection(user_id);
           return (await getCurrentMainSection(user_id)) ? 'setup' : 'end';
         }
@@ -583,13 +590,15 @@ export const generateChatBotFlow = (): Record<
           hasNextSubFlowSection === undefined
         ) {
           // Subflow is done, go back to main flow
-          await setCurrentState({
-            user_id: user_id,
-            is_flow_func: false,
-            current_injected_flow_field_id: null,
-            current_injected_flow_section_id: null,
-            flow_type: '',
-          });
+          await setCurrentState(
+            {
+              is_flow_func: false,
+              current_injected_flow_field_id: null,
+              current_injected_flow_section_id: null,
+              flow_type: '',
+            },
+            user_id,
+          );
 
           let mainField = await goToNextMainField(user_id);
           if (mainField === null || mainField === undefined) {

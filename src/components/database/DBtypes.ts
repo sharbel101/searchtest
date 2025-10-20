@@ -29,8 +29,6 @@ export type DBFlowField = {
 };
 
 export type DBCurrentStates = {
-  user_id: string;
-
   current_main_flow_section_id?: string | null;
   current_main_flow_field_id?: string | null;
 
@@ -95,4 +93,12 @@ export type FlowInjection = {
   name: string;
   type: 'OriginalSubFlow' | 'ChartForm';
   dependencies: Record<string, Dependency>;
+};
+
+export type Users = {
+  user_id: string;
+  username: string;
+  email: string;
+  password: string;
+  time_created: string;
 };

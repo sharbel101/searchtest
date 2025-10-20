@@ -10,8 +10,9 @@ import {
 
 import { useMainDBFlowStore } from './zustand_containers/MainFlowStore';
 import { FieldType } from '../Zustand store data/MainFlow/flow';
-import { user_id } from '../dataflow/constructor';
 import { SidebarFlowStore } from './zustand_containers/SideBarFlowStore';
+import { useUserInfo } from '@/components/database/zustand_containers/UsersInfo';
+const { user_id } = useUserInfo.getState();
 
 const supabase = createClient();
 
@@ -120,7 +121,7 @@ export async function getCurrentState(
     .from('current_states')
     .select('*')
     .eq('user_id', user_id)
-    .maybeSingle();
+    .single();
 
   if (error) {
     console.error('Error fetching current state:', error.message);
@@ -139,11 +140,12 @@ export async function getCurrentState(
 }
 
 // Upsert current state
-export async function setCurrentState(state: DBCurrentStates) {
+export async function setCurrentState(state: DBCurrentStates, user_id: string) {
   try {
     const { data, error } = await supabase
       .from('current_states')
       .upsert({
+        user_id,
         ...state,
         updated_at: new Date().toISOString(),
       })
@@ -225,10 +227,12 @@ export async function getCurrentMainField(
       return null;
     }
 
-    await setCurrentState({
+    await setCurrentState(
+      {
+        current_main_flow_field_id: starting_node.id,
+      },
       user_id,
-      current_main_flow_field_id: starting_node.id,
-    });
+    );
 
     // Fetch latest state after upsert
     current_state = await getCurrentState(user_id);
@@ -334,10 +338,12 @@ export async function getCurrentMainSection(
       return null;
     }
 
-    await setCurrentState({
+    await setCurrentState(
+      {
+        current_main_flow_section_id: starting_section.id,
+      },
       user_id,
-      current_main_flow_section_id: starting_section.id,
-    });
+    );
 
     // Fetch latest state after upsert
     current_state = await getCurrentState(user_id);
@@ -485,10 +491,12 @@ export async function goToNextMainField(user_id: string) {
   );
 
   if (nextField) {
-    await setCurrentState({
+    await setCurrentState(
+      {
+        current_main_flow_field_id: nextField.id,
+      },
       user_id,
-      current_main_flow_field_id: nextField.id,
-    });
+    );
   }
 
   //this peace of code will jumps to the next section if we reached the last field in a section
@@ -538,12 +546,14 @@ export async function goToNextMainSection(user_id: string) {
     nextSection,
   );
   if (nextSection) {
-    await setCurrentState({
+    await setCurrentState(
+      {
+        current_main_flow_section_id: nextSection.id,
+        current_main_flow_field_id: nextSection.firstfield,
+        sidebar_index: nextSection.order_index,
+      },
       user_id,
-      current_main_flow_section_id: nextSection.id,
-      current_main_flow_field_id: nextSection.firstfield,
-      sidebar_index: nextSection.order_index,
-    });
+    );
   }
 
   //zustand store

@@ -120,7 +120,7 @@ export const styles: Styles = {
     padding: '8px 12px',
     fontFamily: 'Inter, sans-serif',
     fontSize: 14,
-    lineHeight: '20px',
+    lineHeight: '5px',
     boxShadow: 'none',
   },
   chatInputAreaFocusedStyle: {
