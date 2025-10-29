@@ -1,45 +1,41 @@
 'use client';
 
-const API_KEY =
-  '9ec0f6add86a9828260e00eaddd69d56680c22943ae4a1ee4ddd55cca747d486';
-const API_URL = 'https://api.together.xyz/v1/chat/completions';
-
-interface Message {
-  role: 'system' | 'user' | 'assistant';
-  content: string;
-}
+const API_KEY = 'AIzaSyCcePxMAkYx313GWjuYDRJwW_eo8wtDhRA';
+const API_URL =
+  'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite	:generateContent';
 
 /**
- * Helper function to call Together AI API (OpenAI-compatible).
+ * Helper function to call Google Gemini API.
  */
-async function callTogetherAPI(
-  messages: Message[],
-  model = 'meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo',
-) {
-  const response = await fetch(API_URL, {
+async function callGeminiAPI(prompt: string) {
+  const response = await fetch(`${API_URL}?key=${API_KEY}`, {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${API_KEY}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      model,
-      messages,
-      temperature: 0.7,
-      max_tokens: 256,
+      contents: [
+        {
+          parts: [
+            {
+              text: prompt,
+            },
+          ],
+        },
+      ],
     }),
   });
 
   if (!response.ok) {
     const err = await response.json();
     throw new Error(
-      `Together API error: ${response.status} ${response.statusText} - ${JSON.stringify(err)}`,
+      `Gemini API error: ${response.status} ${response.statusText} - ${JSON.stringify(err)}`,
     );
   }
 
   const data = await response.json();
-  // The response format follows OpenAI's chat completions spec:
-  return data.choices[0].message.content.trim();
+  // The response format follows Google's generative language spec:
+  return data.candidates[0].content.parts[0].text.trim();
 }
 
 /**
@@ -51,12 +47,10 @@ export const getDynamicText = async (text: string): Promise<string> => {
 Only rewrite the sentence, keep it simple and easy to understand.
 Output only the new sentence without extra commentary.`;
 
-    const messages: Message[] = [{ role: 'user', content: prompt }];
-
-    const rephrasedText = await callTogetherAPI(messages);
+    const rephrasedText = await callGeminiAPI(prompt);
     return rephrasedText;
   } catch (error) {
-    console.error('Error calling Together API (rephrase):', error);
+    console.error('Error calling Gemini API (rephrase):', error);
     return text;
   }
 };
@@ -74,9 +68,7 @@ export const extractKeyInfo = async (
 For example, if the user says "my company name is Acme Corp", output just "Acme Corp".
 Do NOT include the rest of the sentence. Input: "${text}"`;
 
-    const messages: Message[] = [{ role: 'user', content: prompt }];
-
-    const extractedText = await callTogetherAPI(messages);
+    const extractedText = await callGeminiAPI(prompt);
     console.log(`✅ Extracted ${infoType}:`, extractedText);
     return extractedText;
   } catch (error) {

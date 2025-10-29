@@ -102,6 +102,7 @@ export async function getSpecificMainSection(
     .from('main_flow_sections')
     .select('*')
     .eq('id', sectionId)
+    .limit(1)
     .single();
 
   console.log('this is the specific main section: ', data);
@@ -121,6 +122,7 @@ export async function getCurrentState(
     .from('current_states')
     .select('*')
     .eq('user_id', user_id)
+    .limit(1)
     .single();
 
   if (error) {
@@ -150,6 +152,7 @@ export async function setCurrentState(state: DBCurrentStates, user_id: string) {
         updated_at: new Date().toISOString(),
       })
       .select()
+      .limit(1)
       .single();
 
     if (error) throw error;
@@ -408,6 +411,7 @@ export async function getMainSectionStartingNodes(): Promise<DBFlowSection | nul
       .from('main_flow_sections')
       .select('*')
       .not('starting_node', 'is', null)
+      .limit(1)
       .maybeSingle();
 
     if (error) throw error;

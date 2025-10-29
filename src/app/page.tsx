@@ -9,51 +9,74 @@ export default function Login() {
   const supabase = createClient();
   const router = useRouter();
 
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
+  const [isSignUp, setIsSignUp] = useState(false);
 
   const handleLogin = async () => {
-    console.log('Login attempt:', { username, password, rememberMe });
+    console.log('Login attempt:', { email, password, rememberMe });
 
-    if (!username || !password) {
-      setError('Please provide both username and password');
+    if (!email || !password) {
+      setError('Please provide both email and password');
       return;
     }
 
-    const { data, error } = await supabase
-      .from('users')
-      .select('user_id')
-      .eq('username', username)
-      .eq('password', password)
-      .single();
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
 
     if (error) {
       console.error('Supabase error:', error);
-      setError('An error occurred while logging in.');
+      setError(error.message);
       return;
     }
 
-    if (!data) {
-      setError("This user isn't registered. Please sign up first");
-      return;
-    }
-
-    if (data) {
+    if (data.user) {
       const { setCurrentUserId } = useUserInfo.getState();
       console.log('logged in successfully.');
-      setCurrentUserId(data.user_id);
+      setCurrentUserId(data.user.id);
       router.push('/chatbot');
     }
   };
-  const handleForgotPassword = () => {
-    console.log('Forgot password clicked');
+
+  const handleSignUp = async () => {
+    console.log('Sign up attempt:', { email, password, username });
+
+    if (!email || !password || !username) {
+      setError('Please provide email, password, and username');
+      return;
+    }
+
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          username,
+        },
+      },
+    });
+
+    if (error) {
+      console.error('Supabase error:', error);
+      setError(error.message);
+      return;
+    }
+
+    if (data.user) {
+      setMessage(
+        'Sign up successful! Please check your email to verify your account.',
+      );
+    }
   };
 
-  const handleSignUp = () => {
-    console.log('Sign up clicked');
+  const handleForgotPassword = () => {
+    console.log('Forgot password clicked');
   };
 
   return (
@@ -87,7 +110,7 @@ export default function Login() {
               marginTop: '4rem',
             }}
           >
-            Sign in to continue
+            {isSignUp ? 'Create an account' : 'Sign in to continue'}
           </p>
         </div>
 
@@ -96,16 +119,30 @@ export default function Login() {
           className="login-form"
           onSubmit={(e) => {
             e.preventDefault();
-            handleLogin();
+            if (isSignUp) {
+              handleSignUp();
+            } else {
+              handleLogin();
+            }
           }}
         >
+          {isSignUp && (
+            <input
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="login-input"
+              placeholder="Username"
+              required
+            />
+          )}
           {/* Email */}
           <input
-            type="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             className="login-input"
-            placeholder="Username"
+            placeholder="Email"
             required
           />
 
@@ -174,17 +211,17 @@ export default function Login() {
 
           {/* Login Button */}
           <button type="submit" className="login-button">
-            Sign In
+            {isSignUp ? 'Sign Up' : 'Sign In'}
           </button>
 
           {/* Sign Up Link */}
           <div className="login-signup">
             <button
               type="button"
-              onClick={handleSignUp}
+              onClick={() => setIsSignUp(!isSignUp)}
               className="login-signup-button"
             >
-              Create Account
+              {isSignUp ? 'Already have an account? Sign In' : 'Create Account'}
             </button>
           </div>
         </form>
